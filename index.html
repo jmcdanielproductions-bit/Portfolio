@@ -218,6 +218,26 @@ body{
 .preview-iframe.is-live{opacity:1;}
 .reel-placeholder svg{opacity:.2;}
 .reel-placeholder span{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.preview-fs{
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:5;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(0,0,0,.58);
+  color:var(--white);
+  font-size:14px;
+  line-height:1;
+  cursor:crosshair;
+  opacity:.72;
+  transition:opacity 120ms, background 120ms, color 120ms, border-color 120ms, transform 120ms;
+}
+.preview-fs:hover{opacity:1;background:var(--white);color:var(--black);border-color:var(--white);transform:scale(1.04);}
 .reel-hud{position:absolute;bottom:0;left:0;right:0;z-index:4;display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(0,0,0,.65);}
 .reel-tc{font-size:9px;letter-spacing:.14em;color:rgba(255,255,255,.6);}
 .reel-rec{display:flex;align-items:center;gap:5px;font-size:8px;letter-spacing:.2em;color:rgba(255,255,255,.5);}
@@ -241,12 +261,29 @@ body{
 @keyframes cinema-in{from{opacity:0;}to{opacity:1;}}
 #cinema-video-wrap{flex:1;position:relative;overflow:hidden;}
 #cinema-video-wrap iframe,#cinema-video-wrap video{position:absolute;inset:0;width:100%;height:100%;border:none;}
+#cinema-player-host{position:absolute;inset:0;z-index:1;}
 #cinema-video-wrap.has-thumb #cinema-video-placeholder{display:none;}
 #cinema-video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 #cinema-video-placeholder svg{opacity:.2;}
 #cinema-video-placeholder span{font-size:10px;letter-spacing:.22em;color:rgba(255,255,255,.3);text-transform:uppercase;}
-.cinema-hud-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;position:absolute;top:0;left:0;right:0;z-index:2;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent);}
+.cinema-hud-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;position:absolute;top:0;left:0;right:0;z-index:4;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent);}
 .cinema-title{font-family:var(--display);font-size:10px;color:var(--white);letter-spacing:.1em;text-transform:uppercase;}
+.cinema-controls{display:flex;align-items:center;gap:8px;}
+.cinema-icon{
+  width:32px;
+  height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.35);
+  color:var(--white);
+  font-size:14px;
+  line-height:1;
+  cursor:crosshair;
+  transition:background 80ms,color 80ms,border-color 80ms,transform 80ms,opacity 80ms;
+}
+.cinema-icon:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:scale(1.04);}
 .cinema-close{background:none;border:1px solid rgba(255,255,255,.4);color:var(--white);font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:6px 14px;cursor:crosshair;transition:all 80ms;}
 .cinema-close:hover{background:var(--white);color:var(--black);}
 .cinema-hud-bot{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:12px 20px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);display:flex;align-items:center;justify-content:space-between;}
@@ -566,12 +603,10 @@ body{
           </div>
           <div class="wbody">
             <div class="reel-frame" id="reel-frame">
+              <button class="preview-fs" id="reel-fullscreen-btn" type="button" aria-label="Open in cinema">⛶</button>
               <div class="reel-placeholder" id="reel-ph">
                 <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="1" y="1" width="50" height="50" stroke="white" stroke-width="1.5"/><polygon points="20,14 40,26 20,38" fill="white"/></svg>
                 <span id="reel-ph-label">INSERT REEL // 16:9</span>
-              </div>
-              <div class="reel-execute" id="reel-execute">
-                <button class="btn-cinema" id="reel-play-btn">▶ PLAY REEL</button>
               </div>
               <div class="reel-hud">
                 <span class="reel-tc" id="reel-tc">00:00:00:00</span>
@@ -791,7 +826,11 @@ body{
 <div id="cinema-mode">
   <div class="cinema-hud-top">
     <span class="cinema-title" id="cinema-title">DIRECTOR'S REEL</span>
-    <button class="cinema-close" onclick="closeCinema()">✕ EXIT CINEMA</button>
+    <div class="cinema-controls">
+      <button class="cinema-icon" id="cinema-audio-btn" type="button" onclick="toggleCinemaAudio()" aria-label="Toggle audio" disabled>🔇</button>
+      <button class="cinema-icon" id="cinema-fullscreen-btn" type="button" onclick="toggleCinemaFullscreen()" aria-label="Fullscreen">⛶</button>
+      <button class="cinema-close" onclick="closeCinema()">✕ EXIT CINEMA</button>
+    </div>
   </div>
   <div id="cinema-video-wrap">
     <div id="cinema-video-placeholder">
@@ -819,11 +858,11 @@ body{
   <div class="cs-body">
     <div class="cs-hero">
       <div class="cs-video" id="cs-video" onclick="openCinemaFromCase()">
+        <button class="preview-fs" id="cs-fullscreen-btn" type="button" aria-label="Open in cinema">⛶</button>
         <div class="cs-video-ph" id="cs-video-ph">
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg>
           <span id="cs-ph-label">INSERT VIDEO</span>
         </div>
-        <div class="cs-play-btn"><span>▶ PLAY IN CINEMA MODE</span></div>
       </div>
       <div class="cs-meta">
         <h2 class="cs-title" id="cs-title"></h2>
@@ -1019,6 +1058,9 @@ var FEATURED = [];
 var featuredIdx = 0;
 var currentPage = 'home';
 var activeCaseProject = null;
+var cinemaState = {project:null, provider:null, player:null, muted:true, lastVolume:1, hover:false};
+var ytApiPromise = null;
+var vimeoApiPromise = null;
 
 // ── VIDEO HELPERS ──
 function getVideoId(p) {
@@ -1082,6 +1124,94 @@ function fetchVimeoThumb(id, callback) {
   document.head.appendChild(script);
 }
 
+function ensureYouTubeApi() {
+  if(window.YT && window.YT.Player) return Promise.resolve();
+  if(ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise(function(resolve, reject) {
+    var prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function() {
+      if(typeof prev === 'function') prev();
+      resolve();
+    };
+    var script = document.createElement('script');
+    script.src = 'https://www.youtube.com/iframe_api';
+    script.onerror = function() { reject(new Error('YouTube API failed to load')); };
+    document.head.appendChild(script);
+  });
+  return ytApiPromise;
+}
+
+function ensureVimeoApi() {
+  if(window.Vimeo && window.Vimeo.Player) return Promise.resolve();
+  if(vimeoApiPromise) return vimeoApiPromise;
+  vimeoApiPromise = new Promise(function(resolve, reject) {
+    var script = document.createElement('script');
+    script.src = 'https://player.vimeo.com/api/player.js';
+    script.onload = function() { resolve(); };
+    script.onerror = function() { reject(new Error('Vimeo API failed to load')); };
+    document.head.appendChild(script);
+  });
+  return vimeoApiPromise;
+}
+
+function setCinemaAudioButton(muted) {
+  var btn = document.getElementById('cinema-audio-btn');
+  if(!btn) return;
+  btn.textContent = muted ? '🔇' : '🔊';
+  btn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+  btn.title = muted ? 'Unmute' : 'Mute';
+}
+
+function clearCinemaPlayer() {
+  var wrap = document.getElementById('cinema-video-wrap');
+  if(cinemaState.player && typeof cinemaState.player.destroy === 'function') {
+    try { cinemaState.player.destroy(); } catch(e) {}
+  }
+  cinemaState.player = null;
+  cinemaState.project = null;
+  cinemaState.provider = null;
+  cinemaState.muted = true;
+  cinemaState.lastVolume = 1;
+  if(wrap) {
+    wrap.querySelectorAll('iframe, #cinema-player-host').forEach(function(node){ node.remove(); });
+    wrap.classList.remove('has-thumb','is-hovering','is-playing');
+  }
+  var btn = document.getElementById('cinema-audio-btn');
+  if(btn) btn.disabled = true;
+  setCinemaAudioButton(true);
+}
+
+function toggleCinemaAudio() {
+  var player = cinemaState.player;
+  if(!player) return;
+  if(cinemaState.provider === 'youtube') {
+    if(cinemaState.muted) {
+      player.unMute();
+    } else {
+      player.mute();
+    }
+  } else if(cinemaState.provider === 'vimeo') {
+    if(cinemaState.muted) {
+      player.setVolume(cinemaState.lastVolume || 1);
+    } else {
+      player.getVolume().then(function(v){ cinemaState.lastVolume = v || 1; }).catch(function(){});
+      player.setVolume(0);
+    }
+  }
+  cinemaState.muted = !cinemaState.muted;
+  setCinemaAudioButton(cinemaState.muted);
+}
+
+function toggleCinemaFullscreen() {
+  var wrap = document.getElementById('cinema-video-wrap');
+  if(!wrap) return;
+  if(document.fullscreenElement) {
+    document.exitFullscreen();
+  } else if(wrap.requestFullscreen) {
+    wrap.requestFullscreen();
+  }
+}
+
 // Inject thumbnail into a placeholder element
 function injectThumb(el, p) {
   var v = getVideoId(p);
@@ -1119,6 +1249,12 @@ function updateFeaturedPreview(item) {
   var reelPh = document.getElementById('reel-ph');
   if(!reelPh || !item) return;
   injectThumb(reelPh, item);
+}
+
+function openCinemaBySlug(slug) {
+  var all = [REEL].concat(ALL_PROJECTS.direction, ALL_PROJECTS.films, ALL_PROJECTS.amvs);
+  var p = all.find(function(item) { return item.slug === slug; });
+  if(p) openCinema(p);
 }
 
 function setupHoverPreview(host, previewEl, getProject) {
@@ -1235,6 +1371,7 @@ function setFeatured(idx) {
   var isReel = item && item.slug === 'reel';
   var win = document.getElementById('identity-win');
   var frame = document.getElementById('reel-frame');
+  var fsBtn = document.getElementById('reel-fullscreen-btn');
 
   frame.classList.add('swapping');
   setTimeout(function() {
@@ -1242,9 +1379,10 @@ function setFeatured(idx) {
     document.getElementById('reel-win-status').textContent = isReel ? 'REEL_2025 // LIVE' : item.cat+' // '+item.year;
     document.getElementById('reel-hud-label').textContent = isReel ? 'REEL_2025.MOV' : item.code+'.MOV';
     document.getElementById('reel-ph-label').textContent = isReel ? 'INSERT REEL // 16:9' : item.code+' // INSERT VIDEO';
-    var playBtn = document.getElementById('reel-play-btn');
-    playBtn.textContent = isReel ? '▶ PLAY REEL' : '▶ PLAY '+item.title;
-    playBtn.onclick = function() { openCinema(item); };
+    if(fsBtn) {
+      fsBtn.onclick = function() { openCinema(item); };
+      fsBtn.title = isReel ? 'Open reel in cinema' : 'Open '+item.title+' in cinema';
+    }
     updateFeaturedPreview(item);
     frame.classList.remove('swapping');
   }, 130);
@@ -1280,24 +1418,77 @@ function setFeatured(idx) {
 // ── CINEMA MODE ──
 function openCinema(project) {
   var p = project || FEATURED[featuredIdx];
-  var embedUrl = getEmbedUrl(p);
   var watchUrl = getWatchUrl(p);
+  var v = getVideoId(p);
   document.getElementById('cinema-title').textContent = p.title;
   document.getElementById('cinema-file').textContent = p.code+'.MOV';
   var wrap = document.getElementById('cinema-video-wrap');
   var ph = document.getElementById('cinema-video-placeholder');
+  var audioBtn = document.getElementById('cinema-audio-btn');
+  clearCinemaPlayer();
   injectThumb(wrap, p);
-  if(embedUrl && window.location.protocol !== 'file:') {
+  if(v && window.location.protocol !== 'file:') {
     ph.style.display = 'none';
-    var old = wrap.querySelector('iframe');
-    if(old) old.remove();
-    var iframe = document.createElement('iframe');
-    iframe.className = 'preview-iframe';
-    iframe.src = embedUrl;
-    iframe.allow = 'autoplay; fullscreen';
-    iframe.allowFullscreen = true;
-    iframe.onload = function(){ iframe.classList.add('is-live'); };
-    wrap.appendChild(iframe);
+    var host = document.createElement('div');
+    host.id = 'cinema-player-host';
+    wrap.appendChild(host);
+    cinemaState.project = p;
+    cinemaState.provider = v.type;
+    cinemaState.muted = true;
+    setCinemaAudioButton(true);
+    if(audioBtn) audioBtn.disabled = false;
+    if(v.type === 'youtube') {
+      ensureYouTubeApi().then(function() {
+        if(cinemaState.project !== p) return;
+        cinemaState.player = new YT.Player(host, {
+          videoId: v.id,
+          playerVars: {
+            autoplay: 1,
+            controls: 1,
+            rel: 0,
+            modestbranding: 1,
+            playsinline: 1,
+            iv_load_policy: 3,
+            mute: 1
+          },
+          events: {
+            onReady: function(e) {
+              if(cinemaState.project !== p) return;
+              cinemaState.player = e.target;
+              e.target.mute();
+              e.target.playVideo();
+              setCinemaAudioButton(true);
+            }
+          }
+        });
+      }).catch(function() {
+        host.remove();
+        ph.style.display = 'flex';
+      });
+    } else if(v.type === 'vimeo') {
+      ensureVimeoApi().then(function() {
+        if(cinemaState.project !== p) return;
+        var player = new Vimeo.Player(host, {
+          id: v.id,
+          autoplay: true,
+          muted: true,
+          controls: true,
+          loop: false,
+          title: false,
+          byline: false,
+          portrait: false
+        });
+        cinemaState.player = player;
+        player.ready().then(function() {
+          if(cinemaState.project !== p) return;
+          player.setVolume(0);
+          setCinemaAudioButton(true);
+        }).catch(function(){});
+      }).catch(function() {
+        host.remove();
+        ph.style.display = 'flex';
+      });
+    }
   } else {
     ph.style.display = 'flex';
     document.getElementById('cinema-ph-label').textContent = watchUrl ? p.code+' // OPEN IN LOCAL SERVER TO PLAY EMBED' : p.code+' // ADD VIDEO URL TO PROJECT DATA';
@@ -1316,8 +1507,9 @@ function openCinema(project) {
 function closeCinema() {
   var cm = document.getElementById('cinema-mode');
   cm.classList.remove('open');
-  var iframe = cm.querySelector('iframe');
-  if(iframe) iframe.remove();
+  clearCinemaPlayer();
+  var ph = document.getElementById('cinema-video-placeholder');
+  if(ph) ph.style.display = 'flex';
   document.body.style.overflow = '';
 }
 
@@ -1331,6 +1523,14 @@ function openCaseStudy(slug) {
   var p = all.find(function(x){ return x.slug === slug; });
   if(!p) return;
   activeCaseProject = p;
+  var csFsBtn = document.getElementById('cs-fullscreen-btn');
+  if(csFsBtn) {
+    csFsBtn.style.display = hasVideo(p) ? 'flex' : 'none';
+    csFsBtn.onclick = function(e) {
+      if(e) e.stopPropagation();
+      openCinemaFromCase();
+    };
+  }
 
   document.getElementById('cs-code').textContent = p.code+'.DAT';
   document.getElementById('cs-title').textContent = p.title;
@@ -1446,16 +1646,26 @@ function renderGrid(id, items) {
   g.innerHTML = items.map(function(p){
     return '<article class="pcard" onclick="openCaseStudy(\''+p.slug+'\')" tabindex="0" data-slug="'+p.slug+'">'
       +'<div class="pcard-bar"><span>'+p.code+'</span><span>'+p.cat+'</span></div>'
-      +'<div class="pthumb" id="thumb-'+p.slug+'"><div class="pthumb-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="1" y="1" width="30" height="30" stroke="white" stroke-width="1"/><polygon points="12,8 26,16 12,24" fill="white"/></svg><span>'+p.code+'</span></div></div>'
+      +'<div class="pthumb" id="thumb-'+p.slug+'">'
+      +'<button class="preview-fs" type="button" aria-label="Open in cinema" data-cinema-slug="'+p.slug+'">⛶</button>'
+      +'<div class="pthumb-placeholder"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="1" y="1" width="30" height="30" stroke="white" stroke-width="1"/><polygon points="12,8 26,16 12,24" fill="white"/></svg><span>'+p.code+'</span></div></div>'
       +'<div class="pcard-body"><h3 class="pcard-title">'+p.title+'</h3><p class="pcard-desc">'+p.desc+'</p>'
       +'<div class="tags">'+p.tags.map(function(t){return'<span class="tag">'+t+'</span>';}).join('')+'</div>'
       +'</div></article>';
   }).join('');
   // inject thumbnails after render
   items.forEach(function(p){
+  var card = g.querySelector('[data-slug="'+p.slug+'"]');
+  var fsBtn = g.querySelector('[data-cinema-slug="'+p.slug+'"]');
+  if(fsBtn) {
+    fsBtn.style.display = hasVideo(p) ? 'flex' : 'none';
+    fsBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      openCinemaBySlug(p.slug);
+    });
+  }
     if(hasVideo(p)) {
       var el = document.getElementById('thumb-'+p.slug);
-      var card = g.querySelector('[data-slug="'+p.slug+'"]');
       if(el) {
         injectThumb(el, p);
         if(card) setupHoverPreview(card, el, function(){ return p; });
