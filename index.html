@@ -669,7 +669,7 @@ body{
       <div class="stills-wrap"><div class="stills-strip" id="stills-strip"></div></div>
 
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ARCHIVE.DAT</span></div><span>SELECTED WORK // 11 FILES</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ARCHIVE.DAT</span></div><span id="archive-count">SELECTED WORK // 0 FILES</span></div>
         <div class="wbody">
           <p class="lbl">// SELECTED WORK — CLICK TO EXECUTE</p>
           <div class="archive-grid" id="home-grid"></div>
@@ -1680,6 +1680,12 @@ function renderGrid(id, items) {
   });
 }
 
+function getVideoArchiveItems() {
+  return [REEL].concat(ALL_PROJECTS.direction, ALL_PROJECTS.films, ALL_PROJECTS.amvs).filter(function(p) {
+    return p && p.slug !== 'reel' && hasVideo(p);
+  });
+}
+
 // ══════════════════════════════════════════
 // INTRO SEQUENCE
 // ══════════════════════════════════════════
@@ -1821,10 +1827,15 @@ function init() {
     return '<div class="still-frame"><div class="still-frame-inner"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="1" y="1" width="20" height="20" stroke="white" stroke-width="1" opacity="0.3"/><polygon points="8,6 17,11 8,16" fill="white" opacity="0.2"/></svg></div><span class="still-num">'+String((i%COUNT)+1).padStart(3,'0')+'</span></div>';
   }).join('');
 
-  renderGrid('home-grid', ALL_PROJECTS.direction);
+  var archiveItems = getVideoArchiveItems();
+  renderGrid('home-grid', archiveItems);
   renderGrid('direction-grid', ALL_PROJECTS.direction);
   renderGrid('films-grid', ALL_PROJECTS.films);
   renderGrid('amvs-grid', ALL_PROJECTS.amvs);
+  var archiveCount = document.getElementById('archive-count');
+  if(archiveCount) {
+    archiveCount.textContent = 'SELECTED WORK // '+archiveItems.length+' FILES';
+  }
 
   // skills
   function skCard(s){return'<div class="sk"><p class="sk-name">'+s.n+'</p><p class="sk-pct">'+s.lvl+'%</p><div class="sk-track"><div class="sk-fill" style="width:'+s.lvl+'%"></div></div><p class="sk-items">'+s.items+'</p></div>';}
