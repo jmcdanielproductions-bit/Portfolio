@@ -1,0 +1,506 @@
+# JM_SYS.EXE — Full Technical Documentation
+**Version:** v8 | **Owner:** Jared McDaniel | **Purpose:** Film director portfolio
+
+---
+
+## 1. OVERVIEW
+
+JM_SYS is a single-file HTML portfolio designed to look and behave like a fictional OS (operating system). It runs entirely in the browser with no frameworks, no build tools, and no backend. Everything is vanilla HTML, CSS, and JavaScript inside one `index.html` file.
+
+**Design language:** Flat brutalist OS aesthetic. Blue canvas (`#1444d4`) with black/white windows. IBM Plex Mono for UI text, Press Start 2P for display headings. Cyan (`#00f0ff`) is used sparingly as a system/data accent color.
+
+**Core concept:** The user navigates "pages" inside a fixed OS chrome (topbar + taskbar). Content lives in styled "windows" with white titlebars and black bodies. Every interaction — hover, click, nav — reinforces the OS metaphor.
+
+---
+
+## 2. FILE STRUCTURE
+
+There are now two files:
+- `index.html` for layout, behavior, and all UI code
+- `videos.js` for YouTube link storage
+
+The HTML contains three sections:
+
+1. `<style>` — all CSS (CSS variables, component styles, animations, responsive breakpoints)
+2. `<body>` — all HTML (intro, OS chrome, pages, overlays)
+3. `<script>` — all JavaScript (data, state, functions, init)
+
+There are no external dependencies except two Google Fonts:
+- `IBM Plex Mono` (400, 500, 700, italic)
+- `Press Start 2P` (400)
+
+Video links are stored in `videos.js`, which the HTML loads at runtime.
+
+---
+
+## 3. CSS VARIABLES
+
+Defined in `:root`:
+
+| Variable | Value | Usage |
+|---|---|---|
+| `--bg` | `#1444d4` | Page/canvas background (blue) |
+| `--blue` | `#1444d4` | Same as bg, used for topbar/taskbar |
+| `--blue-hi` | `#1e54f0` | Brighter blue for hover accents |
+| `--blue-dark` | `#0e32b0` | Darker blue for project card backgrounds |
+| `--white` | `#f0f0eb` | Primary text, window borders, titlebars |
+| `--black` | `#000` | Window backgrounds, body backgrounds |
+| `--mono` | IBM Plex Mono | UI font |
+| `--display` | Press Start 2P | Hero/display font |
+| `--chrome-h` | `44px` | Topbar height |
+| `--task-h` | `34px` | Taskbar height |
+
+---
+
+## 4. HTML STRUCTURE
+
+### 4.1 Intro Sequence (`#intro`)
+Runs before the OS loads. Three phases:
+1. **Windows phase** — 6 `.iwin` windows pop in at random positions
+2. **Glitch burst** — `#intro-glitch` fires horizontal slice animations
+3. **Name reveal** — `#intro-id` shows with JARED McDANIEL in Press Start 2P with glitch animation
+
+After the sequence, `#intro` fades out and `#os` becomes visible.
+
+### 4.2 Page Transition (`#page-transition`)
+A full-screen black overlay that fires on every page navigation. Shows `LOADING FILE...` text with an animated progress bar. Lasts ~380ms.
+
+### 4.3 OS Shell (`#os`)
+Hidden until intro ends. Contains:
+- `.topbar` — fixed header with logo, nav, hamburger (mobile), clock
+- `#mobile-nav` — mobile drawer that toggles open/closed
+- `#desk` — scrollable content area containing all page views
+- `.taskbar` — fixed footer with current page, site title, date
+
+### 4.4 Page Views
+Each page is a `div.page-view` with an ID of `page-{name}`. Only the one with class `.active` is visible. Pages:
+
+| ID | Route | Content |
+|---|---|---|
+| `#page-home` | Home | Quick Launch + Hero (reel + identity) + reel nav + stills strip + archive grid |
+| `#page-direction` | Direction | Archive grid of direction projects |
+| `#page-edits` | Edits | Tab switcher between Films and AMVs grids |
+| `#page-about` | Profile | About photo + bio + stats |
+| `#page-skills` | Skills | Editorial layout with skill bars + 3 image windows + tools grid |
+| `#page-contact` | Contact | Direct links + contact form |
+
+### 4.5 Overlays (fixed, full-screen)
+Three overlays sit above the OS at different z-index levels:
+
+| ID | Z-index | Purpose |
+|---|---|---|
+| `#cinema-mode` | 500 | Full-bleed video playback |
+| `#case-study` | 300 | Deep project case study |
+| `#page-transition` | 80 | Page transition wipe |
+
+---
+
+## 5. WINDOW SYSTEM
+
+Every content block is a `.win` element. The universal window structure:
+
+```html
+<div class="win">
+  <div class="wbar">
+    <div class="wbar-l">
+      <span class="wx">×</span>       <!-- close/back button -->
+      <span>WINDOW_TITLE.EXT</span>   <!-- left label -->
+    </div>
+    <span>RIGHT LABEL</span>          <!-- right label -->
+  </div>
+  <div class="wbody">
+    <!-- content -->
+  </div>
+</div>
+```
+
+**Rules:**
+- All windows: `border: 2px solid var(--white)`, `background: var(--black)`
+- All titlebars: `background: var(--white)`, `color: var(--black)` — always white bg, black text
+- Hover: subtle outer glow via `box-shadow`
+- The `×` button scales up on hover and inverts colors
+
+**Window variants:**
+- `.win` — standard black window (default)
+- `.skills-img-win.win` — image window (same treatment, used in skills page)
+- `.identity-win` — right hero panel (flex column to fill height)
+- `.reel-win` — left hero panel (flex column, reel frame fills remaining height)
+
+---
+
+## 6. DATA ARCHITECTURE
+
+All project data lives in the JavaScript section at the top of the `<script>` block. There are two main data objects:
+
+### 6.1 `ALL_PROJECTS`
+An object with three arrays: `direction`, `films`, `amvs`.
+
+Each project object has these fields:
+
+```javascript
+{
+  slug: 'cyberpunk-2077',       // unique ID, used as key everywhere
+  code: 'PRJ_01',               // display code shown in titlebars/cards
+  title: 'CYBERPUNK 2077',      // display title
+  role: 'DIRECTION / EDIT',     // role string
+  year: 2025,                   // year
+  cat: 'COMMERCIAL',            // category tag
+  desc: '...',                  // short description (shown on cards)
+  tags: ['COMMERCIAL','EDIT'],  // tag array (shown as pills)
+  yt: '',                       // YouTube URL (optional)
+  vimeo: '',                    // Vimeo URL (optional — takes priority over yt)
+  brief: '...',                 // case study: the brief/challenge
+  exec: '...',                  // case study: execution approach
+  result: '...',                // case study: outcome
+  credits: [                    // case study: credit lines
+    {role: 'DIRECTION', name: 'Jared McDaniel'},
+    {role: 'CLIENT', name: 'CD Projekt Red'},
+  ],
+  bts: 3,                       // number of BTS still placeholders in case study
+  thumb: '',                    // optional: custom thumbnail URL (overrides auto-pull)
+}
+```
+
+### 6.2 `REEL`
+A single project object (same schema as above) representing the featured director's reel. Slot 0 in the `FEATURED` array.
+
+### 6.3 `FEATURED`
+Built at runtime in `init()`:
+```javascript
+FEATURED = [REEL].concat(ALL_PROJECTS.direction);
+```
+This is the array cycled by the reel slider arrows. Slot 0 is always the reel. Slots 1–N are direction projects.
+
+---
+
+## 7. VIDEO INFRASTRUCTURE
+
+### 7.1 Adding Videos
+Each project supports one video URL. The URLs live in `videos.js` and are mapped into the project data at runtime. Use `vimeo` OR `yt` field:
+
+```javascript
+// Vimeo (recommended for film portfolios)
+vimeo: 'https://vimeo.com/123456789'
+
+// YouTube
+yt: 'https://www.youtube.com/watch?v=XXXXXXXXXXX'
+// or short form
+yt: 'https://youtu.be/XXXXXXXXXXX'
+```
+
+**Priority:** Vimeo is always checked first. If `vimeo` is set, `yt` is ignored.
+
+### 7.2 How It Works — Three Functions
+
+**`getVideoId(p)`** — extracts type + ID from URL using regex:
+- Returns `{type:'youtube', id:'XXXXXXXXXXX'}` or `{type:'vimeo', id:'123456789'}`
+- Returns `null` if no video
+
+**`getEmbedUrl(p)`** — builds the iframe `src`:
+- YouTube: `https://www.youtube-nocookie.com/embed/{id}?autoplay=1&rel=0`
+- Vimeo: `https://player.vimeo.com/video/{id}?autoplay=1&title=0&byline=0&portrait=0`
+
+**`injectThumb(el, p)`** — injects a thumbnail `<img>` into a placeholder element:
+- YouTube: uses `img.youtube.com/vi/{id}/maxresdefault.jpg` with `hqdefault.jpg` fallback on error
+- Vimeo: uses JSONP oEmbed API (`vimeo.com/api/v2/video/{id}.json`) to fetch `thumbnail_large` URL asynchronously
+
+**`hasVideo(p)`** — returns `true` if project has any video URL set.
+
+### 7.3 Where Thumbnails Appear
+1. **Reel frame** — injected on `init()` if REEL has a video
+2. **Project cards** — injected after each `renderGrid()` call
+3. **Case study** — injected when `openCaseStudy()` is called
+4. **Reel slider** — updates when `setFeatured()` swaps to a project (thumbnail loads into the reel placeholder)
+
+### 7.4 Custom Thumbnails
+Add a `thumb` field to any project to override the auto-pulled thumbnail:
+```javascript
+thumb: 'https://your-cdn.com/custom-thumbnail.jpg'
+```
+This takes priority over both YouTube and Vimeo auto-thumbnails.
+
+---
+
+## 8. KEY JAVASCRIPT FUNCTIONS
+
+### Navigation
+| Function | Description |
+|---|---|
+| `showPage(page, tab)` | Switches active page view. Fires page transition animation. Accepts optional `tab` arg for edits page ('films' or 'amvs'). |
+| `switchTab(tab)` | Switches the Films/AMVs tab on the edits page. |
+| `toggleMobileNav()` | Toggles `#mobile-nav` drawer open/closed. |
+
+### Featured Reel Slider
+| Function | Description |
+|---|---|
+| `stepFeatured(dir)` | Steps the featured slider by `+1` or `-1`. Wraps around. |
+| `stepFeaturedToReel()` | Jumps slider back to slot 0 (the reel). |
+| `setFeatured(idx)` | Sets the featured slot to a specific index. Updates reel frame labels, triggers reel flash animation, triggers identity window glitch and panel swap. |
+
+### Cinema Mode
+| Function | Description |
+|---|---|
+| `openCinema(project)` | Opens full-bleed cinema overlay. Builds iframe from project video URL. Falls back to placeholder if no video. |
+| `closeCinema()` | Closes cinema overlay and destroys iframe (stops video). |
+| `openCinemaFromCase()` | Opens cinema mode using `activeCaseProject` (called from case study). |
+
+### Case Study
+| Function | Description |
+|---|---|
+| `openCaseStudy(slug)` | Looks up project by slug from all arrays + REEL. Populates all case study fields, injects thumbnail, builds BTS stills grid, opens overlay. |
+| `closeCaseStudy()` | Closes case study overlay, clears `activeCaseProject`. |
+
+### Video Helpers
+| Function | Description |
+|---|---|
+| `getVideoId(p)` | Returns `{type, id}` object or `null`. |
+| `getEmbedUrl(p)` | Returns embed URL string or `null`. |
+| `getThumbnailUrl(p)` | Returns thumbnail URL or `null` (sync, YouTube only). |
+| `fetchVimeoThumb(id, callback)` | Async JSONP fetch for Vimeo thumbnail URL. |
+| `injectThumb(el, p)` | Injects thumbnail `<img>` into DOM element. |
+| `hasVideo(p)` | Returns boolean. |
+
+### Rendering
+| Function | Description |
+|---|---|
+| `renderGrid(id, items)` | Renders an array of project objects into a `.archive-grid`. Auto-injects thumbnails after render. |
+| `pad(n)` | Zero-pads a number to 2 digits. Used for timecode. |
+
+### Forms
+| Function | Description |
+|---|---|
+| `submitForm(e)` | Handles contact form submit. Currently simulates submission (1.2s delay, then success message). Wire to Formspree/Netlify to make real. |
+
+### Intro
+| Function | Description |
+|---|---|
+| `runIntro()` | Starts intro. Creates 6 `.iwin` elements at random positions, staggers their pop-in animation 380ms apart. |
+| `runGlitch()` | Creates 14 horizontal slice `div`s with random positions/colors/durations. |
+| `showName()` | Hides windows, shows `#intro-id`, triggers `reveal-glitch` animation on name. |
+| `endIntro()` | Fades out `#intro`, shows `#os`, calls `init()`. |
+| `init()` | Main initialization: builds FEATURED array, sets initial reel, renders ticker/stills/grids/skills, starts clock interval, binds keyboard events. |
+
+---
+
+## 9. ANIMATIONS & INTERACTIONS
+
+### CSS Animations
+| Name | Element | Effect |
+|---|---|---|
+| `iwin-pop` | `.iwin` | Window scales from 0.3 to 1 with overshoot |
+| `reveal-glitch` | `.id-name` | Name clips in with chromatic aberration glitch |
+| `nameglitch` | `.hero-name`, `.about-name` | Hover-triggered pink/cyan text-shadow split |
+| `id-glitch-swap` | `.identity-win` | Clip-path slice + hue-rotate on panel swap |
+| `reel-swap` | `.reel-frame` | Brightness/hue flash when switching featured slots |
+| `pg-wipe` | `#page-transition` | Clip-path wipe from right on page change |
+| `cinema-in` | `#cinema-mode` | Fade in |
+| `cs-in` | `#case-study` | Fade + translateY slide up |
+| `stripscroll` | `.stills-strip` | Infinite left scroll |
+| `tick` | `.ticker-in` | Infinite left scroll (faster) |
+| `blink` | `.reel-dot`, `.dot` | Opacity pulse |
+| `scan-drift` | `#intro-id::before` | Scanline background-position drift |
+| `cglitch` | `.pcard:hover .pthumb img` | Hue-rotate glitch on card hover |
+
+### Liquid Fill Buttons (`.ql-btn`, `.btn-ghost`)
+Uses `::before` pseudo-element with `transform: translateX(-102%)` at rest, sliding to `translateX(0)` on hover via `cubic-bezier(.16,1,.3,1)`. Duration 500–600ms.
+
+### Keyboard Shortcuts
+| Key | Action |
+|---|---|
+| `ArrowLeft` | Step featured reel slider left (home page only) |
+| `ArrowRight` | Step featured reel slider right (home page only) |
+| `Escape` | Close cinema mode or case study overlay |
+
+---
+
+## 10. HOME PAGE — HERO SECTION DETAILS
+
+The hero is a CSS grid: `grid-template-columns: 1fr 300px`
+
+**Left column — Reel window (`.reel-win`)**
+- Titlebar shows current featured item's file name and status
+- Reel frame (`#reel-frame`) is `aspect-ratio: 16/9` with a scanline `::after` overlay
+- On hover: placeholder fades down, "▶ PLAY" button fades in
+- Click: opens cinema mode for current featured item
+- Timecode (`#reel-tc`) counts up at 30fps via `setInterval`
+- When a project is selected (not reel), thumbnail is injected here
+
+**Right column — Identity/File Info window (`#identity-win`)**
+- Two panels share this window: `#panel-identity` and `#panel-fileinfo`
+- Only one is visible at a time
+- When switching: `.identity-win.glitching` fires the clip-path slice animation
+- `#panel-identity`: shows profile pic placeholder, name (glitch on hover), role, bio, CTAs, status strip
+- `#panel-fileinfo`: shows project eyebrow, title, role, description, concept, execution, tags, "OPEN CASE FILE" CTA, "← BACK TO REEL" button
+
+**Reel Nav**
+- Two `56×44px` bordered arrow buttons centered below the hero grid
+- Left calls `stepFeatured(-1)`, right calls `stepFeatured(1)`
+
+---
+
+## 11. CASE STUDY OVERLAY — STRUCTURE
+
+```
+#case-study
+├── .cs-topbar          — code + "✕ CLOSE FILE" button (sticky)
+└── .cs-body
+    ├── .cs-hero        — 2-col grid
+    │   ├── .cs-video   — video player / thumbnail (click → cinema mode)
+    │   └── .cs-meta    — title, role, desc, tags, credits
+    ├── .cs-blocks      — 3-col: Brief / Execution / Result
+    ├── BTS stills grid — N placeholder stills (set via project.bts)
+    └── .cs-actions     — Watch in Cinema + Close buttons
+```
+
+---
+
+## 12. CINEMA MODE — STRUCTURE
+
+```
+#cinema-mode
+├── .cinema-hud-top   — project title + "✕ EXIT CINEMA" button
+├── #cinema-video-wrap — iframe or placeholder (fills remaining height)
+└── .cinema-hud-bot   — timecode + REC dot + filename
+```
+
+The `#cinema-video-wrap` is `flex: 1` so the video always fills the space between the two HUD bars. The `::after` pseudo-element applies a scanline overlay at `z-index: 3` above the iframe.
+
+**Closing cinema destroys the iframe** — this stops video playback. Critical: do not just hide the element, always remove the iframe.
+
+---
+
+## 13. CONTACT FORM
+
+Currently a simulated form. To make it functional:
+
+**Option A — Formspree:**
+```html
+<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="os-form">
+```
+Remove the `onsubmit="submitForm(event)"` attribute and the `submitForm` function.
+
+**Option B — Netlify Forms:**
+```html
+<form class="os-form" netlify name="contact">
+```
+
+**Option C — Keep simulation:** The current `submitForm()` function simulates a 1.2s delay then shows a success message. Fine for demo purposes.
+
+---
+
+## 14. MOBILE LAYOUT
+
+Breakpoint: `768px`
+
+At mobile:
+- `.t-nav` (desktop nav) is hidden
+- `.t-hamburger` appears (☰ button)
+- `#mobile-nav` drawer shows/hides on hamburger tap
+- `.hero-wrap` becomes single column (reel stacks above identity)
+- `.archive-grid` becomes 2 columns
+- `.archive-grid.cols-2` becomes 1 column
+- All multi-column grids (about, contact, skills, case study) collapse to 1 column
+
+Breakpoint: `480px`
+- `.archive-grid` collapses to 1 column
+- `.about-stats` becomes 2 columns
+
+---
+
+## 15. ADDING / MODIFYING CONTENT
+
+### Add a new project
+1. Add a new object to `ALL_PROJECTS.direction` (or `films` / `amvs`)
+2. Give it a unique `slug`
+3. Fill in all fields (see schema in section 6.1)
+4. Add `yt` or `vimeo` URL for video, either directly in the HTML data or in `videos.js`
+5. It automatically appears in: home archive, direction page, featured reel slider
+
+Placeholder slots already exist for extra projects in each section. Reuse or replace the `direction-07` to `direction-11`, `film-03` to `film-07`, and `amv-03` to `amv-07` slugs when you are ready to add more.
+
+### Add your profile photo
+In `#panel-identity` and `#page-about`, find the `.profile-pic-ph` / `.about-photo-ph` divs and replace with:
+```html
+<img src="path/to/your-photo.jpg" alt="Jared McDaniel"/>
+```
+
+### Add BTS stills to a case study
+Set `bts: N` in the project data (creates N placeholder slots). To add real images, modify `openCaseStudy()` — the BTS stills loop currently generates placeholder divs. Add a `btsImages: ['url1','url2']` array to each project and update the loop to use `<img>` tags.
+
+### Change the blue canvas color
+Edit `--bg` and `--blue` in `:root`. Both must match for the topbar/taskbar to blend into the background.
+
+### Change the accent color from cyan
+Find all instances of `#00f0ff` and `var(--cyan)` (note: `--cyan` is defined but not in `:root` — it's used inline in a few places). Replace with your preferred accent.
+
+### Update skills
+Modify the `SKILLS` array. Each object: `{n:'NAME', items:'item1 / item2', lvl:90}`. `lvl` is a percentage (0–100) for the skill bar.
+
+### Update tools
+Modify the `TOOLS` array. Each entry is a string displayed as a bordered tag.
+
+### Update the ticker
+Modify the `TICKER` array. Items repeat 3× automatically for seamless looping.
+
+---
+
+## 16. INTRO WINDOW VIDEOS
+
+The 6 intro windows (`INTRO_WINDOWS` array) are purely visual and do not play actual video. They are decorative OS windows that appear during the boot sequence. To give them actual content, each `.iwin-media` div can accept a `<video autoplay muted loop playsinline>` element injected via the `runIntro()` function.
+
+To add video to an intro window, modify the `el.innerHTML` string in `runIntro()` — replace the `.iwin-ph` placeholder div with a `<video>` tag.
+
+---
+
+## 17. KNOWN LIMITATIONS & NOTES
+
+- **Vimeo thumbnails use JSONP** — this is a legacy API that may have CORS limitations in some environments. If Vimeo thumbs don't load, add thumbnails manually via the `thumb` field.
+- **YouTube `maxresdefault`** thumbnails don't exist for all videos — the `img.onerror` fallback to `hqdefault` handles this.
+- **Cinema mode iframe** is destroyed on close to stop playback. This means seeking position is lost if reopened.
+- **The contact form is simulated** — no data is actually sent until wired to a backend service.
+- **No persistence** — all state is in-memory. Refreshing the page resets to home.
+- **Single file** — everything is in `index.html`. To scale, extract CSS to `style.css`, JS to `main.js`, and data to `data/projects.js`.
+
+---
+
+## 18. QUICK REFERENCE — ELEMENT IDS
+
+| ID | Purpose |
+|---|---|
+| `#intro` | Intro overlay container |
+| `#intro-windows` | Container for intro window elements |
+| `#intro-id` | Name reveal container |
+| `#id-name` | JARED McDANIEL heading (glitch target) |
+| `#os` | Main OS shell |
+| `#desk` | Scrollable content area |
+| `#page-home/direction/edits/about/skills/contact` | Page view containers |
+| `#page-transition` | Page wipe overlay |
+| `#identity-win` | Right hero panel (glitch target) |
+| `#panel-identity` | Identity state of right panel |
+| `#panel-fileinfo` | File info state of right panel |
+| `#reel-frame` | Video frame in hero (click target) |
+| `#reel-win-label` | Reel titlebar left text |
+| `#reel-win-status` | Reel titlebar right text |
+| `#reel-tc` | Reel timecode display |
+| `#reel-ph-label` | Reel placeholder text |
+| `#reel-hud-label` | Reel HUD filename |
+| `#reel-play-btn` | Play button in reel execute overlay |
+| `#cinema-mode` | Cinema full-bleed overlay |
+| `#cinema-video-wrap` | Cinema iframe container |
+| `#cinema-title` | Cinema HUD project title |
+| `#cinema-file` | Cinema HUD filename |
+| `#cinema-tc` | Cinema timecode |
+| `#case-study` | Case study overlay |
+| `#cs-code/title/role-line/desc/tags/credits/brief/exec/result/stills` | Case study fields |
+| `#cs-video` | Case study video container |
+| `#home-grid/direction-grid/films-grid/amvs-grid` | Archive grid containers |
+| `#stills-strip` | Filmstrip scroll container |
+| `#ticker-in` | Ticker scroll container |
+| `#sgrid-top/mid/bot` | Skills grid sections |
+| `#tools-grid` | Tools tag grid |
+| `#mobile-nav` | Mobile nav drawer |
+| `#clk` | Live clock display |
+| `#tb-page` | Taskbar current page label |
+| `#tb-date` | Taskbar date display |
+| `#form-status` | Contact form status message |
+| `thumb-{slug}` | Per-project thumbnail container in grids |
