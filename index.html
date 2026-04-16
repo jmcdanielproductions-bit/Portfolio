@@ -186,6 +186,9 @@ body{
 .reel-frame:hover .reel-placeholder{opacity:.4;}
 .reel-frame:hover .reel-execute{opacity:1;}
 .reel-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:1;transition:opacity 150ms;}
+.reel-placeholder.has-thumb{justify-content:flex-start;gap:0;background:#050505;}
+.reel-placeholder.has-thumb svg,
+.reel-placeholder.has-thumb span{display:none;}
 .reel-placeholder svg{opacity:.2;}
 .reel-placeholder span{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);}
 .reel-execute{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;opacity:0;transition:opacity 150ms;background:rgba(0,0,0,.4);}
@@ -214,6 +217,7 @@ body{
 @keyframes cinema-in{from{opacity:0;}to{opacity:1;}}
 #cinema-video-wrap{flex:1;position:relative;overflow:hidden;}
 #cinema-video-wrap iframe,#cinema-video-wrap video{position:absolute;inset:0;width:100%;height:100%;border:none;}
+#cinema-video-wrap.has-thumb #cinema-video-placeholder{display:none;}
 #cinema-video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 #cinema-video-placeholder svg{opacity:.2;}
 #cinema-video-placeholder span{font-size:10px;letter-spacing:.22em;color:rgba(255,255,255,.3);text-transform:uppercase;}
@@ -324,6 +328,7 @@ body{
 /* hero row */
 .cs-hero{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;}
 .cs-video{border:2px solid var(--white);aspect-ratio:16/9;overflow:hidden;background:#050505;position:relative;cursor:crosshair;}
+.cs-video.has-thumb .cs-video-ph{display:none;}
 .cs-video iframe,.cs-video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:none;}
 .cs-video-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
 .cs-video-ph svg{opacity:.2;}
@@ -1050,12 +1055,20 @@ function fetchVimeoThumb(id, callback) {
 // Inject thumbnail into a placeholder element
 function injectThumb(el, p) {
   var v = getVideoId(p);
+  if(!el) return;
+  el.querySelectorAll('img').forEach(function(img){ img.remove(); });
+  el.classList.remove('has-thumb');
   if(!v) return;
   if(v.type === 'youtube') {
     var img = document.createElement('img');
     img.src = 'https://img.youtube.com/vi/'+v.id+'/maxresdefault.jpg';
     img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0.85;';
-    img.onerror = function(){ img.src = 'https://img.youtube.com/vi/'+v.id+'/hqdefault.jpg'; };
+    img.onload = function(){ el.classList.add('has-thumb'); };
+    img.onerror = function(){
+      if(img.src.indexOf('hqdefault') === -1) {
+        img.src = 'https://img.youtube.com/vi/'+v.id+'/hqdefault.jpg';
+      }
+    };
     el.appendChild(img);
   } else if(v.type === 'vimeo') {
     fetchVimeoThumb(v.id, function(url){
@@ -1063,9 +1076,16 @@ function injectThumb(el, p) {
       var img = document.createElement('img');
       img.src = url;
       img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0.85;';
+      img.onload = function(){ el.classList.add('has-thumb'); };
       el.appendChild(img);
     });
   }
+}
+
+function updateFeaturedPreview(item) {
+  var reelPh = document.getElementById('reel-ph');
+  if(!reelPh || !item) return;
+  injectThumb(reelPh, item);
 }
 
 function hasVideo(p) { return !!(p.vimeo || p.yt); }
@@ -1121,6 +1141,7 @@ function setFeatured(idx) {
     var playBtn = document.getElementById('reel-play-btn');
     playBtn.textContent = isReel ? '▶ PLAY REEL' : '▶ PLAY '+item.title;
     playBtn.onclick = function() { openCinema(item); };
+    updateFeaturedPreview(item);
     frame.classList.remove('swapping');
   }, 130);
 
@@ -1161,6 +1182,7 @@ function openCinema(project) {
   document.getElementById('cinema-file').textContent = p.code+'.MOV';
   var wrap = document.getElementById('cinema-video-wrap');
   var ph = document.getElementById('cinema-video-placeholder');
+  injectThumb(wrap, p);
   if(embedUrl && window.location.protocol !== 'file:') {
     ph.style.display = 'none';
     var old = wrap.querySelector('iframe');
@@ -1463,14 +1485,6 @@ function init() {
   setFeatured(0);
   homeSignalBase = REEL;
   syncHomeSignal(REEL);
-  // wire reel play btn initial state
-  document.getElementById('reel-play-btn').onclick = function(){ openCinema(REEL); };
-  // inject reel thumbnail
-  if(hasVideo(REEL)) {
-    var reelPh = document.getElementById('reel-ph');
-    injectThumb(reelPh, REEL);
-  }
-
   // ticker
   document.getElementById('collab-in').innerHTML = COLLABS.concat(COLLABS,COLLABS).map(function(t){return'<span>'+t+'</span>';}).join('');
   document.getElementById('ticker-in').innerHTML = TICKER.concat(TICKER,TICKER).map(function(t){return'<span>'+t+'</span>';}).join('');
