@@ -1100,14 +1100,15 @@ function stepFeatured(dir) {
 }
 
 function stepFeaturedToReel() {
-  featuredIdx = 0;
-  setFeatured(0);
+  var reelIdx = FEATURED.findIndex(function(item) { return item && item.slug === 'reel'; });
+  featuredIdx = reelIdx >= 0 ? reelIdx : 0;
+  setFeatured(featuredIdx);
 }
 
 function setFeatured(idx) {
   featuredIdx = idx;
   var item = FEATURED[idx];
-  var isReel = (idx === 0);
+  var isReel = item && item.slug === 'reel';
   var win = document.getElementById('identity-win');
   var frame = document.getElementById('reel-frame');
 
@@ -1451,7 +1452,14 @@ function endIntro() {
 // ══════════════════════════════════════════
 function init() {
   applyVideoLinks();
-  FEATURED = [REEL].concat(ALL_PROJECTS.direction);
+  var featuredProject = ALL_PROJECTS.direction.find(function(item) {
+    return item.slug === 'cyberpunk-2077';
+  }) || ALL_PROJECTS.direction[0] || REEL;
+  FEATURED = [featuredProject, REEL].concat(
+    ALL_PROJECTS.direction.filter(function(item) {
+      return item.slug !== featuredProject.slug;
+    })
+  );
   setFeatured(0);
   homeSignalBase = REEL;
   syncHomeSignal(REEL);
