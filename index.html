@@ -335,70 +335,21 @@ body{
     linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
 }
 #page-home.viewer-page.active{display:flex;}
-.home-signature{
-  display:flex;
-  flex-direction:column;
-  margin-bottom:14px;
-}
-.home-signature .wbody{
-  min-height:190px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:36px 20px;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,.08) 0, rgba(255,255,255,0) 34%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px),
-    linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
-  position:relative;
-  overflow:hidden;
-}
-.home-signature .wbody::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 45%,rgba(0,0,0,.10));
-  pointer-events:none;
-}
-.home-signature-inner{
-  position:relative;
-  z-index:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-}
-.home-signature-kicker{
-  font-family:var(--mono);
-  font-size:8px;
-  letter-spacing:.46em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.45);
-}
-.home-signature-name{
-  font-family:var(--display);
-  font-size:clamp(28px,4.6vw,58px);
-  line-height:1.05;
-  color:var(--white);
-  text-transform:uppercase;
-  text-shadow:0 0 14px rgba(255,255,255,.08);
-}
-.home-signature-role{
-  font-family:var(--mono);
-  font-size:clamp(8px,1vw,11px);
-  letter-spacing:.42em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.52);
-  padding-left:.42em;
-}
-#page-home .home-signature,
 #page-home .viewer-shell,
-#page-home .hero-wrap,
-#page-home .stills-wrap{
+#page-home .hero-wrap{
   margin-left:0;
   margin-right:0;
+}
+#page-home .viewer-shell{
+  min-height:0;
+}
+#page-home .hero-wrap{
+  grid-template-columns:minmax(0,1.9fr) minmax(190px,0.54fr);
+  gap:8px;
+  margin-top:8px;
+}
+#page-home .win{
+  margin-bottom:10px;
 }
 #page-home .viewer-frame,
 #page-home .win{
@@ -421,6 +372,52 @@ body{
   border-top:none;
   border-bottom:none;
   box-shadow:none;
+  flex:0 0 auto;
+  height:clamp(150px, 22vh, 220px);
+}
+#page-home .reel-win .wbody{
+  padding:0;
+}
+#page-home .identity-win .wbody{
+  padding:12px 12px 10px;
+}
+#page-home .identity-status{
+  padding:8px 12px;
+}
+#page-home .hero-name{
+  font-size:clamp(13px,1.7vw,19px);
+}
+#page-home .hero-bio{
+  font-size:9px;
+  line-height:1.55;
+}
+#page-home .hero-ctas{
+  gap:4px;
+}
+#page-home .reel-nav{
+  gap:8px;
+  padding:4px 0 6px;
+  margin-bottom:4px;
+}
+#page-home .reel-nav-arrow{
+  width:46px;
+  height:36px;
+  font-size:17px;
+}
+#page-home .archive-reel{
+  margin-top:0;
+  padding-top:0;
+  max-height:170px;
+}
+#page-home .archive-track{
+  animation-duration:88s;
+}
+#page-home .archive-track .pcard{
+  flex-basis:clamp(220px,22vw,280px);
+  width:clamp(220px,22vw,280px);
+}
+#page-home .win .lbl{
+  margin-bottom:8px;
 }
 #page-home .viewer-media::after{
   box-shadow:inset 0 -140px 160px rgba(0,0,0,.95);
@@ -929,27 +926,6 @@ body{
 /* scanline overlay on cinema */
 #cinema-mode::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);pointer-events:none;z-index:3;}
 
-/* IDENTITY */
-.identity-win{display:flex;flex-direction:column;margin-bottom:0;}
-.identity-win .wbody{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
-.profile-pic{width:100%;aspect-ratio:1/1;max-height:130px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.profile-pic img{width:100%;height:100%;object-fit:cover;display:block;}
-.profile-pic-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;height:100%;}
-.profile-pic-ph svg{opacity:.2;}
-.profile-pic-ph span{font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.25);text-transform:uppercase;}
-.hero-name{font-family:var(--display);font-size:clamp(15.6px,2.04vw,24px);line-height:1.25;color:var(--white);text-transform:uppercase;cursor:crosshair;}
-.hero-name:hover{animation:nameglitch .45s steps(1) both;}
-@keyframes nameglitch{0%{text-shadow:none;transform:translate(0,0);}10%{text-shadow:3px 0 #ff00cc,-3px 0 #00f0ff;transform:translate(-2px,0);}20%{text-shadow:-3px 0 #ff00cc,3px 0 #00f0ff;transform:translate(2px,0);}30%{text-shadow:3px 2px #ff00cc;transform:translate(0,1px);filter:brightness(1.3);}45%{text-shadow:none;transform:translate(-1px,0);filter:none;}55%{text-shadow:-2px 0 #ff00cc,2px 0 #00f0ff;transform:translate(1px,-1px);}70%{text-shadow:none;transform:translate(0,0);}100%{text-shadow:none;transform:translate(0,0);}}
-.hero-role{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);border-left:2px solid var(--white);padding-left:8px;}
-.hero-bio{font-size:10px;line-height:1.7;color:rgba(255,255,255,.6);flex:1;}
-.hero-ctas{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
-.identity-status{border-top:1px solid rgba(255,255,255,.15);padding:10px 16px;display:grid;gap:5px;flex-shrink:0;}
-.stat{display:flex;align-items:center;gap:7px;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 150ms;cursor:default;}
-.stat:hover{color:rgba(255,255,255,.8);}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--white);animation:blink 2s ease-in-out infinite;}
-.identity-win.glitching{animation:id-glitch-swap 0.35s steps(1) both;}
-@keyframes id-glitch-swap{0%{opacity:1;transform:translate(0,0);filter:none;}15%{opacity:1;transform:translate(-4px,0);filter:hue-rotate(90deg) brightness(1.4);clip-path:inset(20% 0 30% 0);}30%{transform:translate(4px,0);filter:hue-rotate(180deg);clip-path:inset(50% 0 10% 0);}45%{transform:translate(-2px,1px);clip-path:inset(5% 0 60% 0);}60%{transform:translate(2px,0);filter:none;clip-path:inset(0 0 0 0);opacity:0.6;}75%{transform:translate(0,0);opacity:1;}100%{opacity:1;transform:translate(0,0);filter:none;clip-path:none;}}
-
 /* FILE INFO */
 .fileinfo-body{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
 .fi-eyebrow{font-size:8px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.35);}
@@ -974,27 +950,6 @@ body{
 .btn-cinema{background:var(--black);border:2px solid var(--white);color:var(--white);padding:10px 20px;font-size:10px;display:flex;align-items:center;gap:8px;}
 .btn-cinema:hover{background:var(--white);color:var(--black);}
 .btn-cinema::before{display:none;}
-
-/* QUICK LAUNCH */
-.ql-btn{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:12px 10px;cursor:crosshair;border:1px solid rgba(255,255,255,.35);background:transparent;color:var(--white);width:100%;position:relative;overflow:hidden;transition:color 400ms ease,border-color 300ms ease;display:flex;flex-direction:column;align-items:center;gap:5px;}
-.ql-btn::before{content:"";position:absolute;inset:0;background:var(--white);transform:translateX(-102%);transition:transform 600ms cubic-bezier(.16,1,.3,1);z-index:0;}
-.ql-btn:hover::before{transform:translateX(0);}
-.ql-btn:hover{color:var(--black);}
-.ql-label{position:relative;z-index:1;font-size:8px;letter-spacing:.2em;}
-.ql-sub{position:relative;z-index:1;font-size:6px;letter-spacing:.18em;opacity:.45;}
-
-/* STILLS STRIP */
-.stills-wrap{margin-bottom:14px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 4%,black 96%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,black 4%,black 96%,transparent 100%);}
-.stills-strip{display:flex;gap:3px;animation:stripscroll 28s linear infinite;}
-.stills-strip:hover{animation-play-state:paused;}
-.still-frame{flex:0 0 120px;height:72px;background:#060606;position:relative;overflow:hidden;cursor:crosshair;transition:opacity 150ms;}
-.still-frame:hover{opacity:.7;}
-.still-frame-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
-.still-num{position:absolute;bottom:4px;right:5px;font-size:7px;color:rgba(255,255,255,.2);}
-.still-frame::before,.still-frame::after{content:"";position:absolute;top:0;bottom:0;width:8px;background:repeating-linear-gradient(0deg,transparent 0px,transparent 6px,var(--bg) 6px,var(--bg) 10px);z-index:2;}
-.still-frame::before{left:0;}
-.still-frame::after{right:0;}
-@keyframes stripscroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* ARCHIVE */
 .archive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
@@ -1204,7 +1159,6 @@ body{
     font-size:clamp(2.1rem, 8vw, 3rem);
   }
   .hero-wrap{grid-template-columns:1fr;}
-  .identity-win{margin-top:0;}
   .archive-grid{grid-template-columns:1fr 1fr;}
   .archive-track .pcard{flex-basis:clamp(250px,72vw,320px);width:clamp(250px,72vw,320px);}
   .archive-grid.cols-2{grid-template-columns:1fr;}
@@ -1233,7 +1187,7 @@ body{
   .about-stats{grid-template-columns:1fr 1fr;}
 }
 @media (prefers-reduced-motion: reduce){
-  .archive-track,.stills-strip{animation:none;}
+  .archive-track{animation:none;}
   .project-card .poster img,
   .featured-unit .screen-media,
   .signal-reel-item .signal-reel-media{
@@ -1332,17 +1286,7 @@ body{
     <div class="page-stage" id="page-stage">
     <!-- HOME -->
     <div class="page-view viewer-page active" id="page-home">
-      <div class="win home-signature">
-        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>JARED_MCDANIEL.SYS</span></div><span>DIRECTOR // EDITOR</span></div>
-        <div class="wbody">
-          <div class="home-signature-inner">
-            <p class="home-signature-kicker">JD_SYS.EXE</p>
-            <h1 class="home-signature-name">JARED<br>McDANIEL</h1>
-            <p class="home-signature-role">DIRECTOR / EDITOR</p>
-          </div>
-        </div>
-      </div>
-      <section class="viewer-shell">
+            <section class="viewer-shell">
         <div class="viewer-frame" id="viewer-frame">
           <div class="viewer-media" id="viewer-media">
             <div class="viewer-ph" id="viewer-ph">
@@ -1378,17 +1322,7 @@ body{
           </div>
         </div>
       </section>
-      <div class="win sg">
-        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>QUICK_LAUNCH.DAT</span></div><span>NAVIGATE // SYSTEM</span></div>
-        <div class="wbody" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;">
-          <button class="ql-btn" onclick="showPage('direction')"><span class="ql-label">DIRECTION</span><span class="ql-sub">11 PROJECTS</span></button>
-          <button class="ql-btn" onclick="showPage('edits','films')"><span class="ql-label">FILMS</span><span class="ql-sub">EDITS / CUTS</span></button>
-          <button class="ql-btn" onclick="showPage('edits','amvs')"><span class="ql-label">AMVs</span><span class="ql-sub">ANIMATED</span></button>
-          <button class="ql-btn" onclick="showPage('about')"><span class="ql-label">PROFILE</span><span class="ql-sub">ABOUT ME</span></button>
-        </div>
-      </div>
-
-      <div class="hero-wrap sg">
+            <div class="hero-wrap sg">
         <div class="win reel-win">
           <div class="wbar">
             <div class="wbar-l"><span class="wx">×</span><span id="reel-win-label">FEATURED_REEL.MOV</span></div>
@@ -1410,57 +1344,12 @@ body{
           </div>
         </div>
 
-        <div class="win identity-win" id="identity-win">
-          <div id="panel-identity" style="display:flex;flex-direction:column;flex:1;">
-            <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>IDENTITY.EXE</span></div><span>ACTIVE</span></div>
-            <div class="wbody" style="flex:1;display:flex;flex-direction:column;gap:12px;">
-              <div class="profile-pic"><div class="profile-pic-ph"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" stroke="white" stroke-width="1"/><path d="M4 32c0-8 28-8 28 0" stroke="white" stroke-width="1"/></svg><span>PROFILE PIC</span></div></div>
-              <h1 class="hero-name">JARED<br>McDANIEL</h1>
-              <p class="hero-role">DIRECTOR / EDITOR</p>
-              <p class="hero-bio">Film-first. System-built. Commercial and narrative work with a cinematic edge that cuts through noise fast.</p>
-              <div class="hero-ctas" style="margin-top:auto;">
-                <button class="btn btn-solid" onclick="showPage('direction')">VIEW DIRECTION</button>
-                <button class="btn btn-ghost" onclick="showPage('contact')">OPEN SIGNAL</button>
-              </div>
-            </div>
-            <div class="identity-status">
-              <div class="stat"><span class="dot"></span>SYSTEM ONLINE</div>
-              <div class="stat">PROJECTS: 25</div>
-              <div class="stat">SIGNAL: HIGH</div>
-              <div class="stat">MODE: DIRECTOR</div>
-            </div>
-          </div>
-          <div id="panel-fileinfo" style="display:none;flex-direction:column;flex:1;">
-            <div class="wbar"><div class="wbar-l"><span class="wx" onclick="stepFeaturedToReel()">×</span><span>FILE_INFO.DAT</span></div><span id="fi-code">PRJ_01</span></div>
-            <div class="fileinfo-body">
-              <p class="fi-eyebrow" id="fi-eyebrow">// COMMERCIAL FILE</p>
-              <h2 class="fi-title" id="fi-title">CYBERPUNK 2077</h2>
-              <p class="fi-role" id="fi-role">DIRECTION / EDIT / 2025</p>
-              <p class="fi-desc" id="fi-desc"></p>
-              <div class="fi-divider"></div>
-              <div><p class="fi-meta-lbl">// CONCEPT</p><p class="fi-meta-val" id="fi-concept"></p></div>
-              <div><p class="fi-meta-lbl">// EXECUTION</p><p class="fi-meta-val" id="fi-exec"></p></div>
-              <div class="tags" id="fi-tags" style="margin-top:4px;"></div>
-              <div class="fi-ctas">
-                <button class="btn btn-solid" id="fi-open">OPEN CASE FILE</button>
-                <button class="btn btn-ghost" onclick="stepFeaturedToReel()">← BACK TO REEL</button>
-              </div>
-            </div>
-            <div class="identity-status">
-              <div class="stat"><span class="dot"></span><span id="fi-status-lbl">FILE LOADED</span></div>
-              <div class="stat" id="fi-status-cat">CATEGORY: —</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reel-nav">
+              <div class="reel-nav">
         <button class="reel-nav-arrow" onclick="stepFeatured(-1)">←</button>
         <button class="reel-nav-arrow" onclick="stepFeatured(1)">→</button>
       </div>
 
-      <div class="stills-wrap"><div class="stills-strip" id="stills-strip"></div></div>
-
+      
       <div class="win">
         <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ARCHIVE.DAT</span></div><span id="archive-count">SELECTED WORK // 0 FILES</span></div>
         <div class="wbody">
@@ -2915,3 +2804,4 @@ runIntro();
 </script>
 </body>
 </html>
+
