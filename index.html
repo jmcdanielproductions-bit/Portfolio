@@ -1839,12 +1839,12 @@ function getVideoArchiveItems() {
 // INTRO SEQUENCE
 // ══════════════════════════════════════════
 var INTRO_WINDOWS = [
-  {w:420,h:286,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_00',slug:'reel'},
-  {w:300,h:219,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_01',slug:'cyberpunk-2077'},
-  {w:360,h:253,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_02',slug:'fallout-nuka-cola'},
-  {w:260,h:196,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_03',slug:'doom'},
-  {w:320,h:230,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_04',slug:'witcher'},
-  {w:280,h:208,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_05',slug:'corsair-storefront'},
+  {w:432,h:243,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_00',slug:'reel'},
+  {w:320,h:180,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_01',slug:'cyberpunk-2077'},
+  {w:384,h:216,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_02',slug:'fallout-nuka-cola'},
+  {w:288,h:162,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_03',slug:'doom'},
+  {w:352,h:198,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_04',slug:'witcher'},
+  {w:304,h:171,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_05',slug:'corsair-storefront'},
 ];
 
 function rnd(a,b){return Math.floor(Math.random()*(b-a))+a;}
@@ -1991,7 +1991,6 @@ function endIntro() {
 // INIT
 // ══════════════════════════════════════════
 function init() {
-  applyVideoLinks();
   var featuredProject = ALL_PROJECTS.direction.find(function(item) {
     return item.slug === 'cyberpunk-2077';
   }) || ALL_PROJECTS.direction[0] || REEL;
