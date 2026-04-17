@@ -79,6 +79,16 @@ body{
 .iwin-x{width:12px;height:12px;border:1px solid var(--black);display:flex;align-items:center;justify-content:center;font-size:7px;}
 .iwin-media{width:100%;flex:1;background:#050505;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
 .iwin-media::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px);pointer-events:none;z-index:2;}
+.iwin-media.has-preview .iwin-ph{display:none;}
+.iwin-media .preview-iframe,
+.iwin-media .preview-thumb-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+.iwin-media .preview-thumb-image{object-fit:cover;opacity:1;}
 .iwin-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;z-index:1;}
 .iwin-ph svg{opacity:.18;}
 .iwin-ph span{font-size:7px;letter-spacing:.18em;color:rgba(255,255,255,.2);text-transform:uppercase;}
@@ -218,7 +228,7 @@ body{
 /* REEL */
 .reel-win{display:flex;flex-direction:column;margin-bottom:0;}
 .reel-win .wbody{padding:0;flex:1;display:flex;flex-direction:column;}
-.reel-frame{flex:1;min-height:0;background:#050505;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:crosshair;}
+.reel-frame{flex:0 0 auto;width:100%;aspect-ratio:16 / 9;background:#050505;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:crosshair;}
 .reel-frame::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);pointer-events:none;z-index:2;}
 .reel-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:1;transition:opacity 150ms;}
 .reel-placeholder.has-thumb{justify-content:flex-start;gap:0;background:#050505;}
@@ -1171,6 +1181,19 @@ function getEmbedUrl(p, opts) {
   return null;
 }
 
+function getLoopEmbedUrl(p) {
+  var v = getVideoId(p);
+  if(!v) return null;
+  var origin = (window.location && window.location.origin && window.location.origin !== 'null') ? '&origin='+encodeURIComponent(window.location.origin) : '';
+  if(v.type==='vimeo') {
+    return 'https://player.vimeo.com/video/'+v.id+'?autoplay=1&loop=1&muted=1&background=1&title=0&byline=0&portrait=0';
+  }
+  if(v.type==='youtube') {
+    return 'https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&mute=1&loop=1&controls=0&playlist='+v.id+'&rel=0&modestbranding=1&playsinline=1'+origin;
+  }
+  return null;
+}
+
 function getWatchUrl(p) {
   var v = getVideoId(p);
   if(!v) return null;
@@ -1816,12 +1839,12 @@ function getVideoArchiveItems() {
 // INTRO SEQUENCE
 // ══════════════════════════════════════════
 var INTRO_WINDOWS = [
-  {w:420,h:260,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_00'},
-  {w:300,h:200,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_01'},
-  {w:360,h:230,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_02'},
-  {w:260,h:180,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_03'},
-  {w:320,h:210,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_04'},
-  {w:280,h:190,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_05'},
+  {w:420,h:286,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_00',slug:'reel'},
+  {w:300,h:219,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_01',slug:'cyberpunk-2077'},
+  {w:360,h:253,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_02',slug:'fallout-nuka-cola'},
+  {w:260,h:196,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_03',slug:'doom'},
+  {w:320,h:230,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_04',slug:'witcher'},
+  {w:280,h:208,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_05',slug:'corsair-storefront'},
 ];
 
 function rnd(a,b){return Math.floor(Math.random()*(b-a))+a;}
@@ -1859,6 +1882,47 @@ function placeIntroWindow(i, cfg, vw, vh) {
   return {x:x, y:y};
 }
 
+function getProjectBySlug(slug) {
+  var all = [REEL].concat(ALL_PROJECTS.direction, ALL_PROJECTS.films, ALL_PROJECTS.amvs);
+  return all.find(function(item){ return item && item.slug === slug; }) || null;
+}
+
+function mountIntroMedia(media, project) {
+  if(!media || !project) return;
+  var src = getLoopEmbedUrl(project);
+  var thumb = getThumbnailUrl(project);
+  media.classList.add('has-preview');
+
+  if(thumb) {
+    var img = document.createElement('img');
+    img.className = 'preview-thumb-image';
+    img.alt = project.title+' thumbnail';
+    img.src = thumb;
+    img.onerror = function() {
+      var vid = getVideoId(project);
+      if(vid && img.src.indexOf('hqdefault') === -1) {
+        img.src = 'https://img.youtube.com/vi/'+vid.id+'/hqdefault.jpg';
+      }
+    };
+    media.appendChild(img);
+  }
+
+  if(src) {
+    var iframe = document.createElement('iframe');
+    iframe.className = 'preview-iframe';
+    iframe.src = src;
+    iframe.title = project.title+' intro preview';
+    iframe.allow = 'autoplay; encrypted-media; fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'eager';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.onload = function() {
+      iframe.classList.add('is-live');
+    };
+    media.appendChild(iframe);
+  }
+}
+
 
 function runIntro() {
   var container = document.getElementById('intro-windows');
@@ -1870,11 +1934,13 @@ function runIntro() {
       var pos = placeIntroWindow(i, cfg, vw, vh);
       var x = pos.x;
       var y = pos.y;
+      var project = getProjectBySlug(cfg.slug);
       el.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+cfg.w+'px;height:'+cfg.h+'px;display:flex;flex-direction:column;';
       el.innerHTML = '<div class="iwin-bar"><div class="iwin-bar-l"><span class="iwin-x">×</span><span>'+cfg.label+'</span></div><span>'+cfg.sub+'</span></div>'
         +'<div class="iwin-media" style="flex:1;"><div class="iwin-ph"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="1" y="1" width="30" height="30" stroke="white" stroke-width="1"/><polygon points="12,8 26,16 12,24" fill="white"/></svg><span>'+cfg.code+'</span></div></div>'
         +'<div class="iwin-tc"><span>00:00:00:00</span><span>'+cfg.label+'</span></div>';
       container.appendChild(el);
+      mountIntroMedia(el.querySelector('.iwin-media'), project || REEL);
       requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('pop');});});
     }, i*380);
   });
@@ -1994,6 +2060,7 @@ function init() {
 
 function pad(n){return String(n).padStart(2,'0');}
 
+applyVideoLinks();
 runIntro();
 </script>
 </body>
