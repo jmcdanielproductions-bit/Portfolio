@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>JM_SYS.EXE — JARED McDANIEL</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --bg:#1444d4;--blue:#1444d4;--blue-hi:#1e54f0;--blue-dark:#0e32b0;
@@ -12,6 +13,23 @@
   --mono:"IBM Plex Mono",monospace;--display:"Press Start 2P",monospace;
   --chrome-h:44px;--task-h:34px;
   --content-width:min(calc(80vw - 2rem), 100%);
+}
+:root{
+  --bg:#050507;
+  --text:#ffffff;
+  --muted:rgba(255, 255, 255, 0.72);
+  --faint:rgba(255, 255, 255, 0.42);
+  --accent:#3b82f6;
+  --accent-soft:rgba(59, 130, 246, 0.16);
+  --accent-fill:rgba(59, 130, 246, 0.08);
+  --line:rgba(59, 130, 246, 0.14);
+  --line-strong:rgba(59, 130, 246, 0.58);
+  --surface:rgba(255, 255, 255, 0.02);
+  --surface-strong:rgba(10, 12, 18, 0.96);
+  --panel-border:rgba(255, 255, 255, 0.10);
+  --shadow-deep:0 28px 72px rgba(0, 0, 0, 0.38);
+  --ease-out:cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard:cubic-bezier(0.22, 1, 0.36, 1);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
@@ -88,7 +106,18 @@ body{
   height:100%;
   display:block;
 }
-.iwin-media .preview-thumb-image{object-fit:cover;opacity:1;}
+.iwin-media .preview-thumb-image{
+  object-fit:cover;
+  opacity:1;
+  transition:opacity 180ms ease;
+}
+.iwin-media .preview-iframe{
+  opacity:0;
+  z-index:3;
+  transition:opacity 220ms ease;
+}
+.iwin-media.has-live .preview-thumb-image{opacity:0;}
+.iwin-media.has-live .preview-iframe{opacity:1;}
 .iwin-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;z-index:1;}
 .iwin-ph svg{opacity:.18;}
 .iwin-ph span{font-size:7px;letter-spacing:.18em;color:rgba(255,255,255,.2);text-transform:uppercase;}
@@ -108,6 +137,100 @@ body{
 /* ── OS ── */
 #os{display:none;flex:1;min-height:0;flex-direction:column;}
 #os.up{display:flex;}
+
+/* VIEWER CHROME */
+.viewer-topbar{
+  height:var(--chrome-h);
+  flex-shrink:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
+  padding:0 18px;
+  background:transparent;
+  border-bottom:1px solid var(--panel-border);
+  color:var(--faint);
+  font-family:"Space Grotesk",sans-serif;
+  position:relative;
+  z-index:100;
+}
+.viewer-brand{
+  justify-self:start;
+  font-size:.7rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--faint);
+  cursor:pointer;
+  white-space:nowrap;
+}
+.viewer-tabs{
+  justify-self:center;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.viewer-tab{
+  background:none;
+  border:0;
+  border-bottom:1px solid transparent;
+  color:var(--faint);
+  font-family:"Space Grotesk",sans-serif;
+  font-size:.7rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  padding:0 0 2px;
+  cursor:pointer;
+  border-radius:0;
+}
+.viewer-tab.is-active{
+  color:var(--text);
+  border-bottom-color:var(--accent);
+}
+.viewer-timecode{
+  justify-self:end;
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.7rem;
+  letter-spacing:.18em;
+  color:var(--faint);
+  white-space:nowrap;
+}
+.viewer-category-strip{
+  display:none;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:16px;
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  color:var(--faint);
+  font-family:"Space Grotesk",sans-serif;
+}
+.viewer-category-strip.is-visible{display:grid;}
+.viewer-category{
+  appearance:none;
+  background:none;
+  border:0;
+  padding:0;
+  text-align:left;
+  cursor:pointer;
+  color:var(--faint);
+  border-radius:0;
+}
+.viewer-category.is-active{color:var(--accent);}
+.viewer-category.is-active::before{content:"▪ "; color:var(--accent);}
+.viewer-category-label{
+  display:block;
+  font-size:.65rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+}
+.viewer-category-sub{
+  display:block;
+  margin-top:4px;
+  font-size:.6rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--faint);
+  opacity:.52;
+}
 
 /* TOPBAR */
 .topbar{height:var(--chrome-h);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:var(--blue);border-bottom:2px solid var(--white);position:relative;z-index:100;}
@@ -145,6 +268,260 @@ body{
   margin-left:0;
   margin-right:0;
 }
+#page-home.viewer-page{
+  width:100%;
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+#page-home.viewer-page.active{display:flex;}
+.viewer-shell{
+  width:100%;
+  min-height:calc(100vh - var(--chrome-h) - var(--task-h) - 108px);
+  display:flex;
+  flex-direction:column;
+}
+.viewer-frame{
+  position:relative;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  background:var(--bg);
+  border:1px solid var(--panel-border);
+  border-top:none;
+  border-bottom:none;
+  box-shadow:inset 0 0 0 1px var(--surface);
+}
+.viewer-media{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  background:var(--bg);
+}
+.viewer-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  box-shadow:inset 0 -140px 160px var(--bg);
+}
+.viewer-media .preview-thumb-image,
+.viewer-media .preview-iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+.viewer-media .preview-thumb-image{
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 220ms var(--ease-standard);
+}
+.viewer-media.has-thumb .preview-thumb-image{opacity:1;}
+.viewer-media .preview-iframe{
+  border:none;
+  opacity:0;
+  transition:opacity 220ms var(--ease-standard);
+}
+.viewer-media.has-live .preview-thumb-image{opacity:0;}
+.viewer-media.has-live .preview-iframe{opacity:1;}
+.viewer-ph{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  z-index:1;
+}
+.viewer-ph svg{opacity:.18;}
+.viewer-ph span{
+  font-size:.65rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--faint);
+  opacity:.58;
+  font-family:"Space Grotesk",sans-serif;
+}
+.viewer-headline{
+  position:absolute;
+  top:16px;
+  left:16px;
+  right:60px;
+  z-index:4;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  font-family:"Space Grotesk",sans-serif;
+  font-size:.65rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--faint);
+}
+.viewer-fullscreen{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:5;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--surface);
+  border:1px solid var(--panel-border);
+  color:var(--faint);
+  font-size:.95rem;
+  cursor:pointer;
+  border-radius:0;
+}
+.viewer-fullscreen:hover{
+  color:var(--text);
+  border-color:var(--text);
+}
+.viewer-gradient{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:45%;
+  pointer-events:none;
+  background:linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  z-index:2;
+}
+.viewer-overlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:4;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:28px;
+  align-items:end;
+  padding:clamp(20px, 4vw, 48px);
+}
+.viewer-copy{max-width:54ch;}
+.viewer-kicker{
+  font-size:.65rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--accent);
+  opacity:.7;
+  margin-bottom:10px;
+  font-family:"Space Grotesk",sans-serif;
+}
+.viewer-title{
+  font-family:"Playfair Display",serif;
+  font-size:clamp(2.8rem, 5vw, 4rem);
+  line-height:.95;
+  font-weight:600;
+  letter-spacing:-.03em;
+  text-transform:uppercase;
+  color:var(--text);
+  margin:0 0 12px;
+}
+.viewer-role,
+.viewer-client{
+  font-size:.65rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  margin:0 0 6px;
+  font-family:"Space Grotesk",sans-serif;
+}
+.viewer-role{color:var(--faint);}
+.viewer-client{color:var(--muted);}
+.viewer-desc{
+  font-size:.85rem;
+  line-height:1.85;
+  color:var(--muted);
+  max-width:54ch;
+  margin:0;
+  font-family:"Space Grotesk",sans-serif;
+}
+.viewer-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+}
+.viewer-button{
+  appearance:none;
+  border-radius:0;
+  border:1px solid var(--line-strong);
+  background:var(--accent-fill);
+  color:var(--accent);
+  font-family:"Space Grotesk",sans-serif;
+  font-size:.65rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  padding:.55rem 1.1rem;
+  cursor:pointer;
+  transition:color 180ms var(--ease-standard), border-color 180ms var(--ease-standard), background-color 180ms var(--ease-standard);
+}
+.viewer-button.secondary{
+  background:transparent;
+  border-color:var(--panel-border);
+  color:var(--faint);
+}
+.viewer-nav{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+}
+.viewer-arrow{
+  width:28px;
+  height:28px;
+  border:1px solid var(--panel-border);
+  background:transparent;
+  color:var(--faint);
+  cursor:pointer;
+  font-family:"Space Grotesk",sans-serif;
+  font-size:.8rem;
+  line-height:1;
+  border-radius:0;
+  transition:color 180ms var(--ease-standard), border-color 180ms var(--ease-standard);
+}
+.viewer-statusbar{
+  height:var(--task-h);
+  flex-shrink:0;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:0 18px;
+  background:var(--surface-strong);
+  border-top:1px solid var(--panel-border);
+  color:var(--faint);
+  font-family:"Space Grotesk",sans-serif;
+  font-size:.7rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.viewer-status-time{
+  justify-self:start;
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.viewer-status-rec{
+  justify-self:center;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.viewer-status-bullet{
+  animation:viewer-rec-pulse 1.4s ease-in-out infinite;
+}
+@keyframes viewer-rec-pulse{
+  0%,100%{opacity:1;}
+  50%{opacity:.25;}
+}
+.viewer-status-file{
+  justify-self:end;
+  text-align:right;
+}
 #desk::-webkit-scrollbar{width:4px;}
 #desk::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);}
 
@@ -163,7 +540,7 @@ body{
 
 /* COLLABORATOR CAROUSEL */
 .surface-ribbon{
-  display:flex;
+  display:none;
   align-items:center;
   gap:22px;
   min-height:36px;
@@ -292,6 +669,34 @@ body{
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.1;}}
 .reel-frame.swapping{animation:reel-swap 220ms steps(3) both;}
 @keyframes reel-swap{0%{opacity:1;filter:none;}30%{opacity:.3;filter:brightness(2);}60%{opacity:.7;filter:hue-rotate(90deg);}100%{opacity:1;filter:none;}}
+
+/* IRIS HOVER THUMBNAILS */
+.project-card .poster img,
+.featured-unit .screen-media,
+.signal-reel-item .signal-reel-media{
+  clip-path:none;
+  transform:none;
+  filter:none;
+  transition:clip-path 260ms var(--ease-standard);
+}
+.project-card:hover .poster img,
+.featured-unit:hover .screen-media,
+.signal-reel-item:hover .signal-reel-media{
+  clip-path:polygon(
+    50% 0%, 100% 25%, 100% 25%, 100% 75%,
+    100% 75%, 50% 100%, 50% 100%, 0% 75%,
+    0% 75%, 0% 25%, 0% 25%, 50% 0%
+  );
+  transform:none;
+  filter:none;
+  transition:clip-path 380ms var(--ease-out);
+}
+.project-card.is-selected .poster img,
+.featured-unit.is-selected .screen-media,
+.signal-reel-item.is-active .signal-reel-media{
+  clip-path:none;
+  transition:none;
+}
 
 /* VIDEO EMBED inside reel */
 .reel-embed{position:absolute;inset:0;z-index:1;}
@@ -575,6 +980,40 @@ body{
 @media(max-width:768px){
   .t-nav{display:none;}
   .t-hamburger{display:flex;}
+  .viewer-topbar{
+    height:auto;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    padding:12px 12px 10px;
+  }
+  .viewer-brand{grid-column:1 / -1;}
+  .viewer-tabs{
+    grid-column:1 / -1;
+    justify-content:flex-start;
+    gap:14px;
+    overflow-x:auto;
+    padding-bottom:2px;
+  }
+  .viewer-timecode{justify-self:end;}
+  .viewer-category-strip{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    padding:12px 12px 10px;
+  }
+  .viewer-overlay{
+    grid-template-columns:1fr;
+    gap:20px;
+    padding:18px 14px 22px;
+  }
+  .viewer-actions{
+    align-items:flex-start;
+  }
+  .viewer-nav{
+    justify-content:flex-start;
+  }
+  .viewer-title{
+    font-size:clamp(2.1rem, 8vw, 3rem);
+  }
   .hero-wrap{grid-template-columns:1fr;}
   .identity-win{margin-top:0;}
   .archive-grid{grid-template-columns:1fr 1fr;}
@@ -589,12 +1028,31 @@ body{
   .taskbar .taskbar-mid{display:none;}
 }
 @media(max-width:480px){
+  .viewer-category-strip{
+    grid-template-columns:1fr;
+  }
+  .viewer-headline{
+    right:16px;
+    gap:10px;
+    flex-direction:column;
+  }
+  .viewer-frame{
+    min-height:68vh;
+  }
   .archive-grid{grid-template-columns:1fr;}
   .archive-track .pcard{flex-basis:88vw;width:88vw;}
   .about-stats{grid-template-columns:1fr 1fr;}
 }
 @media (prefers-reduced-motion: reduce){
   .archive-track,.stills-strip{animation:none;}
+  .project-card .poster img,
+  .featured-unit .screen-media,
+  .signal-reel-item .signal-reel-media{
+    clip-path:none;
+    transition:none;
+    transform:none;
+    filter:none;
+  }
 }
 </style>
 </head>
@@ -630,28 +1088,39 @@ body{
 <main id="main-shell">
 <!-- OS -->
 <div id="os">
-  <header class="topbar">
-    <div class="t-logo" onclick="showPage('home')">JD_SYS.EXE</div>
-    <nav class="t-nav">
-      <div class="t-nav-item">
-        <button class="on" data-nav="work">WORK ▾</button>
-        <div class="t-dropdown">
-          <div class="t-dropdown-label">// WORK</div>
-          <button class="t-dropdown-item" onclick="showPage('home')">HOME / REEL</button>
-          <button class="t-dropdown-item" onclick="showPage('direction')">DIRECTION</button>
-          <div class="t-dropdown-divider"></div>
-          <div class="t-dropdown-label">// EDITS</div>
-          <button class="t-dropdown-item" onclick="showPage('edits','films')">FILMS</button>
-          <button class="t-dropdown-item" onclick="showPage('edits','amvs')">AMVs</button>
-        </div>
-      </div>
-      <div class="t-nav-item"><button data-nav="about" onclick="showPage('about')">PROFILE</button></div>
-      <div class="t-nav-item"><button data-nav="skills" onclick="showPage('skills')">SKILLS</button></div>
-      <div class="t-nav-item"><button data-nav="contact" onclick="showPage('contact')">CONTACT</button></div>
+  <header class="viewer-topbar">
+    <div class="viewer-brand" onclick="showPage('home')">JD_SYS.EXE</div>
+    <nav class="viewer-tabs" aria-label="Primary">
+      <button class="viewer-tab is-active" data-viewer-tab="work" onclick="showPage('home')">WORK</button>
+      <button class="viewer-tab" data-viewer-tab="profile" onclick="showPage('about')">PROFILE</button>
+      <button class="viewer-tab" data-viewer-tab="skills" onclick="showPage('skills')">SKILLS</button>
+      <button class="viewer-tab" data-viewer-tab="contact" onclick="showPage('contact')">CONTACT</button>
     </nav>
-    <button class="t-hamburger" onclick="toggleMobileNav()">☰</button>
-    <div class="t-clock" id="clk">00:00:00</div>
+    <div class="viewer-timecode" id="viewer-clock-top">00:00:00</div>
   </header>
+
+  <div class="viewer-category-strip" id="viewer-category-strip">
+    <button class="viewer-category is-active" data-viewer-category="direction" onclick="if(currentPage!=='home')showPage('home');selectViewerCategory('direction')">
+      <span class="viewer-category-label">DIRECTION</span>
+      <span class="viewer-category-sub" id="viewer-cat-direction-sub">11 PROJECTS</span>
+    </button>
+    <button class="viewer-category" data-viewer-category="films" onclick="if(currentPage!=='home')showPage('home');selectViewerCategory('films')">
+      <span class="viewer-category-label">FILMS</span>
+      <span class="viewer-category-sub" id="viewer-cat-films-sub">EDITS / CUTS</span>
+    </button>
+    <button class="viewer-category" data-viewer-category="amvs" onclick="if(currentPage!=='home')showPage('home');selectViewerCategory('amvs')">
+      <span class="viewer-category-label">AMVs</span>
+      <span class="viewer-category-sub" id="viewer-cat-amvs-sub">ANIMATED</span>
+    </button>
+    <button class="viewer-category" data-viewer-category="branded" onclick="if(currentPage!=='home')showPage('home');selectViewerCategory('branded')">
+      <span class="viewer-category-label">BRANDED</span>
+      <span class="viewer-category-sub" id="viewer-cat-branded-sub">COMMERCIAL / EDIT</span>
+    </button>
+    <button class="viewer-category" data-viewer-category="all" onclick="if(currentPage!=='home')showPage('home');selectViewerCategory('all')">
+      <span class="viewer-category-label">ALL</span>
+      <span class="viewer-category-sub" id="viewer-cat-all-sub">PROJECTS</span>
+    </button>
+  </div>
 
   <!-- MOBILE NAV -->
   <div id="mobile-nav">
@@ -672,7 +1141,43 @@ body{
       <div class="collab-marquee"><div class="collab-in" id="collab-in"></div></div>
     </div>
     <!-- HOME -->
-    <div class="page-view active" id="page-home">
+    <div class="page-view viewer-page active" id="page-home">
+      <section class="viewer-shell">
+        <div class="viewer-frame" id="viewer-frame">
+          <div class="viewer-media" id="viewer-media">
+            <div class="viewer-ph" id="viewer-ph">
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                <rect x="1" y="1" width="54" height="54" stroke="white" stroke-width="1.5"></rect>
+                <polygon points="21,14 43,28 21,42" fill="white"></polygon>
+              </svg>
+              <span id="viewer-ph-label">INSERT PROJECT MEDIA</span>
+            </div>
+          </div>
+          <div class="viewer-headline">
+            <span id="viewer-code-top">PRJ_01.MOV</span>
+            <span id="viewer-meta-top">COMMERCIAL // 2025</span>
+          </div>
+          <button class="viewer-fullscreen" id="viewer-fullscreen-btn" type="button" aria-label="Open in cinema">⤢</button>
+          <div class="viewer-gradient"></div>
+          <div class="viewer-overlay">
+            <div class="viewer-copy">
+              <p class="viewer-kicker" id="viewer-kicker">FEATURED // LIVE</p>
+              <h1 class="viewer-title" id="viewer-title">CYBERPUNK 2077</h1>
+              <p class="viewer-role" id="viewer-role">DIRECTION / EDIT / 2025</p>
+              <p class="viewer-client" id="viewer-client">CD PROJEKT RED</p>
+              <p class="viewer-desc" id="viewer-desc">A flagship commercial signal designed to hit hard and read instantly.</p>
+            </div>
+            <div class="viewer-actions">
+              <button class="viewer-button" id="viewer-open">OPEN CASE FILE</button>
+              <button class="viewer-button secondary" id="viewer-back">← BACK TO REEL</button>
+              <div class="viewer-nav">
+                <button class="viewer-arrow" id="viewer-prev" type="button" aria-label="Previous project">←</button>
+                <button class="viewer-arrow" id="viewer-next" type="button" aria-label="Next project">→</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <div class="win sg">
         <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>QUICK_LAUNCH.DAT</span></div><span>NAVIGATE // SYSTEM</span></div>
         <div class="wbody" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;">
@@ -905,10 +1410,10 @@ body{
 
   </div>
 
-  <footer class="taskbar">
-    <div style="display:flex;gap:18px;"><span id="tb-page">PAGE: HOME</span><span>MEM: 84%</span></div>
-    <span class="taskbar-mid">JD_SYS v1.0 // DIRECTOR / EDITOR</span>
-    <span id="tb-date"></span>
+  <footer class="viewer-statusbar">
+    <span class="viewer-status-time" id="viewer-status-time">00:00:00:00</span>
+    <span class="viewer-status-rec"><span class="viewer-status-bullet">●</span>REC</span>
+    <span class="viewer-status-file" id="viewer-status-file">REEL_2025.MOV</span>
   </footer>
 </div>
 </main>
@@ -1139,6 +1644,78 @@ function applyVideoLinks() {
   applyTo(ALL_PROJECTS.direction, src.direction);
   applyTo(ALL_PROJECTS.films, src.films);
   applyTo(ALL_PROJECTS.amvs, src.amvs);
+  syncPortfolioAliases();
+}
+
+function getPortfolioProjects() {
+  return [REEL].concat(ALL_PROJECTS.direction, ALL_PROJECTS.films, ALL_PROJECTS.amvs);
+}
+
+function syncPortfolioAliases() {
+  var all = getPortfolioProjects();
+  window.PORTFOLIO_PROJECTS = all;
+  window.PORTFOLIO_THUMBNAILS = window.PORTFOLIO_THUMBNAILS || {};
+  window.PORTFOLIO_MEDIA_LINKS = window.PORTFOLIO_MEDIA_LINKS || {};
+  all.forEach(function(p) {
+    var thumb = getThumbnailUrl(p);
+    if(thumb) window.PORTFOLIO_THUMBNAILS[p.slug] = thumb;
+    if(p.yt || p.vimeo) window.PORTFOLIO_MEDIA_LINKS[p.slug] = p.yt || p.vimeo;
+  });
+}
+
+function resolveProjectMedia(p) {
+  var thumbs = window.PORTFOLIO_THUMBNAILS || {};
+  var links = window.PORTFOLIO_MEDIA_LINKS || {};
+  return {
+    thumb: thumbs[p.slug] || getThumbnailUrl(p),
+    embed: getLoopEmbedUrl(p),
+    watch: getWatchUrl(p),
+    source: links[p.slug] || p.yt || p.vimeo || null
+  };
+}
+
+function getViewerProjects(category) {
+  var all = getPortfolioProjects();
+  if(category === 'films') return ALL_PROJECTS.films.slice();
+  if(category === 'amvs') return ALL_PROJECTS.amvs.slice();
+  if(category === 'branded') {
+    return all.filter(function(p) {
+      return p && (p.cat === 'COMMERCIAL' || (p.tags || []).indexOf('BRANDED') >= 0);
+    });
+  }
+  if(category === 'all') return all.slice();
+  return ALL_PROJECTS.direction.slice();
+}
+
+function getViewerClientName(p) {
+  var credits = (p && p.credits) || [];
+  var client = credits.find(function(c) { return c && c.role === 'CLIENT'; });
+  return client ? client.name : 'JARED McDANIEL';
+}
+
+function getViewerStatusLabel(p) {
+  if(!p) return '';
+  return (p.cat || 'FILE') + ' // ' + (p.year || 'LIVE');
+}
+
+function updateViewerCategoryLabels() {
+  var labels = {
+    direction: getViewerProjects('direction').length + ' PROJECTS',
+    films: getViewerProjects('films').length + ' PROJECTS',
+    amvs: getViewerProjects('amvs').length + ' PROJECTS',
+    branded: getViewerProjects('branded').length + ' FILES',
+    all: getPortfolioProjects().length + ' FILES'
+  };
+  var map = {
+    direction: document.getElementById('viewer-cat-direction-sub'),
+    films: document.getElementById('viewer-cat-films-sub'),
+    amvs: document.getElementById('viewer-cat-amvs-sub'),
+    branded: document.getElementById('viewer-cat-branded-sub'),
+    all: document.getElementById('viewer-cat-all-sub')
+  };
+  Object.keys(map).forEach(function(key) {
+    if(map[key]) map[key].textContent = labels[key];
+  });
 }
 
 // ══════════════════════════════════════════
@@ -1146,6 +1723,7 @@ function applyVideoLinks() {
 // ══════════════════════════════════════════
 var FEATURED = [];
 var featuredIdx = 0;
+var viewerCategory = 'direction';
 var currentPage = 'home';
 var activeCaseProject = null;
 var cinemaState = {project:null, provider:null, player:null, muted:true, lastVolume:1, hover:false};
@@ -1463,59 +2041,103 @@ function stepFeatured(dir) {
 }
 
 function stepFeaturedToReel() {
-  var reelIdx = FEATURED.findIndex(function(item) { return item && item.slug === 'reel'; });
-  featuredIdx = reelIdx >= 0 ? reelIdx : 0;
-  setFeatured(featuredIdx);
+  selectViewerCategory('all');
+}
+
+function toggleViewerFullscreen() {
+  var frame = document.getElementById('viewer-frame');
+  if(!frame) return;
+  if(document.fullscreenElement || document.webkitFullscreenElement) {
+    if(document.exitFullscreen) document.exitFullscreen();
+    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    return;
+  }
+  if(frame.requestFullscreen) frame.requestFullscreen();
+  else if(frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
 }
 
 function setFeatured(idx) {
   featuredIdx = idx;
   var item = FEATURED[idx];
-  var isReel = item && item.slug === 'reel';
-  var win = document.getElementById('identity-win');
-  var frame = document.getElementById('reel-frame');
-  var fsBtn = document.getElementById('reel-fullscreen-btn');
+  if(!item) return;
+  var isReel = item.slug === 'reel';
+  var frame = document.getElementById('viewer-frame');
+  var media = document.getElementById('viewer-media');
+  var ph = document.getElementById('viewer-ph');
+  var fsBtn = document.getElementById('viewer-fullscreen-btn');
+  var openBtn = document.getElementById('viewer-open');
+  var backBtn = document.getElementById('viewer-back');
+  var prevBtn = document.getElementById('viewer-prev');
+  var nextBtn = document.getElementById('viewer-next');
+  var topCode = document.getElementById('viewer-code-top');
+  var topMeta = document.getElementById('viewer-meta-top');
+  var kicker = document.getElementById('viewer-kicker');
+  var title = document.getElementById('viewer-title');
+  var role = document.getElementById('viewer-role');
+  var client = document.getElementById('viewer-client');
+  var desc = document.getElementById('viewer-desc');
+  var statusFile = document.getElementById('viewer-status-file');
+  var statusTime = document.getElementById('viewer-status-time');
 
-  frame.classList.add('swapping');
+  if(frame) frame.classList.add('swapping');
   setTimeout(function() {
-    document.getElementById('reel-win-label').textContent = isReel ? 'FEATURED_REEL.MOV' : item.code+'.MOV';
-    document.getElementById('reel-win-status').textContent = isReel ? 'REEL_2025 // LIVE' : item.cat+' // '+item.year;
-    document.getElementById('reel-hud-label').textContent = isReel ? 'REEL_2025.MOV' : item.code+'.MOV';
-    document.getElementById('reel-ph-label').textContent = isReel ? 'INSERT REEL // 16:9' : item.code+' // INSERT VIDEO';
+    var mediaData = resolveProjectMedia(item);
+    var thumbUrl = mediaData.thumb;
+    var embedUrl = mediaData.embed;
+    if(topCode) topCode.textContent = (item.code || 'REEL_2025') + '.MOV';
+    if(topMeta) topMeta.textContent = (item.cat || 'FILE') + ' // ' + (item.year || 'LIVE');
+    if(kicker) kicker.textContent = isReel ? 'FEATURED // LIVE' : (item.cat || 'FILE') + ' // ' + (item.year || 'LIVE');
+    if(title) title.textContent = item.title || 'DIRECTOR\'S REEL';
+    if(role) role.textContent = item.role || '';
+    if(client) client.textContent = getViewerClientName(item);
+    if(desc) desc.textContent = item.desc || '';
+    if(statusFile) statusFile.textContent = (item.code || 'REEL_2025') + '.MOV';
+    if(statusTime && !statusTime.textContent) statusTime.textContent = '00:00:00:00';
+    if(openBtn) openBtn.onclick = function() { window.location.href = './projects/' + item.slug + '/index.html'; };
+    if(backBtn) backBtn.onclick = function() { selectViewerCategory('all'); };
+    if(prevBtn) prevBtn.onclick = function() { stepFeatured(-1); };
+    if(nextBtn) nextBtn.onclick = function() { stepFeatured(1); };
     if(fsBtn) {
-      fsBtn.onclick = function() { openCinema(item); };
-      fsBtn.title = isReel ? 'Open reel in cinema' : 'Open '+item.title+' in cinema';
+      fsBtn.onclick = toggleViewerFullscreen;
+      fsBtn.title = 'Toggle fullscreen';
     }
-    updateFeaturedPreview(item);
-    frame.classList.remove('swapping');
-  }, 130);
-
-  win.classList.remove('glitching');
-  void win.offsetWidth;
-  win.classList.add('glitching');
-  setTimeout(function() {
-    if(isReel) {
-      document.getElementById('panel-identity').style.display = 'flex';
-      document.getElementById('panel-fileinfo').style.display = 'none';
-    } else {
-      document.getElementById('panel-identity').style.display = 'none';
-      var fi = document.getElementById('panel-fileinfo');
-      fi.style.display = 'flex';
-      document.getElementById('fi-code').textContent = item.code;
-      document.getElementById('fi-eyebrow').textContent = '// '+item.cat+' FILE';
-      document.getElementById('fi-title').textContent = item.title;
-      document.getElementById('fi-role').textContent = item.role+' / '+item.year;
-      document.getElementById('fi-desc').textContent = item.desc;
-      document.getElementById('fi-concept').textContent = item.brief;
-      document.getElementById('fi-exec').textContent = item.exec;
-      document.getElementById('fi-tags').innerHTML = item.tags.map(function(t){return'<span class="tag">'+t+'</span>';}).join('');
-      document.getElementById('fi-open').onclick = function() { openCaseStudy(item.slug); };
-      document.getElementById('fi-status-lbl').textContent = item.title+' LOADED';
-      document.getElementById('fi-status-cat').textContent = 'CATEGORY: '+item.cat;
+    if(media) {
+      media.querySelectorAll('img.preview-thumb-image, iframe.preview-iframe').forEach(function(node) {
+        node.remove();
+      });
+      media.classList.remove('has-thumb','has-live');
+      if(thumbUrl) {
+        var img = document.createElement('img');
+        img.className = 'preview-thumb-image';
+        img.alt = item.title + ' thumbnail';
+        img.src = thumbUrl;
+        img.onerror = function() {
+          var vid = getVideoId(item);
+          if(vid && vid.type === 'youtube' && img.src.indexOf('hqdefault') === -1) {
+            img.src = 'https://img.youtube.com/vi/' + vid.id + '/hqdefault.jpg';
+          }
+        };
+        img.onload = function() { media.classList.add('has-thumb'); };
+        media.appendChild(img);
+      }
+      if(embedUrl) {
+        var iframe = document.createElement('iframe');
+        iframe.className = 'preview-iframe';
+        iframe.src = embedUrl;
+        iframe.title = item.title + ' preview';
+        iframe.allow = 'autoplay; fullscreen';
+        iframe.allowFullscreen = true;
+        iframe.loading = 'eager';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.onload = function() { media.classList.add('has-live'); };
+        media.appendChild(iframe);
+        setTimeout(function() { media.classList.add('has-live'); }, 700);
+      }
     }
-    win.classList.remove('glitching');
-    syncHomeSignal(item);
-  }, 175);
+    if(ph) ph.style.display = (thumbUrl || embedUrl) ? 'none' : 'flex';
+    if(frame) frame.classList.remove('swapping');
+    syncViewerCategoryState();
+  }, 140);
 }
 
 // ── CINEMA MODE ──
@@ -1690,10 +2312,34 @@ function closeCaseStudy() {
 }
 
 // ── PAGE NAVIGATION ──
+function syncViewerTabs(page) {
+  var active = (page === 'home' || page === 'direction' || page === 'edits') ? 'work' : page;
+  document.querySelectorAll('.viewer-tab').forEach(function(btn) {
+    btn.classList.toggle('is-active', btn.getAttribute('data-viewer-tab') === active);
+  });
+  var strip = document.getElementById('viewer-category-strip');
+  if(strip) strip.classList.toggle('is-visible', active === 'work');
+}
+
+function syncViewerCategoryState() {
+  document.querySelectorAll('.viewer-category').forEach(function(btn) {
+    btn.classList.toggle('is-active', btn.getAttribute('data-viewer-category') === viewerCategory);
+  });
+}
+
+function selectViewerCategory(category) {
+  viewerCategory = category || 'direction';
+  FEATURED = getViewerProjects(viewerCategory);
+  if(!FEATURED.length) FEATURED = [REEL];
+  featuredIdx = 0;
+  syncViewerCategoryState();
+  setFeatured(0);
+}
+
 function showPage(page, tab) {
   var pt = document.getElementById('page-transition');
   var ptText = document.getElementById('pt-text');
-  var labels = {home:'LOADING HOME...',direction:'LOADING DIRECTION...',edits:'LOADING EDITS...',about:'LOADING PROFILE...',skills:'LOADING SKILLS...',contact:'LOADING CONTACT...'};
+  var labels = {home:'LOADING WORK...',direction:'LOADING DIRECTION...',edits:'LOADING EDITS...',about:'LOADING PROFILE...',skills:'LOADING SKILLS...',contact:'LOADING CONTACT...'};
   ptText.textContent = labels[page] || 'LOADING FILE...';
 
   pt.classList.add('show');
@@ -1703,15 +2349,7 @@ function showPage(page, tab) {
     if(target) target.classList.add('active');
     currentPage = page;
     document.getElementById('desk').scrollTop = 0;
-    document.getElementById('tb-page').textContent = 'PAGE: '+page.toUpperCase();
-    document.querySelectorAll('.t-nav button[data-nav]').forEach(function(b){b.classList.remove('on');});
-    if(page==='home'||page==='direction'||page==='edits'){
-      var wb = document.querySelector('.t-nav button[data-nav="work"]');
-      if(wb) wb.classList.add('on');
-    } else {
-      var nb = document.querySelector('.t-nav button[data-nav="'+page+'"]');
-      if(nb) nb.classList.add('on');
-    }
+    syncViewerTabs(page);
     if(page==='edits'&&tab) switchTab(tab);
     if(page==='skills') setTimeout(function(){document.querySelectorAll('.sk-fill').forEach(function(b){b.classList.add('animated');});},100);
     pt.classList.remove('show');
@@ -1854,61 +2492,58 @@ var INTRO_WINDOWS = buildIntroWindows();
 
 function buildIntroWindows() {
   var order = [0, 6, 2, 8, 4, 1, 7, 3, 9, 5];
-  var scales = [
-    {w:1.00, h:1.00},
-    {w:0.93, h:0.95},
-    {w:1.05, h:0.91},
-    {w:0.88, h:1.03}
-  ];
   var windows = [];
   var idx = 0;
-  for(var pass = 0; pass < 4; pass++) {
-    for(var n = 0; n < order.length; n++) {
-      var src = INTRO_SOURCE_POOL[order[n]];
-      var scale = scales[pass];
-      var w = Math.round(src.w * scale.w + rnd(-10, 10));
-      var h = Math.round(src.h * scale.h + rnd(-6, 8));
+
+  function shuffle(arr) {
+    for(var i = arr.length - 1; i > 0; i--) {
+      var j = rnd(0, i + 1);
+      var tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  while(windows.length < 24) {
+    var bag = shuffle(order.slice());
+    for(var n = 0; n < bag.length && windows.length < 24; n++) {
+      var src = INTRO_SOURCE_POOL[bag[n]];
+      var scale = 0.88 + Math.random() * 0.22;
       windows.push({
-        w:w,
-        h:h,
+        w:Math.round(src.w * scale + rnd(-12, 12)),
+        h:Math.round(src.h * scale + rnd(-8, 8)),
         label:src.label,
         sub:src.sub,
         code:'PRJ_'+String(idx).padStart(2,'0'),
         slug:src.slug,
-        group:Math.floor(idx / 5),
-        slot:idx % 5
+        delay:rnd(0, 1000) + rnd(0, 5) * 320 + rnd(0, 260)
       });
       idx++;
     }
   }
+
+  windows.sort(function(a, b) {
+    return (a.delay - b.delay) || (Math.random() - 0.5);
+  });
   return windows;
 }
 
 function rnd(a,b){return Math.floor(Math.random()*(b-a))+a;}
 
-function placeIntroWindow(i, cfg, vw, vh) {
-  var gap = 10;
-  var anchors = [
-    {x:0.16, y:0.18},
-    {x:0.36, y:0.14},
-    {x:0.58, y:0.18},
-    {x:0.80, y:0.14},
-    {x:0.18, y:0.40},
-    {x:0.40, y:0.36},
-    {x:0.62, y:0.40},
-    {x:0.84, y:0.36}
-  ];
-  var cluster = anchors[cfg.group % anchors.length];
-  var clusterOffsets = [
-    {x:-112, y:-72},
-    {x:-42, y:-24},
-    {x:0, y:0},
-    {x:36, y:18},
-    {x:92, y:52}
-  ];
-  var offset = clusterOffsets[cfg.slot % clusterOffsets.length];
-  var x = Math.round(vw * cluster.x - cfg.w * 0.5 + offset.x + rnd(-18, 18));
-  var y = Math.round(vh * cluster.y - cfg.h * 0.5 + offset.y + rnd(-14, 14));
+function placeIntroWindow(cfg, vw, vh, placed) {
+  var gap = 8;
+  var x;
+  var y;
+
+  if(placed.length && Math.random() < 0.58) {
+    var base = placed[rnd(0, placed.length)];
+    x = Math.round(base.x + rnd(-320, 320));
+    y = Math.round(base.y + rnd(-240, 240));
+  } else {
+    x = rnd(16, Math.max(16, vw - cfg.w - 16));
+    y = rnd(16, Math.max(16, vh - cfg.h - 16));
+  }
 
   x = Math.max(gap, Math.min(x, vw - cfg.w - gap));
   y = Math.max(gap, Math.min(y, vh - cfg.h - gap));
@@ -1950,9 +2585,12 @@ function mountIntroMedia(media, project) {
     iframe.loading = 'eager';
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
     iframe.onload = function() {
-      iframe.classList.add('is-live');
+      media.classList.add('has-live');
     };
     media.appendChild(iframe);
+    setTimeout(function() {
+      media.classList.add('has-live');
+    }, 700);
   }
 }
 
@@ -1960,30 +2598,31 @@ function mountIntroMedia(media, project) {
 function runIntro() {
   var container = document.getElementById('intro-windows');
   var vw = window.innerWidth, vh = window.innerHeight;
+  var placed = [];
   INTRO_WINDOWS.forEach(function(cfg,i){
-    var delay = cfg.group * 140 + cfg.slot * 22 + rnd(-8, 28);
     setTimeout(function(){
       var el = document.createElement('div');
       el.className = 'iwin';
-      var pos = placeIntroWindow(i, cfg, vw, vh);
+      var pos = placeIntroWindow(cfg, vw, vh, placed);
       var x = pos.x;
       var y = pos.y;
       var project = getProjectBySlug(cfg.slug);
-      el.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+cfg.w+'px;height:'+cfg.h+'px;display:flex;flex-direction:column;z-index:'+(80 + cfg.group*8 + cfg.slot)+';';
+      placed.push({x:x, y:y});
+      el.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+cfg.w+'px;height:'+cfg.h+'px;display:flex;flex-direction:column;z-index:'+(80 + i)+';';
       el.innerHTML = '<div class="iwin-bar"><div class="iwin-bar-l"><span class="iwin-x">×</span><span>'+cfg.label+'</span></div><span>'+cfg.sub+'</span></div>'
         +'<div class="iwin-media" style="flex:1;"><div class="iwin-ph"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="1" y="1" width="30" height="30" stroke="white" stroke-width="1"/><polygon points="12,8 26,16 12,24" fill="white"/></svg><span>'+cfg.code+'</span></div></div>'
         +'<div class="iwin-tc"><span>00:00:00:00</span><span>'+cfg.label+'</span></div>';
       container.appendChild(el);
       mountIntroMedia(el.querySelector('.iwin-media'), project || REEL);
       requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('pop');});});
-    }, delay);
+    }, cfg.delay);
   });
   var glitchStart = Math.max.apply(Math, INTRO_WINDOWS.map(function(cfg){
-    return cfg.group * 140 + cfg.slot * 22;
-  })) + 680;
+    return cfg.delay;
+  })) + 1100;
   setTimeout(runGlitch, glitchStart);
   setTimeout(showName, glitchStart+320);
-  setTimeout(endIntro, glitchStart+3200);
+  setTimeout(endIntro, glitchStart+3800);
 }
 
 function runGlitch() {
@@ -2027,41 +2666,15 @@ function endIntro() {
 // INIT
 // ══════════════════════════════════════════
 function init() {
-  var featuredProject = ALL_PROJECTS.direction.find(function(item) {
-    return item.slug === 'cyberpunk-2077';
-  }) || ALL_PROJECTS.direction[0] || REEL;
-  FEATURED = [featuredProject, REEL].concat(
-    ALL_PROJECTS.direction.filter(function(item) {
-      return item.slug !== featuredProject.slug;
-    })
-  );
-  setFeatured(0);
-  setupHoverPreview(
-    document.getElementById('reel-frame'),
-    document.getElementById('reel-ph'),
-    function(){ return FEATURED[featuredIdx]; }
-  );
-  homeSignalBase = REEL;
-  syncHomeSignal(REEL);
+  syncPortfolioAliases();
+  document.getElementById('viewer-clock-top').textContent = '00:00:00';
   document.getElementById('collab-in').innerHTML = COLLABS.concat(COLLABS).map(function(t){return'<span>'+t+'</span>';}).join('');
-
-  // stills strip
-  var ss = document.getElementById('stills-strip');
-  var COUNT = 20;
-  ss.innerHTML = new Array(COUNT*2).fill(0).map(function(_,i){
-    return '<div class="still-frame"><div class="still-frame-inner"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="1" y="1" width="20" height="20" stroke="white" stroke-width="1" opacity="0.3"/><polygon points="8,6 17,11 8,16" fill="white" opacity="0.2"/></svg></div><span class="still-num">'+String((i%COUNT)+1).padStart(3,'0')+'</span></div>';
-  }).join('');
-
-  var archiveItems = getVideoArchiveItems();
-  renderArchiveRail('home-grid', archiveItems);
+  updateViewerCategoryLabels();
+  selectViewerCategory('direction');
+  syncViewerTabs('home');
   renderGrid('direction-grid', ALL_PROJECTS.direction);
   renderGrid('films-grid', ALL_PROJECTS.films);
   renderGrid('amvs-grid', ALL_PROJECTS.amvs);
-  var archiveCount = document.getElementById('archive-count');
-  if(archiveCount) {
-    archiveCount.textContent = 'SELECTED WORK // '+archiveItems.length+' FILES';
-  }
-
   // skills
   function skCard(s){return'<div class="sk"><p class="sk-name">'+s.n+'</p><p class="sk-pct">'+s.lvl+'%</p><div class="sk-track"><div class="sk-fill" style="width:'+s.lvl+'%"></div></div><p class="sk-items">'+s.items+'</p></div>';}
   document.getElementById('sgrid-top').innerHTML = SKILLS.slice(0,2).map(skCard).join('');
@@ -2070,17 +2683,16 @@ function init() {
   document.getElementById('tools-grid').innerHTML = TOOLS.map(function(t){return'<div class="tool-tag">'+t+'</div>';}).join('');
 
   // clock + timecode
-  var clk=document.getElementById('clk'),tbd=document.getElementById('tb-date');
-  var tcEls=[document.getElementById('reel-tc'),document.getElementById('cinema-tc')];
+  var topClock=document.getElementById('viewer-clock-top');
+  var statusTime=document.getElementById('viewer-status-time');
   var fc=0;
   setInterval(function(){
     var n=new Date();
-    clk.textContent=n.toTimeString().slice(0,8);
-    tbd.textContent=n.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+    if(topClock) topClock.textContent=n.toTimeString().slice(0,8);
     fc++;
     var f=fc%30,s=Math.floor(fc/30)%60,m=Math.floor(fc/1800)%60,h=Math.floor(fc/108000);
     var tc=pad(h)+':'+pad(m)+':'+pad(s)+':'+pad(f);
-    tcEls.forEach(function(el){if(el)el.textContent=tc;});
+    if(statusTime) statusTime.textContent=tc;
   },33);
 
   // keyboard
