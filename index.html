@@ -60,6 +60,8 @@ body{
 
 #main-shell{
   height:100vh;
+  display:flex;
+  flex-direction:column;
   margin-left:10vw;
   margin-right:10vw;
   position:relative;
@@ -94,7 +96,7 @@ body{
 @keyframes intro-fade{from{opacity:1;}to{opacity:0;pointer-events:none;}}
 
 /* ── OS ── */
-#os{display:none;height:100%;flex-direction:column;}
+#os{display:none;flex:1;min-height:0;flex-direction:column;}
 #os.up{display:flex;}
 
 /* TOPBAR */
