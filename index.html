@@ -1838,72 +1838,77 @@ function getVideoArchiveItems() {
 // ══════════════════════════════════════════
 // INTRO SEQUENCE
 // ══════════════════════════════════════════
-var INTRO_WINDOWS = [
-  {w:432,h:243,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_00',slug:'reel'},
-  {w:320,h:180,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_01',slug:'cyberpunk-2077'},
-  {w:384,h:216,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_02',slug:'fallout-nuka-cola'},
-  {w:288,h:162,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_03',slug:'doom'},
-  {w:352,h:198,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_04',slug:'witcher'},
-  {w:304,h:171,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_05',slug:'corsair-storefront'},
-  {w:368,h:207,label:'FRAMECUT.MOV',sub:'EDITORIAL // 2025',code:'PRJ_06',slug:'frame-cut'},
-  {w:312,h:175,label:'AMV_01.MOV',sub:'AMV // 2025',code:'PRJ_07',slug:'amv-01'},
-  {w:340,h:191,label:'AMV_02.MOV',sub:'AMV // 2024',code:'PRJ_08',slug:'amv-02'},
-  {w:280,h:157,label:'AMV_03.MOV',sub:'AMV // 2025',code:'PRJ_09',slug:'amv-03'},
-  {w:336,h:189,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_10',slug:'reel'},
-  {w:300,h:169,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_11',slug:'doom'},
-  {w:372,h:209,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_12',slug:'corsair-storefront'},
-  {w:286,h:161,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_13',slug:'cyberpunk-2077'},
-  {w:348,h:196,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_14',slug:'witcher'},
-  {w:316,h:178,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_15',slug:'fallout-nuka-cola'},
-  {w:360,h:203,label:'FRAMECUT.MOV',sub:'EDITORIAL // 2025',code:'PRJ_16',slug:'frame-cut'},
-  {w:294,h:166,label:'AMV_01.MOV',sub:'AMV // 2025',code:'PRJ_17',slug:'amv-01'},
-  {w:330,h:186,label:'AMV_02.MOV',sub:'AMV // 2024',code:'PRJ_18',slug:'amv-02'},
-  {w:288,h:162,label:'AMV_03.MOV',sub:'AMV // 2025',code:'PRJ_19',slug:'amv-03'},
+var INTRO_SOURCE_POOL = [
+  {label:'REEL_2025.MOV',sub:'FEATURED // LIVE',slug:'reel',w:432,h:243,code:'PRJ_00'},
+  {label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',slug:'cyberpunk-2077',w:320,h:180,code:'PRJ_01'},
+  {label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',slug:'fallout-nuka-cola',w:384,h:216,code:'PRJ_02'},
+  {label:'DOOM.MOV',sub:'EDITORIAL // 2025',slug:'doom',w:288,h:162,code:'PRJ_03'},
+  {label:'WITCHER.MOV',sub:'NARRATIVE // 2025',slug:'witcher',w:352,h:198,code:'PRJ_04'},
+  {label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',slug:'corsair-storefront',w:304,h:171,code:'PRJ_05'},
+  {label:'FRAMECUT.MOV',sub:'EDITORIAL // 2025',slug:'frame-cut',w:368,h:207,code:'PRJ_06'},
+  {label:'AMV_01.MOV',sub:'AMV // 2025',slug:'amv-01',w:312,h:175,code:'PRJ_07'},
+  {label:'AMV_02.MOV',sub:'AMV // 2024',slug:'amv-02',w:340,h:191,code:'PRJ_08'},
+  {label:'AMV_03.MOV',sub:'AMV // 2025',slug:'amv-03',w:280,h:157,code:'PRJ_09'},
 ];
+var INTRO_WINDOWS = buildIntroWindows();
+
+function buildIntroWindows() {
+  var order = [0, 6, 2, 8, 4, 1, 7, 3, 9, 5];
+  var scales = [
+    {w:1.00, h:1.00},
+    {w:0.93, h:0.95},
+    {w:1.05, h:0.91},
+    {w:0.88, h:1.03}
+  ];
+  var windows = [];
+  var idx = 0;
+  for(var pass = 0; pass < 4; pass++) {
+    for(var n = 0; n < order.length; n++) {
+      var src = INTRO_SOURCE_POOL[order[n]];
+      var scale = scales[pass];
+      var w = Math.round(src.w * scale.w + rnd(-10, 10));
+      var h = Math.round(src.h * scale.h + rnd(-6, 8));
+      windows.push({
+        w:w,
+        h:h,
+        label:src.label,
+        sub:src.sub,
+        code:'PRJ_'+String(idx).padStart(2,'0'),
+        slug:src.slug,
+        group:Math.floor(idx / 5),
+        slot:idx % 5
+      });
+      idx++;
+    }
+  }
+  return windows;
+}
 
 function rnd(a,b){return Math.floor(Math.random()*(b-a))+a;}
 
 function placeIntroWindow(i, cfg, vw, vh) {
-  var gap = 18;
-  var cx = vw * 0.5;
-  var cy = vh * 0.48;
+  var gap = 10;
   var anchors = [
-    {x:0.12, y:0.14},
-    {x:0.32, y:0.12},
-    {x:0.52, y:0.14},
-    {x:0.72, y:0.12},
-    {x:0.88, y:0.15},
-    {x:0.10, y:0.34},
-    {x:0.30, y:0.32},
-    {x:0.52, y:0.34},
-    {x:0.74, y:0.32},
-    {x:0.90, y:0.36},
-    {x:0.14, y:0.56},
-    {x:0.34, y:0.54},
-    {x:0.56, y:0.56},
-    {x:0.76, y:0.54},
-    {x:0.88, y:0.58},
-    {x:0.12, y:0.78},
-    {x:0.32, y:0.76},
-    {x:0.54, y:0.78},
-    {x:0.74, y:0.76},
-    {x:0.90, y:0.80}
+    {x:0.16, y:0.18},
+    {x:0.36, y:0.14},
+    {x:0.58, y:0.18},
+    {x:0.80, y:0.14},
+    {x:0.18, y:0.40},
+    {x:0.40, y:0.36},
+    {x:0.62, y:0.40},
+    {x:0.84, y:0.36}
   ];
-  var a = anchors[i % anchors.length];
-  var x = Math.round(vw * a.x - cfg.w * 0.5 + rnd(-16, 16));
-  var y = Math.round(vh * a.y - cfg.h * 0.5 + rnd(-14, 14));
-
-  // Push anything that drifts too close to the center back into the ring.
-  var dx = (x + cfg.w * 0.5) - cx;
-  var dy = (y + cfg.h * 0.5) - cy;
-  var dist = Math.sqrt(dx * dx + dy * dy);
-  var minDist = Math.max(cfg.w, cfg.h) * 0.42;
-  if(dist < minDist) {
-    var angle = Math.atan2(dy || 1, dx || 1);
-    var push = minDist - dist + 12;
-    x += Math.cos(angle) * push;
-    y += Math.sin(angle) * push;
-  }
+  var cluster = anchors[cfg.group % anchors.length];
+  var clusterOffsets = [
+    {x:-112, y:-72},
+    {x:-42, y:-24},
+    {x:0, y:0},
+    {x:36, y:18},
+    {x:92, y:52}
+  ];
+  var offset = clusterOffsets[cfg.slot % clusterOffsets.length];
+  var x = Math.round(vw * cluster.x - cfg.w * 0.5 + offset.x + rnd(-18, 18));
+  var y = Math.round(vh * cluster.y - cfg.h * 0.5 + offset.y + rnd(-14, 14));
 
   x = Math.max(gap, Math.min(x, vw - cfg.w - gap));
   y = Math.max(gap, Math.min(y, vh - cfg.h - gap));
@@ -1956,6 +1961,7 @@ function runIntro() {
   var container = document.getElementById('intro-windows');
   var vw = window.innerWidth, vh = window.innerHeight;
   INTRO_WINDOWS.forEach(function(cfg,i){
+    var delay = cfg.group * 140 + cfg.slot * 22 + rnd(-8, 28);
     setTimeout(function(){
       var el = document.createElement('div');
       el.className = 'iwin';
@@ -1963,16 +1969,18 @@ function runIntro() {
       var x = pos.x;
       var y = pos.y;
       var project = getProjectBySlug(cfg.slug);
-      el.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+cfg.w+'px;height:'+cfg.h+'px;display:flex;flex-direction:column;';
+      el.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+cfg.w+'px;height:'+cfg.h+'px;display:flex;flex-direction:column;z-index:'+(80 + cfg.group*8 + cfg.slot)+';';
       el.innerHTML = '<div class="iwin-bar"><div class="iwin-bar-l"><span class="iwin-x">×</span><span>'+cfg.label+'</span></div><span>'+cfg.sub+'</span></div>'
         +'<div class="iwin-media" style="flex:1;"><div class="iwin-ph"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="1" y="1" width="30" height="30" stroke="white" stroke-width="1"/><polygon points="12,8 26,16 12,24" fill="white"/></svg><span>'+cfg.code+'</span></div></div>'
         +'<div class="iwin-tc"><span>00:00:00:00</span><span>'+cfg.label+'</span></div>';
       container.appendChild(el);
       mountIntroMedia(el.querySelector('.iwin-media'), project || REEL);
       requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('pop');});});
-    }, i*380);
+    }, delay);
   });
-  var glitchStart = (INTRO_WINDOWS.length-1)*380+600;
+  var glitchStart = Math.max.apply(Math, INTRO_WINDOWS.map(function(cfg){
+    return cfg.group * 140 + cfg.slot * 22;
+  })) + 680;
   setTimeout(runGlitch, glitchStart);
   setTimeout(showName, glitchStart+320);
   setTimeout(endIntro, glitchStart+3200);
