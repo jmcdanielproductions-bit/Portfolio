@@ -335,69 +335,98 @@ body{
     linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
 }
 #page-home.viewer-page.active{display:flex;}
-.home-hero{
-  position:relative;
-  min-height:calc(100vh - var(--chrome-h) - var(--task-h) - 122px);
+.home-signature{
+  display:flex;
+  flex-direction:column;
+  margin-bottom:14px;
+}
+.home-signature .wbody{
+  min-height:190px;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-bottom:18px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
-}
-.home-hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
+  text-align:center;
+  padding:36px 20px;
   background:
     radial-gradient(circle at 50% 50%, rgba(255,255,255,.08) 0, rgba(255,255,255,0) 34%),
     repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px);
-  opacity:.55;
-  mix-blend-mode:screen;
-  pointer-events:none;
+    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px),
+    linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
+  position:relative;
+  overflow:hidden;
 }
-.home-hero::after{
+.home-signature .wbody::before{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg,rgba(22,62,188,.16),rgba(5,5,7,0) 26%,rgba(5,5,7,0) 74%,rgba(5,5,7,.18));
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 45%,rgba(0,0,0,.10));
   pointer-events:none;
 }
-.home-hero-copy{
+.home-signature-inner{
   position:relative;
   z-index:1;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  text-align:center;
   gap:10px;
-  transform:translateY(-2%);
 }
-.home-hero-kicker{
+.home-signature-kicker{
   font-family:var(--mono);
   font-size:8px;
-  letter-spacing:.42em;
+  letter-spacing:.46em;
   text-transform:uppercase;
-  color:rgba(255,255,255,.42);
+  color:rgba(255,255,255,.45);
 }
-.home-hero-name{
+.home-signature-name{
   font-family:var(--display);
-  font-size:clamp(30px,5vw,62px);
+  font-size:clamp(28px,4.6vw,58px);
   line-height:1.05;
   color:var(--white);
   text-transform:uppercase;
-  text-shadow:0 0 18px rgba(255,255,255,.08);
+  text-shadow:0 0 14px rgba(255,255,255,.08);
 }
-.home-hero-role{
+.home-signature-role{
   font-family:var(--mono);
   font-size:clamp(8px,1vw,11px);
   letter-spacing:.42em;
   text-transform:uppercase;
   color:rgba(255,255,255,.52);
   padding-left:.42em;
+}
+#page-home .home-signature,
+#page-home .viewer-shell,
+#page-home .hero-wrap,
+#page-home .stills-wrap{
+  margin-left:0;
+  margin-right:0;
+}
+#page-home .viewer-frame,
+#page-home .win{
+  border:2px solid var(--white);
+  background:var(--black);
+}
+#page-home .wbar{
+  background:var(--white);
+  color:var(--black);
+  border-bottom:2px solid var(--white);
+}
+#page-home .wbar .wx{
+  border-color:var(--black);
+}
+#page-home .wbar .wx:hover{
+  background:var(--black);
+  color:var(--white);
+}
+#page-home .viewer-frame{
+  border-top:none;
+  border-bottom:none;
+  box-shadow:none;
+}
+#page-home .viewer-media::after{
+  box-shadow:inset 0 -140px 160px rgba(0,0,0,.95);
+}
+#page-home .viewer-overlay{
+  mix-blend-mode:normal;
 }
 .viewer-shell{
   width:100%;
@@ -1303,13 +1332,16 @@ body{
     <div class="page-stage" id="page-stage">
     <!-- HOME -->
     <div class="page-view viewer-page active" id="page-home">
-      <section class="home-hero">
-        <div class="home-hero-copy">
-          <p class="home-hero-kicker">JD_SYS.EXE</p>
-          <h1 class="home-hero-name">JARED<br>McDANIEL</h1>
-          <p class="home-hero-role">DIRECTOR / EDITOR</p>
+      <div class="win home-signature">
+        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>JARED_MCDANIEL.SYS</span></div><span>DIRECTOR // EDITOR</span></div>
+        <div class="wbody">
+          <div class="home-signature-inner">
+            <p class="home-signature-kicker">JD_SYS.EXE</p>
+            <h1 class="home-signature-name">JARED<br>McDANIEL</h1>
+            <p class="home-signature-role">DIRECTOR / EDITOR</p>
+          </div>
         </div>
-      </section>
+      </div>
       <section class="viewer-shell">
         <div class="viewer-frame" id="viewer-frame">
           <div class="viewer-media" id="viewer-media">
