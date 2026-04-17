@@ -59,9 +59,9 @@ body{
 }
 
 #main-shell{
+  height:100vh;
   margin-left:10vw;
   margin-right:10vw;
-  min-height:100%;
   position:relative;
   z-index:1;
 }
@@ -124,7 +124,7 @@ body{
 .mob-nav-divider{height:1px;background:rgba(255,255,255,.1);margin:4px 0;}
 
 /* DESKTOP */
-#desk{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 18px 44px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent;display:flex;flex-direction:column;align-items:center;position:relative;}
+#desk{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:14px 18px 44px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent;display:flex;flex-direction:column;align-items:center;position:relative;}
 #desk::before{content:"";position:fixed;inset:var(--chrome-h) 0 var(--task-h);pointer-events:none;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 15%,rgba(255,255,255,0) 85%,rgba(255,255,255,.02));opacity:.7;}
 #desk > *{position:relative;z-index:1;}
 #desk > .page-view{width:var(--content-width);}
