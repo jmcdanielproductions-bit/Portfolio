@@ -1849,25 +1849,45 @@ var INTRO_WINDOWS = [
   {w:312,h:175,label:'AMV_01.MOV',sub:'AMV // 2025',code:'PRJ_07',slug:'amv-01'},
   {w:340,h:191,label:'AMV_02.MOV',sub:'AMV // 2024',code:'PRJ_08',slug:'amv-02'},
   {w:280,h:157,label:'AMV_03.MOV',sub:'AMV // 2025',code:'PRJ_09',slug:'amv-03'},
+  {w:336,h:189,label:'REEL_2025.MOV',sub:'FEATURED // LIVE',code:'PRJ_10',slug:'reel'},
+  {w:300,h:169,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_11',slug:'doom'},
+  {w:372,h:209,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_12',slug:'corsair-storefront'},
+  {w:286,h:161,label:'CYBERPUNK.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_13',slug:'cyberpunk-2077'},
+  {w:348,h:196,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_14',slug:'witcher'},
+  {w:316,h:178,label:'FALLOUT.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_15',slug:'fallout-nuka-cola'},
+  {w:360,h:203,label:'FRAMECUT.MOV',sub:'EDITORIAL // 2025',code:'PRJ_16',slug:'frame-cut'},
+  {w:294,h:166,label:'AMV_01.MOV',sub:'AMV // 2025',code:'PRJ_17',slug:'amv-01'},
+  {w:330,h:186,label:'AMV_02.MOV',sub:'AMV // 2024',code:'PRJ_18',slug:'amv-02'},
+  {w:288,h:162,label:'AMV_03.MOV',sub:'AMV // 2025',code:'PRJ_19',slug:'amv-03'},
 ];
 
 function rnd(a,b){return Math.floor(Math.random()*(b-a))+a;}
 
 function placeIntroWindow(i, cfg, vw, vh) {
-  var gap = 28;
+  var gap = 18;
   var cx = vw * 0.5;
   var cy = vh * 0.48;
   var anchors = [
-    {x:0.31, y:0.28},
-    {x:0.69, y:0.28},
-    {x:0.28, y:0.50},
-    {x:0.72, y:0.50},
-    {x:0.36, y:0.70},
-    {x:0.64, y:0.70},
-    {x:0.18, y:0.18},
-    {x:0.82, y:0.18},
-    {x:0.18, y:0.82},
-    {x:0.82, y:0.82}
+    {x:0.12, y:0.14},
+    {x:0.32, y:0.12},
+    {x:0.52, y:0.14},
+    {x:0.72, y:0.12},
+    {x:0.88, y:0.15},
+    {x:0.10, y:0.34},
+    {x:0.30, y:0.32},
+    {x:0.52, y:0.34},
+    {x:0.74, y:0.32},
+    {x:0.90, y:0.36},
+    {x:0.14, y:0.56},
+    {x:0.34, y:0.54},
+    {x:0.56, y:0.56},
+    {x:0.76, y:0.54},
+    {x:0.88, y:0.58},
+    {x:0.12, y:0.78},
+    {x:0.32, y:0.76},
+    {x:0.54, y:0.78},
+    {x:0.74, y:0.76},
+    {x:0.90, y:0.80}
   ];
   var a = anchors[i % anchors.length];
   var x = Math.round(vw * a.x - cfg.w * 0.5 + rnd(-16, 16));
@@ -1877,7 +1897,7 @@ function placeIntroWindow(i, cfg, vw, vh) {
   var dx = (x + cfg.w * 0.5) - cx;
   var dy = (y + cfg.h * 0.5) - cy;
   var dist = Math.sqrt(dx * dx + dy * dy);
-  var minDist = Math.max(cfg.w, cfg.h) * 0.62;
+  var minDist = Math.max(cfg.w, cfg.h) * 0.42;
   if(dist < minDist) {
     var angle = Math.atan2(dy || 1, dx || 1);
     var push = minDist - dist + 12;
