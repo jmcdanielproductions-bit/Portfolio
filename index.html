@@ -127,7 +127,6 @@ body{
 #desk{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 18px 44px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent;display:flex;flex-direction:column;align-items:center;position:relative;}
 #desk::before{content:"";position:fixed;inset:var(--chrome-h) 0 var(--task-h);pointer-events:none;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 15%,rgba(255,255,255,0) 85%,rgba(255,255,255,.02));opacity:.7;}
 #desk > *{position:relative;z-index:1;}
-#desk > .ticker,
 #desk > .page-view{width:var(--content-width);}
 #desk > .surface-ribbon{
   width:var(--content-width);
@@ -149,11 +148,6 @@ body{
 .pt-bar-wrap{width:200px;height:2px;background:rgba(255,255,255,.1);border:1px solid var(--white);margin-top:12px;overflow:hidden;}
 .pt-bar{height:100%;background:var(--white);animation:pt-fill 350ms linear both;}
 @keyframes pt-fill{from{width:0%;}to{width:100%;}}
-
-/* TICKER */
-.ticker{overflow:hidden;border-top:1px solid rgba(255,255,255,.2);border-bottom:1px solid rgba(255,255,255,.2);padding:7px 0;margin-bottom:16px;-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 5%,black 95%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,black 5%,black 95%,transparent 100%);}
-.ticker-in{display:inline-flex;gap:44px;white-space:nowrap;min-width:max-content;animation:tick 32s linear infinite;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.8);}
-@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* COLLABORATOR CAROUSEL */
 .surface-ribbon{
@@ -221,7 +215,7 @@ body{
 /* REEL */
 .reel-win{display:flex;flex-direction:column;margin-bottom:0;}
 .reel-win .wbody{padding:0;flex:1;display:flex;flex-direction:column;}
-.reel-frame{flex:1;min-height:0;aspect-ratio:16/9;max-height:560px;background:#050505;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:crosshair;}
+.reel-frame{flex:1;min-height:0;aspect-ratio:16 / 9;background:#050505;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:crosshair;}
 .reel-frame::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);pointer-events:none;z-index:2;}
 .reel-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:1;transition:opacity 150ms;}
 .reel-placeholder.has-thumb{justify-content:flex-start;gap:0;background:#050505;}
@@ -452,7 +446,7 @@ body{
 .cs-hero{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;}
 .cs-video{border:2px solid var(--white);aspect-ratio:16/9;overflow:hidden;background:#050505;position:relative;cursor:crosshair;}
 .cs-video.has-thumb .cs-video-ph{display:none;}
-.cs-video iframe,.cs-video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:none;}
+.cs-video iframe,.cs-video img,.cs-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:none;}
 .cs-video-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
 .cs-video-ph svg{opacity:.2;}
 .cs-video-ph span{font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.3);text-transform:uppercase;}
@@ -587,7 +581,7 @@ body{
   .about-stats{grid-template-columns:1fr 1fr;}
 }
 @media (prefers-reduced-motion: reduce){
-  .archive-track,.stills-strip,.ticker-in{animation:none;}
+  .archive-track,.stills-strip{animation:none;}
 }
 </style>
 </head>
@@ -664,8 +658,6 @@ body{
       <span class="surface-label">WORKED WITH //</span>
       <div class="collab-marquee"><div class="collab-in" id="collab-in"></div></div>
     </div>
-    <div class="ticker"><div class="ticker-in" id="ticker-in"></div></div>
-
     <!-- HOME -->
     <div class="page-view active" id="page-home">
       <div class="win sg">
@@ -1118,7 +1110,6 @@ var COLLABS=[
   'BRANDED CONTENT / EDIT',
   'NARRATIVE CREW / FILM'
 ];
-var TICKER=['CD PROJEKT RED','CYBERPUNK 2077','CORSAIR','BETHESDA','FALLOUT','THE WITCHER','DOOM','COMMERCIAL','NARRATIVE','MOTION DESIGN','EDITORIAL','DIRECTION'];
 var homeSignalBase = null;
 function applyVideoLinks() {
   var src = window.VIDEO_LINKS || {};
@@ -1948,9 +1939,7 @@ function init() {
   );
   homeSignalBase = REEL;
   syncHomeSignal(REEL);
-  // ticker
   document.getElementById('collab-in').innerHTML = COLLABS.concat(COLLABS,COLLABS).map(function(t){return'<span>'+t+'</span>';}).join('');
-  document.getElementById('ticker-in').innerHTML = TICKER.concat(TICKER,TICKER).map(function(t){return'<span>'+t+'</span>';}).join('');
 
   // stills strip
   var ss = document.getElementById('stills-strip');
