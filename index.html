@@ -1845,6 +1845,10 @@ var INTRO_WINDOWS = [
   {w:288,h:162,label:'DOOM.MOV',sub:'EDITORIAL // 2025',code:'PRJ_03',slug:'doom'},
   {w:352,h:198,label:'WITCHER.MOV',sub:'NARRATIVE // 2025',code:'PRJ_04',slug:'witcher'},
   {w:304,h:171,label:'CORSAIR.MOV',sub:'COMMERCIAL // 2025',code:'PRJ_05',slug:'corsair-storefront'},
+  {w:368,h:207,label:'FRAMECUT.MOV',sub:'EDITORIAL // 2025',code:'PRJ_06',slug:'frame-cut'},
+  {w:312,h:175,label:'AMV_01.MOV',sub:'AMV // 2025',code:'PRJ_07',slug:'amv-01'},
+  {w:340,h:191,label:'AMV_02.MOV',sub:'AMV // 2024',code:'PRJ_08',slug:'amv-02'},
+  {w:280,h:157,label:'AMV_03.MOV',sub:'AMV // 2025',code:'PRJ_09',slug:'amv-03'},
 ];
 
 function rnd(a,b){return Math.floor(Math.random()*(b-a))+a;}
@@ -1859,7 +1863,11 @@ function placeIntroWindow(i, cfg, vw, vh) {
     {x:0.28, y:0.50},
     {x:0.72, y:0.50},
     {x:0.36, y:0.70},
-    {x:0.64, y:0.70}
+    {x:0.64, y:0.70},
+    {x:0.18, y:0.18},
+    {x:0.82, y:0.18},
+    {x:0.18, y:0.82},
+    {x:0.82, y:0.82}
   ];
   var a = anchors[i % anchors.length];
   var x = Math.round(vw * a.x - cfg.w * 0.5 + rnd(-16, 16));
