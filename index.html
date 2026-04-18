@@ -292,11 +292,8 @@ body{
 #desk{
   flex:1;
   min-height:0;
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding:14px 18px 18px;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,.3) transparent;
+  overflow:hidden;
+  padding:0;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -316,12 +313,13 @@ body{
 #desk > *{position:relative;z-index:1;}
 #desk > .surface-ribbon{width:var(--content-width);}
 .page-stage{
-  position:relative;
   flex:1;
   min-height:0;
   width:100%;
-  display:flex;
-  justify-content:center;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.3) transparent;
 }
 #desk > .surface-ribbon{
   width:var(--content-width);
@@ -329,19 +327,8 @@ body{
   margin-right:0;
 }
 #page-home.viewer-page{
-  width:var(--content-width);
-  min-height:0;
-  display:flex;
-  flex-direction:column;
-  gap:0;
-  background:
-    radial-gradient(circle at 20% 18%, rgba(255,255,255,.08) 0, rgba(255,255,255,0) 22%),
-    radial-gradient(circle at 82% 28%, rgba(255,255,255,.05) 0, rgba(255,255,255,0) 18%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 32px),
-    linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
+  padding:0;
 }
-#page-home.viewer-page.active{display:flex;}
 #page-home .viewer-shell,
 #page-home .hero-wrap{
   margin-left:0;
@@ -358,29 +345,20 @@ body{
 #page-home .win{
   margin-bottom:10px;
 }
-#page-home .viewer-frame,
-#page-home .win{
-  border:2px solid var(--white);
-  background:var(--black);
-}
-#page-home .wbar{
-  background:var(--white);
-  color:var(--black);
-  border-bottom:2px solid var(--white);
-}
-#page-home .wbar .wx{
-  border-color:var(--black);
-}
-#page-home .wbar .wx:hover{
-  background:var(--black);
-  color:var(--white);
-}
 #page-home .viewer-frame{
-  border-top:none;
-  border-bottom:none;
+  border:none;
   box-shadow:none;
   flex:0 0 auto;
-  height:clamp(150px, 22vh, 220px);
+  width:100%;
+  aspect-ratio:16/9;
+  height:auto;
+  max-height:clamp(320px,52vh,560px);
+}
+.viewer-shell.win{
+  margin-bottom:14px;
+}
+.viewer-shell.win .viewer-frame{
+  border:none;
 }
 #page-home .reel-win .wbody{
   padding:0;
@@ -752,51 +730,45 @@ body{
 @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* WINDOW */
-.win{position:relative;border:1px solid rgba(59,130,246,.24);background:linear-gradient(180deg,rgba(4,7,14,.98),rgba(5,6,12,.92));margin-bottom:14px;transition:box-shadow 200ms ease,border-color 200ms ease,transform 200ms ease;}
-.win:hover{box-shadow:0 0 0 1px rgba(59,130,246,.12),0 18px 40px rgba(0,0,0,.44);border-color:rgba(59,130,246,.42);transform:translateY(-1px);}
+.win{position:relative;border:1px solid rgba(255,255,255,.22);background:rgba(2,4,12,.96);margin-bottom:14px;transition:box-shadow 180ms ease,border-color 180ms ease;}
+.win:hover{border-color:rgba(255,255,255,.42);box-shadow:0 0 0 1px rgba(20,68,212,.35),0 14px 36px rgba(0,0,0,.55);}
+.viewer-shell.win:hover{transform:none;box-shadow:none;border-color:rgba(255,255,255,.22);}
 .wbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  min-height:24px;
+  min-height:26px;
   padding:0 10px;
-  background:linear-gradient(180deg,rgba(14,24,46,.98),rgba(9,15,30,.96));
-  color:rgba(229,243,255,.94);
-  border-bottom:1px solid rgba(59,130,246,.26);
+  background:rgba(6,12,30,.98);
+  color:rgba(255,255,255,.88);
+  border-bottom:1px solid rgba(255,255,255,.15);
   font-size:8px;
   letter-spacing:.2em;
   text-transform:uppercase;
+  font-family:var(--mono);
 }
 .wbar-l{display:flex;align-items:center;gap:8px;}
-.wx{width:14px;height:14px;border:1px solid var(--black);display:inline-flex;align-items:center;justify-content:center;font-size:8px;cursor:crosshair;transition:all 80ms;flex-shrink:0;}
-.wx:hover{background:var(--black);color:var(--white);transform:scale(1.15);}
+.wx{width:14px;height:14px;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.6);display:inline-flex;align-items:center;justify-content:center;font-size:8px;cursor:crosshair;transition:all 80ms;flex-shrink:0;}
+.wx:hover{background:rgba(255,255,255,.15);color:var(--white);border-color:rgba(255,255,255,.7);}
 .wbody{padding:14px 16px;}
-.lbl{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(148,192,255,.5);margin-bottom:12px;}
+.lbl{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(148,192,255,.55);margin-bottom:12px;}
 
 /* PAGE VIEWS */
 .page-view{
-  position:absolute;
-  inset:0;
+  display:none;
+  flex-direction:column;
   width:var(--content-width);
   margin-inline:auto;
+  padding:14px 0 48px;
   min-height:100%;
-  overflow-y:auto;
-  overflow-x:hidden;
-  display:flex;
-  flex-direction:column;
-  gap:0;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transform:translateY(18px) scale(.992);
-  transition:opacity 260ms var(--ease-standard), transform 260ms var(--ease-standard), visibility 0s linear 260ms;
 }
 .page-view.active{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-  transform:translateY(0) scale(1);
-  transition:opacity 260ms var(--ease-standard), transform 260ms var(--ease-standard), visibility 0s;
+  display:flex;
+  animation:page-in 200ms var(--ease-standard) both;
+}
+@keyframes page-in{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 /* HERO */
@@ -1299,7 +1271,8 @@ body{
     <div class="page-stage" id="page-stage">
     <!-- HOME -->
     <div class="page-view viewer-page active" id="page-home">
-            <section class="viewer-shell">
+            <section class="viewer-shell win">
+        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span id="viewer-win-title">FEATURED.MOV</span></div><span id="viewer-win-status">FEATURED // LIVE</span></div>
         <div class="viewer-frame" id="viewer-frame">
           <div class="viewer-media" id="viewer-media">
             <div class="viewer-ph" id="viewer-ph">
@@ -1336,33 +1309,6 @@ body{
         </div>
       </section>
             <div class="hero-wrap sg">
-        <div class="win reel-win">
-          <div class="wbar">
-            <div class="wbar-l"><span class="wx">×</span><span id="reel-win-label">FEATURED_REEL.MOV</span></div>
-            <span id="reel-win-status">REEL_2025 // LIVE</span>
-          </div>
-          <div class="wbody">
-            <div class="reel-frame" id="reel-frame">
-              <button class="preview-fs" id="reel-fullscreen-btn" type="button" aria-label="Open in cinema">⛶</button>
-              <div class="reel-placeholder" id="reel-ph">
-                <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="1" y="1" width="50" height="50" stroke="white" stroke-width="1.5"/><polygon points="20,14 40,26 20,38" fill="white"/></svg>
-                <span id="reel-ph-label">INSERT REEL // 16:9</span>
-              </div>
-              <div class="reel-hud">
-                <span class="reel-tc" id="reel-tc">00:00:00:00</span>
-                <span class="reel-rec"><span class="reel-dot"></span>REC</span>
-                <span class="reel-tc" id="reel-hud-label">REEL_2025.MOV</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-              <div class="reel-nav">
-        <button class="reel-nav-arrow" onclick="stepFeatured(-1)">←</button>
-        <button class="reel-nav-arrow" onclick="stepFeatured(1)">→</button>
-      </div>
-
-      
       <div class="win">
         <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ARCHIVE.DAT</span></div><span id="archive-count">SELECTED WORK // 0 FILES</span></div>
         <div class="wbody">
@@ -1373,6 +1319,7 @@ body{
         </div>
       </div>
     </div>
+    </div><!-- /page-home -->
 
     <!-- DIRECTION -->
     <div class="page-view" id="page-direction">
@@ -2189,6 +2136,10 @@ function setFeatured(idx) {
     var embedUrl = mediaData.embed;
     if(topCode) topCode.textContent = (item.code || 'REEL_2025') + '.MOV';
     if(topMeta) topMeta.textContent = (item.cat || 'FILE') + ' // ' + (item.year || 'LIVE');
+    var winTitle = document.getElementById('viewer-win-title');
+    var winStatus = document.getElementById('viewer-win-status');
+    if(winTitle) winTitle.textContent = (item.code || 'REEL_2025') + '.MOV';
+    if(winStatus) winStatus.textContent = (item.cat || 'FEATURED') + ' // ' + (item.year || 'LIVE');
     if(kicker) kicker.textContent = isReel ? 'FEATURED // LIVE' : (item.cat || 'FILE') + ' // ' + (item.year || 'LIVE');
     if(title) title.textContent = item.title || 'DIRECTOR\'S REEL';
     if(role) role.textContent = item.role || '';
@@ -2773,13 +2724,18 @@ function endIntro() {
 function init() {
   syncPortfolioAliases();
   document.getElementById('viewer-clock-top').textContent = '00:00:00';
-  document.getElementById('collab-in').innerHTML = COLLABS.concat(COLLABS).map(function(t){return'<span>'+t+'</span>';}).join('');
+  var collabEl = document.getElementById('collab-in');
+  if(collabEl && typeof COLLABS !== 'undefined') collabEl.innerHTML = COLLABS.concat(COLLABS).map(function(t){return'<span>'+t+'</span>';}).join('');
   updateViewerCategoryLabels();
   selectViewerCategory('direction');
   syncViewerTabs('home');
   renderGrid('direction-grid', ALL_PROJECTS.direction);
   renderGrid('films-grid', ALL_PROJECTS.films);
   renderGrid('amvs-grid', ALL_PROJECTS.amvs);
+  var allProjects = getPortfolioProjects();
+  renderArchiveRail('home-grid', allProjects);
+  var archiveCount = document.getElementById('archive-count');
+  if(archiveCount) archiveCount.textContent = 'SELECTED WORK // ' + allProjects.length + ' FILES';
   // skills
   function skCard(s){return'<div class="sk"><p class="sk-name">'+s.n+'</p><p class="sk-pct">'+s.lvl+'%</p><div class="sk-track"><div class="sk-fill" style="width:'+s.lvl+'%"></div></div><p class="sk-items">'+s.items+'</p></div>';}
   document.getElementById('sgrid-top').innerHTML = SKILLS.slice(0,2).map(skCard).join('');
