@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>List Row Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1444d4;--white:#f0f0eb;--black:#000;
+  --mono:"IBM Plex Mono",monospace;--display:"Press Start 2P",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.055) 0,rgba(255,255,255,.055) 1px,transparent 1px,transparent 30px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.055) 0,rgba(255,255,255,.055) 1px,transparent 1px,transparent 30px),
+    var(--blue);
+  min-height:100vh;
+  font-family:var(--mono);
+  color:var(--white);
+  padding:48px 60px 80px;
+  cursor:crosshair;
+}
+
+/* ── PAGE LABEL ── */
+.section-label{
+  font-size:8px;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+  border-bottom:1px solid rgba(255,255,255,.12);
+  padding-bottom:10px;
+  width:100%;max-width:900px;
+  margin:0 auto 36px;
+}
+.section-label + .section-label{margin-top:48px;}
+
+/* ── WIN CARD ── */
+.win{
+  width:100%;max-width:900px;
+  margin:0 auto 48px;
+  border:1px solid rgba(255,255,255,.65);
+  background:rgba(2,4,12,.96);
+  box-shadow:4px 4px 0 #f0f0eb,0 8px 28px rgba(0,0,0,.55);
+}
+.wbar{
+  display:flex;align-items:center;justify-content:space-between;
+  height:32px;padding:0 12px;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+}
+.wbar-l{display:flex;align-items:center;gap:10px;}
+.wx{
+  width:22px;height:22px;border:1px solid rgba(255,255,255,.4);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;cursor:crosshair;color:var(--white);
+  transition:background 80ms,color 80ms;
+}
+.wx:hover{background:var(--white);color:var(--black);}
+.page-label{font-size:8px;letter-spacing:.26em;color:rgba(255,255,255,.5);}
+
+/* ── COLUMN HEADERS ── */
+.vlist-header{
+  display:grid;
+  grid-template-columns:28px 6px 90px 1fr 90px 52px 120px;
+  align-items:center;
+  gap:0 14px;
+  padding:8px 16px 8px 14px;
+  border-bottom:1px solid rgba(255,255,255,.18);
+  font-size:7px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+}
+
+/* ── LIST ROW ── */
+.vrow{
+  display:grid;
+  grid-template-columns:28px 6px 90px 1fr 90px 52px 120px;
+  align-items:center;
+  gap:0 14px;
+  padding:10px 16px 10px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  cursor:crosshair;
+  position:relative;
+  transition:
+    background 80ms,
+    border-color 80ms,
+    transform 100ms,
+    box-shadow 100ms;
+}
+.vrow:last-child{border-bottom:none;}
+.vrow:hover{
+  background:rgba(255,255,255,.04);
+  border-color:rgba(255,255,255,.55);
+  transform:translate(-2px,-2px);
+  box-shadow:2px 2px 0 #f0f0eb;
+  border-bottom-color:rgba(255,255,255,.55);
+  z-index:2;
+}
+
+/* row number */
+.vrow-num{
+  font-size:9px;letter-spacing:.1em;
+  color:rgba(255,255,255,.2);
+  transition:color 80ms;
+  font-variant-numeric:tabular-nums;
+  text-align:right;
+}
+.vrow:hover .vrow-num{color:var(--white);}
+
+/* status pip */
+.vrow-pip{
+  width:5px;height:5px;
+  background:var(--white);
+  flex-shrink:0;
+  align-self:center;
+}
+.vrow-pip.dim{background:rgba(255,255,255,.18);}
+
+/* thumbnail */
+.vrow-thumb{
+  width:90px;height:54px;
+  overflow:hidden;position:relative;flex-shrink:0;
+  border:1px solid rgba(255,255,255,.15);
+  background:#050510;
+}
+.vrow-thumb img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(0.4) brightness(0.85);
+  transition:filter 220ms ease;
+  display:block;
+}
+/* scanline overlay */
+.vrow-thumb::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,.38) 2px,rgba(0,0,0,.38) 4px
+  );
+  opacity:1;
+  transition:opacity 220ms ease;
+}
+.vrow:hover .vrow-thumb img{filter:saturate(1) brightness(1);}
+.vrow:hover .vrow-thumb::after{opacity:0;}
+
+/* placeholder thumb */
+.vrow-thumb-ph{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;
+  background:rgba(255,255,255,.03);
+}
+.vrow-thumb-ph svg{opacity:.15;}
+.vrow-thumb-ph span{font-size:6px;letter-spacing:.2em;color:rgba(255,255,255,.15);text-transform:uppercase;}
+
+/* info block */
+.vrow-info{min-width:0;}
+.vrow-title{
+  font-family:var(--display);font-size:8px;
+  color:var(--white);text-transform:uppercase;
+  line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:text-shadow 80ms;
+}
+.vrow:hover .vrow-title{
+  animation:row-glitch 220ms steps(1) both;
+}
+@keyframes row-glitch{
+  0%{text-shadow:none;}
+  10%{text-shadow:3px 0 #ff00cc,-3px 0 #00f0ff;transform:translateX(-2px);}
+  20%{text-shadow:-3px 0 #ff00cc,3px 0 #00f0ff;transform:translateX(2px);}
+  35%{text-shadow:2px 2px #ff00cc,-2px -2px #00f0ff;transform:translate(0,1px);}
+  50%{text-shadow:none;transform:translate(0);}
+  100%{text-shadow:none;transform:translate(0);}
+}
+.vrow-desc{
+  font-size:8px;letter-spacing:.08em;
+  color:rgba(255,255,255,.35);
+  margin-top:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+/* category tag */
+.vrow-cat{
+  display:inline-block;
+  font-size:7px;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.25);
+  padding:3px 6px;
+  color:rgba(255,255,255,.45);
+  white-space:nowrap;
+  transition:border-color 80ms,color 80ms;
+}
+.vrow:hover .vrow-cat{border-color:rgba(255,255,255,.55);color:rgba(255,255,255,.8);}
+
+/* year */
+.vrow-year{
+  font-size:9px;letter-spacing:.1em;
+  color:rgba(255,255,255,.3);
+  text-align:center;
+  transition:color 80ms;
+  font-variant-numeric:tabular-nums;
+}
+.vrow:hover .vrow-year{color:rgba(255,255,255,.7);}
+
+/* execute button */
+.vrow-exec{
+  font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;
+  padding:6px 10px;
+  border:1px solid rgba(255,255,255,.65);
+  background:transparent;color:var(--white);
+  box-shadow:2px 2px 0 #f0f0eb;
+  cursor:crosshair;
+  white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+  opacity:0;
+  transform:translateX(6px);
+  transition:opacity 100ms,transform 100ms,background 80ms,color 80ms;
+}
+.vrow:hover .vrow-exec{opacity:1;transform:translateX(0);}
+.vrow-exec:hover{background:var(--white);color:var(--black);}
+
+/* ── DIVIDER ── */
+.divider{width:100%;max-width:900px;height:1px;background:rgba(255,255,255,.08);margin:12px auto 48px;}
+
+/* note label */
+.note{
+  width:100%;max-width:900px;margin:0 auto 16px;
+  font-size:8px;letter-spacing:.18em;color:rgba(255,255,255,.3);
+  text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     DIRECTION PAGE
+════════════════════════════════════════════ -->
+<p class="section-label">// PAGE: DIRECTION — selected work</p>
+
+<div class="win">
+  <div class="wbar">
+    <div class="wbar-l">
+      <span class="wx">←</span>
+      <span class="page-label">DIRECTION.DAT</span>
+    </div>
+    <span>COMMERCIAL // NARRATIVE // BRANDED</span>
+  </div>
+
+  <!-- column headers -->
+  <div class="vlist-header">
+    <span>#</span>
+    <span></span>
+    <span>THUMB</span>
+    <span>PROJECT</span>
+    <span>CATEGORY</span>
+    <span>YEAR</span>
+    <span></span>
+  </div>
+
+  <!-- row 1 — featured (bright pip) -->
+  <div class="vrow">
+    <span class="vrow-num">001</span>
+    <span class="vrow-pip"></span>
+    <div class="vrow-thumb">
+      <img src="https://picsum.photos/seed/film1/180/108" alt=""/>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">CORSAIR ICUE LINK</div>
+      <div class="vrow-desc">Commercial spot — hardware launch campaign</div>
+    </div>
+    <span class="vrow-cat">BRANDED</span>
+    <span class="vrow-year">2024</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+
+  <!-- row 2 -->
+  <div class="vrow">
+    <span class="vrow-num">002</span>
+    <span class="vrow-pip"></span>
+    <div class="vrow-thumb">
+      <img src="https://picsum.photos/seed/film2/180/108" alt=""/>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">NARRATIVE SHORT — UNTITLED</div>
+      <div class="vrow-desc">Independent narrative, 12 min — festival circuit</div>
+    </div>
+    <span class="vrow-cat">NARRATIVE</span>
+    <span class="vrow-year">2024</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+
+  <!-- row 3 — archived (dim pip) -->
+  <div class="vrow">
+    <span class="vrow-num">003</span>
+    <span class="vrow-pip dim"></span>
+    <div class="vrow-thumb">
+      <!-- placeholder — no image -->
+      <div class="vrow-thumb-ph">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="15" rx="1" stroke="white" stroke-width="1.2"/><path d="M10 9l5 3-5 3V9z" fill="white" opacity=".4"/></svg>
+        <span>NO PREVIEW</span>
+      </div>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">CD PROJEKT RED — COLLAB</div>
+      <div class="vrow-desc">Branded content, game launch — NDA</div>
+    </div>
+    <span class="vrow-cat">COMMERCIAL</span>
+    <span class="vrow-year">2023</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+
+  <!-- row 4 -->
+  <div class="vrow">
+    <span class="vrow-num">004</span>
+    <span class="vrow-pip dim"></span>
+    <div class="vrow-thumb">
+      <img src="https://picsum.photos/seed/film4/180/108" alt=""/>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">SPEC COMMERCIAL — ADIDAS</div>
+      <div class="vrow-desc">Self-initiated spec spot — urban running</div>
+    </div>
+    <span class="vrow-cat">COMMERCIAL</span>
+    <span class="vrow-year">2023</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     FILMS PAGE (edits — 2-col variant concept)
+════════════════════════════════════════════ -->
+<p class="section-label">// PAGE: FILMS — same list layout, different content</p>
+
+<div class="win">
+  <div class="wbar">
+    <div class="wbar-l">
+      <span class="wx">←</span>
+      <span class="page-label">FILMS.DAT</span>
+    </div>
+    <span>FILM EDITS</span>
+  </div>
+
+  <div class="vlist-header">
+    <span>#</span>
+    <span></span>
+    <span>THUMB</span>
+    <span>PROJECT</span>
+    <span>CATEGORY</span>
+    <span>YEAR</span>
+    <span></span>
+  </div>
+
+  <div class="vrow">
+    <span class="vrow-num">001</span>
+    <span class="vrow-pip"></span>
+    <div class="vrow-thumb">
+      <img src="https://picsum.photos/seed/edit1/180/108" alt=""/>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">EVERYTHING EVERYWHERE ALL AT ONCE</div>
+      <div class="vrow-desc">Recut trailer — dramatic restructure</div>
+    </div>
+    <span class="vrow-cat">FILM EDIT</span>
+    <span class="vrow-year">2023</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+
+  <div class="vrow">
+    <span class="vrow-num">002</span>
+    <span class="vrow-pip"></span>
+    <div class="vrow-thumb">
+      <img src="https://picsum.photos/seed/edit2/180/108" alt=""/>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">THE BATMAN — ALTERNATE CUT</div>
+      <div class="vrow-desc">Fan edit — condensed noir restructure</div>
+    </div>
+    <span class="vrow-cat">FILM EDIT</span>
+    <span class="vrow-year">2022</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+
+  <div class="vrow">
+    <span class="vrow-num">003</span>
+    <span class="vrow-pip dim"></span>
+    <div class="vrow-thumb">
+      <img src="https://picsum.photos/seed/edit3/180/108" alt=""/>
+    </div>
+    <div class="vrow-info">
+      <div class="vrow-title">DUNE — TITLES SEQUENCE</div>
+      <div class="vrow-desc">Spec opening sequence — motion typography</div>
+    </div>
+    <span class="vrow-cat">FILM EDIT</span>
+    <span class="vrow-year">2022</span>
+    <button class="vrow-exec">▶ PLAY</button>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     NOTES
+════════════════════════════════════════════ -->
+<p class="note">// BEHAVIORS: hover any row — thumbnail descan + glitch title + row lift + execute reveal</p>
+<p class="note" style="margin-top:8px;">// WHITE PIP = featured/active &nbsp;&nbsp; DIM PIP = archived &nbsp;&nbsp; NO IMAGE = placeholder state</p>
+
+</body>
+</html>
