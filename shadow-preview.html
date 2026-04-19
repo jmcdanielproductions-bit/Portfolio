@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Button Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1444d4;
+  --white:#f0f0eb;
+  --black:#000;
+  --mono:"IBM Plex Mono",monospace;
+  --display:"Press Start 2P",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.055) 0,rgba(255,255,255,.055) 1px,transparent 1px,transparent 30px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.055) 0,rgba(255,255,255,.055) 1px,transparent 1px,transparent 30px),
+    var(--blue);
+  min-height:100vh;
+  font-family:var(--mono);
+  color:var(--white);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0;
+  padding:60px 40px 80px;
+  cursor:crosshair;
+}
+.section-label{
+  font-size:8px;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+  border-bottom:1px solid rgba(255,255,255,.12);
+  padding-bottom:10px;
+  width:100%;max-width:860px;
+  text-align:left;
+  margin-bottom:36px;
+}
+.section-label + .section-label{margin-top:48px;}
+.row{
+  display:flex;align-items:flex-start;justify-content:center;
+  gap:48px;width:100%;max-width:860px;
+  margin-bottom:48px;
+}
+.col{display:flex;flex-direction:column;gap:14px;align-items:flex-start;min-width:220px;}
+.col-label{
+  font-size:8px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);
+  border-left:2px solid rgba(255,255,255,.3);
+  padding-left:8px;
+  margin-bottom:4px;
+}
+.hint{font-size:7px;letter-spacing:.18em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-top:6px;}
+
+/* ─────────────────────────────────────────
+   CURRENT BUTTONS (from site, unchanged)
+───────────────────────────────────────── */
+.btn-current{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  padding:9px 18px;cursor:crosshair;
+  border:1px solid var(--white);
+  display:inline-block;
+  position:relative;overflow:hidden;
+  transition:color 400ms ease;
+}
+.btn-current::before{
+  content:"";position:absolute;inset:0;
+  background:var(--white);
+  transform:translateX(-102%);
+  transition:transform 500ms cubic-bezier(.16,1,.3,1);
+  z-index:0;
+}
+.btn-current:hover::before{transform:translateX(0);}
+.btn-current span{position:relative;z-index:1;color:var(--white);}
+.btn-current:hover span{color:var(--black);}
+
+.btn-current.solid{background:var(--white);}
+.btn-current.solid span{color:var(--black);}
+.btn-current.solid::before{display:none;}
+.btn-current.solid:hover{background:rgba(255,255,255,.8);}
+
+/* Arrow/control — current */
+.arrow-current{
+  width:40px;height:34px;
+  border:2px solid var(--white);background:var(--black);color:var(--white);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:crosshair;
+  transition:background 150ms,color 150ms;
+}
+.arrow-current:hover{background:var(--white);color:var(--black);}
+
+/* ─────────────────────────────────────────
+   OPTION A — hard shadow + lift, KEEP slide
+───────────────────────────────────────── */
+.btn-a{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  padding:9px 18px;cursor:crosshair;
+  border:1px solid rgba(255,255,255,.65);
+  box-shadow:2px 2px 0 #f0f0eb;
+  display:inline-block;
+  position:relative;overflow:hidden;
+  transition:color 400ms ease, transform 120ms, box-shadow 120ms, border-color 120ms;
+}
+.btn-a::before{
+  content:"";position:absolute;inset:0;
+  background:var(--white);
+  transform:translateX(-102%);
+  transition:transform 500ms cubic-bezier(.16,1,.3,1);
+  z-index:0;
+}
+.btn-a:hover{
+  border-color:rgba(255,255,255,.88);
+  transform:translate(-2px,-2px);
+}
+.btn-a:hover::before{transform:translateX(0);}
+.btn-a span{position:relative;z-index:1;color:var(--white);}
+.btn-a:hover span{color:var(--black);}
+
+.btn-a.solid{background:var(--white);}
+.btn-a.solid span{color:var(--black);}
+.btn-a.solid::before{display:none;}
+.btn-a.solid:hover{background:rgba(255,255,255,.88);}
+
+/* Arrow — option A */
+.arrow-a{
+  width:40px;height:34px;
+  border:1px solid rgba(255,255,255,.65);background:var(--black);color:var(--white);
+  box-shadow:2px 2px 0 #f0f0eb;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:crosshair;
+  transition:background 150ms,color 150ms,border-color 120ms;
+}
+.arrow-a:hover{background:var(--white);color:var(--black);border-color:var(--white);}
+
+/* ─────────────────────────────────────────
+   OPTION B1 — solid gets BLACK shadow
+───────────────────────────────────────── */
+.btn-b1{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  padding:9px 18px;cursor:crosshair;
+  border:1px solid rgba(255,255,255,.65);
+  color:var(--white);background:transparent;
+  box-shadow:2px 2px 0 #f0f0eb;
+  display:inline-block;
+  transition:transform 80ms,border-color 80ms,background 80ms,color 80ms;
+}
+.btn-b1:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
+.btn-b1.solid{background:var(--white);color:var(--black);box-shadow:2px 2px 0 rgba(0,0,0,.75);}
+.btn-b1.solid:hover{background:transparent;color:var(--white);border-color:rgba(255,255,255,.65);transform:translate(-2px,-2px);}
+
+/* ─────────────────────────────────────────
+   OPTION B2 — solid gets BLUE shadow
+───────────────────────────────────────── */
+.btn-b2{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  padding:9px 18px;cursor:crosshair;
+  border:1px solid rgba(255,255,255,.65);
+  color:var(--white);background:transparent;
+  box-shadow:2px 2px 0 #f0f0eb;
+  display:inline-block;
+  transition:transform 80ms,border-color 80ms,background 80ms,color 80ms;
+}
+.btn-b2:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
+.btn-b2.solid{background:var(--white);color:var(--black);box-shadow:2px 2px 0 #0e32b0;}
+.btn-b2.solid:hover{background:transparent;color:var(--white);border-color:rgba(255,255,255,.65);transform:translate(-2px,-2px);}
+
+/* Arrow — shared */
+.arrow-b{
+  width:40px;height:34px;
+  border:1px solid rgba(255,255,255,.65);background:var(--black);color:var(--white);
+  box-shadow:2px 2px 0 #f0f0eb;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:crosshair;
+  transition:background 80ms,color 80ms,border-color 80ms,transform 80ms;
+}
+.arrow-b:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
+
+/* divider */
+.divider{width:100%;max-width:860px;height:1px;background:rgba(255,255,255,.08);margin:12px 0 48px;}
+</style>
+</head>
+<body>
+
+<p class="section-label">// CURRENT — no shadow, 500ms slide fill on hover</p>
+<div class="row">
+  <div class="col">
+    <div class="col-label">SOLID / PRIMARY</div>
+    <button class="btn-current solid"><span>OPEN CASE FILE</span></button>
+    <div class="hint">hover →</div>
+  </div>
+  <div class="col">
+    <div class="col-label">GHOST / SECONDARY</div>
+    <button class="btn-current"><span>← BACK TO REEL</span></button>
+    <div class="hint">hover →</div>
+  </div>
+  <div class="col">
+    <div class="col-label">ARROW CONTROLS</div>
+    <div style="display:flex;gap:6px;">
+      <button class="arrow-current">←</button>
+      <button class="arrow-current">→</button>
+    </div>
+    <div class="hint">hover →</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<p class="section-label">// OPTION A — hard shadow at rest + lift on hover, KEEP 500ms slide fill</p>
+<div class="row">
+  <div class="col">
+    <div class="col-label">SOLID / PRIMARY</div>
+    <button class="btn-a solid"><span>OPEN CASE FILE</span></button>
+    <div class="hint">hover → slides + lifts</div>
+  </div>
+  <div class="col">
+    <div class="col-label">GHOST / SECONDARY</div>
+    <button class="btn-a"><span>← BACK TO REEL</span></button>
+    <div class="hint">hover → slides + lifts</div>
+  </div>
+  <div class="col">
+    <div class="col-label">ARROW CONTROLS</div>
+    <div style="display:flex;gap:6px;">
+      <button class="arrow-a">←</button>
+      <button class="arrow-a">→</button>
+    </div>
+    <div class="hint">hover → fills (no lift)</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<p class="section-label">// OPTION B1 — instant flip, solid gets BLACK shadow</p>
+<div class="row">
+  <div class="col">
+    <div class="col-label">SOLID / PRIMARY</div>
+    <button class="btn-b1 solid">OPEN CASE FILE</button>
+    <div class="hint">hover → flips + lifts</div>
+  </div>
+  <div class="col">
+    <div class="col-label">GHOST / SECONDARY</div>
+    <button class="btn-b1">← BACK TO REEL</button>
+    <div class="hint">hover → flips + lifts</div>
+  </div>
+  <div class="col">
+    <div class="col-label">ARROW CONTROLS</div>
+    <div style="display:flex;gap:6px;">
+      <button class="arrow-b">←</button>
+      <button class="arrow-b">→</button>
+    </div>
+    <div class="hint">hover → flips + lifts</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<p class="section-label">// OPTION B2 — instant flip, solid gets BLUE shadow (#0e32b0)</p>
+<div class="row">
+  <div class="col">
+    <div class="col-label">SOLID / PRIMARY</div>
+    <button class="btn-b2 solid">OPEN CASE FILE</button>
+    <div class="hint">hover → flips + lifts</div>
+  </div>
+  <div class="col">
+    <div class="col-label">GHOST / SECONDARY</div>
+    <button class="btn-b2">← BACK TO REEL</button>
+    <div class="hint">hover → flips + lifts</div>
+  </div>
+  <div class="col">
+    <div class="col-label">ARROW CONTROLS</div>
+    <div style="display:flex;gap:6px;">
+      <button class="arrow-b">←</button>
+      <button class="arrow-b">→</button>
+    </div>
+    <div class="hint">hover → flips + lifts</div>
+  </div>
+</div>
+
+</body>
+</html>

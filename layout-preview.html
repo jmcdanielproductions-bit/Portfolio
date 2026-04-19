@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Layout Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1444d4;
+  --blue-dark:#0e32b0;
+  --white:#f0f0eb;
+  --black:#000;
+  --mono:"IBM Plex Mono",monospace;
+  --display:"Press Start 2P",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.055) 0,rgba(255,255,255,.055) 1px,transparent 1px,transparent 30px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.055) 0,rgba(255,255,255,.055) 1px,transparent 1px,transparent 30px),
+    var(--blue);
+  min-height:100vh;
+  font-family:var(--mono);
+  color:var(--white);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:48px 40px 80px;
+  gap:0;
+  cursor:crosshair;
+}
+
+/* ── LAYOUT ── */
+.section-label{
+  font-size:8px;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+  border-bottom:1px solid rgba(255,255,255,.12);
+  padding-bottom:10px;
+  width:100%;max-width:900px;
+  text-align:left;
+  margin-bottom:28px;
+  margin-top:56px;
+}
+.section-label:first-child{margin-top:0;}
+.hint{font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.28);text-transform:uppercase;margin-top:10px;text-align:center;width:100%;max-width:900px;}
+
+/* ── SHARED WINDOW CHROME ── */
+.win{
+  border:1px solid rgba(255,255,255,.65);
+  background:rgba(2,4,12,.96);
+  box-shadow:4px 4px 0 #f0f0eb, 0 8px 28px rgba(0,0,0,.55);
+  width:100%;max-width:900px;
+}
+.wbar{
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:26px;padding:0 10px;
+  background:rgba(6,12,30,.98);color:rgba(255,255,255,.88);
+  border-bottom:1px solid rgba(255,255,255,.15);
+  font-size:8px;letter-spacing:.2em;text-transform:uppercase;font-family:var(--mono);
+}
+.wbar-l{display:flex;align-items:center;gap:8px;}
+.wx{width:14px;height:14px;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.6);display:inline-flex;align-items:center;justify-content:center;font-size:8px;cursor:crosshair;flex-shrink:0;}
+
+/* ── SHARED VIEWER BODY ── */
+.viewer-split{display:grid;grid-template-columns:1fr 260px;}
+.video-panel{
+  aspect-ratio:16/9;background:#000;
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.video-panel svg{opacity:.1;}
+.video-panel::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);
+  pointer-events:none;
+}
+.info-panel{
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:16px;gap:10px;
+  background:rgba(2,4,12,.98);
+  border-left:1px solid rgba(255,255,255,.12);
+}
+.kicker{font-size:8px;letter-spacing:.3em;color:rgba(148,192,255,.6);text-transform:uppercase;}
+.vtitle{font-family:var(--display);font-size:11px;line-height:1.3;color:var(--white);text-transform:uppercase;margin-top:4px;}
+.vrole{font-size:9px;letter-spacing:.18em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-top:2px;}
+.vclient{font-size:9px;letter-spacing:.18em;color:rgba(148,192,255,.7);text-transform:uppercase;}
+.vdesc{font-size:9px;line-height:1.6;color:rgba(255,255,255,.45);margin-top:6px;}
+.vbtns{display:flex;flex-direction:column;gap:6px;}
+.vbtn{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:6px 10px;cursor:crosshair;border:1px solid rgba(255,255,255,.65);background:var(--white);color:var(--black);box-shadow:2px 2px 0 rgba(0,0,0,.75);transition:background 80ms,color 80ms,transform 80ms;}
+.vbtn:hover{background:transparent;color:var(--white);transform:translate(-2px,-2px);}
+.vbtn.ghost{background:transparent;color:var(--white);box-shadow:2px 2px 0 #f0f0eb;}
+.vbtn.ghost:hover{background:var(--white);color:var(--black);transform:translate(-2px,-2px);}
+.varrows{display:flex;gap:6px;margin-top:2px;}
+.varrow{width:32px;height:26px;border:1px solid rgba(255,255,255,.65);background:var(--black);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:crosshair;box-shadow:2px 2px 0 #f0f0eb;transition:background 80ms,color 80ms,transform 80ms;}
+.varrow:hover{background:var(--white);color:var(--black);transform:translate(-2px,-2px);}
+
+/* ═══════════════════════════════
+   CURRENT STATE
+═══════════════════════════════ */
+.current-strip{
+  width:100%;max-width:900px;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:0;padding:10px 18px;
+  background:rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.2);
+  margin-bottom:2px;
+}
+.current-cat{
+  background:none;border:none;padding:0;text-align:left;cursor:crosshair;
+  color:rgba(255,255,255,.45);transition:color 100ms;
+}
+.current-cat.active{color:var(--white);}
+.current-cat.active::before{content:"▸ ";}
+.current-cat-label{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;font-family:var(--mono);}
+.current-cat-sub{display:block;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:2px;}
+
+/* ═══════════════════════════════
+   OPTION A — integrated, tab buttons (Fix A)
+═══════════════════════════════ */
+.strip-integrated{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:8px;padding:8px 10px;
+  background:rgba(6,12,30,.98);
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+.tab-a{
+  font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 0;cursor:crosshair;
+  border:1px solid rgba(255,255,255,.3);
+  background:transparent;color:rgba(255,255,255,.5);
+  text-align:center;
+  transition:background 80ms,color 80ms,border-color 80ms;
+}
+.tab-a:hover{background:rgba(255,255,255,.08);color:var(--white);border-color:rgba(255,255,255,.6);}
+.tab-a.active{background:var(--white);color:var(--black);border-color:var(--white);}
+.tab-a-sub{font-size:6px;letter-spacing:.14em;display:block;margin-top:2px;opacity:.6;}
+
+/* ═══════════════════════════════
+   OPTION B — two separate cards, Fix A tabs
+═══════════════════════════════ */
+.strip-card{
+  width:100%;max-width:900px;
+  border:1px solid rgba(255,255,255,.65);
+  background:rgba(2,4,12,.96);
+  box-shadow:4px 4px 0 #f0f0eb, 0 8px 28px rgba(0,0,0,.55);
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:8px;padding:10px 12px;
+  margin-bottom:12px;
+}
+.tab-b{
+  font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  padding:6px 0;cursor:crosshair;
+  border:1px solid rgba(255,255,255,.3);
+  background:transparent;color:rgba(255,255,255,.5);
+  text-align:center;
+  transition:background 80ms,color 80ms,border-color 80ms;
+}
+.tab-b:hover{background:rgba(255,255,255,.08);color:var(--white);border-color:rgba(255,255,255,.6);}
+.tab-b.active{background:var(--white);color:var(--black);border-color:var(--white);}
+.tab-b-sub{font-size:6px;letter-spacing:.14em;display:block;margin-top:2px;opacity:.6;}
+
+/* ═══════════════════════════════
+   OPTION C — borderless labels, Fix A tabs
+═══════════════════════════════ */
+.strip-bare{
+  width:100%;max-width:900px;
+  display:flex;gap:28px;
+  padding:12px 4px;
+  align-items:center;
+}
+.tab-c{
+  font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  background:none;border:none;padding:0 0 4px;cursor:crosshair;
+  color:rgba(255,255,255,.4);
+  border-bottom:2px solid transparent;
+  transition:color 80ms,border-color 80ms;
+}
+.tab-c:hover{color:rgba(255,255,255,.75);}
+.tab-c.active{color:var(--white);border-bottom-color:var(--white);}
+.tab-c-sub{font-size:7px;letter-spacing:.14em;display:block;margin-top:3px;color:rgba(255,255,255,.3);}
+
+/* ═══════════════════════════════
+   FIX B — underline active only
+═══════════════════════════════ */
+/* (used inside the integrated A-FixB section) */
+.strip-integrated-b{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:8px;padding:8px 10px;
+  background:rgba(6,12,30,.98);
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+.tab-fixb{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  padding:8px 6px 9px;cursor:crosshair;
+  background:transparent;border:none;
+  color:rgba(255,255,255,.4);
+  border-bottom:2px solid transparent;
+  transition:color 80ms,border-color 80ms;
+}
+.tab-fixb:hover{color:rgba(255,255,255,.75);}
+.tab-fixb.active{color:var(--white);border-bottom-color:var(--white);}
+.tab-fixb-sub{font-size:8px;letter-spacing:.14em;display:block;margin-top:3px;color:rgba(255,255,255,.3);}
+
+/* ═══════════════════════════════
+   FIX C — segmented control
+═══════════════════════════════ */
+.strip-segmented{
+  display:flex;
+  background:rgba(6,12,30,.98);
+  border-bottom:1px solid rgba(255,255,255,.15);
+  overflow:hidden;
+}
+.tab-fixc{
+  flex:1;
+  font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  padding:8px 4px;cursor:crosshair;
+  background:transparent;border:none;
+  border-right:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.4);
+  text-align:center;
+  transition:background 80ms,color 80ms;
+}
+.tab-fixc:last-child{border-right:none;}
+.tab-fixc:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.tab-fixc.active{background:var(--white);color:var(--black);}
+.tab-fixc-sub{font-size:6px;letter-spacing:.14em;display:block;margin-top:2px;opacity:.55;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ CURRENT ═══════════════ -->
+<p class="section-label">// CURRENT — floating strip, invisible text buttons</p>
+<div class="current-strip">
+  <button class="current-cat active"><span class="current-cat-label">DIRECTION</span><span class="current-cat-sub">11 PROJECTS</span></button>
+  <button class="current-cat"><span class="current-cat-label">FILMS</span><span class="current-cat-sub">7 PROJECTS</span></button>
+  <button class="current-cat"><span class="current-cat-label">AMVs</span><span class="current-cat-sub">7 PROJECTS</span></button>
+  <button class="current-cat"><span class="current-cat-label">BRANDED</span><span class="current-cat-sub">3 FILES</span></button>
+  <button class="current-cat"><span class="current-cat-label">ALL</span><span class="current-cat-sub">26 FILES</span></button>
+</div>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ OPTION A + FIX A ═══════════════ -->
+<p class="section-label">// OPTION A + FIX A — strip inside window chrome, bordered tab buttons</p>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="strip-integrated">
+    <button class="tab-a active">DIRECTION<span class="tab-a-sub">11 PROJECTS</span></button>
+    <button class="tab-a">FILMS<span class="tab-a-sub">7 PROJECTS</span></button>
+    <button class="tab-a">AMVs<span class="tab-a-sub">7 PROJECTS</span></button>
+    <button class="tab-a">BRANDED<span class="tab-a-sub">3 FILES</span></button>
+    <button class="tab-a">ALL<span class="tab-a-sub">26 FILES</span></button>
+  </div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ OPTION A + FIX B ═══════════════ -->
+<p class="section-label">// OPTION A + FIX B — strip inside window chrome, underline active only</p>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="strip-integrated-b">
+    <button class="tab-fixb active">DIRECTION<span class="tab-fixb-sub">11 PROJECTS</span></button>
+    <button class="tab-fixb">FILMS<span class="tab-fixb-sub">7 PROJECTS</span></button>
+    <button class="tab-fixb">AMVs<span class="tab-fixb-sub">7 PROJECTS</span></button>
+    <button class="tab-fixb">BRANDED<span class="tab-fixb-sub">3 FILES</span></button>
+    <button class="tab-fixb">ALL<span class="tab-fixb-sub">26 FILES</span></button>
+  </div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ OPTION A + FIX C ═══════════════ -->
+<p class="section-label">// OPTION A + FIX C — strip inside window chrome, segmented control</p>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="strip-segmented">
+    <button class="tab-fixc active">DIRECTION<span class="tab-fixc-sub">11 PROJECTS</span></button>
+    <button class="tab-fixc">FILMS<span class="tab-fixc-sub">7 PROJECTS</span></button>
+    <button class="tab-fixc">AMVs<span class="tab-fixc-sub">7 PROJECTS</span></button>
+    <button class="tab-fixc">BRANDED<span class="tab-fixc-sub">3 FILES</span></button>
+    <button class="tab-fixc">ALL<span class="tab-fixc-sub">26 FILES</span></button>
+  </div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ OPTION B + FIX A ═══════════════ -->
+<p class="section-label">// OPTION B + FIX A — two separate cards, each with offset shadow</p>
+<div class="strip-card">
+  <button class="tab-b active">DIRECTION<span class="tab-b-sub">11 PROJECTS</span></button>
+  <button class="tab-b">FILMS<span class="tab-b-sub">7 PROJECTS</span></button>
+  <button class="tab-b">AMVs<span class="tab-b-sub">7 PROJECTS</span></button>
+  <button class="tab-b">BRANDED<span class="tab-b-sub">3 FILES</span></button>
+  <button class="tab-b">ALL<span class="tab-b-sub">26 FILES</span></button>
+</div>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ YOUR PICK: B layout + Fix B tabs ═══════════════ -->
+<p class="section-label">// YOUR PICK — separate cards, underline active tab style</p>
+<div class="win" style="margin-bottom:12px;padding:10px 16px 12px;display:block;">
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+    <button class="tab-fixb active">DIRECTION<span class="tab-fixb-sub">11 PROJECTS</span></button>
+    <button class="tab-fixb">FILMS<span class="tab-fixb-sub">7 PROJECTS</span></button>
+    <button class="tab-fixb">AMVs<span class="tab-fixb-sub">7 PROJECTS</span></button>
+    <button class="tab-fixb">BRANDED<span class="tab-fixb-sub">3 FILES</span></button>
+    <button class="tab-fixb">ALL<span class="tab-fixb-sub">26 FILES</span></button>
+  </div>
+</div>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ OPTION C + FIX A ═══════════════ -->
+<p class="section-label">// OPTION C + FIX A — borderless floating labels above viewer</p>
+<div class="strip-bare">
+  <button class="tab-c active">DIRECTION<span class="tab-c-sub">11 PROJECTS</span></button>
+  <button class="tab-c">FILMS<span class="tab-c-sub">7 PROJECTS</span></button>
+  <button class="tab-c">AMVs<span class="tab-c-sub">7 PROJECTS</span></button>
+  <button class="tab-c">BRANDED<span class="tab-c-sub">3 FILES</span></button>
+  <button class="tab-c">ALL<span class="tab-c-sub">26 FILES</span></button>
+</div>
+<div class="win" style="margin-bottom:0;">
+  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+  <div class="viewer-split">
+    <div class="video-panel"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="white" stroke-width="1.5"/><polygon points="18,12 38,24 18,36" fill="white"/></svg></div>
+    <div class="info-panel">
+      <div><p class="kicker">FEATURED // LIVE</p><h2 class="vtitle">CYBERPUNK 2077</h2><p class="vrole">DIRECTION / EDIT / 2025</p><p class="vclient">CD PROJEKT RED</p><p class="vdesc">A flagship commercial signal designed to hit hard and read instantly.</p></div>
+      <div class="vbtns"><button class="vbtn">OPEN CASE FILE</button><button class="vbtn ghost">← BACK TO REEL</button><div class="varrows"><div class="varrow">←</div><div class="varrow">→</div></div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

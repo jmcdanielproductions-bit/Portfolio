@@ -222,33 +222,35 @@ body{
 .viewer-category-strip{
   display:none;
   grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:16px;
-  padding:10px 18px;
-  border-bottom:1px solid rgba(255,255,255,.2);
-  background:rgba(0,0,0,.25);
-  box-shadow:none;
+  gap:8px;
+  padding:10px 16px 12px;
+  border:1px solid rgba(255,255,255,.65);
+  background:rgba(2,4,12,.96);
+  box-shadow:4px 4px 0 #f0f0eb, 0 8px 28px rgba(0,0,0,.55);
+  margin-bottom:14px;
   color:var(--white);
   font-family:var(--mono);
 }
 .viewer-category-strip.is-visible{display:grid;}
 .viewer-category{
   appearance:none;
-  background:none;
-  border:0;
-  padding:0;
+  background:transparent;
+  border:none;
+  border-bottom:2px solid transparent;
+  padding:8px 6px 9px;
   text-align:left;
   cursor:crosshair;
-  color:rgba(255,255,255,.45);
+  color:rgba(255,255,255,.4);
   border-radius:0;
-  transition:color 120ms;
+  transition:color 80ms, border-color 80ms;
 }
-.viewer-category:hover{color:var(--white);}
-.viewer-category.is-active{color:var(--white);}
-.viewer-category.is-active::before{content:"▸ "; color:var(--white);}
+.viewer-category:hover{color:rgba(255,255,255,.75);}
+.viewer-category.is-active{color:var(--white);border-bottom-color:var(--white);}
+.viewer-category.is-active::before{content:"";}
 .viewer-category-label{
   display:block;
-  font-size:9px;
-  letter-spacing:.22em;
+  font-size:11px;
+  letter-spacing:.18em;
   text-transform:uppercase;
   font-family:var(--mono);
 }
@@ -256,10 +258,9 @@ body{
   display:block;
   margin-top:3px;
   font-size:8px;
-  letter-spacing:.18em;
+  letter-spacing:.14em;
   text-transform:uppercase;
   color:rgba(255,255,255,.3);
-  opacity:1;
 }
 
 /* TOPBAR */
@@ -345,19 +346,11 @@ body{
 #page-home .win{
   margin-bottom:10px;
 }
-#page-home .viewer-frame{
-  border:none;
-  box-shadow:none;
-  flex:0 0 auto;
-  width:100%;
-  aspect-ratio:16/9;
-  height:auto;
-  max-height:clamp(320px,52vh,560px);
-}
 .viewer-shell.win{
   margin-bottom:14px;
 }
-.viewer-shell.win .viewer-frame{
+.viewer-shell.win .viewer-frame,
+.viewer-shell.win .viewer-video-panel{
   border:none;
 }
 #page-home .reel-win .wbody{
@@ -405,16 +398,65 @@ body{
   margin-bottom:8px;
 }
 #page-home .viewer-media::after{
-  box-shadow:inset 0 -140px 160px rgba(0,0,0,.95);
+  display:none;
 }
-#page-home .viewer-overlay{
-  mix-blend-mode:normal;
+.viewer-info-panel .viewer-kicker{
+  font-size:8px;letter-spacing:.3em;color:rgba(148,192,255,.6);text-transform:uppercase;
+}
+.viewer-info-panel .viewer-title{
+  font-family:var(--display);font-size:clamp(11px,1.1vw,15px);line-height:1.3;color:var(--white);text-transform:uppercase;margin-top:4px;
+}
+.viewer-info-panel .viewer-role{
+  font-size:9px;letter-spacing:.18em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-top:2px;
+}
+.viewer-info-panel .viewer-client{
+  font-size:9px;letter-spacing:.18em;color:rgba(148,192,255,.7);text-transform:uppercase;
+}
+.viewer-info-panel .viewer-desc{
+  font-size:10px;line-height:1.7;color:rgba(255,255,255,.5);margin-top:6px;
+}
+.viewer-info-panel .viewer-nav{
+  display:flex;gap:6px;margin-top:4px;
 }
 .viewer-shell{
   width:100%;
-  min-height:calc(100vh - var(--chrome-h) - var(--task-h) - 108px);
   display:flex;
   flex-direction:column;
+}
+.viewer-split{
+  display:grid;
+  grid-template-columns:1fr 280px;
+  align-items:stretch;
+  min-height:0;
+}
+.viewer-video-panel{
+  position:relative;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:#000;
+  cursor:crosshair;
+  min-height:0;
+}
+.viewer-info-panel{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:18px 16px 16px;
+  gap:12px;
+  background:rgba(2,4,12,.98);
+  border-left:1px solid rgba(255,255,255,.12);
+  overflow-y:auto;
+  min-height:0;
+}
+.viewer-info-meta{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.viewer-info-actions{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 .viewer-frame{
   position:relative;
@@ -584,7 +626,7 @@ body{
 .viewer-button{
   appearance:none;
   border-radius:0;
-  border:1px solid var(--white);
+  border:1px solid rgba(255,255,255,.65);
   background:var(--white);
   color:var(--black);
   font-family:var(--mono);
@@ -593,20 +635,16 @@ body{
   text-transform:uppercase;
   padding:7px 14px;
   cursor:crosshair;
-  position:relative;
-  overflow:hidden;
-  transition:color 400ms ease;
+  box-shadow:2px 2px 0 rgba(0,0,0,.75);
+  transition:background 80ms,color 80ms,border-color 80ms,transform 80ms;
 }
-.viewer-button::before{content:"";position:absolute;inset:0;background:var(--black);transform:translateX(-102%);transition:transform 500ms cubic-bezier(.16,1,.3,1);z-index:0;}
-.viewer-button:hover::before{transform:translateX(0);}
-.viewer-button:hover{color:var(--white);}
-.viewer-button span,.viewer-button>*{position:relative;z-index:1;}
+.viewer-button:hover{background:transparent;color:var(--white);border-color:rgba(255,255,255,.65);transform:translate(-2px,-2px);}
 .viewer-button.secondary{
   background:transparent;
   color:var(--white);
+  box-shadow:2px 2px 0 #f0f0eb;
 }
-.viewer-button.secondary::before{background:var(--white);}
-.viewer-button.secondary:hover{color:var(--black);}
+.viewer-button.secondary:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
 .viewer-nav{
   display:flex;
   align-items:center;
@@ -616,7 +654,7 @@ body{
 .viewer-arrow{
   width:36px;
   height:30px;
-  border:2px solid var(--white);
+  border:1px solid rgba(255,255,255,.65);
   background:var(--black);
   color:var(--white);
   cursor:crosshair;
@@ -627,9 +665,10 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:background 150ms,color 150ms;
+  box-shadow:2px 2px 0 #f0f0eb;
+  transition:background 80ms,color 80ms,border-color 80ms,transform 80ms;
 }
-.viewer-arrow:hover{background:var(--white);color:var(--black);}
+.viewer-arrow:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
 .viewer-statusbar{
   height:var(--task-h);
   flex-shrink:0;
@@ -730,9 +769,10 @@ body{
 @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* WINDOW */
-.win{position:relative;border:1px solid rgba(255,255,255,.22);background:rgba(2,4,12,.96);margin-bottom:14px;transition:box-shadow 180ms ease,border-color 180ms ease;}
-.win:hover{border-color:rgba(255,255,255,.42);box-shadow:0 0 0 1px rgba(20,68,212,.35),0 14px 36px rgba(0,0,0,.55);}
-.viewer-shell.win:hover{transform:none;box-shadow:none;border-color:rgba(255,255,255,.22);}
+.win{position:relative;border:1px solid rgba(255,255,255,.65);background:rgba(2,4,12,.96);margin-bottom:14px;box-shadow:4px 4px 0 #f0f0eb,0 8px 28px rgba(0,0,0,.55);transition:box-shadow 120ms ease,border-color 120ms ease,transform 120ms ease;}
+.win:hover{border-color:rgba(255,255,255,.88);box-shadow:4px 4px 0 #f0f0eb,0 18px 44px rgba(0,0,0,.7);transform:translate(-2px,-2px);}
+.viewer-shell.win{box-shadow:4px 4px 0 #f0f0eb,0 8px 28px rgba(0,0,0,.55);}
+.viewer-shell.win:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #f0f0eb,0 18px 44px rgba(0,0,0,.7);border-color:rgba(255,255,255,.88);}
 .wbar{
   display:flex;
   align-items:center;
@@ -876,8 +916,8 @@ body{
 
 /* REEL NAV */
 .reel-nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 0;margin-bottom:10px;}
-.reel-nav-arrow{width:56px;height:44px;background:var(--black);border:2px solid var(--white);color:var(--white);font-size:20px;cursor:crosshair;display:flex;align-items:center;justify-content:center;transition:background 150ms,color 150ms;}
-.reel-nav-arrow:hover{background:var(--white);color:var(--black);}
+.reel-nav-arrow{width:56px;height:44px;background:var(--black);border:1px solid rgba(255,255,255,.65);color:var(--white);font-size:20px;cursor:crosshair;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 #f0f0eb;transition:background 80ms,color 80ms,border-color 80ms,transform 80ms;}
+.reel-nav-arrow:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
 
 /* ── CINEMATIC FULL-BLEED MODE ── */
 #cinema-mode{position:fixed;inset:0;z-index:500;background:#000;display:none;flex-direction:column;}
@@ -927,18 +967,13 @@ body{
 .fi-ctas{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-top:8px;}
 
 /* BTNS */
-.btn{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:7px 14px;cursor:crosshair;border:1px solid var(--white);text-decoration:none;display:inline-block;transition:color 400ms ease;text-align:center;position:relative;overflow:hidden;}
-.btn::before{content:"";position:absolute;inset:0;background:var(--white);transform:translateX(-102%);transition:transform 500ms cubic-bezier(.16,1,.3,1);z-index:0;}
-.btn:hover::before{transform:translateX(0);}
-.btn>*,.btn span{position:relative;z-index:1;}
-.btn-solid{background:var(--white);color:var(--black);}
-.btn-solid::before{display:none;}
-.btn-solid:hover{background:rgba(255,255,255,.8);}
-.btn-ghost{background:transparent;color:var(--white);}
-.btn-ghost:hover{color:var(--black);}
-.btn-cinema{background:var(--black);border:2px solid var(--white);color:var(--white);padding:10px 20px;font-size:10px;display:flex;align-items:center;gap:8px;}
-.btn-cinema:hover{background:var(--white);color:var(--black);}
-.btn-cinema::before{display:none;}
+.btn{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:7px 14px;cursor:crosshair;border:1px solid rgba(255,255,255,.65);text-decoration:none;display:inline-block;text-align:center;transition:background 80ms,color 80ms,border-color 80ms,transform 80ms;}
+.btn-solid{background:var(--white);color:var(--black);box-shadow:2px 2px 0 rgba(0,0,0,.75);}
+.btn-solid:hover{background:transparent;color:var(--white);border-color:rgba(255,255,255,.65);transform:translate(-2px,-2px);}
+.btn-ghost{background:transparent;color:var(--white);box-shadow:2px 2px 0 #f0f0eb;}
+.btn-ghost:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
+.btn-cinema{background:var(--black);border:1px solid rgba(255,255,255,.65);color:var(--white);padding:10px 20px;font-size:10px;display:flex;align-items:center;gap:8px;box-shadow:2px 2px 0 #f0f0eb;}
+.btn-cinema:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
 
 /* ARCHIVE */
 .archive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
@@ -1048,8 +1083,8 @@ body{
 .about-stat-block{border:1px solid rgba(59,130,246,.2);padding:12px;text-align:center;background:rgba(59,130,246,.04);}
 .about-stat-num{font-family:var(--display);font-size:clamp(14px,2vw,22px);color:var(--white);display:block;margin-bottom:4px;}
 .about-stat-lbl{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);}
-.avail{display:inline-block;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--white);border:1px solid var(--white);padding:4px 10px;transition:all 80ms;cursor:crosshair;}
-.avail:hover{background:var(--white);color:var(--black);}
+.avail{display:inline-block;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--white);border:1px solid rgba(255,255,255,.65);padding:4px 10px;box-shadow:2px 2px 0 #f0f0eb;cursor:crosshair;transition:background 80ms,color 80ms,border-color 80ms,transform 80ms;}
+.avail:hover{background:var(--white);color:var(--black);border-color:var(--white);transform:translate(-2px,-2px);}
 
 /* SKILLS */
 .skills-editorial{display:grid;gap:16px;}
@@ -1272,32 +1307,29 @@ body{
     <!-- HOME -->
     <div class="page-view viewer-page active" id="page-home">
             <section class="viewer-shell win">
-        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span id="viewer-win-title">FEATURED.MOV</span></div><span id="viewer-win-status">FEATURED // LIVE</span></div>
-        <div class="viewer-frame" id="viewer-frame">
-          <div class="viewer-media" id="viewer-media">
-            <div class="viewer-ph" id="viewer-ph">
-              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <rect x="1" y="1" width="54" height="54" stroke="white" stroke-width="1.5"></rect>
-                <polygon points="21,14 43,28 21,42" fill="white"></polygon>
-              </svg>
-              <span id="viewer-ph-label">INSERT PROJECT MEDIA</span>
+        <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
+        <div class="viewer-split">
+          <div class="viewer-frame viewer-video-panel" id="viewer-frame">
+            <div class="viewer-media" id="viewer-media">
+              <div class="viewer-ph" id="viewer-ph">
+                <svg width="48" height="48" viewBox="0 0 56 56" fill="none">
+                  <rect x="1" y="1" width="54" height="54" stroke="white" stroke-width="1.5"></rect>
+                  <polygon points="21,14 43,28 21,42" fill="white"></polygon>
+                </svg>
+                <span id="viewer-ph-label">INSERT PROJECT MEDIA</span>
+              </div>
             </div>
+            <button class="viewer-fullscreen" id="viewer-fullscreen-btn" type="button" aria-label="Open in cinema">⤢</button>
           </div>
-          <div class="viewer-headline">
-            <span id="viewer-code-top">PRJ_01.MOV</span>
-            <span id="viewer-meta-top">COMMERCIAL // 2025</span>
-          </div>
-          <button class="viewer-fullscreen" id="viewer-fullscreen-btn" type="button" aria-label="Open in cinema">⤢</button>
-          <div class="viewer-gradient"></div>
-          <div class="viewer-overlay">
-            <div class="viewer-copy">
+          <div class="viewer-info-panel">
+            <div class="viewer-info-meta">
               <p class="viewer-kicker" id="viewer-kicker">FEATURED // LIVE</p>
-              <h1 class="viewer-title" id="viewer-title">CYBERPUNK 2077</h1>
+              <h2 class="viewer-title" id="viewer-title">CYBERPUNK 2077</h2>
               <p class="viewer-role" id="viewer-role">DIRECTION / EDIT / 2025</p>
               <p class="viewer-client" id="viewer-client">CD PROJEKT RED</p>
               <p class="viewer-desc" id="viewer-desc">A flagship commercial signal designed to hit hard and read instantly.</p>
             </div>
-            <div class="viewer-actions">
+            <div class="viewer-info-actions">
               <button class="viewer-button" id="viewer-open">OPEN CASE FILE</button>
               <button class="viewer-button secondary" id="viewer-back">← BACK TO REEL</button>
               <div class="viewer-nav">
@@ -1310,7 +1342,7 @@ body{
       </section>
             <div class="hero-wrap sg">
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ARCHIVE.DAT</span></div><span id="archive-count">SELECTED WORK // 0 FILES</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
         <div class="wbody">
           <p class="lbl">// VIDEO REEL — CONTINUOUS SCROLL</p>
           <div class="archive-reel">
@@ -1324,7 +1356,7 @@ body{
     <!-- DIRECTION -->
     <div class="page-view" id="page-direction">
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span><span>DIRECTION.DAT</span></div><span>COMMERCIAL // NARRATIVE // BRANDED</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span></div></div>
         <div class="wbody">
           <p class="lbl">// SELECTED DIRECTION WORK — CLICK TO EXECUTE</p>
           <div class="archive-grid" id="direction-grid"></div>
@@ -1335,7 +1367,7 @@ body{
     <!-- EDITS -->
     <div class="page-view" id="page-edits">
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span><span>EDITS.DAT</span></div><span>FILMS // AMVs</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span></div></div>
         <div class="wbody">
           <div class="tab-bar">
             <button class="tab-btn on" id="tab-films" onclick="switchTab('films')">FILMS</button>
@@ -1350,7 +1382,7 @@ body{
     <!-- ABOUT -->
     <div class="page-view" id="page-about">
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span><span>IDENTITY.SYS</span></div><span>PROFILE // JARED McDANIEL</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span></div></div>
         <div class="wbody">
           <div class="about-hero">
             <div class="about-photo"><div class="about-photo-ph"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="17" r="10" stroke="white" stroke-width="1.5"/><path d="M4 44c0-11 40-11 40 0" stroke="white" stroke-width="1.5"/></svg><span>PROFILE PHOTO</span></div></div>
@@ -1376,7 +1408,7 @@ body{
     <!-- SKILLS -->
     <div class="page-view" id="page-skills">
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span><span>CAPABILITIES.DAT</span></div><span>SKILLS // LOADED</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span></div></div>
         <div class="wbody">
           <div class="skills-editorial">
             <div class="skills-hero-row">
@@ -1389,7 +1421,7 @@ body{
               <div class="skills-grid-full" id="sgrid-top"></div>
             </div>
             <div class="skills-img-win win">
-              <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ON_SET_01.JPG</span></div><span>BEHIND THE LENS</span></div>
+              <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
               <div class="skills-img-frame" style="aspect-ratio:21/9;"><div class="skills-img-ph"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="18" stroke="white" stroke-width="1" opacity=".4"/><circle cx="24" cy="10" r="5" stroke="white" stroke-width="1" opacity=".4"/></svg><span>INSERT ON-SET PHOTO // WIDE</span></div></div>
               <div class="skills-img-caption">// BEHIND THE LENS — INSERT CAPTION</div>
             </div>
@@ -1397,16 +1429,16 @@ body{
               <div class="skills-grid-full" id="sgrid-mid"></div>
               <div>
                 <div class="skills-img-win win" style="margin-bottom:14px;">
-                  <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ON_SET_02.JPG</span></div><span>AT WORK</span></div>
+                  <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
                   <div class="skills-img-frame" style="aspect-ratio:16/9;"><div class="skills-img-ph"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="1" y="1" width="34" height="34" stroke="white" stroke-width="1" opacity=".35"/></svg><span>INSERT PHOTO</span></div></div>
                   <div class="skills-img-caption">// INSERT CAPTION</div>
                 </div>
-                <div class="win"><div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>TOOLS.DAT</span></div></div><div class="wbody"><p class="lbl">// SOFTWARE + GEAR</p><div class="skills-tools" id="tools-grid"></div></div></div>
+                <div class="win"><div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div><div class="wbody"><p class="lbl">// SOFTWARE + GEAR</p><div class="skills-tools" id="tools-grid"></div></div></div>
               </div>
             </div>
             <div class="skills-bottom-row">
               <div class="skills-img-win win">
-                <div class="wbar"><div class="wbar-l"><span class="wx">×</span><span>ON_SET_03.JPG</span></div><span>PROCESS</span></div>
+                <div class="wbar"><div class="wbar-l"><span class="wx">×</span></div></div>
                 <div class="skills-img-frame" style="aspect-ratio:3/4;"><div class="skills-img-ph"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="1" y="1" width="34" height="34" stroke="white" stroke-width="1" opacity=".35"/></svg><span>INSERT PHOTO // PORTRAIT</span></div></div>
                 <div class="skills-img-caption">// INSERT CAPTION</div>
               </div>
@@ -1420,7 +1452,7 @@ body{
     <!-- CONTACT -->
     <div class="page-view" id="page-contact">
       <div class="win">
-        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span><span>CONTACT.SYS</span></div><span>OPEN CHANNEL // TRANSMIT</span></div>
+        <div class="wbar"><div class="wbar-l"><span class="wx" onclick="showPage('home')">←</span></div></div>
         <div class="wbody">
           <div class="contact-grid">
             <div>
