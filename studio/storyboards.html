@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Storyboards - Jared McDaniel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#1a3fd4;
+  --ink:#f4f8ff;
+  --ink-dim:#aec0f0;
+  --ink-mute:#6c7fc2;
+  --hair:rgba(255,255,255,.10);
+  --hair-strong:rgba(255,255,255,.22);
+  --tint:#ffc93d;
+  --panel:rgba(0,0,0,.30);
+  --panel-strong:rgba(0,0,0,.46);
+  --ff-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --ff-mono:"JetBrains Mono",ui-monospace,monospace;
+  --shadow-hard:8px 8px 0 0 rgba(0,0,8,.88);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--ff-display);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a,button{color:inherit}
+button{font:inherit}
+.field{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(to right,rgba(255,255,255,.14) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.14) 1px,transparent 1px);background-size:120px 120px;transform:translate3d(var(--px,0),var(--py,0),0)}
+.field::before{content:"";position:absolute;inset:0;background:radial-gradient(130% 80% at 50% 50%,transparent 55%,rgba(0,0,10,.36) 100%)}
+.field::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,201,61,.16),transparent);opacity:0;transform:translateX(-100%);pointer-events:none}
+body.signal-hit .field::after{animation:signalSweep .42s steps(3,end)}
+@keyframes signalSweep{0%{opacity:.85;transform:translateX(-100%)}100%{opacity:0;transform:translateX(100%)}}
+.topbar{position:sticky;top:0;z-index:30;height:56px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 32px;background:rgba(26,63,212,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+.tb-left{display:flex;align-items:center;min-width:0}
+.sig{font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap}
+.rev{font-family:var(--ff-mono);font-size:10px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;padding-left:16px;border-left:1px solid var(--hair);margin-left:16px;white-space:nowrap}
+.tb-nav{justify-self:center;display:inline-flex;gap:24px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+.tb-nav a{text-decoration:none;color:var(--ink-dim);position:relative;padding:4px 0}
+.tb-nav a:hover,.tb-nav a.on{color:var(--ink)}
+.tb-nav a.on::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:2px;background:var(--tint)}
+.tb-right{justify-self:end;display:inline-flex;align-items:center;gap:16px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase}
+.dot{width:7px;height:7px;background:var(--tint);animation:pulseDot 1.6s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+.ticker{position:sticky;top:56px;z-index:25;height:36px;background:rgba(0,0,0,.36);border-bottom:1px solid var(--hair);overflow:hidden;display:flex;align-items:center}
+.ticker .lbl{flex-shrink:0;padding:0 14px;height:100%;display:flex;align-items:center;gap:8px;border-right:1px solid var(--hair);font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--tint);background:rgba(0,0,0,.3)}
+.ticker .lbl::before{content:"";width:6px;height:6px;background:var(--tint);animation:pulseDot 1.6s ease-in-out infinite}
+.ticker .track{flex:1;overflow:hidden;position:relative;height:100%}
+.ticker .row{display:inline-flex;align-items:center;gap:40px;padding-left:40px;white-space:nowrap;animation:tickerRoll 54s linear infinite;height:100%}
+.ticker .row span{font-weight:500;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);opacity:.9}
+.ticker .row em{font-style:normal;color:var(--tint);opacity:.58;font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em}
+.ticker:hover .row{animation-play-state:paused}
+@keyframes tickerRoll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.story-shell{position:relative;z-index:1;padding:24px 28px 48px 40px;display:grid;gap:22px}
+.back-link{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);width:max-content}
+.back-link::before{content:"<";color:var(--tint)}
+.back-link:hover{color:var(--tint)}
+.crumb{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);display:flex;gap:8px;align-items:center;margin-top:14px;margin-bottom:12px;flex-wrap:wrap}
+.crumb a{text-decoration:none;color:var(--ink-dim)}
+.crumb a:hover{color:var(--tint)}
+.crumb .cur{color:var(--ink)}
+.story-hero{border:1px solid var(--ink);background:rgba(0,0,0,.18);box-shadow:12px 12px 0 0 rgba(0,0,8,.86);padding:22px;position:relative;overflow:hidden}
+.story-hero::before,.project-file::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);background-size:24px 24px;opacity:.26}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,480px);gap:24px;align-items:end}
+.eyebrow,.kicker{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--tint);font-weight:400}
+h1{font-size:clamp(42px,7vw,92px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;margin-top:10px}
+.intro{max-width:70ch;margin-top:16px;font-size:clamp(15px,1.5vw,19px);line-height:1.55;color:var(--ink-dim);text-wrap:pretty}
+.archive-note{margin-top:14px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute)}
+.archive-note b{color:var(--tint);font-weight:500}
+.hero-card{border:1px solid var(--hair-strong);background:var(--panel-strong);box-shadow:var(--shadow-hard);padding:16px;display:grid;gap:13px}
+.hero-card .row{display:grid;grid-template-columns:108px 1fr;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--hair)}
+.hero-card .row:last-child{border-bottom:0;padding-bottom:0}
+.hero-card dt{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute)}
+.hero-card dd{font-size:13px;line-height:1.45;color:var(--ink-dim)}
+.process-list{display:grid;gap:22px}
+.project-file{position:relative;border:1px solid var(--ink);background:rgba(0,0,0,.22);box-shadow:12px 12px 0 0 rgba(0,0,8,.86);overflow:hidden;scroll-margin-top:112px}
+.anchor-alias{position:absolute;top:-112px;left:0;width:1px;height:1px;pointer-events:none}
+.file-bar{position:relative;z-index:1;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:38px;padding:0 14px;border-bottom:1px solid var(--hair);background:rgba(0,0,0,.28);font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-dim)}
+.file-bar b{color:var(--tint);font-weight:500}
+.file-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,430px);min-height:500px}
+.file-main{padding:20px;border-right:1px solid var(--hair);display:flex;flex-direction:column;gap:16px;min-width:0}
+.file-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:start}
+.file-head h2{font-size:clamp(28px,3.5vw,48px);line-height:.92;letter-spacing:-.025em;text-transform:uppercase}
+.file-head p{margin-top:9px;max-width:72ch;color:var(--ink-dim);font-size:14px;line-height:1.6;text-wrap:pretty}
+.file-chip{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);border:1px solid var(--hair-strong);background:rgba(255,255,255,.04);padding:7px 9px;white-space:nowrap}
+.related-projects{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.related-projects span{font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);border:1px solid var(--hair-strong);background:rgba(0,0,0,.24);padding:5px 7px}
+.frame-strip{display:grid;grid-template-columns:repeat(var(--frame-count),minmax(130px,1fr));gap:9px}
+.frame-card{position:relative;min-height:160px;border:1px solid var(--hair-strong);background:#05081f;color:var(--ink);text-align:left;overflow:hidden;cursor:pointer;padding:10px;display:grid;grid-template-rows:auto 1fr auto;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}
+.frame-card::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);background-size:16px 16px;opacity:.45}
+.frame-card::after{content:"";position:absolute;inset:-20%;background:linear-gradient(135deg,transparent 42%,rgba(255,201,61,.28) 100%);opacity:.35;transform:translateY(18%)}
+.frame-card.tone-a{background:linear-gradient(155deg,#05081f,#0a1036 58%,#131a4a)}
+.frame-card.tone-b{background:linear-gradient(210deg,#061031,#05081f 55%,#16205a)}
+.frame-card.tone-c{background:linear-gradient(140deg,#05081f,#101849 62%,#0a1540)}
+.frame-card.tone-d{background:linear-gradient(170deg,#05081f,#081236 44%,#1b235e)}
+.frame-card > span{position:relative;z-index:1}
+.frame-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute)}
+.frame-top b{color:var(--tint);font-weight:500}
+.frame-mark{align-self:end;display:grid;gap:8px}
+.frame-mark strong{display:block;font-size:16px;line-height:1.02;letter-spacing:-.005em;text-transform:uppercase}
+.frame-mark em{font-style:normal;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+.frame-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.frame-meta i{font-style:normal;font-family:var(--ff-mono);font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.22);padding:4px 5px}
+.frame-card:hover,.frame-card.is-active{border-color:var(--tint);transform:translate(-2px,-2px);box-shadow:7px 7px 0 0 rgba(0,0,8,.86)}
+.frame-card.is-active{background:#071039}
+.frame-card.is-active::after{opacity:.65}
+.frame-card:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--tint);outline-offset:3px}
+.comparison{border:1px solid var(--hair-strong);background:var(--panel);padding:13px;display:grid;gap:11px}
+.comparison h3,.proof-card h3,.inspector h3,.next-files h2{font-size:20px;line-height:1;text-transform:uppercase;letter-spacing:-.01em}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.compare-cell{border:1px solid var(--hair);background:rgba(0,0,0,.28);min-height:154px;position:relative;overflow:hidden;padding:10px;display:grid;align-content:end}
+.compare-cell::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);background-size:18px 18px;opacity:.45}
+.compare-cell::after{content:"";position:absolute;inset:-10%;background:linear-gradient(140deg,rgba(255,201,61,.22),transparent 42%,rgba(255,255,255,.08));opacity:.55}
+.compare-cell.final::after{background:linear-gradient(140deg,rgba(255,255,255,.18),transparent 42%,rgba(255,201,61,.18))}
+.compare-cell span{position:relative;z-index:1;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--tint);margin-bottom:7px}
+.compare-cell b{position:relative;z-index:1;font-size:15px;line-height:1.05;text-transform:uppercase}
+.comparison p{font-size:13px;line-height:1.55;color:var(--ink-dim)}
+.file-side{padding:18px;display:grid;grid-template-rows:auto auto 1fr;gap:14px;background:rgba(0,0,0,.18)}
+.inspector{border:1px solid var(--tint);background:rgba(0,0,0,.44);box-shadow:var(--shadow-hard);padding:15px;display:grid;gap:12px}
+.inspect-label{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--tint)}
+.inspect-title{font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:-.015em}
+.inspect-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.inspect-grid div{border-top:1px solid var(--hair);padding-top:8px}
+.inspect-grid dt{font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute)}
+.inspect-grid dd{margin-top:3px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.decision-note{font-size:13px;line-height:1.55;color:var(--ink-dim)}
+.annotation{display:inline-flex;width:max-content;max-width:100%;border:1px solid var(--hair-strong);background:rgba(255,201,61,.12);color:var(--ink);font-family:var(--ff-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:6px 8px}
+.proof-grid{display:grid;gap:10px}
+.proof-card{border:1px solid var(--hair-strong);background:var(--panel);padding:13px}
+.proof-card .kicker{font-size:9.5px;margin-bottom:7px}
+.proof-card p{font-size:13px;line-height:1.55;color:var(--ink-dim);text-wrap:pretty}
+.actions{align-self:end;display:grid;gap:8px}
+.action-link{display:flex;justify-content:space-between;gap:14px;align-items:center;text-decoration:none;border:1px solid var(--ink);background:rgba(255,255,255,.04);padding:11px 12px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);min-height:42px}
+.action-link::after{content:">";color:var(--tint)}
+.action-link:hover{background:var(--ink);color:#04143a;box-shadow:6px 6px 0 0 rgba(0,0,8,.86)}
+.action-link:hover::after{color:#04143a}
+.next-files{border:1px solid var(--hair-strong);background:rgba(0,0,0,.24);padding:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center}
+.next-files p{margin-top:8px;color:var(--ink-dim);max-width:64ch}
+.next-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:1120px){
+  .hero-grid,.file-grid{grid-template-columns:1fr}
+  .file-main{border-right:0;border-bottom:1px solid var(--hair)}
+  .file-side{grid-template-rows:auto;grid-template-columns:minmax(0,1fr) minmax(280px,.75fr);align-items:start}
+  .actions{grid-column:1 / -1}
+}
+@media (max-width:780px){
+  .topbar{grid-template-columns:1fr auto;padding:0 18px}
+  .tb-nav{display:none}
+  .tb-right{display:none}
+  .story-shell{padding:18px 16px 36px}
+  .story-hero,.project-file{box-shadow:8px 8px 0 0 rgba(0,0,8,.86)}
+  .hero-grid{gap:18px}
+  .hero-card .row{grid-template-columns:1fr}
+  .file-bar{align-items:flex-start;flex-direction:column;padding:10px 12px;gap:4px}
+  .file-main,.file-side{padding:14px}
+  .file-head{grid-template-columns:1fr}
+  .file-chip{width:max-content;max-width:100%}
+  .frame-strip{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x proximity;padding-bottom:4px}
+  .frame-card{flex:0 0 72vw;min-height:172px;scroll-snap-align:start}
+  .file-side{grid-template-columns:1fr}
+  .compare-grid,.inspect-grid,.next-files{grid-template-columns:1fr}
+  .next-actions{justify-content:flex-start}
+}
+@media (max-width:520px){
+  .rev{display:none}
+  .ticker .lbl{display:none}
+  .ticker{height:32px;top:56px}
+  h1{font-size:42px}
+  .story-hero{padding:16px}
+  .intro{font-size:14px}
+  .frame-card{flex-basis:84vw}
+  .action-link{font-size:9.5px;letter-spacing:.16em}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<div class="field" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="tb-left"><span class="sig">Jared McDaniel</span><span class="rev">Studio / Storyboards</span></div>
+  <nav class="tb-nav" aria-label="Primary">
+    <a href="../index.html">Index</a>
+    <a class="on" href="../index.html#studio">Studio</a>
+    <a href="../index.html">Work</a>
+  </nav>
+  <div class="tb-right"><span class="dot"></span><span>LIVE</span><span id="clk">00:00:00</span></div>
+</header>
+
+<div class="ticker" aria-label="Process ticker">
+  <div class="lbl">Storyboard Channel</div>
+  <div class="track">
+    <div class="row" id="tickerRow"></div>
+  </div>
+</div>
+
+<main class="story-shell">
+  <section class="story-hero" aria-labelledby="story-title">
+    <a class="back-link" href="../index.html">Back to screening room</a>
+    <div class="crumb"><a href="../index.html">Index</a><span>/</span><a href="../index.html#studio">Studio</a><span>/</span><span class="cur">Storyboards</span></div>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">// Studio File / Curated Process</div>
+        <h1 id="story-title">Selected<br/>Storyboards.</h1>
+        <p class="intro">Storyboard files are shown here as process proof: how Cyberpunk 2077, DOOM, and selected commercial work earn orientation, pressure, transition, and final read before the motion or edit pass gets expensive.</p>
+        <p class="archive-note"><b>Selected boards only.</b> This is not the full archive.</p>
+      </div>
+      <dl class="hero-card" aria-label="Page summary">
+        <div class="row"><dt>Use</dt><dd>Show the decisions behind direction, editing rhythm, timing, and transition planning.</dd></div>
+        <div class="row"><dt>Scope</dt><dd>Three curated process files, led by Cyberpunk 2077 and DOOM.</dd></div>
+        <div class="row"><dt>Behavior</dt><dd>Select a frame to inspect shot type, movement, transition role, function, and editorial note.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="process-list" id="processList" aria-label="Selected storyboard project files"></section>
+
+  <section class="next-files" aria-labelledby="next-files-title">
+    <div>
+      <div class="kicker">// Process Index</div>
+      <h2 id="next-files-title">Related studio files.</h2>
+      <p>Storyboards should connect back to finished work and forward into other production artifacts: shotlists, motion passes, BTS, and final frame references.</p>
+    </div>
+    <div class="next-actions">
+      <a class="action-link" href="../index.html#studio">Return to studio</a>
+      <a class="action-link" href="../index.html">Screening room</a>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = (selector, scope = document) => scope.querySelector(selector);
+const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+const pad = (value) => String(value).padStart(2, '0');
+const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+}[char]));
+
+const tickerItems = [
+  ['Selected process files','Studio'],
+  ['Cyberpunk 2077','Featured'],
+  ['DOOM','Featured'],
+  ['Storyboard to final','Evidence'],
+  ['Beat logic','Timing'],
+  ['Transition role','Motion'],
+  ['Revision note','Edit'],
+  ['Final effect','Case study'],
+  ['Frame inspector','Tool'],
+  ['Return links','Work']
+];
+
+const storyboardProjects = [
+  {
+    slug:'cyberpunk-2077',
+    aliases:['quiet-then-loud'],
+    code:'PRJ_01',
+    title:'Cyberpunk 2077',
+    type:'Commercial / title transition planning',
+    role:'Direction and edit planning',
+    related:['CD Projekt Red', 'Featured signal', 'Quiet then loud'],
+    summary:'A compact transition board for moving from quiet OS orientation into an aggressive branded landing without losing the first read.',
+    solved:'How to let the interface feel alive while keeping the title and case-study entry legible.',
+    value:'Separated rhythm decisions from surface animation so the edit could orient, build, accelerate, and resolve without losing clarity.',
+    effect:'Used as a process proof layer for the flagship commercial case study.',
+    revision:'Tightened early beats after the first pass leaned too heavily on atmosphere.',
+    projectHref:'../index.html?project=cyberpunk-2077',
+    watchHref:'https://www.youtube.com/watch?v=9H9ylniZ_4Q',
+    comparison:{
+      board:'Title landing frame',
+      final:'High-contrast branded lock',
+      note:'The final should keep the board intent: motion stops before the title read, then the interface returns control.'
+    },
+    frames:[
+      {title:'Black hold', time:'00:00', shot:'Full frame', move:'Hold', transition:'Cut', function:'Orient', annotation:'Hold 12f', note:'Start quiet enough for the logo read before the first pressure cue.'},
+      {title:'Chrome index split', time:'00:03', shot:'Wide UI', move:'Push', transition:'Panel reveal', function:'Build', annotation:'UI becomes readable here', note:'The grid reveals the system without explaining it. The viewer should know where they are before the break.'},
+      {title:'Red break', time:'00:07', shot:'Insert', move:'Snap', transition:'Glitch cut', function:'Break', annotation:'First aggressive break', note:'The first violent beat lands only after orientation has been earned.'},
+      {title:'Title landing', time:'00:10', shot:'Full frame', move:'Static', transition:'Hard wipe', function:'Land', annotation:'Landing frame for title', note:'The title locks after movement stops so the first read stays clean.'},
+      {title:'Case pane return', time:'00:14', shot:'UI close', move:'Drift', transition:'Panel reveal', function:'Release', annotation:'Control returns', note:'The board exits back into the operating system instead of ending as a standalone bumper.'}
+    ]
+  },
+  {
+    slug:'doom',
+    aliases:['quiet-then-loud-doom'],
+    code:'PRJ_03',
+    title:'DOOM',
+    type:'Editorial / motion pressure planning',
+    role:'Aggression, compression, and release mapping',
+    related:['Bethesda', 'Featured signal', 'Hard-cut pressure'],
+    summary:'A high-intensity board pass for sustaining aggression while keeping shot function and timing readable.',
+    solved:'How to make fast pacing feel controlled instead of visually overloaded.',
+    value:'Clarified where cuts should carry rhythm and where motion layers should get stripped back.',
+    effect:'Used as process support for the DOOM editorial case study and high-pressure channel path.',
+    revision:'Removed mid-beat motion that diluted impact and tightened cuts around the break point.',
+    projectHref:'../index.html?project=doom',
+    watchHref:'https://www.youtube.com/watch?v=0WUnGHJXeHc',
+    comparison:{
+      board:'Pressure break',
+      final:'Hard-cut impact',
+      note:'The board value is restraint inside intensity: motion drops out where the cut needs to hit.'
+    },
+    frames:[
+      {title:'Arena read', time:'00:00', shot:'Wide', move:'Hold', transition:'Cut', function:'Orient', annotation:'First read before pressure', note:'The opening gives spatial context before the cut pattern compresses.'},
+      {title:'Weapon snap', time:'00:03', shot:'Insert', move:'Snap', transition:'Hard cut', function:'Build', annotation:'Cut carries rhythm', note:'The insert lands as punctuation. Extra motion would soften the beat.'},
+      {title:'Pressure break', time:'00:06', shot:'Close', move:'Push', transition:'Glitch cut', function:'Break', annotation:'First hard break', note:'The break point arrives after orientation, so aggression stays readable.'},
+      {title:'Compression run', time:'00:09', shot:'Full frame', move:'Drift', transition:'Cut', function:'Escalate', annotation:'Middle compresses', note:'Shorter beats sustain intensity without turning the sequence into noise.'},
+      {title:'Release lock', time:'00:13', shot:'Wide', move:'Static', transition:'Hard wipe', function:'Release', annotation:'Impact then hold', note:'The final hold gives the viewer one clean landing after the pressure run.'}
+    ]
+  },
+  {
+    slug:'corsair-storefront',
+    code:'PRJ_05',
+    title:'Corsair Storefront',
+    type:'Product path board / branded spot',
+    role:'Product readability and interface path planning',
+    related:['Corsair', 'Product path', 'Commercial'],
+    summary:'A product-focused board for moving through hardware detail, storefront logic, and final purchase-state clarity.',
+    solved:'How to make product detail, UI navigation, and brand energy share the same short runtime.',
+    value:'Identified which product beats needed isolation before the interface could move quickly.',
+    effect:'Used in the commercial project path and product feature landing sequence.',
+    revision:'Removed an extra camera drift to keep the storefront landing legible.',
+    projectHref:'../index.html?project=corsair-storefront',
+    watchHref:'https://www.youtube.com/watch?v=OZZsRSgG70g',
+    comparison:{
+      board:'Feature isolate',
+      final:'Readable product beat',
+      note:'The strongest carry-through is the isolated product beat: one detail, one movement, one clear reason to cut.'
+    },
+    frames:[
+      {title:'Product dark read', time:'00:00', shot:'Insert', move:'Static', transition:'Cut', function:'Orient', annotation:'Silhouette first', note:'Start with the product shape before asking the viewer to read interface detail.'},
+      {title:'Keyboard path', time:'00:03', shot:'Close', move:'Drift', transition:'Panel reveal', function:'Build', annotation:'Path opens', note:'Movement follows the physical product line so the UI reveal feels motivated.'},
+      {title:'Feature isolate', time:'00:06', shot:'Insert', move:'Push', transition:'Hard wipe', function:'Escalate', annotation:'Feature becomes hero', note:'One product feature gets a clean isolated beat before the storefront returns.'},
+      {title:'Storefront lock', time:'00:09', shot:'UI', move:'Static', transition:'Cut', function:'Land', annotation:'Final read', note:'The landing frame removes extra motion so the call to action stays readable.'}
+    ]
+  }
+];
+
+function frameButton(project, frame, index){
+  const tone = ['tone-a','tone-b','tone-c','tone-d'][index % 4];
+  return `
+    <button class="frame-card ${tone}" type="button" data-project="${escapeHTML(project.slug)}" data-frame="${index}" aria-pressed="false">
+      <span class="frame-top"><b>${pad(index + 1)}</b><span>${escapeHTML(frame.time)}</span></span>
+      <span class="frame-mark">
+        <strong>${escapeHTML(frame.title)}</strong>
+        <em>${escapeHTML(frame.annotation)}</em>
+      </span>
+      <span class="frame-meta">
+        <i>${escapeHTML(frame.shot)}</i>
+        <i>${escapeHTML(frame.move)}</i>
+        <i>${escapeHTML(frame.function)}</i>
+      </span>
+    </button>
+  `;
+}
+
+function projectTemplate(project){
+  const aliases = (project.aliases || []).map((alias) => `<span class="anchor-alias" id="${escapeHTML(alias)}" aria-hidden="true"></span>`).join('');
+  const related = (project.related || []).map((item) => `<span>${escapeHTML(item)}</span>`).join('');
+  return `
+    <article class="project-file" id="${escapeHTML(project.slug)}" aria-labelledby="${escapeHTML(project.slug)}-title">
+      ${aliases}
+      <div class="file-bar"><span><b>Process File</b> / ${escapeHTML(project.code || 'STORY')} / ${escapeHTML(project.role)}</span><span>${escapeHTML(project.frames.length)} selected frames</span></div>
+      <div class="file-grid">
+        <div class="file-main">
+          <header class="file-head">
+            <div>
+              <div class="kicker">// ${escapeHTML(project.type)}</div>
+              <h2 id="${escapeHTML(project.slug)}-title">${escapeHTML(project.title)}</h2>
+              <p>${escapeHTML(project.summary)}</p>
+              <div class="related-projects">${related}</div>
+            </div>
+            <div class="file-chip">${escapeHTML(project.code || 'Curated board')}</div>
+          </header>
+          <div class="frame-strip" style="--frame-count:${project.frames.length}" role="list" aria-label="${escapeHTML(project.title)} selected storyboard frames">
+            ${project.frames.map((frame, index) => frameButton(project, frame, index)).join('')}
+          </div>
+          <section class="comparison" aria-label="${escapeHTML(project.title)} storyboard to final comparison">
+            <div>
+              <div class="kicker">// Storyboard to Final</div>
+              <h3>What carried through.</h3>
+            </div>
+            <div class="compare-grid">
+              <div class="compare-cell"><span>Board</span><b>${escapeHTML(project.comparison.board)}</b></div>
+              <div class="compare-cell final"><span>Final</span><b>${escapeHTML(project.comparison.final)}</b></div>
+            </div>
+            <p>${escapeHTML(project.comparison.note)}</p>
+          </section>
+        </div>
+        <aside class="file-side" aria-label="${escapeHTML(project.title)} process notes">
+          <section class="inspector" id="inspector-${escapeHTML(project.slug)}" aria-live="polite" aria-atomic="true">
+            <div class="inspect-label">// Selected Frame</div>
+            <h3 class="inspect-title" data-field="title">Frame</h3>
+            <dl class="inspect-grid">
+              <div><dt>No.</dt><dd data-field="number">01</dd></div>
+              <div><dt>Time</dt><dd data-field="time">00:00</dd></div>
+              <div><dt>Shot</dt><dd data-field="shot">Wide</dd></div>
+              <div><dt>Move</dt><dd data-field="move">Hold</dd></div>
+              <div><dt>Transition</dt><dd data-field="transition">Cut</dd></div>
+              <div><dt>Function</dt><dd data-field="function">Orient</dd></div>
+            </dl>
+            <p class="decision-note" data-field="note"></p>
+            <div class="annotation" data-field="annotation"></div>
+          </section>
+          <div class="proof-grid">
+            <section class="proof-card"><div class="kicker">// What this solved</div><p>${escapeHTML(project.solved)}</p></section>
+            <section class="proof-card"><div class="kicker">// Process value</div><p>${escapeHTML(project.value)}</p></section>
+            <section class="proof-card"><div class="kicker">// Final effect</div><p>${escapeHTML(project.effect)}</p></section>
+            <section class="proof-card"><div class="kicker">// Revision note</div><p>${escapeHTML(project.revision)}</p></section>
+          </div>
+          <nav class="actions" aria-label="${escapeHTML(project.title)} related links">
+            <a class="action-link" href="${escapeHTML(project.projectHref)}">Open case study</a>
+            <a class="action-link" href="${escapeHTML(project.watchHref)}" target="_blank" rel="noopener">Watch final</a>
+            <a class="action-link" href="../index.html">Return to screening room</a>
+          </nav>
+        </aside>
+      </div>
+    </article>
+  `;
+}
+
+function signalPulse(){
+  document.body.classList.remove('signal-hit');
+  void document.body.offsetWidth;
+  document.body.classList.add('signal-hit');
+  window.setTimeout(()=>document.body.classList.remove('signal-hit'),460);
+}
+
+function setActiveFrame(projectSlug, index, options = {}){
+  const project = storyboardProjects.find((item) => item.slug === projectSlug);
+  if(!project) return;
+  const frame = project.frames[index] || project.frames[0];
+  const article = document.getElementById(project.slug);
+  if(!article || !frame) return;
+  $$('.frame-card', article).forEach((button) => {
+    const isActive = Number(button.dataset.frame) === index;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+  const inspector = $(`#inspector-${project.slug}`, article);
+  if(!inspector) return;
+  $('[data-field="title"]', inspector).textContent = frame.title;
+  $('[data-field="number"]', inspector).textContent = pad(index + 1);
+  $('[data-field="time"]', inspector).textContent = frame.time;
+  $('[data-field="shot"]', inspector).textContent = frame.shot;
+  $('[data-field="move"]', inspector).textContent = frame.move;
+  $('[data-field="transition"]', inspector).textContent = frame.transition;
+  $('[data-field="function"]', inspector).textContent = frame.function;
+  $('[data-field="note"]', inspector).textContent = frame.note;
+  $('[data-field="annotation"]', inspector).textContent = frame.annotation;
+  if(options.react) signalPulse();
+}
+
+function renderProjects(){
+  $('#processList').innerHTML = storyboardProjects.map(projectTemplate).join('');
+  $$('.frame-card').forEach((button) => {
+    button.addEventListener('click', () => {
+      setActiveFrame(button.dataset.project, Number(button.dataset.frame), {react:true});
+    });
+    button.addEventListener('keydown', (event) => {
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        setActiveFrame(button.dataset.project, Number(button.dataset.frame), {react:true});
+      }
+    });
+  });
+  storyboardProjects.forEach((project) => setActiveFrame(project.slug, 0));
+}
+
+function initHashTarget(){
+  const slug = window.location.hash.replace('#','');
+  if(!slug) return;
+  const target = document.getElementById(slug);
+  if(target){
+    setTimeout(() => target.scrollIntoView({block:'start'}), 80);
+  }
+}
+
+$('#tickerRow').innerHTML = tickerItems.concat(tickerItems).map(([name,type]) => `<span>${escapeHTML(name)} <em>/ ${escapeHTML(type)}</em></span>`).join('');
+renderProjects();
+initHashTarget();
+
+setInterval(() => {
+  const now = new Date();
+  $('#clk').textContent = [now.getHours(), now.getMinutes(), now.getSeconds()].map(pad).join(':');
+}, 1000);
+
+let mx = 0, my = 0, cx = 0, cy = 0;
+window.addEventListener('mousemove', (event) => {
+  mx = (event.clientX / window.innerWidth - .5) * 2;
+  my = (event.clientY / window.innerHeight - .5) * 2;
+});
+(function parallax(){
+  cx += (mx - cx) * .04;
+  cy += (my - cy) * .04;
+  document.documentElement.style.setProperty('--px', (cx * -6).toFixed(2) + 'px');
+  document.documentElement.style.setProperty('--py', (cy * -4).toFixed(2) + 'px');
+  requestAnimationFrame(parallax);
+})();
+</script>
+</body>
+</html>
