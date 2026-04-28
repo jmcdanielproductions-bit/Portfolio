@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Jared McDaniel - Screening Room</title>
+<title>Jared McDaniel � Screening Room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -15,7 +15,7 @@
   --ff-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
   --ff-mono:"JetBrains Mono",ui-monospace,monospace;
   --shadow-hard:8px 8px 0 0 rgba(0,0,8,.9);
-  --pane-w: 620px;
+  --pane-w: 560px;
   --tint: var(--accent);
 }
 body[data-cat="amvs"]{--tint:#ffc93d}
@@ -55,14 +55,14 @@ html,body{background:var(--bg);color:var(--ink);font-family:var(--ff-display);fo
 @keyframes tickerRoll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ticker:hover .row{animation-play-state:paused}
 
-/* SPLIT - bumped to account for ticker */
-.split{position:fixed;top:92px;left:0;right:0;bottom:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(560px,var(--pane-w));z-index:5;transition:grid-template-columns .45s cubic-bezier(.65,.05,.35,1)}
+/* SPLIT � bumped to account for ticker */
+.split{position:fixed;top:92px;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr var(--pane-w);z-index:5;transition:grid-template-columns .45s cubic-bezier(.65,.05,.35,1)}
 body.fs{overflow:hidden}
 body.fs .topbar,body.fs .ticker,body.fs .stage-head,body.fs .stage-meta,body.fs .advprog,body.fs .keymap,body.fs .nowplay,body.fs .pip,body.fs .khint{opacity:0!important;pointer-events:none!important}
 body.fs .split{position:fixed!important;inset:0!important;top:0!important;grid-template-columns:1fr 0px!important;z-index:80}
 body.fs .pane{opacity:0;pointer-events:none;transform:translateX(40px)}
 body.fs .stage{padding:0!important;gap:0!important}
-body.fs .frame{border:none!important;box-shadow:none!important;flex:1 1 auto!important;height:auto!important;max-height:none!important}
+body.fs .frame{border:none!important;box-shadow:none!important}
 body.fs .title-block{left:48px!important;right:48px!important;bottom:48px!important}
 body.fs .fs-exit{opacity:1;pointer-events:auto}
 .fs-exit{position:fixed;top:24px;right:24px;z-index:90;font-family:var(--ff-mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);background:rgba(0,0,0,.6);border:1px solid var(--hair-strong);padding:10px 14px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s ease;display:inline-flex;gap:8px;align-items:center}
@@ -70,10 +70,10 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .fs-exit kbd{border:1px solid var(--hair-strong);padding:1px 5px;font-family:inherit;font-size:9px;background:transparent}
 .pane{transition:opacity .35s ease,transform .45s cubic-bezier(.65,.05,.35,1)}
 
-.stage{position:relative;padding:18px 22px 18px 30px;display:flex;flex-direction:column;gap:10px;min-width:0;overflow:hidden}
+.stage{position:relative;padding:24px 28px 22px 40px;display:flex;flex-direction:column;gap:14px;min-width:0;overflow:hidden}
 .stage-head{display:flex;justify-content:space-between;align-items:end;gap:20px}
-.stage-head .title{font-weight:700;font-size:clamp(24px,2.5vw,30px);line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
-.stage-head .title small{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.28em;color:var(--tint);margin-bottom:5px;font-weight:400}
+.stage-head .title{font-weight:700;font-size:32px;line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
+.stage-head .title small{display:block;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.28em;color:var(--tint);margin-bottom:6px;font-weight:400}
 .stage-head .right{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);text-align:right}
 
 /* Breadcrumb */
@@ -83,7 +83,9 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .crumb .a:hover{color:var(--tint)}
 .crumb .cur{color:var(--ink)}
 
-.frame{position:relative;background:#000;border:1px solid var(--ink);overflow:hidden;box-shadow:9px 9px 0 0 rgba(0,0,8,.88);flex:0 0 clamp(330px,53vh,560px);min-height:0}
+.frame{position:relative;background:#000;border:1px solid var(--ink);overflow:hidden;box-shadow:12px 12px 0 0 rgba(0,0,8,.9);flex:1;min-height:0}
+.frame[data-playable="true"]{cursor:pointer}
+.frame[data-playable="true"]:focus-visible{outline:2px solid var(--tint);outline-offset:3px}
 .frame .layer{position:absolute;inset:0;opacity:0;transition:opacity .45s ease}
 .frame .layer.on{opacity:1}
 .frame .layer .pan{position:absolute;inset:-4%;background-size:cover;background-position:center;filter:contrast(1.05) saturate(.85) brightness(.7)}
@@ -96,12 +98,12 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .muteBadge .dot{width:5px;height:5px;background:var(--tint);animation:pulseDot 1.6s ease-in-out infinite}
 .muteBadge:hover{color:var(--ink);border-color:var(--hair-strong)}
 
-.title-block{position:absolute;left:24px;right:28px;bottom:24px;pointer-events:none;z-index:3;transition:opacity .35s ease,transform .35s ease}
+.title-block{position:absolute;left:32px;right:32px;bottom:32px;pointer-events:none;z-index:3;transition:opacity .35s ease,transform .35s ease}
 .title-block.swap{opacity:0;transform:translateY(8px)}
 .eyebrow{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--tint);margin-bottom:8px}
-.film-title{font-weight:700;font-size:clamp(30px,3.2vw,46px);line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
-.film-sub{margin-top:9px;font-weight:300;font-size:13.5px;color:var(--ink-dim);max-width:48ch}
-.film-credits{margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--ff-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
+.film-title{font-weight:700;font-size:clamp(40px,4.5vw,66px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase}
+.film-sub{margin-top:10px;font-weight:300;font-size:14px;color:var(--ink-dim);max-width:44ch}
+.film-credits{margin-top:14px;display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute)}
 .film-credits b{color:var(--ink);font-weight:500}
 
 /* Up-Next card */
@@ -115,7 +117,7 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .upnext button:hover{background:var(--ink)}
 
 /* Progress bar with hover-scrub */
-.advprog{position:relative;height:12px;display:flex;align-items:center;cursor:pointer;margin-top:-3px}
+.advprog{position:relative;height:14px;display:flex;align-items:center;cursor:pointer;margin-top:-6px}
 .advprog .rail{position:absolute;left:0;right:0;top:6px;height:2px;background:rgba(255,255,255,.1)}
 .advprog .bar{position:absolute;left:0;top:6px;height:2px;width:0%;background:var(--tint);pointer-events:none}
 .advprog .ghost{position:absolute;left:0;top:6px;height:2px;width:0%;background:rgba(255,255,255,.2);opacity:0;transition:opacity .15s}
@@ -125,7 +127,7 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .advprog .head{position:absolute;top:3px;width:8px;height:8px;background:var(--tint);border-radius:50%;transform:translateX(-50%);pointer-events:none;transition:transform .1s}
 .advprog:hover .head{transform:translateX(-50%) scale(1.4)}
 
-.stage-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.stage-meta{display:flex;justify-content:space-between;align-items:center;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
 .stage-meta b{color:var(--tint);font-weight:500}
 .cta{display:flex;gap:12px}
 .btn-play{display:inline-flex;align-items:center;gap:10px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:12px 18px;background:var(--ink);color:#04143a;border:1px solid var(--ink);cursor:pointer;box-shadow:var(--shadow-hard);transition:transform .12s,box-shadow .12s}
@@ -150,14 +152,14 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .pip:hover::after{opacity:1}
 
 /* RIGHT PANE */
-.pane{border-left:1px solid var(--hair-strong);background:rgba(0,0,0,.33);display:flex;flex-direction:column;min-height:0;overflow:hidden;position:relative;box-shadow:-1px 0 0 rgba(255,255,255,.04),-14px 0 34px rgba(0,0,20,.12)}
+.pane{border-left:1px solid var(--hair);background:rgba(0,0,0,.22);display:flex;flex-direction:column;min-height:0;overflow:hidden;position:relative}
 .pane-tabs{display:flex;border-bottom:1px solid var(--hair);flex-shrink:0}
-.pane-tabs button{flex:1;background:transparent;border:none;color:var(--ink-dim);padding:14px 6px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;border-right:1px solid var(--hair);position:relative;min-height:46px}
+.pane-tabs button{flex:1;background:transparent;border:none;color:var(--ink-dim);padding:14px 6px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;border-right:1px solid var(--hair);position:relative}
 .pane-tabs button:last-child{border-right:none}
 .pane-tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
 .pane-tabs button.on{color:var(--ink);background:rgba(255,255,255,.06)}
 .pane-tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--tint)}
-.pane-body{flex:1;overflow-y:auto;padding:18px 20px 72px 20px}
+.pane-body{flex:1;overflow-y:auto;padding:18px 18px 64px 18px}
 .pane-body::-webkit-scrollbar{width:6px}
 .pane-body::-webkit-scrollbar-thumb{background:var(--hair-strong)}
 .pane-section{display:none}
@@ -165,9 +167,9 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 @keyframes paneIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* Now-Playing sticky pill */
-.nowplay{position:absolute;left:14px;right:14px;bottom:14px;z-index:5;background:rgba(0,0,0,.88);border:1px solid var(--tint);padding:11px 12px;display:grid;grid-template-columns:50px 1fr auto;gap:10px;align-items:center;backdrop-filter:blur(6px);cursor:pointer;transition:transform .15s}
+.nowplay{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;background:rgba(0,0,0,.85);border:1px solid var(--tint);padding:10px 12px;display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;backdrop-filter:blur(6px);cursor:pointer;transition:transform .15s}
 .nowplay:hover{transform:translateY(-2px)}
-.nowplay .thumb{aspect-ratio:16/9;width:50px;background-size:cover;filter:contrast(1.05) brightness(.8);border:1px solid var(--hair-strong)}
+.nowplay .thumb{aspect-ratio:16/9;width:44px;background-size:cover;filter:contrast(1.05) brightness(.8);border:1px solid var(--hair-strong)}
 .nowplay .txt{min-width:0}
 .nowplay .txt b{display:block;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.24em;color:var(--tint);text-transform:uppercase;margin-bottom:2px}
 .nowplay .txt .n{font-weight:700;font-size:13px;line-height:1.1;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -178,20 +180,6 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .idx-head h3{font-weight:700;font-size:26px;letter-spacing:-.01em;text-transform:uppercase;line-height:1}
 .idx-head h3 small{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.28em;color:var(--tint);margin-bottom:6px;font-weight:400}
 .idx-head .r{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;text-align:right}
-
-.featured-signals{border:1px solid var(--hair-strong);background:rgba(0,0,0,.34);box-shadow:7px 7px 0 0 rgba(0,0,8,.76);margin-bottom:14px}
-.featured-signals .fs-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid var(--hair);font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
-.featured-signals .fs-head b{color:var(--tint);font-weight:500}
-.featured-list{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair)}
-.featured-item{min-height:96px;background:rgba(0,0,0,.36);border:0;color:var(--ink);cursor:pointer;text-align:left;padding:12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;position:relative;overflow:hidden;transition:background .15s,transform .15s}
-.featured-item::before{content:"";position:absolute;inset:0;background-image:var(--featured-bg);background-size:cover;background-position:center;filter:contrast(1.05) brightness(.5);opacity:.26}
-.featured-item::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 45%,var(--tint) 190%);opacity:.55}
-.featured-item:hover,.featured-item:focus-visible{background:rgba(0,0,0,.54);transform:translate(-1px,-1px)}
-.featured-item .fi-main,.featured-item .fi-code{position:relative;z-index:1}
-.featured-item .fi-k{font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--tint);margin-bottom:6px}
-.featured-item .fi-name{font-weight:700;font-size:18px;line-height:.98;letter-spacing:-.01em;text-transform:uppercase}
-.featured-item .fi-meta{margin-top:5px;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
-.featured-item .fi-code{align-self:start;font-family:var(--ff-mono);font-size:9px;letter-spacing:.2em;color:var(--ink-mute);text-transform:uppercase}
 
 .cats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .cat{position:relative;aspect-ratio:4/3;border:1px solid var(--ink);background:#000;overflow:hidden;cursor:pointer;box-shadow:8px 8px 0 0 rgba(0,0,8,.9);transition:transform .18s,box-shadow .18s}
@@ -212,7 +200,7 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 /* L2 */
 .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);cursor:pointer;background:none;border:none;padding:6px 8px 6px 0;margin-bottom:10px}
 .back:hover{color:var(--tint)}
-.back::before{content:"<";color:var(--tint)}
+.back::before{content:"?";color:var(--tint)}
 .cat-head{margin-bottom:14px}
 .cat-head .k{font-family:var(--ff-mono);font-size:10px;letter-spacing:.28em;color:var(--tint);text-transform:uppercase;margin-bottom:6px}
 .cat-head h3{font-weight:700;font-size:28px;line-height:1;letter-spacing:-.015em;text-transform:uppercase}
@@ -222,8 +210,6 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .film{display:grid;grid-template-columns:32px 96px 1fr auto;gap:12px;align-items:center;padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
 .film:hover{background:rgba(0,0,0,.55);border-color:var(--ink);transform:translate(-2px,-2px);box-shadow:6px 6px 0 0 rgba(0,0,8,.85)}
 .film.active{border-color:var(--tint);background:color-mix(in srgb,var(--tint) 10%,rgba(0,0,0,.3))}
-.film.is-featured{border-color:rgba(255,201,61,.48);background:rgba(0,0,0,.42)}
-.film.is-featured .name::before{content:"FEATURED SIGNAL";display:block;margin-bottom:3px;font-family:var(--ff-mono);font-weight:400;font-size:8px;letter-spacing:.22em;color:var(--tint)}
 .film .num{font-family:var(--ff-mono);font-size:10.5px;color:var(--ink-dim);letter-spacing:.18em}
 .film.active .num{color:var(--tint)}
 .film .thumb{aspect-ratio:16/9;background-size:cover;border:1px solid var(--hair-strong);filter:contrast(1.05) brightness(.78);position:relative}
@@ -233,7 +219,7 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .film .name em{font-style:normal;display:block;font-family:var(--ff-mono);font-weight:400;font-size:10px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;margin-top:3px}
 .film .meta{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);text-align:right;line-height:1.4}
 
-.case-study{margin-bottom:18px;border:1px solid var(--hair-strong);background:rgba(0,0,0,.40);padding:15px;box-shadow:8px 8px 0 0 rgba(0,0,8,.8)}
+.case-study{margin-bottom:18px;border:1px solid var(--hair-strong);background:rgba(0,0,0,.28);padding:16px;box-shadow:8px 8px 0 0 rgba(0,0,8,.8)}
 .case-top{margin-bottom:14px}
 .case-k{font-family:var(--ff-mono);font-size:10px;letter-spacing:.28em;color:var(--tint);text-transform:uppercase;margin-bottom:8px}
 .case-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -244,30 +230,16 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .case-play,.case-link{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;padding:9px 11px;border:1px solid var(--hair-strong);background:rgba(255,255,255,.03);color:var(--ink);cursor:pointer;text-decoration:none;transition:transform .15s,border-color .15s,background .15s}
 .case-play:hover,.case-link:hover{transform:translate(-1px,-1px);border-color:var(--tint);background:rgba(255,255,255,.06)}
 .case-play[disabled],.case-link[aria-disabled="true"]{opacity:.45;cursor:not-allowed;pointer-events:none}
-.case-grid{display:grid;grid-template-columns:1.28fr .92fr;gap:12px}
+.case-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:14px}
 .case-copy,.case-side{display:grid;gap:10px}
-.case-block{border:1px solid var(--hair);background:rgba(0,0,0,.26);padding:12px}
-.case-block[hidden]{display:none}
-.case-block.major{border-color:var(--hair-strong);background:rgba(255,255,255,.04)}
-.case-block.decision{border-color:rgba(255,201,61,.42);background:rgba(255,201,61,.08)}
-.case-block.compact{padding:10px}
+.case-block{border:1px solid var(--hair);background:rgba(0,0,0,.22);padding:12px}
 .case-block h5{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--tint);margin-bottom:6px}
 .case-block p{font-size:12.5px;line-height:1.6;color:var(--ink-dim)}
-.case-block.major p{font-size:13.5px;color:var(--ink);line-height:1.55}
-.logic-line{font-family:var(--ff-mono);font-size:10px;letter-spacing:.16em;line-height:1.6;text-transform:uppercase;color:var(--ink);word-break:break-word}
 .case-poster{aspect-ratio:16/10;background-size:cover;background-position:center;border:1px solid var(--hair-strong);background-color:#05081f;box-shadow:6px 6px 0 0 rgba(0,0,8,.7)}
 .case-tags,.case-credits,.case-media{display:flex;flex-wrap:wrap;gap:6px}
 .case-tags span,.case-credits span,.case-media span{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);border:1px solid var(--hair-strong);padding:5px 7px;background:rgba(255,255,255,.03)}
 .case-media span[data-state="active"]{color:#04143a;background:var(--tint);border-color:var(--tint)}
 .case-media span[data-state="placeholder"]{color:var(--ink-dim)}
-.process-links{display:grid;gap:7px}
-.process-link{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;border:1px solid var(--hair-strong);background:rgba(255,255,255,.035);padding:8px 9px;color:var(--ink);font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;transition:background .15s,border-color .15s,transform .15s}
-.process-link:hover,.process-link:focus-visible{border-color:var(--tint);background:rgba(255,255,255,.07);transform:translate(-1px,-1px);outline:none}
-.process-link span{color:var(--tint)}
-.case-next{display:grid;gap:7px}
-.case-next button,.case-next a{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--hair-strong);background:rgba(255,255,255,.035);color:var(--ink);text-decoration:none;cursor:pointer;padding:8px 9px;font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;transition:background .15s,border-color .15s,transform .15s}
-.case-next button::after,.case-next a::after{content:">";color:var(--tint)}
-.case-next button:hover,.case-next a:hover,.case-next button:focus-visible,.case-next a:focus-visible{border-color:var(--tint);background:rgba(255,255,255,.07);transform:translate(-1px,-1px)}
 
 .cinema{position:fixed;inset:0;z-index:95;display:grid;place-items:center;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .22s ease}
 .cinema.on{opacity:1;pointer-events:auto}
@@ -275,8 +247,10 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .cinema-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .cinema-top .meta{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);max-width:70ch}
 .cinema-title{font-weight:700;font-size:24px;line-height:1;letter-spacing:-.01em;text-transform:uppercase}
-.cinema-close{justify-self:end;font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);background:rgba(0,0,0,.4);border:1px solid var(--hair-strong);padding:8px 11px;cursor:pointer}
-.cinema-close:hover{border-color:var(--tint);color:var(--tint)}
+.cinema-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
+.cinema-open,.cinema-close{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);background:rgba(0,0,0,.4);border:1px solid var(--hair-strong);padding:8px 11px;cursor:pointer;text-decoration:none}
+.cinema-open:hover,.cinema-close:hover{border-color:var(--tint);color:var(--tint)}
+.cinema-open[aria-disabled="true"]{opacity:.45;pointer-events:none}
 .cinema-frame{position:relative;aspect-ratio:16/9;border:1px solid var(--ink);background:#05081f;box-shadow:12px 12px 0 0 rgba(0,0,8,.9);overflow:hidden}
 .cinema-poster,.cinema-iframe{position:absolute;inset:0;width:100%;height:100%}
 .cinema-poster{background-size:cover;background-position:center;filter:contrast(1.05) saturate(.9) brightness(.78)}
@@ -301,30 +275,6 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .sx:hover .sx-cta{opacity:1;transform:translateY(0)}
 .sx .sx-mini{position:absolute;top:44px;left:14px;right:14px;height:44%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
 .sx .sx-mini div{border:1px solid var(--hair-strong);background:rgba(255,255,255,.04)}
-.studio-detail{display:none}
-.studio-hero{border:1px solid var(--hair-strong);background:rgba(0,0,0,.3);padding:16px;margin-bottom:12px;box-shadow:8px 8px 0 0 rgba(0,0,8,.8)}
-.studio-hero .k{font-family:var(--ff-mono);font-size:10px;letter-spacing:.28em;color:var(--tint);text-transform:uppercase;margin-bottom:8px}
-.studio-hero h4{font-weight:700;font-size:28px;line-height:.95;letter-spacing:-.01em;text-transform:uppercase}
-.studio-hero p{margin-top:10px;color:var(--ink-dim);font-size:13px;line-height:1.6;text-wrap:pretty}
-.studio-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.studio-meta span{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);border:1px solid var(--hair-strong);padding:5px 7px;background:rgba(255,255,255,.03)}
-.studio-panels{display:grid;gap:10px}
-.studio-panel{border:1px solid var(--hair);background:rgba(0,0,0,.22);padding:12px}
-.studio-panel h5{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--tint);margin-bottom:6px}
-.studio-panel p{font-size:12.5px;line-height:1.6;color:var(--ink-dim)}
-.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.story-frame{position:relative;min-height:94px;border:1px solid var(--hair-strong);background:linear-gradient(150deg,rgba(255,255,255,.08),rgba(0,0,0,.34));padding:9px;overflow:hidden}
-.story-frame::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:18px 18px;opacity:.45}
-.story-frame .num,.story-frame b,.story-frame span{position:relative;z-index:1}
-.story-frame .num{font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.22em;color:var(--tint);text-transform:uppercase}
-.story-frame b{display:block;margin-top:20px;font-size:13px;line-height:1.05;text-transform:uppercase}
-.story-frame span{display:block;margin-top:4px;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.14em;color:var(--ink-dim);text-transform:uppercase}
-.shot-list{display:grid;gap:6px}
-.shot{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:start;border-bottom:1px solid var(--hair);padding:7px 0;font-family:var(--ff-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
-.shot:last-child{border-bottom:none}
-.shot b{color:var(--tint);font-weight:500}
-.shot span{color:var(--ink)}
-.shot em{font-style:normal;color:var(--ink-mute);text-align:right}
 
 /* legacy strip (kept) */
 .strip{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -354,7 +304,6 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .about-portrait .ph{position:absolute;inset:0;display:grid;place-items:center;color:rgba(215,182,255,.8);font-family:var(--ff-mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase}
 .about-portrait .nm{position:absolute;left:14px;right:14px;bottom:14px;font-weight:700;font-size:22px;line-height:1;letter-spacing:-.01em;text-transform:uppercase;z-index:2}
 .about-portrait .nm em{display:block;font-style:normal;font-family:var(--ff-mono);font-weight:400;font-size:10px;letter-spacing:.24em;color:var(--tint);margin-bottom:4px}
-.about-position{border:1px solid var(--hair-strong);background:rgba(0,0,0,.32);box-shadow:7px 7px 0 0 rgba(0,0,8,.72);padding:13px;margin-bottom:14px;font-weight:700;font-size:20px;line-height:1.04;letter-spacing:-.01em;text-transform:uppercase}
 .about-bio{font-size:13px;line-height:1.55;color:var(--ink-dim);margin-bottom:16px;text-wrap:pretty}
 .about-bio b{color:var(--ink);font-weight:500}
 .about-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px}
@@ -372,56 +321,9 @@ body.fs .fs-exit{opacity:1;pointer-events:auto}
 .about-sec .tools{display:flex;flex-wrap:wrap;gap:6px}
 .about-sec .tools span{border:1px solid var(--hair-strong);padding:5px 9px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
 
-button:focus-visible,a:focus-visible,.cat:focus-visible,.film:focus-visible,.sx:focus-visible,.nowplay:focus-visible,.pip:focus-visible{outline:2px solid var(--tint);outline-offset:3px}
-
-@media (max-width:1180px){
-  :root{--pane-w:580px}
-  .split{grid-template-columns:minmax(0,1fr) minmax(520px,var(--pane-w))}
-  .stage{padding-left:28px}
-  .film-title{font-size:clamp(28px,3vw,42px)}
-}
-
-@media (max-width:980px){
-  html,body{overflow:auto;min-height:100%}
-  .topbar,.ticker,.split{position:relative}
-  .split{top:auto;bottom:auto;grid-template-columns:1fr;min-height:auto}
-  .stage{padding:18px;overflow:visible}
-  .frame{height:clamp(320px,54vh,520px);flex:0 0 auto}
-  .pane{border-left:0;border-top:1px solid var(--hair-strong);min-height:720px;overflow:visible}
-  .pane-body{padding-bottom:84px}
-  .case-grid{grid-template-columns:1fr}
-  .featured-list{grid-template-columns:1fr}
-  .nowplay{position:sticky;margin:0 14px 14px;bottom:14px}
-}
-
-@media (max-width:640px){
-  .topbar{grid-template-columns:1fr auto;padding:0 16px}
-  .rev,.tb-right,.ticker .lbl,.keymap{display:none}
-  .stage-head{display:block}
-  .stage-head .right{text-align:left;margin-top:8px}
-  .stage{padding:14px 14px 18px}
-  .frame{height:clamp(250px,45vh,390px);box-shadow:7px 7px 0 0 rgba(0,0,8,.86)}
-  .title-block{left:18px;right:18px;bottom:18px}
-  .film-title{font-size:clamp(26px,9vw,38px)}
-  .film-sub{font-size:12.5px;max-width:34ch}
-  .stage-meta{display:grid;gap:8px;letter-spacing:.14em}
-  .cta{justify-content:stretch}
-  .btn-play{width:100%;justify-content:center;min-height:44px}
-  .pane-tabs button{min-height:48px;font-size:9.5px;letter-spacing:.16em}
-  .pane-body{padding:15px 14px 86px}
-  .idx-head{display:block}
-  .idx-head .r{text-align:left;margin-top:7px}
-  .cats,.studio-grid{grid-template-columns:1fr}
-  .featured-item{min-height:92px}
-  .film{grid-template-columns:28px 82px 1fr;gap:9px;padding:10px}
-  .film .meta{grid-column:2 / -1;text-align:left}
-  .case-title-row{display:block}
-  .case-chip{display:inline-block;margin-top:8px}
-}
-
 /* ============ INTRO SEQUENCE ============ */
-/* Stage 0 - pre-intro: everything off-state.
-   Stage 1 - intro-done: elements ease to natural state, staggered. */
+/* Stage 0 � pre-intro: everything off-state.
+   Stage 1 � intro-done: elements ease to natural state, staggered. */
 body.pre-intro{overflow:hidden}
 body.pre-intro .field{opacity:.25;transition:opacity 1.4s ease}
 body.intro-done .field{opacity:1}
@@ -430,7 +332,7 @@ body.intro-done .field{opacity:1}
 body.pre-intro .topbar{opacity:0;transform:translateY(-12px)}
 body.intro-done .topbar{opacity:1;transform:none;transition:opacity .55s ease .05s,transform .55s cubic-bezier(.2,.7,.3,1) .05s}
 
-/* Ticker uses a clip-path edge-wipe from right to left (content itself rolls in from right) */
+/* Ticker uses a clip-path edge-wipe R?L (content itself rolls in from right) */
 .ticker{clip-path:inset(0 0 0 0)}
 body.pre-intro .ticker{clip-path:inset(0 0 0 100%)}
 body.intro-done .ticker{clip-path:inset(0 0 0 0);transition:clip-path .9s cubic-bezier(.7,0,.25,1) .55s}
@@ -450,7 +352,7 @@ body.intro-done .stage-head{opacity:1;transform:none;transition:opacity .5s ease
 body.intro-done .advprog{opacity:1;transform:none;transition:opacity .5s ease .7s,transform .55s cubic-bezier(.2,.7,.3,1) .7s}
 body.intro-done .stage-meta{opacity:1;transform:none;transition:opacity .5s ease .8s,transform .55s cubic-bezier(.2,.7,.3,1) .8s}
 
-/* Frame (viewer window) zooms in from nothing - center origin, scale 0 to 1 */
+/* Frame (viewer window) zooms in from nothing � center origin, scale 0 ? 1 */
 .frame{transform-origin:50% 50%;will-change:transform,opacity}
 body.pre-intro .frame{opacity:0;transform:scale(.02);clip-path:inset(48% 48% 48% 48%)}
 body.intro-done .frame{opacity:1;transform:scale(1);clip-path:inset(0 0 0 0);transition:opacity .65s ease .25s,transform 1.1s cubic-bezier(.2,.7,.2,1) .25s,clip-path 1.1s cubic-bezier(.2,.7,.2,1) .25s}
@@ -493,12 +395,12 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
 <body data-cat="amvs" class="pre-intro">
 
 <!-- Keyboard hint -->
-<div class="khint">Try <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> / <kbd>J</kbd><kbd>K</kbd> / <kbd>F</kbd> <kbd>M</kbd></div>
+<div class="khint">Try <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> � <kbd>J</kbd><kbd>K</kbd> � <kbd>F</kbd> <kbd>M</kbd></div>
 
 <div class="field"></div>
 
 <header class="topbar">
-  <div class="tb-left"><span class="sig">Jared McDaniel</span><span class="rev">Reel / V2.2</span></div>
+  <div class="tb-left"><span class="sig">Jared McDaniel</span><span class="rev">Reel � V2.2</span></div>
   <nav class="tb-nav" id="nav" style="display:none">
     <button class="on" data-t="index">Index</button>
     <button data-t="studio">Studio</button>
@@ -520,10 +422,10 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
   <section class="stage">
     <div class="stage-head">
       <div>
-        <div class="crumb" id="crumb"><span class="a" data-j="cats">Index</span><span class="sep">/</span><span class="cur" id="crumb-cat">AMVs</span><span class="sep">/</span><span class="cur" id="crumb-film">-</span></div>
-        <div class="title"><small id="stage-k">// Now Showing / AMVs</small><span id="stage-cat">Feature Reel</span></div>
+        <div class="crumb" id="crumb"><span class="a" data-j="cats">Index</span><span class="sep">/</span><span class="cur" id="crumb-cat">AMVs</span><span class="sep">/</span><span class="cur" id="crumb-film">�</span></div>
+        <div class="title"><small id="stage-k">// Now Showing � AMVs</small><span id="stage-cat">Feature Reel</span></div>
       </div>
-      <div class="right">Director / Editor<br/>Bay Area / CA</div>
+      <div class="right">Director / Editor<br/>Bay Area � CA</div>
     </div>
     <div class="frame" id="frame">
       <div class="layer on" id="layA"><div class="pan" id="panA"></div></div>
@@ -531,21 +433,21 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
       <div class="scanlines"></div>
       <div class="vignette"></div>
       <div class="muteBadge" id="muteBadge" title="Click to toggle">
-        <span class="dot"></span><span id="muteLabel">Muted / Autoplay</span>
+        <span class="dot"></span><span id="muteLabel">Muted � Autoplay</span>
       </div>
       <div class="title-block" id="tblock">
-        <div class="eyebrow" id="stage-eye">Reel 01 / 07:30</div>
+        <div class="eyebrow" id="stage-eye">Reel 01 � 07:30</div>
         <div class="film-title" id="stage-t">Quiet,<br/>Then Loud.</div>
-        <div class="film-sub" id="stage-s">A short film about silence as a character - built around the absence of sound, letting image carry the weight until a single cue arrives.</div>
+        <div class="film-sub" id="stage-s">A short film about silence as a character � built around the absence of sound, letting image carry the weight until a single cue arrives.</div>
         <div class="film-credits" id="stage-credits"></div>
       </div>
       <!-- Up next card -->
       <div class="upnext" id="upnext">
-        <div class="k">Up Next / Auto-advance</div>
-        <div class="n" id="up-n">-</div>
-        <div class="m" id="up-m">-</div>
+        <div class="k">? Up Next � Auto-advance</div>
+        <div class="n" id="up-n">�</div>
+        <div class="m" id="up-m">�</div>
         <div class="cd" id="up-cd">5</div>
-        <button id="up-skip">Skip Now &gt;</button>
+        <button id="up-skip">Skip Now ?</button>
       </div>
       <div class="keymap">
         <span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd>Channels</span>
@@ -562,7 +464,7 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
       <div class="tt" id="ptt">00:00</div>
     </div>
     <div class="stage-meta">
-      <div><b id="m-tc">00:00:00</b> / <span id="m-total">07:30</span> / <span id="m-extra">DCP / 4K / 2024</span></div>
+      <div><b id="m-tc">00:00:00</b> / <span id="m-total">07:30</span> � <span id="m-extra">DCP � 4K � 2024</span></div>
       <div class="cta">
         <button class="btn-play" id="fsEnterBtn"><span class="tri"></span>Enter Screening</button>
       </div>
@@ -584,10 +486,6 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
             <h3><small>// Index</small>Selected Work.</h3>
             <div class="r">Choose a channel</div>
           </div>
-          <section class="featured-signals" aria-labelledby="featured-title">
-            <div class="fs-head"><span id="featured-title"><b>Start Here</b> / Featured Signals</span><span>Commercial Channel</span></div>
-            <div class="featured-list" id="featured-host"></div>
-          </section>
           <div class="cats" id="cats-host"></div>
         </div>
         <div id="idx-detail" style="display:none">
@@ -595,16 +493,16 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
           <div class="cat-head">
             <div class="k" id="d-k">// AMVs</div>
             <h3 id="d-h">Anime Music Videos</h3>
-            <div class="meta" id="d-m">-</div>
+            <div class="meta" id="d-m">�</div>
           </div>
           <section class="case-study" id="case-study" aria-live="polite">
             <div class="case-top">
               <div class="case-k" id="case-k">// Case Study</div>
               <div class="case-title-row">
-                <h4 id="case-title">-</h4>
+                <h4 id="case-title">�</h4>
                 <div class="case-chip" id="case-chip">Selected</div>
               </div>
-              <div class="case-meta" id="case-meta">-</div>
+              <div class="case-meta" id="case-meta">�</div>
               <div class="case-actions">
                 <button class="case-play" id="case-play" type="button">Play Project</button>
                 <a class="case-link" id="case-link" target="_blank" rel="noreferrer">Open Platform</a>
@@ -612,37 +510,21 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
             </div>
             <div class="case-grid">
               <div class="case-copy">
-                <div class="case-block major">
+                <div class="case-block">
                   <h5>Logline</h5>
-                  <p id="case-logline">-</p>
+                  <p id="case-logline">�</p>
                 </div>
                 <div class="case-block">
                   <h5>Brief</h5>
-                  <p id="case-brief">-</p>
-                </div>
-                <div class="case-block" id="case-constraint-block" hidden>
-                  <h5>Constraint</h5>
-                  <p id="case-constraint">-</p>
+                  <p id="case-brief">�</p>
                 </div>
                 <div class="case-block">
                   <h5>Execution</h5>
-                  <p id="case-execution">-</p>
-                </div>
-                <div class="case-block decision" id="case-decision-block" hidden>
-                  <h5>Decision</h5>
-                  <p id="case-decision">-</p>
+                  <p id="case-execution">�</p>
                 </div>
                 <div class="case-block">
                   <h5>Result</h5>
-                  <p id="case-result">-</p>
-                </div>
-                <div class="case-block compact" id="case-logic-block" hidden>
-                  <h5>Editorial Logic</h5>
-                  <div class="logic-line" id="case-logic">-</div>
-                </div>
-                <div class="case-block compact" id="case-revision-block" hidden>
-                  <h5>Revision Note</h5>
-                  <p id="case-revision">-</p>
+                  <p id="case-result">�</p>
                 </div>
               </div>
               <aside class="case-side">
@@ -659,14 +541,6 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
                   <h5>Media</h5>
                   <div class="case-media" id="case-media"></div>
                 </div>
-                <div class="case-block process-block" id="case-process-block" hidden>
-                  <h5>Process Files</h5>
-                  <div class="process-links" id="case-process"></div>
-                </div>
-                <div class="case-block" id="case-next-block">
-                  <h5>Next Step</h5>
-                  <div class="case-next" id="case-next"></div>
-                </div>
               </aside>
             </div>
           </section>
@@ -676,23 +550,11 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
 
       <!-- STUDIO -->
       <section class="pane-section" data-s="studio">
-        <div id="studio-list">
-          <div class="idx-head">
-            <h3><small>// The Studio</small>Process &amp; Craft.</h3>
-            <div class="r">Storyboards / Shotlists / BTS / Animation</div>
-          </div>
-          <div class="studio-grid" id="studio-host"></div>
+        <div class="idx-head">
+          <h3><small>// The Studio</small>Process &amp; Craft.</h3>
+          <div class="r">Storyboards � Shotlists � BTS � Animation</div>
         </div>
-        <div class="studio-detail" id="studio-detail">
-          <button class="back" id="studio-back" type="button">Back to studio</button>
-          <section class="studio-hero">
-            <div class="k" id="studio-k">// Studio File</div>
-            <h4 id="studio-title">Storyboards</h4>
-            <p id="studio-summary">Select a process file.</p>
-            <div class="studio-meta" id="studio-meta"></div>
-          </section>
-          <div class="studio-panels" id="studio-panels"></div>
-        </div>
+        <div class="studio-grid" id="studio-host"></div>
       </section>
 
       <!-- ABOUT -->
@@ -702,10 +564,9 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
           <div class="r">EST. 2017</div>
         </div>
         <div class="about-portrait">
-          <div class="ph">// Portrait Pending</div>
+          <div class="ph">? Portrait Placeholder ?</div>
           <div class="nm"><em>// Principal</em>Jared McDaniel</div>
         </div>
-        <p class="about-position">Direction through editing. Structure first, style only when it earns the cut.</p>
         <p class="about-bio">Director and editor working across commercial, narrative, and music-video formats. Every frame is a decision. Every cut is intentional. Recent signals include work for <b>CD Projekt Red</b>, <b>Corsair</b>, <b>Bethesda</b>, and independent projects shaped around rhythm, restraint, and a clear first read. The system is not the aesthetic. The system is the process.</p>
         <div class="about-stat">
           <div class="s"><div class="v">08</div><div class="l">Years Cutting</div></div>
@@ -725,7 +586,7 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
             <li><span class="y">2024</span><span class="t">Commercial / editorial portfolio set</span><span class="m">Active</span></li>
             <li><span class="y">2023</span><span class="t">Short-form and AMV archive expanded</span><span class="m">Active</span></li>
             <li><span class="y">2020</span><span class="t">Founded studio practice</span><span class="m">Oakland, CA</span></li>
-            <li><span class="y">2017</span><span class="t">First paid cut</span><span class="m">-</span></li>
+            <li><span class="y">2017</span><span class="t">First paid cut</span><span class="m">�</span></li>
           </ul>
         </div>
         <div class="about-sec">
@@ -744,7 +605,7 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
 
       <!-- CONTACT -->
       <section class="pane-section" data-s="contact">
-        <div class="c-lead">Let's make<br/>something <span>loud</span>.</div>
+        <div class="c-lead">Let�s make<br/>something <span>loud</span>.</div>
         <div class="c-blk"><h4>Direct</h4><a href="mailto:hello@jaredmcdaniel.com">Email Transmission</a><span aria-disabled="true">Vimeo Channel</span><span aria-disabled="true">Instagram Signal</span><span aria-disabled="true">LinkedIn Node</span></div>
         <div class="c-blk"><h4>Elsewhere</h4><span aria-disabled="true">Social links on request</span></div>
         <div class="c-blk"><h4>Status</h4><span style="color:var(--tint)">Open channel // transmit</span></div>
@@ -753,7 +614,7 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
     <!-- NOW PLAYING sticky pill -->
     <div class="nowplay" id="nowplay" title="Return to Index">
       <div class="thumb" id="np-thumb"></div>
-      <div class="txt"><b id="np-label">Now Playing / AMVs</b><div class="n" id="np-name">-</div></div>
+      <div class="txt"><b id="np-label">Now Playing � AMVs</b><div class="n" id="np-name">�</div></div>
       <div class="tc" id="np-tc">00:00</div>
     </div>
   </aside>
@@ -763,14 +624,17 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
   <div class="cinema-shell" role="dialog" aria-modal="true" aria-label="Cinema viewer">
     <div class="cinema-top">
       <div>
-        <div class="cinema-title" id="cinema-title">-</div>
-        <div class="cinema-note" id="cinema-meta">-</div>
+        <div class="cinema-title" id="cinema-title">�</div>
+        <div class="cinema-note" id="cinema-meta">�</div>
       </div>
-      <button class="cinema-close" id="cinema-close" type="button">Close</button>
+      <div class="cinema-actions">
+        <a class="cinema-open" id="cinema-open" target="_blank" rel="noreferrer">Open Platform</a>
+        <button class="cinema-close" id="cinema-close" type="button">Close</button>
+      </div>
     </div>
     <div class="cinema-frame" id="cinema-frame">
       <div class="cinema-poster" id="cinema-poster"></div>
-      <iframe class="cinema-iframe" id="cinema-iframe" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Project playback"></iframe>
+      <iframe class="cinema-iframe" id="cinema-iframe" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Project playback"></iframe>
     </div>
   </div>
 </div>
@@ -778,8 +642,8 @@ body.intro-done .keymap{opacity:.75;transform:none;transition:opacity .5s ease 1
 <!-- PiP floating viewer -->
 <div class="pip" id="pip" title="Click to return to Index">
   <div class="pip-img" id="pip-img"></div>
-  <button class="pip-x" id="pip-x" title="Dismiss">x</button>
-  <div class="pip-label"><b>Now Playing</b><span id="pip-name">-</span></div>
+  <button class="pip-x" id="pip-x" title="Dismiss">�</button>
+  <div class="pip-label"><b>Now Playing</b><span id="pip-name">�</span></div>
 </div>
 
 <button class="fs-exit" id="fsExit">Exit <kbd>Esc</kbd></button>
@@ -846,18 +710,14 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Direction / Edit',
       year: 2025,
       runtime: null,
-      summary: 'A flagship commercial cut designed for immediate impact and a clean first read.',
-      logline: 'A high-impact commercial edit built to communicate tone and scale instantly without sacrificing clarity.',
+      summary: 'A flagship commercial signal designed to hit hard and read instantly. Built for CD Projekt Red.',
+      logline: 'A flagship commercial signal designed to hit hard and read instantly. Built for CD Projekt Red.',
       detail: {
-        brief: 'Create a flagship piece that establishes tone, scale, and visual identity within seconds. The cut needed to function as both a portfolio anchor and a brand-facing signal.',
-        constraint: 'The piece had to balance cinematic weight with commercial readability. Too much atmosphere would slow the read, while too much speed would reduce clarity.',
-        execution: 'The structure prioritizes immediate orientation before escalation. Early shots establish environment and tone, followed by controlled acceleration through tighter cuts and selective motion. Transitions are minimized in favor of direct cuts to maintain pace and clarity.',
-        decision: 'Delayed aggressive pacing until visual context was locked. Removed transitional effects that softened impact. Let framing and cut timing define energy instead of layering motion.',
-        result: 'A cleaner, more confident commercial signal that reads instantly while still carrying cinematic weight.',
-        editorialLogic: 'Orient -> Build -> Accelerate -> Resolve',
-        revision: 'Initial versions leaned heavier on atmosphere. Final cut tightened early beats to improve first-read clarity and engagement.',
+        brief: "Create a flagship commercial signal that communicates the brand's cinematic edge instantly.",
+        execution: 'Hard framing, fast cuts, clear commercial rhythm. Every beat intentional.',
+        result: 'A stronger first-read for the portfolio. Proof that commercial work can have a cinematic edge.',
       },
-      tags: ['COMMERCIAL', 'DIRECTION', 'EDIT', 'FLAGSHIP'],
+      tags: ['COMMERCIAL', 'DIRECTION', 'EDIT'],
       credits: [
         { role: 'DIRECTION', name: 'Jared McDaniel' },
         { role: 'EDIT', name: 'Jared McDaniel' },
@@ -870,9 +730,6 @@ const PORTFOLIO_CONTENT = {
       status: { portfolio: 'active', copy: 'final', media: 'active' },
       featured: true,
       placeholder: false,
-      process: {
-        storyboard: 'quiet-then-loud',
-      },
     },
     {
       slug: 'fallout-nuka-cola',
@@ -917,18 +774,14 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Editing / Motion',
       year: 2025,
       runtime: null,
-      summary: 'A precision-driven editorial built around aggressive pacing without losing clarity.',
-      logline: 'A hard-cut editorial designed to hit immediately and sustain pressure without collapsing into noise.',
+      summary: 'A harder-cut edit built for impact and rhythm. Maximum aggression, minimum fat.',
+      logline: 'A harder-cut edit built for impact and rhythm. Maximum aggression, minimum fat.',
       detail: {
-        brief: 'Build a high-impact edit that leads with aggression while maintaining control over rhythm and readability.',
-        constraint: 'Fast pacing and heavy motion risked overwhelming the viewer. The edit needed to stay legible while pushing intensity.',
-        execution: 'The sequence is structured around controlled escalation. Early beats establish orientation before compression increases pace. Motion layers were reduced where possible so cuts carry the primary rhythm. Transitions favor hard edges over blended effects.',
-        decision: 'Cut earlier on key beats to preserve impact. Removed mid-beat motion that diluted timing. Let cuts lead instead of transitions.',
-        result: 'A sharper editorial signal with a clear edge and strong first read, maintaining intensity without visual overload.',
-        editorialLogic: 'Build -> Compress -> Break -> Release',
-        revision: 'Initial pass relied more on motion. Final version stripped back effects and tightened cuts to improve clarity and aggression.',
+        brief: 'Build a harder-cut edit that leads with impact and hits every beat.',
+        execution: 'Tighter timing, stronger accents, leaner motion pass throughout.',
+        result: 'Aggressive archive signal with a clear edge and unmistakable tone.',
       },
-      tags: ['EDITORIAL', 'MOTION', 'GAMING', 'HIGH-INTENSITY'],
+      tags: ['EDITORIAL', 'MOTION', 'GAMING'],
       credits: [
         { role: 'EDIT', name: 'Jared McDaniel' },
         { role: 'MOTION', name: 'Jared McDaniel' },
@@ -939,11 +792,8 @@ const PORTFOLIO_CONTENT = {
       posterStrategy: 'youtube-thumb',
       fallbackPoster: 'linear-gradient(140deg,#0a1540,#05081f 60%,#1c2a66)',
       status: { portfolio: 'active', copy: 'final', media: 'active' },
-      featured: true,
+      featured: false,
       placeholder: false,
-      process: {
-        storyboard: 'quiet-then-loud',
-      },
     },
     {
       slug: 'witcher',
@@ -1006,9 +856,6 @@ const PORTFOLIO_CONTENT = {
       status: { portfolio: 'active', copy: 'final', media: 'active' },
       featured: false,
       placeholder: false,
-      process: {
-        storyboard: { label: 'Product path board', href: 'studio/storyboards.html#corsair-storefront' },
-      },
     },
     {
       slug: 'frame-cut',
@@ -1502,7 +1349,7 @@ const PORTFOLIO_CONTENT = {
     profile: {
       name: 'Jared McDaniel',
       title: 'Director / Editor',
-      bio: 'Director and editor working across commercial, narrative, and music-video formats. Every frame is a decision. Every cut is intentional. Recent signals include work for CD Projekt Red, Corsair, Bethesda, and independent projects shaped around rhythm, restraint, and a clean first read. The system is not the aesthetic. The system is the process.',
+      bio: 'Director and editor working across commercial, narrative, and music-video formats. Every frame is a decision. Every cut is intentional. Recent signals include work for CD Projekt Red, Corsair, Bethesda, and independent projects shaped around rhythm, restraint, and a clear first read. The system is not the aesthetic. The system is the process.',
       stats: [
         { value: '08', label: 'YEARS CUTTING' },
         { value: '40+', label: 'CREDITS' },
@@ -1513,7 +1360,7 @@ const PORTFOLIO_CONTENT = {
         { year: '2024', title: 'Commercial / editorial portfolio set', meta: 'Active' },
         { year: '2023', title: 'Short-form and AMV archive expanded', meta: 'Active' },
         { year: '2020', title: 'Founded studio practice', meta: 'Oakland, CA' },
-        { year: '2017', title: 'First paid cut', meta: '-' },
+        { year: '2017', title: 'First paid cut', meta: '�' },
       ],
       availability: 'Available for hire',
     },
@@ -1549,131 +1396,19 @@ const PORTFOLIO_CONTENT = {
       ],
     },
     studioHighlights: [
-      ['Storyboards - Selected Process', '3 files', 'linear-gradient(160deg,#0a1036,#05081f)'],
+      ['Storyboard - Quiet, Then Loud', '12 frames', 'linear-gradient(160deg,#0a1036,#05081f)'],
       ['Shotlist - Northbound', '24 setups', 'linear-gradient(210deg,#0a1540,#05081f)'],
       ['BTS - Field Studies', 'Location', 'linear-gradient(140deg,#05081f,#131a4a)'],
       ['Animation - Halfmoon', 'Motion', 'linear-gradient(180deg,#0a1036,#030611)'],
     ],
   },
   studio: [
-    {
-      slug: 'storyboards',
-      n: '01',
-      name: 'Storyboards',
-      sub: 'Selected process files',
-      count: '3 files',
-      g: 'linear-gradient(160deg,#0a1036,#05081f)',
-      href: 'studio/storyboards.html',
-      mini: true,
-      summary: 'Curated storyboard artifacts from selected projects, focused on what each board solved and how it connects to the final work.',
-      meta: ['3 files', 'Process proof', 'Previs'],
-      panels: [
-        { title: 'Intent', body: 'Use storyboards as evidence of timing, transition, framing, and first-read decisions before the motion or edit pass starts.' },
-        { title: 'Use', body: 'Each project file shows only the decisive frames, the problem they solved, and a link back to the finished work.' },
-      ],
-      frames: [
-        'Cyberpunk 2077', 'DOOM', 'Corsair Storefront',
-      ],
-    },
-    {
-      slug: 'shotlists',
-      n: '02',
-      name: 'Shotlists',
-      sub: 'Northbound',
-      count: '24 setups',
-      g: 'linear-gradient(210deg,#0a1540,#05081f)',
-      href: '#studio-shotlists',
-      mini: true,
-      summary: 'A production-facing shotlist space for setup counts, coverage notes, timing, and what each shot must communicate.',
-      meta: ['24 setups', 'Coverage', 'Production'],
-      panels: [
-        { title: 'Intent', body: 'Keep production choices legible: shot size, movement, emotional job, and edit value all in one scan.' },
-        { title: 'Use', body: 'Drop real setup notes here as projects move from concept into production or pickup planning.' },
-      ],
-      shots: [
-        ['S01', 'Static wide, environment establishes silence', '00:08'],
-        ['S04', 'Profile push, character holds before the cut', '00:12'],
-        ['S09', 'Insert texture, object carries exposition', '00:05'],
-        ['S14', 'Handheld break, transition into pressure', '00:10'],
-        ['S19', 'Locked close, final eye-line confirmation', '00:07'],
-      ],
-    },
-    {
-      slug: 'bts',
-      n: '03',
-      name: 'BTS',
-      sub: 'Field studies',
-      count: 'Location',
-      g: 'linear-gradient(140deg,#05081f,#131a4a)',
-      href: '#studio-bts',
-      mini: false,
-      summary: 'Behind-the-scenes field notes for locations, gear posture, lighting decisions, and production constraints.',
-      meta: ['Location', 'Gear', 'Crew notes'],
-      panels: [
-        { title: 'Intent', body: 'Show how the work gets made, not just the finished file. This gives collaborators confidence in process and field judgment.' },
-        { title: 'Use', body: 'Add stills, tech scouts, lighting diagrams, and on-set notes as individual BTS records.' },
-      ],
-      frames: ['Scout A', 'Scout B', 'Lighting', 'Camera', 'Blocking', 'Monitor'],
-    },
-    {
-      slug: 'animation',
-      n: '04',
-      name: 'Animation',
-      sub: 'Halfmoon',
-      count: 'Motion',
-      g: 'linear-gradient(180deg,#0a1036,#030611)',
-      href: '#studio-animation',
-      mini: false,
-      summary: 'Motion studies and animation passes that support title systems, transitions, and editorial punctuation.',
-      meta: ['Motion', 'Timing', 'Graphics'],
-      panels: [
-        { title: 'Intent', body: 'Keep motion design attached to editorial purpose: reveal, emphasis, transition, or orientation.' },
-        { title: 'Use', body: 'Collect title cards, lower-third systems, transition explorations, and timing references here.' },
-      ],
-      frames: ['Type pulse', 'Scan pass', 'Hold frame', 'Wipe test', 'Frame jump', 'Resolve'],
-    },
+    { n: '01', name: 'Storyboards', sub: 'Selected process files', count: '3 files', g: 'linear-gradient(160deg,#0a1036,#05081f)', href: 'studio/storyboards.html', mini: true },
+    { n: '02', name: 'Shotlists', sub: 'Northbound', count: '24 setups', g: 'linear-gradient(210deg,#0a1540,#05081f)', href: '#', mini: true },
+    { n: '03', name: 'BTS', sub: 'Field studies', count: 'Location', g: 'linear-gradient(140deg,#05081f,#131a4a)', href: '#', mini: false },
+    { n: '04', name: 'Animation', sub: 'Halfmoon', count: 'Motion', g: 'linear-gradient(180deg,#0a1036,#030611)', href: '#', mini: false },
   ],
 };
-
-function setProjectVideoSource(project, url) {
-  if(!project) return;
-  var value = typeof url === 'string' ? url.trim() : '';
-  project.mediaUrl = value;
-  var parsed = parseMediaSource(value);
-  project.mediaPlatform = parsed ? parsed.platform : 'none';
-  project.posterStrategy = parsed ? parsed.platform + '-thumb' : 'gradient';
-  project.status = project.status || {};
-  project.status.media = parsed ? 'active' : 'inactive';
-  if(parsed && project.status.portfolio === 'placeholder') project.status.portfolio = 'partial';
-}
-
-function getExternalVideoSource(project, links) {
-  if(!project || !links) return undefined;
-  var maps = [
-    links.projects,
-    links[project.bucket],
-    links[project.sourceCategory],
-  ];
-  if(project.bucket === 'commercial' || project.sourceCategory === 'direction') maps.push(links.direction, links.commercial);
-  if(project.bucket === 'shorts' || project.sourceCategory === 'films') maps.push(links.films, links.shorts);
-  if(project.bucket === 'amvs' || project.sourceCategory === 'amvs') maps.push(links.amvs);
-  for(var i = 0; i < maps.length; i++) {
-    if(maps[i] && Object.prototype.hasOwnProperty.call(maps[i], project.slug)) return maps[i][project.slug];
-  }
-  return undefined;
-}
-
-function applyExternalVideoLinks() {
-  var links = window.VIDEO_LINKS;
-  if(!links) return;
-  if(Object.prototype.hasOwnProperty.call(links, 'reel')) setProjectVideoSource(PORTFOLIO_CONTENT.reel, links.reel);
-  PORTFOLIO_CONTENT.projects.forEach(function(project) {
-    var source = getExternalVideoSource(project, links);
-    if(typeof source === 'string') setProjectVideoSource(project, source);
-  });
-}
-
-applyExternalVideoLinks();
 
 function parseMediaSource(url) {
   if(!url) return null;
@@ -1685,8 +1420,40 @@ function parseMediaSource(url) {
   return null;
 }
 
+function setProjectVideo(project, url) {
+  if(!project) return;
+  var nextUrl = String(url || '').trim();
+  var parsed = parseMediaSource(nextUrl);
+  project.mediaUrl = nextUrl;
+  project.mediaPlatform = parsed ? parsed.platform : 'none';
+  project.posterStrategy = parsed ? parsed.platform + '-thumb' : 'gradient';
+  project.status = project.status || {};
+  project.status.media = parsed ? 'active' : 'inactive';
+  if(parsed && project.status.portfolio === 'placeholder') project.status.portfolio = 'partial';
+}
+
+function applyExternalVideoLinks(content, links) {
+  if(!content || !links) return;
+  var hasOwn = Object.prototype.hasOwnProperty;
+  if(hasOwn.call(links, 'reel')) setProjectVideo(content.reel, links.reel);
+  (content.projects || []).forEach(function(project) {
+    var group = links[project.sourceCategory] || links[project.bucket];
+    if(group && hasOwn.call(group, project.slug)) setProjectVideo(project, group[project.slug]);
+  });
+}
+
+applyExternalVideoLinks(PORTFOLIO_CONTENT, window.VIDEO_LINKS);
+
+const PORTFOLIO_INDEX = {
+  reel: PORTFOLIO_CONTENT.reel,
+  projects: PORTFOLIO_CONTENT.projects.map((project) => ({ ...project })),
+};
+
 function buildMediaModel(url, fallbackPoster, status) {
   var parsed = parseMediaSource(url);
+  var origin = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+    ? '&origin=' + encodeURIComponent(window.location.origin)
+    : '';
   var poster = parsed
     ? { type: parsed.platform === 'youtube' ? 'youtube-thumb' : 'vimeo-thumb', source: url }
     : { type: 'gradient', source: fallbackPoster };
@@ -1695,7 +1462,7 @@ function buildMediaModel(url, fallbackPoster, status) {
     url: url || '',
     watchUrl: parsed ? (parsed.platform === 'youtube' ? 'https://www.youtube.com/watch?v=' + parsed.id : 'https://vimeo.com/' + parsed.id) : '',
     embedUrl: parsed ? (parsed.platform === 'youtube'
-      ? 'https://www.youtube.com/embed/' + parsed.id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1&controls=1&iv_load_policy=3'
+      ? 'https://www.youtube.com/embed/' + parsed.id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1&controls=1&iv_load_policy=3&enablejsapi=1' + origin
       : 'https://player.vimeo.com/video/' + parsed.id + '?autoplay=1&loop=0&title=0&byline=0&portrait=0') : '',
     poster: poster,
     thumbnail: parsed ? { type: poster.type, source: url } : null,
@@ -1707,7 +1474,6 @@ function buildMediaModel(url, fallbackPoster, status) {
 
 function normalizeProject(project) {
   var media = buildMediaModel(project.mediaUrl, project.fallbackPoster, project.status && project.status.media);
-  var status = project.status || {};
   return {
     slug: project.slug,
     code: project.code,
@@ -1726,16 +1492,15 @@ function normalizeProject(project) {
     credits: project.credits,
     media: media,
     visual: { gradient: project.fallbackPoster },
-    status: status,
-    process: project.process || null,
+    status: project.status,
     featured: !!project.featured,
-    placeholder: status.portfolio === 'placeholder',
+    placeholder: !!project.placeholder,
   };
 }
 
 function fallbackRuntime(project) {
   if(project.runtime) return project.runtime;
-  if(project.featured && project.bucket === 'featured') return '07:30';
+  if(project.featured) return '07:30';
   if(project.bucket === 'commercial') return project.placeholder ? '00:30' : '01:00';
   if(project.bucket === 'shorts') return project.placeholder ? '00:30' : '09:00';
   if(project.bucket === 'amvs') return project.placeholder ? '00:30' : '03:30';
@@ -1743,24 +1508,13 @@ function fallbackRuntime(project) {
 }
 
 const PORTFOLIO_PROJECTS = [normalizeProject(PORTFOLIO_CONTENT.reel)].concat(PORTFOLIO_CONTENT.projects.map(normalizeProject));
-const PORTFOLIO_REEL = PORTFOLIO_PROJECTS[0];
 const PORTFOLIO_BY_SLUG = Object.fromEntries(PORTFOLIO_PROJECTS.map((project) => [project.slug, project]));
 const PORTFOLIO_CATS = PORTFOLIO_CONTENT.categories;
-function projectSortIndex(project) {
-  const match = project && project.code ? String(project.code).match(/\d+/) : null;
-  return match ? Number(match[0]) : 999;
-}
-function sortProjectsForBucket(projects) {
-  return projects.slice().sort((a,b) => {
-    const featuredDelta = Number(!!b.featured) - Number(!!a.featured);
-    return featuredDelta || projectSortIndex(a) - projectSortIndex(b);
-  });
-}
 const PORTFOLIO_FILMS = {
-  amvs: sortProjectsForBucket(PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'amvs')).map((project, i) => ({
+  amvs: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'amvs').map((project, i) => ({
     n: String(i + 1).padStart(2, '0'),
     name: project.display,
-    sub: project.status.media === 'active' ? 'AMV / Copy Pending' : 'Placeholder / Inactive Slot',
+    sub: project.status.media === 'active' ? 'AMV � Placeholder Copy' : 'Placeholder � Inactive Slot',
     y: project.year,
     r: fallbackRuntime(project),
     long: project.summary,
@@ -1769,17 +1523,16 @@ const PORTFOLIO_FILMS = {
     yt: project.media.platform === 'youtube' ? project.media.url : '',
     vimeo: project.media.platform === 'vimeo' ? project.media.url : '',
     media: project.media,
-    process: project.process,
     placeholder: project.placeholder,
     status: project.status,
     featured: project.featured,
     slug: project.slug,
     detail: project.detail,
   })),
-  shorts: sortProjectsForBucket(PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'shorts')).map((project, i) => ({
+  shorts: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'shorts').map((project, i) => ({
     n: String(i + 1).padStart(2, '0'),
     name: project.display,
-    sub: project.placeholder ? 'Narrative / Documentary / Placeholder' : 'Narrative / Documentary',
+    sub: project.placeholder ? 'Narrative / Documentary � Placeholder' : 'Narrative / Documentary',
     y: project.year,
     r: fallbackRuntime(project),
     long: project.summary,
@@ -1788,17 +1541,16 @@ const PORTFOLIO_FILMS = {
     yt: project.media.platform === 'youtube' ? project.media.url : '',
     vimeo: project.media.platform === 'vimeo' ? project.media.url : '',
     media: project.media,
-    process: project.process,
     placeholder: project.placeholder,
     status: project.status,
     featured: project.featured,
     slug: project.slug,
     detail: project.detail,
   })),
-  commercial: sortProjectsForBucket(PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'commercial')).map((project, i) => ({
+  commercial: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'commercial').map((project, i) => ({
     n: String(i + 1).padStart(2, '0'),
     name: project.display,
-    sub: project.subcategory + (project.placeholder ? ' / Placeholder' : ''),
+    sub: project.subcategory + (project.placeholder ? ' � Placeholder' : ''),
     y: project.year,
     r: fallbackRuntime(project),
     long: project.summary,
@@ -1807,7 +1559,6 @@ const PORTFOLIO_FILMS = {
     yt: project.media.platform === 'youtube' ? project.media.url : '',
     vimeo: project.media.platform === 'vimeo' ? project.media.url : '',
     media: project.media,
-    process: project.process,
     placeholder: project.placeholder,
     status: project.status,
     featured: project.featured,
@@ -1837,13 +1588,23 @@ function getProjectVisibilityLabel(project) {
 function isPlayableProject(project) {
   if(!project) return false;
   if(!project.media || !project.media.embedUrl) return false;
-  if(project.status && project.status.portfolio === 'placeholder') return false;
-  return project.status && project.status.media === 'active';
+  if(project.status && project.status.media === 'inactive') return false;
+  return !project.status || project.status.media === 'active';
 }
 
 function getProjectPlayerUrl(project) {
   if(!project || !project.media) return '';
   return project.media.embedUrl || '';
+}
+
+function setStagePlaybackTarget(project) {
+  const frame = $('#frame');
+  if(!frame || !project) return;
+  const playable = isPlayableProject(project);
+  frame.dataset.playable = playable ? 'true' : 'false';
+  frame.tabIndex = playable ? 0 : -1;
+  frame.setAttribute('role', playable ? 'button' : 'img');
+  frame.setAttribute('aria-label', playable ? `Play ${project.title}` : `${project.title} preview`);
 }
 
 function getCategoryStats(bucket) {
@@ -1865,48 +1626,7 @@ function getProjectBackdrop(project) {
   if(parsed && parsed.platform === 'youtube') {
     return `url(https://img.youtube.com/vi/${parsed.id}/hqdefault.jpg)`;
   }
-  return project.visual && project.visual.gradient ? project.visual.gradient : (project.g || 'linear-gradient(135deg,#0a1033,#05081f 50%,#1a2150)');
-}
-
-const PROCESS_FILE_REGISTRY = {
-  'quiet-then-loud': {
-    label: 'Quiet then loud board',
-    href: 'studio/storyboards.html#quiet-then-loud',
-  },
-};
-
-function resolveProcessEntry(kind, entry, project) {
-  if(!entry) return null;
-  if(typeof entry === 'string') {
-    const registered = PROCESS_FILE_REGISTRY[entry] || {};
-    const projectAnchor = entry === 'quiet-then-loud' && project && ['cyberpunk-2077','doom'].includes(project.slug)
-      ? `studio/storyboards.html#${project.slug}`
-      : null;
-    return {
-      label: registered.label || entry.replace(/-/g, ' '),
-      href: projectAnchor || registered.href || `studio/storyboards.html#${entry}`,
-    };
-  }
-  if(entry.href) return entry;
-  if(entry.slug) {
-    const registered = PROCESS_FILE_REGISTRY[entry.slug] || {};
-    return {
-      label: entry.label || registered.label || entry.slug.replace(/-/g, ' '),
-      href: entry.href || registered.href || `studio/storyboards.html#${entry.slug}`,
-    };
-  }
-  return null;
-}
-
-function setCaseOptionalBlock(blockSelector, contentSelector, value, mode = 'text') {
-  const block = $(blockSelector);
-  const target = $(contentSelector);
-  if(!block || !target) return;
-  const hasValue = !!(value && String(value).trim());
-  block.hidden = !hasValue;
-  if(!hasValue) return;
-  if(mode === 'html') target.innerHTML = value;
-  else target.textContent = value;
+  return project.visual && project.visual.gradient ? project.visual.gradient : 'linear-gradient(135deg,#0a1033,#05081f 50%,#1a2150)';
 }
 
 function renderCaseStudy(project, catObj) {
@@ -1920,24 +1640,20 @@ function renderCaseStudy(project, catObj) {
   const watchUrl = project.media && project.media.watchUrl ? project.media.watchUrl : '';
   STATE.caseProjectSlug = project.slug;
 
-  $('#case-k').textContent = `// Case Study / ${catObj ? catObj.n : 'Selected'}`;
+  $('#case-k').textContent = `// Case Study � ${catObj ? catObj.n : 'Selected'}`;
   $('#case-title').textContent = project.title;
   $('#case-chip').textContent = project.featured ? 'Featured' : visibilityLabel;
   const platformLabel = project.media && project.media.platform && project.media.platform !== 'none'
     ? project.media.platform.toUpperCase()
     : 'NO MEDIA';
-  $('#case-meta').textContent = `${project.code} / ${project.year} / ${runtime} / ${project.category} / ${platformLabel} / ${mediaLabel}`;
+  $('#case-meta').textContent = `${project.code} � ${project.year} � ${runtime} � ${project.category} � ${platformLabel} � ${mediaLabel}`;
   $('#case-logline').textContent = project.logline || project.summary || 'No summary available.';
   $('#case-brief').textContent = detail.brief || project.summary || 'No brief available.';
-  setCaseOptionalBlock('#case-constraint-block', '#case-constraint', detail.constraint);
   $('#case-execution').textContent = detail.execution || 'Execution notes are pending.';
-  setCaseOptionalBlock('#case-decision-block', '#case-decision', detail.decision);
   $('#case-result').textContent = detail.result || 'Result notes are pending.';
-  setCaseOptionalBlock('#case-logic-block', '#case-logic', detail.editorialLogic);
-  setCaseOptionalBlock('#case-revision-block', '#case-revision', detail.revision);
   $('#case-poster').style.backgroundImage = poster;
   $('#case-tags').innerHTML = (project.tags || []).map((tag) => `<span>${tag}</span>`).join('') || '<span>Pending tags</span>';
-  $('#case-credits').innerHTML = (project.credits || []).map((credit) => `<span>${credit.role} / ${credit.name}</span>`).join('') || '<span>Credits pending</span>';
+  $('#case-credits').innerHTML = (project.credits || []).map((credit) => `<span>${credit.role} � ${credit.name}</span>`).join('') || '<span>Credits pending</span>';
   $('#case-media').innerHTML = [
     `<span data-state="${playable ? 'active' : 'placeholder'}">${playable ? mediaLabel : 'Media unavailable'}</span>`,
     `<span data-state="${project.placeholder ? 'placeholder' : 'active'}">${visibilityLabel}</span>`,
@@ -1962,49 +1678,22 @@ function renderCaseStudy(project, catObj) {
       linkBtn.setAttribute('tabindex', '-1');
     }
   }
-  const processBlock = $('#case-process-block');
-  const processHost = $('#case-process');
-  const process = project.process || {};
-  const processItems = [
-    ['Storyboards', resolveProcessEntry('storyboard', process.storyboard, project)],
-    ['Shotlist', resolveProcessEntry('shotlist', process.shotlist, project)],
-    ['Motion pass', resolveProcessEntry('motion', process.motion, project)],
-  ].filter((item) => item[1] && item[1].href);
-  if(processBlock && processHost) {
-    processBlock.hidden = processItems.length === 0;
-    processHost.innerHTML = processItems.map(([name, entry]) => (
-      `<a class="process-link" href="${entry.href}"><b>${name}</b><span>${entry.label || 'Open file'}</span></a>`
-    )).join('');
-    $$('a', processHost).forEach((link)=>{
-      link.addEventListener('click',(event)=>{
-        if(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        if(typeof fireGlitch !== 'function') return;
-        event.preventDefault();
-        fireGlitch();
-        setTimeout(()=>{ window.location.href = link.href; },80);
-      });
-    });
-  }
-  const nextHost = $('#case-next');
-  if(nextHost) {
-    const processLink = processItems[0] ? `<a href="${processItems[0][1].href}">View process</a>` : '';
-    const channelButton = catObj ? `<button type="button" data-next-channel="${catObj.id}">Return to ${catObj.n} channel</button>` : '';
-    nextHost.innerHTML = [
-      processLink,
-      playable ? `<button type="button" data-next-play="${project.slug}">Watch final</button>` : '',
-      channelButton,
-    ].filter(Boolean).join('');
-    $$('[data-next-play]', nextHost).forEach((button)=>button.addEventListener('click',()=>openCinemaViewer(button.dataset.nextPlay)));
-    $$('[data-next-channel]', nextHost).forEach((button)=>button.addEventListener('click',()=>openCategory(button.dataset.nextChannel)));
-  }
 }
 
 function closeCinemaViewer() {
   const cinema = $('#cinema');
   const frame = $('#cinema-frame');
   const iframe = $('#cinema-iframe');
-  if(iframe) iframe.src = '';
+  const openLink = $('#cinema-open');
+  if(iframe) {
+    iframe.onload = null;
+    iframe.src = '';
+  }
   if(frame) frame.classList.remove('ready');
+  if(openLink) {
+    openLink.removeAttribute('href');
+    openLink.setAttribute('aria-disabled', 'true');
+  }
   if(cinema) {
     cinema.classList.remove('on');
     cinema.setAttribute('aria-hidden', 'true');
@@ -2018,18 +1707,32 @@ function openCinemaViewer(projectOrSlug) {
   const cinema = $('#cinema');
   const frame = $('#cinema-frame');
   const iframe = $('#cinema-iframe');
+  const openLink = $('#cinema-open');
   const poster = getProjectBackdrop(project);
   const embedUrl = getProjectPlayerUrl(project);
   if(!cinema || !frame || !iframe || !embedUrl) return false;
 
   $('#cinema-title').textContent = project.title;
-  $('#cinema-meta').textContent = `${project.code} / ${project.year} / ${project.category} / ${project.media.platform.toUpperCase()} / ${project.runtime || fallbackRuntime(project)}`;
+  $('#cinema-meta').textContent = `${project.code} � ${project.year} � ${project.category} � ${project.media.platform.toUpperCase()} � ${project.runtime || fallbackRuntime(project)}`;
   $('#cinema-poster').style.backgroundImage = poster;
+  if(openLink) {
+    const watchUrl = project.media && project.media.watchUrl ? project.media.watchUrl : '';
+    if(watchUrl) {
+      openLink.href = watchUrl;
+      openLink.textContent = project.media.platform === 'vimeo' ? 'Open Vimeo' : 'Open YouTube';
+      openLink.removeAttribute('aria-disabled');
+    } else {
+      openLink.removeAttribute('href');
+      openLink.textContent = 'Open Platform';
+      openLink.setAttribute('aria-disabled', 'true');
+    }
+  }
   cinema.classList.add('on');
   cinema.setAttribute('aria-hidden', 'false');
   frame.classList.remove('ready');
-  iframe.src = embedUrl;
   iframe.onload = () => frame.classList.add('ready');
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  iframe.src = embedUrl;
   STATE.viewerSlug = project.slug;
   return true;
 }
@@ -2037,23 +1740,25 @@ function openCinemaViewer(projectOrSlug) {
 function renderFeaturedSpotlight(project) {
   if(!project) return;
   const poster = getProjectBackdrop(project);
-  $('#stage-k').textContent='// Featured / Reel';
+  $('#stage-k').textContent='// Featured � Reel';
   $('#stage-cat').textContent=project.title;
-  $('#stage-eye').textContent=`${project.code} / ${project.runtime || '07:30'}`;
+  $('#stage-eye').textContent=`${project.code} � ${project.runtime || '07:30'}`;
   $('#stage-t').innerHTML=project.display.replace(', ',',<br/>');
   $('#stage-s').textContent=project.logline;
   $('#m-total').textContent=project.runtime || '07:30';
-  $('#m-extra').textContent=`${project.subcategory.toUpperCase()} / ${project.year}`;
+  $('#m-extra').textContent=`${project.subcategory.toUpperCase()} � ${project.year}`;
   $('#stage-credits').innerHTML=(project.credits||[]).map((credit)=>`<span>${credit.role} <b>${credit.name}</b></span>`).join('');
   $('#panA').style.backgroundImage=poster;
   $('#layA').classList.add('on');
   $('#layB').classList.remove('on');
   STATE.activeLayer='A';
   $('#np-thumb').style.backgroundImage=poster;
-  $('#np-label').textContent='Now Playing / Featured';
+  $('#np-label').textContent='Now Playing � Featured';
   $('#np-name').textContent=project.title;
   $('#pip-img').style.backgroundImage=poster;
   $('#pip-name').textContent=project.title;
+  STATE.selectedSlug = project.slug;
+  setStagePlaybackTarget(project);
 }
 
 function renderSupportContent() {
@@ -2083,7 +1788,7 @@ function renderSupportContent() {
 
   const skillsHost = $('.about-skills');
   if(skillsHost) {
-    skillsHost.innerHTML = skills.map((skill) => `<span>${skill.n} / ${skill.items.split(' / ')[0]}</span>`).join('');
+    skillsHost.innerHTML = skills.map((skill) => `<span>${skill.n} � ${skill.items.split(' / ')[0]}</span>`).join('');
   }
 
   const toolBlocks = $$('.about-sec .tools');
@@ -2092,7 +1797,7 @@ function renderSupportContent() {
   if(toolBlocks[2]) toolBlocks[2].innerHTML = (profile.collaborators || ['CD Projekt Red', 'Corsair', 'Bethesda', 'A24', 'Nike', 'Mubi', 'Pitchfork', 'Vogue']).map((name) => `<span>${name}</span>`).join('');
 
   const lead = $('.c-lead');
-  if(lead) lead.innerHTML = `Let's make<br/>something <span>loud</span>.`;
+  if(lead) lead.innerHTML = `Let�s make<br/>something <span>loud</span>.`;
 
   const supportBlocks = $$('.c-blk');
   if(supportBlocks[0]) {
@@ -2140,35 +1845,8 @@ setInterval(()=>{const d=new Date();$('#clk').textContent=[d.getHours(),d.getMin
 
 /* ============ TICKER BUILD (double row for seamless loop) ============ */
 const tickerRow=$('#tickerRow');
-const buildRow=()=>PORTFOLIO_BRANDS.map(([n,t])=>`<span>${n} <em>/ ${t}</em></span>`).join('');
+const buildRow=()=>PORTFOLIO_BRANDS.map(([n,t])=>`<span>${n} <em>� ${t}</em></span>`).join('');
 tickerRow.innerHTML=buildRow()+buildRow();
-
-/* ============ FEATURED ENTRY ============ */
-const featuredHost = $('#featured-host');
-const FEATURED_SIGNALS = sortProjectsForBucket(PORTFOLIO_PROJECTS.filter((project) =>
-  project.bucket === 'commercial' &&
-  project.featured &&
-  project.status &&
-  project.status.portfolio !== 'placeholder'
-)).slice(0,2);
-if(featuredHost) {
-  featuredHost.innerHTML = FEATURED_SIGNALS.map((project, index) => `
-    <button class="featured-item" type="button" data-featured="${project.slug}" style="--featured-bg:${getProjectBackdrop(project)}">
-      <span class="fi-main">
-        <span class="fi-k">${index === 0 ? 'Primary Signal' : 'Second Signal'}</span>
-        <span class="fi-name">${project.display}</span>
-        <span class="fi-meta">${project.category} / ${project.subcategory}</span>
-      </span>
-      <span class="fi-code">${project.code}</span>
-    </button>
-  `).join('');
-  $$('.featured-item', featuredHost).forEach((button) => {
-    button.addEventListener('click',()=>{
-      fireGlitch();
-      setTimeout(()=>openProjectBySlug(button.dataset.featured),60);
-    });
-  });
-}
 
 /* ============ CATEGORIES L1 ============ */
 const catsHost=$('#cats-host');
@@ -2177,97 +1855,35 @@ PORTFOLIO_CATS.forEach((c,i)=>{
   const stats=getCategoryStats(c.id);
   const el=document.createElement('div');
   el.className='cat';el.dataset.cat=c.id;
-  el.tabIndex = 0;
-  el.setAttribute('role','button');
   el.style.setProperty('--ct',c.color);
   el.innerHTML=`
     <div class="s" style="background-image:${getProjectBackdrop(first)}"></div>
     <div class="tint"></div>
     <div class="g"></div>
     <div class="numeral" style="color:${c.color}">${c.numeral}</div>
-    <div class="go">&gt;</div>
-<div class="t"><div class="k">${c.k} / ${c.n}</div><div class="n">${c.m}</div><div class="m">${stats.activeCount} active / ${stats.count} total / ${pad(stats.activeMinutes)}:${pad(stats.activeSeconds)} active runtime</div></div>`;
+    <div class="go">?</div>
+<div class="t"><div class="k">${c.k} � ${c.n}</div><div class="n">${c.m}</div><div class="m">${stats.activeCount} active � ${stats.count} total � ${pad(stats.activeMinutes)}:${pad(stats.activeSeconds)} active runtime</div></div>`;
   el.addEventListener('click',()=>openCategory(c.id));
-  el.addEventListener('keydown',(event)=>{ if(event.key==='Enter'||event.key===' '){ event.preventDefault(); openCategory(c.id); } });
   catsHost.appendChild(el);
 });
 
 /* ============ STUDIO CATEGORIES ============ */
 const studioHost=$('#studio-host');
-function renderStudioList() {
-  studioHost.innerHTML = '';
-  PORTFOLIO_STUDIO_CATS.forEach(c=>{
-    const a=document.createElement('a');a.className='sx';a.href=c.href || `#studio-${c.slug}`;
-    const standalonePage = c.href && !c.href.startsWith('#');
-    a.innerHTML=`
-      <div class="sx-bg" style="background-image:${c.g}"></div>
-      <div class="sx-grid"></div>
-      <div class="sx-num">CH ${c.n}</div>
-      <div class="sx-count">${c.count}</div>
-      ${c.mini?`<div class="sx-mini"><div></div><div></div><div></div><div></div><div></div><div></div></div>`:''}
-      <div class="sx-body">
-        <div class="sx-ttl">${c.name}</div>
-        <div class="sx-sub">${c.sub}</div>
-        <div class="sx-cta">Enter &gt;</div>
-      </div>`;
-    if(!standalonePage) {
-      a.addEventListener('click',(e)=>{
-        e.preventDefault();
-        fireGlitch();
-        setTimeout(()=>openStudioSection(c.slug),60);
-      });
-    }
-    studioHost.appendChild(a);
-  });
-}
-
-function renderStudioFrames(section) {
-  if(!section.frames || !section.frames.length) return '';
-  return `
-    <div class="studio-panel">
-      <h5>${section.slug === 'storyboards' ? 'Selected Process Files' : 'Reference Frames'}</h5>
-      <div class="story-grid">
-        ${section.frames.map((label,i)=>`<div class="story-frame"><div class="num">${String(i+1).padStart(2,'0')}</div><b>${label}</b><span>${section.sub}</span></div>`).join('')}
-      </div>
+PORTFOLIO_STUDIO_CATS.forEach(c=>{
+  const a=document.createElement('a');a.className='sx';a.href=c.href;
+  if(!c.href || c.href === '#') a.addEventListener('click',(e)=>e.preventDefault());
+  a.innerHTML=`
+    <div class="sx-bg" style="background-image:${c.g}"></div>
+    <div class="sx-grid"></div>
+    <div class="sx-num">CH ${c.n}</div>
+    <div class="sx-count">${c.count}</div>
+    ${c.mini?`<div class="sx-mini"><div></div><div></div><div></div><div></div><div></div><div></div></div>`:''}
+    <div class="sx-body">
+      <div class="sx-ttl">${c.name}</div>
+      <div class="sx-sub">${c.sub}</div>
+      <div class="sx-cta">Enter ?</div>
     </div>`;
-}
-
-function renderStudioShots(section) {
-  if(!section.shots || !section.shots.length) return '';
-  return `
-    <div class="studio-panel">
-      <h5>Shotlist Preview</h5>
-      <div class="shot-list">
-        ${section.shots.map((shot)=>`<div class="shot"><b>${shot[0]}</b><span>${shot[1]}</span><em>${shot[2]}</em></div>`).join('')}
-      </div>
-    </div>`;
-}
-
-function openStudioSection(slug) {
-  const section = PORTFOLIO_STUDIO_CATS.find((item)=>item.slug === slug);
-  if(!section) return;
-  $('#studio-list').style.display='none';
-  $('#studio-detail').style.display='block';
-  $('#studio-k').textContent=`// Studio File ${section.n}`;
-  $('#studio-title').textContent=section.name;
-  $('#studio-summary').textContent=section.summary;
-  $('#studio-meta').innerHTML=(section.meta || []).map((item)=>`<span>${item}</span>`).join('');
-  $('#studio-panels').innerHTML=[
-    ...(section.panels || []).map((panel)=>`<div class="studio-panel"><h5>${panel.title}</h5><p>${panel.body}</p></div>`),
-    renderStudioFrames(section),
-    renderStudioShots(section),
-  ].join('');
-}
-
-function closeStudioSection() {
-  $('#studio-detail').style.display='none';
-  $('#studio-list').style.display='block';
-}
-
-renderStudioList();
-$('#studio-back').addEventListener('click',()=>{
-  fireGlitch();
-  setTimeout(closeStudioSection,60);
+  studioHost.appendChild(a);
 });
 
 /* ============ GLITCH ============ */
@@ -2331,6 +1947,7 @@ requestAnimationFrame(tick);
 /* ============ LOAD FILM ============ */
 function loadFilm(cat,idx,{fromCategorySwitch=false,keepTc=false}={}){
   const f=PORTFOLIO_FILMS[cat][idx];
+  const fullProject=PORTFOLIO_BY_SLUG[f.slug] || f;
   STATE.cat=cat;STATE.idx=idx;
   if(!keepTc) STATE.tc=0;
   STATE.total=parseRT(f.r);
@@ -2358,23 +1975,24 @@ function loadFilm(cat,idx,{fromCategorySwitch=false,keepTc=false}={}){
   if(!fromCategorySwitch) fireGlitch();
   setTimeout(()=>{
     const catObj=PORTFOLIO_CATS.find(c=>c.id===cat);
-    $('#stage-k').textContent=`// Now Showing / ${catObj.n}`;
+    $('#stage-k').textContent=`// Now Showing � ${catObj.n}`;
     $('#stage-cat').textContent=catObj.n;
-    $('#stage-eye').textContent=`Reel ${f.n} / ${f.r}`;
+    $('#stage-eye').textContent=`Reel ${f.n} � ${f.r}`;
     const titleHTML=f.name.replace(', ',',<br/>').toUpperCase();
     $('#stage-t').innerHTML=titleHTML;
     $('#stage-s').textContent=f.long;
     $('#m-total').textContent=f.r;
-    $('#m-extra').textContent=`${f.sub.toUpperCase()} / ${f.y}`;
+    $('#m-extra').textContent=`${f.sub.toUpperCase()} � ${f.y}`;
     // Credits
     $('#stage-credits').innerHTML=(f.credits||[]).map((credit)=>`<span>${credit.role} <b>${credit.name}</b></span>`).join('');
-    renderCaseStudy(PORTFOLIO_BY_SLUG[f.slug] || f, catObj);
+    renderCaseStudy(fullProject, catObj);
+    setStagePlaybackTarget(fullProject);
     // Breadcrumb
     $('#crumb-cat').textContent=catObj.n;
     $('#crumb-film').textContent=f.name;
     // Now playing pill
     $('#np-thumb').style.backgroundImage=poster;
-    $('#np-label').textContent=`Now Playing / ${catObj.n}`;
+    $('#np-label').textContent=`Now Playing � ${catObj.n}`;
     $('#np-name').textContent=f.name;
     // PiP
     $('#pip-img').style.backgroundImage=poster;
@@ -2391,7 +2009,7 @@ function showUpNext(){
   const nextIdx=(STATE.idx+1)%list.length;
   const f=list[nextIdx];
   $('#up-n').textContent=f.name;
-  $('#up-m').textContent=`${f.sub} / ${f.r}`;
+  $('#up-m').textContent=`${f.sub} � ${f.r}`;
   $('#upnext').classList.add('on');
 }
 function hideUpNext(){$('#upnext').classList.remove('on')}
@@ -2417,23 +2035,20 @@ function openCategory(id,{fromInit=false}={}){
     $('#idx-cats').style.display='none';
     $('#idx-detail').style.display='block';
     const c=PORTFOLIO_CATS.find(x=>x.id===id);
-    $('#d-k').textContent=`// ${c.k} / ${c.n}`;
+    $('#d-k').textContent=`// ${c.k} � ${c.n}`;
     $('#d-h').textContent=c.m;
     const list=PORTFOLIO_FILMS[id];
     const activeCount=list.filter((item)=>item.status && item.status.portfolio !== 'placeholder').length;
     const activeTot=list.filter((item)=>item.status && item.status.portfolio !== 'placeholder').reduce((a,f)=>a+parseRT(f.r),0);
-    $('#d-m').textContent=`${activeCount} active / ${pad(list.length)} total / ${pad(Math.floor(activeTot/60))}:${pad(activeTot%60)} active runtime`;
+    $('#d-m').textContent=`${activeCount} active � ${pad(list.length)} total � ${pad(Math.floor(activeTot/60))}:${pad(activeTot%60)} active runtime`;
     const host=$('#films-host');host.innerHTML='';
     const activeIdx = (id===STATE.cat)?STATE.idx:0;
     list.forEach((f,i)=>{
       const el=document.createElement('div');
-      el.className='film'+(i===activeIdx?' active':'')+(f.featured?' is-featured':'');
+      el.className='film'+(i===activeIdx?' active':'');
       el.dataset.i=i;
-      el.tabIndex = 0;
-      el.setAttribute('role','button');
       el.innerHTML=`<span class="num">${f.n}</span><span class="thumb" style="background-image:${getProjectBackdrop(f)}"></span><span class="name">${f.name}<em>${f.sub}</em></span><span class="meta">${f.y}<br/>${f.r}<br/>${getProjectMediaLabel(f)}<br/>${getProjectVisibilityLabel(f)}</span>`;
       el.addEventListener('click',()=>loadFilm(id,i));
-      el.addEventListener('keydown',(event)=>{ if(event.key==='Enter'||event.key===' '){ event.preventDefault(); loadFilm(id,i); } });
       host.appendChild(el);
     });
     renderCaseStudy(PORTFOLIO_BY_SLUG[list[activeIdx].slug] || list[activeIdx], c);
@@ -2448,21 +2063,8 @@ function backToCats(){
     $('#idx-detail').style.display='none';
   },100);
 }
-function openProjectBySlug(slug,{fromInit=false}={}) {
-  const project = PORTFOLIO_BY_SLUG[slug];
-  if(!project || !PORTFOLIO_FILMS[project.bucket]) return false;
-  const idx = PORTFOLIO_FILMS[project.bucket].findIndex((item)=>item.slug === slug);
-  if(idx < 0) return false;
-  swapTab('index');
-  openCategory(project.bucket,{fromInit:true});
-  setTimeout(()=>loadFilm(project.bucket,idx,{fromCategorySwitch:true}),80);
-  if(!fromInit && window.history && window.history.replaceState) {
-    window.history.replaceState(null,'',`?project=${encodeURIComponent(slug)}`);
-  }
-  return true;
-}
 $('#backBtn').addEventListener('click',backToCats);
-$('#case-play').addEventListener('click',()=>openCinemaViewer(STATE.caseProjectSlug));
+$('#case-play').addEventListener('click',()=>openCinemaViewer($('#case-play').dataset.slug || STATE.caseProjectSlug));
 $('#cinema-close').addEventListener('click',closeCinemaViewer);
 $('#cinema').addEventListener('click',e=>{ if(e.target.id==='cinema') closeCinemaViewer(); });
 $$('#crumb .a').forEach(el=>el.addEventListener('click',()=>{
@@ -2502,9 +2104,19 @@ function setFS(on){
   if(on){enterNativeFS();fireGlitch()}else{exitNativeFS()}
 }
 function toggleFS(){setFS(!document.body.classList.contains('fs'))}
-fsEnterBtn.addEventListener('click',()=>openCinemaViewer(PORTFOLIO_REEL));
+fsEnterBtn.addEventListener('click',()=>openCinemaViewer(STATE.selectedSlug || 'director-reel'));
 fsExit.addEventListener('click',()=>setFS(false));
-$('#frame').addEventListener('dblclick',toggleFS);
+$('#frame').addEventListener('click',e=>{
+  if(e.target.closest('button,.muteBadge')) return;
+  openCinemaViewer(STATE.selectedSlug || 'director-reel');
+});
+$('#frame').addEventListener('keydown',e=>{
+  if(e.key==='Enter' || e.key===' ') {
+    e.preventDefault();
+    openCinemaViewer(STATE.selectedSlug || 'director-reel');
+  }
+});
+$('#frame').addEventListener('dblclick',()=>{ if(!STATE.viewerSlug) toggleFS(); });
 document.addEventListener('fullscreenchange',()=>{
   if(!document.fullscreenElement && document.body.classList.contains('fs')) document.body.classList.remove('fs');
 });
@@ -2533,9 +2145,9 @@ document.addEventListener('keydown',e=>{
 
 /* ============ MUTE ============ */
 const muteBadge=$('#muteBadge'),muteLabel=$('#muteLabel');
-function refreshMuteLabel(){muteLabel.textContent=STATE.muted?'Muted / Autoplay':'Audio / Live'}
+function refreshMuteLabel(){muteLabel.textContent=STATE.muted?'Muted � Autoplay':'Audio � Live'}
 function toggleMute(){STATE.muted=!STATE.muted;LS.set(LS.mute,STATE.muted);refreshMuteLabel()}
-muteBadge.addEventListener('click',toggleMute);
+muteBadge.addEventListener('click',e=>{e.stopPropagation();toggleMute()});
 refreshMuteLabel();
 
 /* ============ PROGRESS HOVER-SCRUB ============ */
@@ -2557,17 +2169,48 @@ window.addEventListener('mousemove',e=>{
 });
 window.addEventListener('mouseup',()=>{STATE.scrubbing=false});
 
+/* ============ URL ROUTING ============ */
+function routeToProject(slug) {
+  const project = PORTFOLIO_BY_SLUG[slug];
+  if(!project) return false;
+  swapTab('index');
+  if(project.featured || project.slug === 'director-reel') {
+    $('#idx-cats').style.display='block';
+    $('#idx-detail').style.display='none';
+    renderFeaturedSpotlight(project);
+    return true;
+  }
+  const list = PORTFOLIO_FILMS[project.bucket] || [];
+  const idx = list.findIndex((item) => item.slug === project.slug);
+  if(idx < 0) return false;
+  STATE.cat = project.bucket;
+  STATE.idx = idx;
+  STATE.tc = 0;
+  document.body.dataset.cat = project.bucket;
+  openCategory(project.bucket, {fromInit:true});
+  return true;
+}
+
+function applyInitialRoute() {
+  const params = new URLSearchParams(window.location.search);
+  const projectSlug = params.get('project');
+  if(projectSlug && routeToProject(projectSlug)) return;
+  const hashTarget = window.location.hash.replace('#','');
+  if(['index','studio','about','contact'].includes(hashTarget)) {
+    swapTab(hashTarget);
+  }
+}
+
 /* ============ INIT ============ */
 STATE.tc=0;
-STATE.total=parseRT(PORTFOLIO_REEL.runtime || '07:30');
-renderFeaturedSpotlight(PORTFOLIO_REEL);
+const FEATURED_REEL = PORTFOLIO_BY_SLUG['director-reel'];
+STATE.total=parseRT((FEATURED_REEL && (FEATURED_REEL.runtime || fallbackRuntime(FEATURED_REEL))) || '07:30');
+renderFeaturedSpotlight(FEATURED_REEL);
 renderSupportContent();
 document.body.dataset.cat=STATE.cat;
 $('#idx-cats').style.display='block';
 $('#idx-detail').style.display='none';
-const initialProjectSlug = new URLSearchParams(window.location.search).get('project');
-if(initialProjectSlug) openProjectBySlug(initialProjectSlug,{fromInit:true});
-else if(window.location.hash === '#studio') swapTab('studio');
+applyInitialRoute();
 
 /* ============ INTRO (staged entrance) ============ */
 // Ensure index tab is showing categories (not mid-drilled)
