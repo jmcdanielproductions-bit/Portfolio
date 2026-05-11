@@ -4,6 +4,16 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Jared McDaniel / Screening Room</title>
+<meta name="description" content="Jared McDaniel is a Creative Video Director and Editor specializing in commercial, cinematic, and music-driven work for brands, games, and narrative projects."/>
+<!-- TODO: Replace with the production domain before deployment. -->
+<!-- <link rel="canonical" href="https://jaredmcdaniel.com/"/> -->
+<meta property="og:title" content="Jared McDaniel / Creative Video Director & Editor"/>
+<meta property="og:description" content="Commercial, cinematic, and music-driven work for brands, games, and narrative projects."/>
+<meta property="og:type" content="website"/>
+<!-- TODO: Add production Open Graph image URL. -->
+<!-- <meta property="og:image" content="https://jaredmcdaniel.com/og-image.jpg"/> -->
+<meta name="twitter:card" content="summary_large_image"/>
+<!-- TODO: Add favicon links before deployment. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -20,7 +30,6 @@
   --tint: var(--accent);
 }
 body[data-cat="amvs"]{--tint:#D8B14A}
-body[data-cat="shorts"]{--tint:#8FA7D6}
 body[data-cat="commercial"]{--tint:#C9744F}
 body[data-cat="about"]{--tint:#A992C8}
 
@@ -32,7 +41,7 @@ html,body{background:var(--bg);color:var(--ink);font-family:var(--ff-display);fo
   background-size:120px 120px}
 .field::before{content:"";position:absolute;inset:0;background:radial-gradient(130% 80% at 50% 50%,transparent 56%,rgba(0,0,10,.32) 100%)}
 
-.topbar{position:fixed;top:0;left:0;right:0;height:56px;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 32px;background:rgba(26,63,212,.66);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;z-index:40;display:grid;grid-template-columns:1fr auto;align-items:center;padding:0 32px;background:rgba(26,63,212,.66);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
 .sig{font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:-.01em}
 .rev{font-family:var(--ff-mono);font-size:10px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;padding-left:16px;border-left:1px solid var(--hair);margin-left:16px}
 .tb-left{display:flex;align-items:center}
@@ -206,7 +215,7 @@ body.intro-done .home-section:nth-of-type(3){transition-delay:1.58s}
 .process-sub{margin-top:4px;font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.18em;color:var(--ink-dim);text-transform:uppercase}
 
 .cats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.cat{position:relative;aspect-ratio:4/3;border:1px solid rgba(244,248,255,.16);background:#000;overflow:hidden;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,8,.46);transition:transform .22s var(--ease-premium),box-shadow .22s ease,border-color .22s ease}
+.cat{position:relative;aspect-ratio:4/3;border:1px solid rgba(244,248,255,.16);background:#000;overflow:hidden;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,8,.46);transition:transform .22s var(--ease-premium),box-shadow .22s ease,border-color .22s ease;font:inherit;color:inherit;text-align:left;appearance:none}
 .cat:hover{transform:translate(-1px,-1px);border-color:rgba(244,248,255,.3);box-shadow:5px 5px 0 0 rgba(0,0,8,.5)}
 .cat .s{position:absolute;inset:-4%;background-size:cover;background-position:center;filter:contrast(1.03) brightness(.58);transition:filter .4s ease,transform 9s linear}
 .cat:hover .s{filter:contrast(1.05) brightness(.78);transform:scale(1.035)}
@@ -581,7 +590,7 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
 }
 </style>
 </head>
-<body data-cat="amvs" class="pre-intro">
+<body data-cat="commercial" class="pre-intro">
 
 <!-- Keyboard hint -->
 <div class="khint">Try <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> / <kbd>J</kbd><kbd>K</kbd> / <kbd>F</kbd> <kbd>M</kbd></div>
@@ -590,12 +599,6 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
 
 <header class="topbar">
   <div class="tb-left"><span class="sig">Jared McDaniel</span><span class="rev">Reel / V2.2</span></div>
-  <nav class="tb-nav" id="nav" style="display:none">
-    <button class="on" data-t="index">Index</button>
-    <button data-t="studio">Studio</button>
-    <button data-t="about">About</button>
-    <button data-t="contact">Contact</button>
-  </nav>
   <div class="tb-right"><span class="dot"></span><span>LIVE</span><span id="clk">00:00:00</span></div>
 </header>
 
@@ -614,7 +617,7 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
         <div class="crumb" id="crumb"><span class="a" data-j="cats">Index</span><span class="sep">/</span><span class="cur" id="crumb-cat">AMVs</span><span class="sep">/</span><span class="cur" id="crumb-film">Selected</span></div>
         <div class="title"><small id="stage-k">// Now Showing / AMVs</small><span id="stage-cat">Feature Reel</span></div>
       </div>
-      <div class="right">Director / Editor<br/>Bay Area / CA</div>
+      <div class="right">Director / Editor<br/>Los Angeles / Bay Area</div>
     </div>
     <div class="frame" id="frame">
       <iframe class="stage-player" id="stage-player" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Stage playback"></iframe>
@@ -622,13 +625,13 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
       <div class="layer" id="layB"><div class="pan" id="panB"></div></div>
       <div class="scanlines"></div>
       <div class="vignette"></div>
-      <div class="muteBadge" id="muteBadge" title="Click to toggle">
+      <button class="muteBadge" id="muteBadge" type="button" aria-label="Toggle preview audio" title="Toggle preview audio">
         <span class="dot"></span><span id="muteLabel">Muted / Autoplay</span>
-      </div>
+      </button>
       <div class="title-block" id="tblock">
         <div class="eyebrow" id="stage-eye">Reel 01 / 07:30</div>
         <div class="film-title" id="stage-t">Quiet,<br/>Then Loud.</div>
-        <div class="film-sub" id="stage-s">A short film about silence as a character, built around the absence of sound, letting image carry the weight until a single cue arrives.</div>
+        <div class="film-sub" id="stage-s">A full-spectrum reel combining commercial instinct, narrative rhythm, and editorial range in one controlled cut.</div>
         <div class="film-credits" id="stage-credits"></div>
       </div>
       <!-- Up next card -->
@@ -640,7 +643,8 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
         <button id="up-skip">Skip Now &gt;</button>
       </div>
       <div class="keymap">
-        <span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd>Channels</span>
+        <span><kbd>1</kbd>Commercial</span>
+        <span><kbd>2</kbd>AMVs</span>
         <span><kbd>J</kbd><kbd>K</kbd>Film</span>
         <span><kbd>F</kbd>Cinema</span>
         <span><kbd>M</kbd>Mute</span>
@@ -673,20 +677,20 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
       <section class="pane-section on" data-s="index">
         <div id="idx-cats" class="home-flow">
           <div class="idx-head">
-            <h3><small>// Index</small>Command Center.</h3>
-            <div class="r">Featured Work / Channels / Process</div>
+            <h3><small>// Index</small>Start Here.</h3>
+            <div class="r">Featured Work / Case Studies / Process</div>
           </div>
           <section class="home-section" aria-label="Start here">
             <div class="home-section-head">
-              <div class="k">// Start Here / Featured Work</div>
+              <div class="k">// Featured Work</div>
               <div class="m">Selected videos</div>
             </div>
             <div class="featured-list" id="featured-host"></div>
           </section>
           <section class="home-section" aria-label="Channels">
             <div class="home-section-head">
-              <div class="k">// Channels</div>
-              <div class="m">Secondary navigation</div>
+              <div class="k">// Commercial / AMV / Process</div>
+              <div class="m">Selected work</div>
             </div>
             <div class="cats" id="cats-host"></div>
           </section>
@@ -745,10 +749,10 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
           <div class="r">EST. 2017</div>
         </div>
         <div class="about-portrait">
-          <div class="ph">Director / Editor</div>
+          <div class="ph">Creative Video Director / Editor</div>
           <div class="nm"><em>// Principal</em>Jared McDaniel</div>
         </div>
-        <p class="about-bio">Director and editor for commercial, narrative, and music-driven work. I build films with a sharp first read, controlled rhythm, and a clear point of view, from concept through final cut. Recent work spans <b>CD Projekt Red</b>, <b>Corsair</b>, <b>Bethesda</b>, and independent pieces built around restraint, pace, and visual clarity.</p>
+        <p class="about-bio">Creative Video Director and Editor specializing in commercial, narrative, and music-driven work.<br/><br/>I build films with a sharp first read, controlled pacing, and a clear visual identity - designed to communicate instantly and hold attention.<br/><br/>My work includes campaigns and content for Corsair, CD Projekt Red, and Bethesda, spanning high-performance product work, cinematic trailers, and stylized editorial cuts.<br/><br/>I operate across concept, direction, and post - bridging ideas into finished films with precision and speed.</p>
         <div class="about-stat">
           <div class="s"><div class="v">08</div><div class="l">Years Cutting</div></div>
           <div class="s"><div class="v">40+</div><div class="l">Credits</div></div>
@@ -779,17 +783,18 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
         <div class="about-sec">
           <h4>Working With</h4>
           <div class="tools">
-            <span>CD Projekt Red</span><span>Corsair</span><span>Bethesda</span><span>A24</span><span>Nike</span><span>Mubi</span><span>Pitchfork</span><span>Vogue</span>
+            <span>Corsair</span><span>CD Projekt Red</span><span>Bethesda</span>
           </div>
         </div>
       </section>
 
       <!-- CONTACT -->
       <section class="pane-section" data-s="contact">
-        <div class="c-lead">Available for work<br/><span>Email to start</span>.</div>
-        <div class="c-blk"><h4>Email</h4><a href="mailto:hello@jaredmcdaniel.com">Email</a></div>
+        <div class="c-lead">Available for select work.<br/><span>Email to start</span>.</div>
+        <div class="c-blk"><h4>Email</h4><a href="mailto:hello@jaredmcdaniel.com">hello@jaredmcdaniel.com</a></div>
+        <div class="c-blk"><h4>Location</h4><span>Los Angeles / Bay Area</span></div>
         <div class="c-blk"><h4>Project Details</h4><span>Reel / Treatment / Scope</span></div>
-        <div class="c-blk"><h4>Availability</h4><span style="color:var(--tint)">Available for select work</span></div>
+        <div class="c-blk"><h4>Availability</h4><span style="color:var(--tint)">Available for select commercial and narrative work</span></div>
       </section>
     </div>
     <!-- NOW PLAYING sticky pill -->
@@ -841,23 +846,22 @@ body.intro-done .keymap{opacity:.42;transform:none;transition:opacity .5s ease 1
 /* ============ DATA ============ */
 const PORTFOLIO_CONTENT = {
   categories: [
-    { id: 'amvs', k: 'CH 01', n: 'AMVs', m: 'Anime Music Videos', numeral: 'I', color: '#D8B14A', bucket: 'amvs' },
-    { id: 'shorts', k: 'CH 02', n: 'Short Films', m: 'Narrative + Documentary', numeral: 'II', color: '#8FA7D6', bucket: 'shorts' },
-    { id: 'commercial', k: 'CH 03', n: 'Commercial', m: 'Brand + Institutional', numeral: 'III', color: '#C9744F', bucket: 'commercial' },
+    { id: 'commercial', k: 'CH 01', n: 'Commercial', m: 'Campaigns + Editorial', numeral: 'I', color: '#C9744F', bucket: 'commercial' },
+    { id: 'amvs', k: 'CH 02', n: 'AMVs', m: 'Music-Driven Edits', numeral: 'II', color: '#D8B14A', bucket: 'amvs' },
   ],
   reel: {
     slug: 'director-reel',
     code: 'REEL_2025',
-    title: "Director's Reel",
-    display: "DIRECTOR'S REEL",
+    title: 'Director Reel 2025',
+    display: 'DIRECTOR REEL 2025',
     sourceCategory: 'reel',
     bucket: 'featured',
     category: 'reel',
     subcategory: 'Direction / Edit / Cinematography',
     year: 2025,
     runtime: null,
-    summary: 'A full-spectrum reel: commercial instinct, narrative edge, and range in a single cut.',
-    logline: 'A full-spectrum reel: commercial instinct, narrative edge, and range in a single cut.',
+    summary: 'A full-spectrum reel combining commercial instinct, narrative rhythm, and editorial range in one controlled cut.',
+    logline: 'A full-spectrum reel combining commercial instinct, narrative rhythm, and editorial range in one controlled cut.',
     detail: {
       brief: 'Demonstrate full range without losing a singular identity.',
       execution: 'Fast-cut commercial work alongside slower narrative moments. Contrast as a tool.',
@@ -881,7 +885,7 @@ const PORTFOLIO_CONTENT = {
     {
       slug: 'cyberpunk-2077',
       code: 'PRJ_01',
-      title: 'Cyberpunk 2077',
+      title: 'Cyberpunk 2077 - Launch Campaign',
       display: 'CYBERPUNK 2077',
       sourceCategory: 'direction',
       bucket: 'commercial',
@@ -889,12 +893,12 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Direction / Edit',
       year: 2025,
       runtime: null,
-      summary: 'A flagship commercial piece designed to hit hard and read instantly. Built for CD Projekt Red.',
-      logline: 'A flagship commercial piece designed to hit hard and read instantly. Built for CD Projekt Red.',
+      summary: 'A high-impact commercial cut designed to communicate tone, scale, and urgency within seconds.',
+      logline: 'A high-impact commercial cut designed to communicate tone, scale, and urgency within seconds.',
       detail: {
-        brief: "Create a flagship commercial piece that communicates the brand's cinematic edge instantly.",
-        execution: 'Hard framing, fast cuts, clear commercial rhythm. Every beat intentional.',
-        result: 'A stronger first-read for the portfolio. Proof that commercial work can have a cinematic edge.',
+        brief: "Create a cinematic campaign piece that immediately establishes Cyberpunk's identity - fast, aggressive, and visually dense - while remaining clear and readable across platforms.",
+        execution: 'Focused on hard framing, aggressive pacing, and controlled visual escalation. Cuts are driven by impact rather than coverage, with each beat designed to land instantly without over-explaining. Color, motion, and sound were used as primary drivers of energy and tone.',
+        result: 'A high-read commercial piece that communicates tone in seconds and reinforces a cinematic brand identity. Built to function both as a standalone spot and as a portfolio anchor.',
       },
       tags: ['COMMERCIAL', 'DIRECTION', 'EDIT'],
       credits: [
@@ -913,7 +917,7 @@ const PORTFOLIO_CONTENT = {
     {
       slug: 'fallout-nuka-cola',
       code: 'PRJ_02',
-      title: 'Fallout / Nuka-Cola',
+      title: 'Fallout - Nuka-Cola Spot',
       display: 'FALLOUT / NUKA-COLA',
       sourceCategory: 'direction',
       bucket: 'commercial',
@@ -921,12 +925,12 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Cinematography / Edit',
       year: 2025,
       runtime: null,
-      summary: 'Two references staged as one screen-led piece. Motion and editorial in balance.',
-      logline: 'Two references staged as one screen-led piece. Motion and editorial in balance.',
+      summary: 'A stylized commercial piece balancing motion and editorial timing to unify multiple brand references.',
+      logline: 'A stylized commercial piece balancing motion and editorial timing to unify multiple brand references.',
       detail: {
-        brief: 'Stage two connected brand references as a single cohesive commercial piece.',
-        execution: 'Balanced motion, editorial spacing, controlled product framing.',
-        result: 'Tight commercial file with strong visual pacing.',
+        brief: 'Unify multiple Fallout brand references into a single readable commercial spot.',
+        execution: 'Balanced screen-led motion, editorial spacing, and controlled product framing to keep the piece playful without losing clarity.',
+        result: 'A tight brand spot with clear visual pacing and a distinct franchise read.',
       },
       tags: ['COMMERCIAL', 'CINEMATOGRAPHY', 'BRANDED'],
       credits: [
@@ -945,7 +949,7 @@ const PORTFOLIO_CONTENT = {
     {
       slug: 'doom',
       code: 'PRJ_03',
-      title: 'Doom',
+      title: 'DOOM - Aggression Cut',
       display: 'DOOM',
       sourceCategory: 'direction',
       bucket: 'commercial',
@@ -953,12 +957,12 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Editing / Motion',
       year: 2025,
       runtime: null,
-      summary: 'A harder-cut edit built for impact and rhythm. Maximum aggression, minimum fat.',
-      logline: 'A harder-cut edit built for impact and rhythm. Maximum aggression, minimum fat.',
+      summary: 'A high-intensity editorial cut built around impact, rhythm, and controlled chaos.',
+      logline: 'A high-intensity editorial cut built around impact, rhythm, and controlled chaos.',
       detail: {
-        brief: 'Build a harder-cut edit that leads with impact and hits every beat.',
-        execution: 'Tighter timing, stronger accents, leaner motion pass throughout.',
-        result: 'Aggressive edit with a clear edge and unmistakable tone.',
+        brief: 'Create a fast, aggressive piece that communicates power immediately - prioritizing energy and clarity over traditional structure.',
+        execution: 'Focused on tight timing, heavy visual accents, and minimal dead space. Every cut is driven by rhythm and impact, with motion and sound used to reinforce intensity rather than decorate it.',
+        result: 'A hard-cut editorial piece with a clear tone and strong pacing identity, designed to hit instantly and hold attention.',
       },
       tags: ['EDITORIAL', 'MOTION', 'GAMING'],
       credits: [
@@ -977,7 +981,7 @@ const PORTFOLIO_CONTENT = {
     {
       slug: 'witcher',
       code: 'PRJ_04',
-      title: 'The Witcher',
+      title: 'The Witcher - Concept & Direction',
       display: 'THE WITCHER',
       sourceCategory: 'direction',
       bucket: 'commercial',
@@ -985,17 +989,16 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Planning / Moodboard',
       year: 2025,
       runtime: null,
-      summary: 'Planning-first. Visual logic before the camera rolls.',
-      logline: 'Planning-first. Visual logic before the camera rolls.',
+      summary: 'A planning-first concept piece focused on visual tone, mood, and directorial intent before production.',
+      logline: 'A planning-first concept piece focused on visual tone, mood, and directorial intent before production.',
       detail: {
-        brief: 'Develop a planning-first file centered on mood, tone, and directorial vision.',
-        execution: 'Storyboard logic, visual references, calm deliberate pacing.',
-        result: 'Cleaner project read for concept-heavy work.',
+        brief: 'Define a directorial concept with a clear sense of mood, tone, and visual logic before production.',
+        execution: 'Used storyboard logic, reference structure, and deliberate pacing to make the concept legible before the final image.',
+        result: 'A focused direction file that communicates intent quickly and supports concept-heavy work.',
       },
       tags: ['NARRATIVE', 'PLANNING', 'DIRECTION'],
       credits: [
         { role: 'DIRECTION', name: 'Jared McDaniel' },
-        { role: 'CLIENT', name: 'Netflix' },
       ],
       mediaUrl: 'https://youtu.be/tr1ajPqpuDs',
       mediaPlatform: 'youtube',
@@ -1008,20 +1011,20 @@ const PORTFOLIO_CONTENT = {
     {
       slug: 'corsair-storefront',
       code: 'PRJ_05',
-      title: 'Corsair Storefront',
-      display: 'CORSAIR STOREFRONT',
+      title: 'Corsair - Product Experience',
+      display: 'CORSAIR PRODUCT EXPERIENCE',
       sourceCategory: 'direction',
       bucket: 'commercial',
       category: 'COMMERCIAL',
       subcategory: 'Direction / Edit',
       year: 2025,
       runtime: null,
-      summary: 'Premium walkthrough built to communicate product polish fast.',
-      logline: 'Premium walkthrough built to communicate product polish fast.',
+      summary: 'A premium product-focused piece designed to communicate build quality and visual polish quickly and clearly.',
+      logline: 'A premium product-focused piece designed to communicate build quality and visual polish quickly and clearly.',
       detail: {
-        brief: 'Build a premium product walkthrough that communicates quality and polish instantly.',
-        execution: 'Simple flow, direct framing, controlled motion. Zero wasted frames.',
-        result: 'Commercial case with a clear product-first tone that converts.',
+        brief: 'Present the product experience with a premium read that feels direct, polished, and fast to understand.',
+        execution: 'Used controlled motion, clean framing, and a simple editorial flow to keep the product at the center.',
+        result: 'A commercial piece with a clear product-first tone and strong first impression.',
       },
       tags: ['COMMERCIAL', 'DIRECTION', 'PRODUCT'],
       credits: [
@@ -1039,7 +1042,7 @@ const PORTFOLIO_CONTENT = {
     {
       slug: 'frame-cut',
       code: 'PRJ_06',
-      title: 'Frame Cut',
+      title: 'Frame Cut - Editorial Study',
       display: 'FRAME CUT',
       sourceCategory: 'direction',
       bucket: 'commercial',
@@ -1047,12 +1050,12 @@ const PORTFOLIO_CONTENT = {
       subcategory: 'Edit / Motion',
       year: 2025,
       runtime: null,
-      summary: 'A compact editorial cut. Lean structure. Tight rhythm.',
-      logline: 'A compact editorial cut. Lean structure. Tight rhythm.',
+      summary: 'A compact editorial piece focused on pacing, clarity, and efficient visual communication.',
+      logline: 'A compact editorial piece focused on pacing, clarity, and efficient visual communication.',
       detail: {
-        brief: 'Produce a compact editorial cut with maximum readability.',
-        execution: 'Minimal structure tuned for archive readability and fast scanning.',
-        result: 'Precise cut. Clean read. No wasted frames.',
+        brief: 'Build a compact editorial study that proves clarity without excess runtime.',
+        execution: 'Tuned the structure around pacing, contrast, and clean visual handoffs.',
+        result: 'A precise edit that communicates efficiently and keeps the read clean.',
       },
       tags: ['EDITORIAL', 'MOTION', 'REEL'],
       credits: [
@@ -1068,467 +1071,71 @@ const PORTFOLIO_CONTENT = {
       placeholder: false,
     },
     {
-      slug: 'direction-07',
-      code: 'PRJ_07',
-      title: 'Direction 07',
-      display: 'DIRECTION 07',
-      sourceCategory: 'direction',
-      bucket: 'commercial',
-      category: 'COMMERCIAL',
-      subcategory: 'Direction / Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Project in development.',
-      logline: 'Project in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['COMMERCIAL', 'DIRECTION'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(160deg,#0a1036,#05081f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'direction-08',
-      code: 'PRJ_08',
-      title: 'Direction 08',
-      display: 'DIRECTION 08',
-      sourceCategory: 'direction',
-      bucket: 'commercial',
-      category: 'COMMERCIAL',
-      subcategory: 'Direction / Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Project in development.',
-      logline: 'Project in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['COMMERCIAL', 'DIRECTION'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(210deg,#0a1540,#05081f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'direction-09',
-      code: 'PRJ_09',
-      title: 'Direction 09',
-      display: 'DIRECTION 09',
-      sourceCategory: 'direction',
-      bucket: 'commercial',
-      category: 'COMMERCIAL',
-      subcategory: 'Direction / Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Project in development.',
-      logline: 'Project in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['COMMERCIAL', 'DIRECTION'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(140deg,#131a4a,#05081f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'direction-10',
-      code: 'PRJ_10',
-      title: 'Direction 10',
-      display: 'DIRECTION 10',
-      sourceCategory: 'direction',
-      bucket: 'commercial',
-      category: 'COMMERCIAL',
-      subcategory: 'Direction / Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Project in development.',
-      logline: 'Project in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['COMMERCIAL', 'DIRECTION'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(180deg,#0a1036,#030611)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'direction-11',
-      code: 'PRJ_11',
-      title: 'Direction 11',
-      display: 'DIRECTION 11',
-      sourceCategory: 'direction',
-      bucket: 'commercial',
-      category: 'COMMERCIAL',
-      subcategory: 'Direction / Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Project in development.',
-      logline: 'Project in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['COMMERCIAL', 'DIRECTION'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(170deg,#05081f,#131a4a)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-01',
-      code: 'FILM_01',
-      title: 'Film Study 01',
-      display: 'FILM STUDY 01',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Narrative',
-      year: 2025,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'NARRATIVE'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(180deg,#05081f,#121a4a)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-02',
-      code: 'FILM_02',
-      title: 'Film Study 02',
-      display: 'FILM STUDY 02',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Edit',
-      year: 2024,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(225deg,#0a1036,#1a234f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-03',
-      code: 'FILM_03',
-      title: 'Film Study 03',
-      display: 'FILM STUDY 03',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(120deg,#0b1132,#1a2150 50%,#040714)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-04',
-      code: 'FILM_04',
-      title: 'Film Study 04',
-      display: 'FILM STUDY 04',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(160deg,#0a1036,#05081f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-05',
-      code: 'FILM_05',
-      title: 'Film Study 05',
-      display: 'FILM STUDY 05',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(180deg,#05081f,#121a4a)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-06',
-      code: 'FILM_06',
-      title: 'Film Study 06',
-      display: 'FILM STUDY 06',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(120deg,#0b1132,#1a2150 50%,#040714)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'film-07',
-      code: 'FILM_07',
-      title: 'Film Study 07',
-      display: 'FILM STUDY 07',
-      sourceCategory: 'films',
-      bucket: 'shorts',
-      category: 'FILM',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Short film in development.',
-      logline: 'Short film in development.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['FILM', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(170deg,#0a1540,#05081f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
       slug: 'amv-01',
       code: 'AMV_01',
-      title: 'AMV Edit 01',
-      display: 'AMV EDIT 01',
+      title: 'Ashfall',
+      display: 'ASHFALL',
       sourceCategory: 'amvs',
       bucket: 'amvs',
       category: 'AMV',
       subcategory: 'Edit / Motion',
       year: 2025,
       runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
+      summary: 'A rhythm-driven edit built around escalation and release, using motion and timing to carry emotional impact.',
+      logline: 'A rhythm-driven edit built around escalation and release, using motion and timing to carry emotional impact.',
+      detail: {
+        brief: 'Build a music-driven edit around escalation, impact, and release.',
+        execution: 'Used motion, timing, and rhythmic contrast to push emotional momentum without overcutting.',
+        result: 'A focused AMV with a clear rise-and-release structure and strong emotional impact.',
+      },
       tags: ['AMV', 'EDIT', 'MOTION'],
-      credits: [],
+      credits: [
+        { role: 'EDIT', name: 'Jared McDaniel' },
+      ],
       mediaUrl: 'https://youtu.be/Nf_lDTJCl2w',
       mediaPlatform: 'youtube',
       posterStrategy: 'youtube-thumb',
       fallbackPoster: 'linear-gradient(135deg,#0a1033,#05081f 50%,#1a2150)',
-      status: { portfolio: 'partial', copy: 'placeholder', media: 'active' },
+      status: { portfolio: 'active', copy: 'final', media: 'active' },
       featured: false,
-      placeholder: true,
+      placeholder: false,
     },
     {
       slug: 'amv-02',
       code: 'AMV_02',
-      title: 'AMV Edit 02',
-      display: 'AMV EDIT 02',
+      title: 'Silent Collapse',
+      display: 'SILENT COLLAPSE',
       sourceCategory: 'amvs',
       bucket: 'amvs',
       category: 'AMV',
       subcategory: 'Edit',
       year: 2024,
       runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
+      summary: 'A controlled, atmosphere-first edit focused on restraint, negative space, and delayed payoff.',
+      logline: 'A controlled, atmosphere-first edit focused on restraint, negative space, and delayed payoff.',
+      detail: {
+        brief: 'Create an atmosphere-first edit that uses restraint as the main source of tension.',
+        execution: 'Leaned on negative space, delayed payoff, and controlled pacing to make each shift feel earned.',
+        result: 'A restrained AMV with a clear mood and a stronger payoff because it waits to release.',
+      },
       tags: ['AMV', 'EDIT'],
-      credits: [],
+      credits: [
+        { role: 'EDIT', name: 'Jared McDaniel' },
+      ],
       mediaUrl: 'https://youtu.be/Yj2ncYs0vGU',
       mediaPlatform: 'youtube',
       posterStrategy: 'youtube-thumb',
       fallbackPoster: 'linear-gradient(160deg,#0b0f2e,#131a4a 60%,#061031)',
-      status: { portfolio: 'partial', copy: 'placeholder', media: 'active' },
+      status: { portfolio: 'active', copy: 'final', media: 'active' },
       featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'amv-03',
-      code: 'AMV_03',
-      title: 'AMV Edit 03',
-      display: 'AMV EDIT 03',
-      sourceCategory: 'amvs',
-      bucket: 'amvs',
-      category: 'AMV',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['AMV', 'EDIT'],
-      credits: [],
-      mediaUrl: 'https://youtu.be/q_d2habvkEQ',
-      mediaPlatform: 'youtube',
-      posterStrategy: 'youtube-thumb',
-      fallbackPoster: 'linear-gradient(90deg,#0a0a18,#1a2150 50%,#05081f)',
-      status: { portfolio: 'partial', copy: 'placeholder', media: 'active' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'amv-04',
-      code: 'AMV_04',
-      title: 'AMV Edit 04',
-      display: 'AMV EDIT 04',
-      sourceCategory: 'amvs',
-      bucket: 'amvs',
-      category: 'AMV',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['AMV', 'EDIT'],
-      credits: [],
-      mediaUrl: 'https://youtu.be/k-Y2XvwHPaQ',
-      mediaPlatform: 'youtube',
-      posterStrategy: 'youtube-thumb',
-      fallbackPoster: 'linear-gradient(140deg,#0a1540,#05081f 60%,#1c2a66)',
-      status: { portfolio: 'partial', copy: 'placeholder', media: 'active' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'amv-05',
-      code: 'AMV_05',
-      title: 'AMV Edit 05',
-      display: 'AMV EDIT 05',
-      sourceCategory: 'amvs',
-      bucket: 'amvs',
-      category: 'AMV',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['AMV', 'EDIT'],
-      credits: [],
-      mediaUrl: 'https://youtu.be/f9v-8og-cGk?si=dBd957PRwpwUud3B',
-      mediaPlatform: 'youtube',
-      posterStrategy: 'youtube-thumb',
-      fallbackPoster: 'linear-gradient(160deg,#0a1036,#05081f)',
-      status: { portfolio: 'partial', copy: 'placeholder', media: 'active' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'amv-06',
-      code: 'AMV_06',
-      title: 'AMV Edit 06',
-      display: 'AMV EDIT 06',
-      sourceCategory: 'amvs',
-      bucket: 'amvs',
-      category: 'AMV',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['AMV', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(180deg,#05081f,#121a4a)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
-    },
-    {
-      slug: 'amv-07',
-      code: 'AMV_07',
-      title: 'AMV Edit 07',
-      display: 'AMV EDIT 07',
-      sourceCategory: 'amvs',
-      bucket: 'amvs',
-      category: 'AMV',
-      subcategory: 'Edit',
-      year: 2025,
-      runtime: null,
-      summary: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      logline: 'Rhythm-led AMV edit focused on pacing, motion, and impact.',
-      detail: { brief: '', execution: '', result: '' },
-      tags: ['AMV', 'EDIT'],
-      credits: [],
-      mediaUrl: '',
-      mediaPlatform: 'none',
-      posterStrategy: 'gradient',
-      fallbackPoster: 'linear-gradient(170deg,#0a1540,#05081f)',
-      status: { portfolio: 'placeholder', copy: 'placeholder', media: 'inactive' },
-      featured: false,
-      placeholder: true,
+      placeholder: false,
     },
   ],
   support: {
     profile: {
       name: 'Jared McDaniel',
-      title: 'Director / Editor',
-      bio: 'Director and editor for commercial, narrative, and music-driven work. I build films with a sharp first read, controlled rhythm, and a clear point of view, from concept through final cut. Recent work spans CD Projekt Red, Corsair, Bethesda, and independent pieces built around restraint, pace, and visual clarity.',
+      title: 'Creative Video Director / Editor',
+      bio: 'Creative Video Director and Editor specializing in commercial, narrative, and music-driven work.<br><br>I build films with a sharp first read, controlled pacing, and a clear visual identity - designed to communicate instantly and hold attention.<br><br>My work includes campaigns and content for Corsair, CD Projekt Red, and Bethesda, spanning high-performance product work, cinematic trailers, and stylized editorial cuts.<br><br>I operate across concept, direction, and post - bridging ideas into finished films with precision and speed.',
       stats: [
         { value: '08', label: 'YEARS CUTTING' },
         { value: '40+', label: 'CREDITS' },
@@ -1541,15 +1148,16 @@ const PORTFOLIO_CONTENT = {
         { year: '2020', title: 'Founded studio practice', meta: 'Oakland, CA' },
         { year: '2017', title: 'First paid cut', meta: 'Bay Area' },
       ],
-      availability: 'Available for select work',
+      availability: 'Available for select commercial and narrative work',
     },
     contact: {
       direct: [
-        { label: 'Email', href: 'mailto:hello@jaredmcdaniel.com', status: 'active' },
+        { label: 'hello@jaredmcdaniel.com', href: 'mailto:hello@jaredmcdaniel.com', status: 'active' },
       ],
+      location: 'Los Angeles / Bay Area',
       social: [],
       form: { enabled: true, statusCopy: 'Sending...' },
-      availability: 'Available for select work',
+      availability: 'Available for select commercial and narrative work',
     },
     skills: [
       { n: 'DIRECTION', items: 'Commercial / Narrative / Music Video / Branded', lvl: 90 },
@@ -1560,12 +1168,12 @@ const PORTFOLIO_CONTENT = {
       { n: 'PRODUCTION', items: 'Pre-Production / Crew Direction / Post Workflow', lvl: 88 },
     ],
     tools: ['Premiere Pro', 'DaVinci Resolve', 'After Effects', 'Cinema 4D', 'Sony FX3', 'Sony A7IV', 'Ronin RS3', 'Rode Wireless'],
-    collaborators: ['CD Projekt Red', 'Corsair', 'Bethesda', 'A24', 'Nike', 'Mubi', 'Pitchfork', 'Vogue'],
+    collaborators: ['Corsair', 'CD Projekt Red', 'Bethesda'],
     ticker: {
       messages: [
-        "Director's Reel / Cyberpunk 2077 / DOOM",
+        'Director Reel 2025 / Cyberpunk 2077 / DOOM',
         'Direction / Edit / Cinematic Campaigns',
-        'CD Projekt Red / Bethesda / Corsair',
+        'Corsair / CD Projekt Red / Bethesda',
         'Storyboards / Shotlists / BTS / Motion',
         'Commercial / Narrative / Editorial',
       ],
@@ -1593,6 +1201,24 @@ function parseMediaSource(url) {
   var vm = value.match(/vimeo\.com\/(?:video\/)?(\d+)/);
   if(vm) return { platform: 'vimeo', id: vm[1] };
   return null;
+}
+
+const YOUTUBE_THUMBNAIL_QUALITIES = ['maxresdefault', 'sddefault', 'hqdefault'];
+function getYouTubeThumbnail(id, quality='maxresdefault') {
+  return `https://img.youtube.com/vi/${id}/${quality}.jpg`;
+}
+
+function getYouTubeThumbnailStack(id, fallbackPoster='') {
+  const layers = YOUTUBE_THUMBNAIL_QUALITIES.map((quality) => `url(${getYouTubeThumbnail(id, quality)})`);
+  if(fallbackPoster) layers.push(fallbackPoster);
+  return layers.join(',');
+}
+
+function getProjectThumbnailUrl(project, quality='maxresdefault') {
+  const media = project && project.media ? project.media : {};
+  const parsed = media.url ? parseMediaSource(media.url) : null;
+  if(parsed && parsed.platform === 'youtube') return getYouTubeThumbnail(parsed.id, quality);
+  return project && project.visual && project.visual.gradient ? project.visual.gradient : '';
 }
 
 function setProjectVideo(project, url) {
@@ -1641,6 +1267,8 @@ function buildMediaModel(url, fallbackPoster, status) {
       : 'https://player.vimeo.com/video/' + parsed.id + '?autoplay=1&loop=0&title=0&byline=0&portrait=0') : '',
     poster: poster,
     thumbnail: parsed ? { type: poster.type, source: url } : null,
+    thumbnailUrl: parsed && parsed.platform === 'youtube' ? getYouTubeThumbnail(parsed.id) : '',
+    thumbnailFallbackUrls: parsed && parsed.platform === 'youtube' ? YOUTUBE_THUMBNAIL_QUALITIES.map((quality) => getYouTubeThumbnail(parsed.id, quality)) : [],
     fallbackPoster: fallbackPoster,
     status: status || 'inactive',
     placeholder: !parsed,
@@ -1677,7 +1305,6 @@ function fallbackRuntime(project) {
   if(project.runtime) return project.runtime;
   if(project.featured) return '07:30';
   if(project.bucket === 'commercial') return project.placeholder ? '00:30' : '01:00';
-  if(project.bucket === 'shorts') return project.placeholder ? '00:30' : '09:00';
   if(project.bucket === 'amvs') return project.placeholder ? '00:30' : '03:30';
   return '00:30';
 }
@@ -1685,11 +1312,17 @@ function fallbackRuntime(project) {
 const PORTFOLIO_PROJECTS = [normalizeProject(PORTFOLIO_CONTENT.reel)].concat(PORTFOLIO_CONTENT.projects.map(normalizeProject));
 const PORTFOLIO_BY_SLUG = Object.fromEntries(PORTFOLIO_PROJECTS.map((project) => [project.slug, project]));
 const PORTFOLIO_CATS = PORTFOLIO_CONTENT.categories;
+const DISPLAY_ORDER = ['cyberpunk-2077', 'doom', 'corsair-storefront', 'fallout-nuka-cola', 'frame-cut', 'witcher', 'amv-01', 'amv-02'];
+const byDisplayOrder = (a,b) => {
+  const ai = DISPLAY_ORDER.indexOf(a.slug);
+  const bi = DISPLAY_ORDER.indexOf(b.slug);
+  return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+};
 const PORTFOLIO_FILMS = {
-  amvs: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'amvs').map((project, i) => ({
+  amvs: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'amvs').sort(byDisplayOrder).map((project, i) => ({
     n: String(i + 1).padStart(2, '0'),
     name: project.display,
-    sub: project.status.media === 'active' ? 'AMV / Edit' : 'Archive slot',
+    sub: 'AMV / Edit',
     y: project.year,
     r: fallbackRuntime(project),
     long: cleanProjectCopy(project.summary) || 'Rhythm-led edit focused on pacing, motion, and impact.',
@@ -1704,31 +1337,13 @@ const PORTFOLIO_FILMS = {
     slug: project.slug,
     detail: project.detail,
   })),
-  shorts: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'shorts').map((project, i) => ({
-    n: String(i + 1).padStart(2, '0'),
-    name: project.display,
-    sub: 'Narrative / Documentary',
-    y: project.year,
-    r: fallbackRuntime(project),
-    long: cleanProjectCopy(project.summary) || 'Film details are being curated.',
-    g: project.visual.gradient,
-    credits: project.credits,
-    yt: project.media.platform === 'youtube' ? project.media.url : '',
-    vimeo: project.media.platform === 'vimeo' ? project.media.url : '',
-    media: project.media,
-    placeholder: project.placeholder,
-    status: project.status,
-    featured: project.featured,
-    slug: project.slug,
-    detail: project.detail,
-  })),
-  commercial: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'commercial').map((project, i) => ({
+  commercial: PORTFOLIO_PROJECTS.filter((project) => project.bucket === 'commercial').sort(byDisplayOrder).map((project, i) => ({
     n: String(i + 1).padStart(2, '0'),
     name: project.display,
     sub: project.subcategory,
     y: project.year,
     r: fallbackRuntime(project),
-    long: cleanProjectCopy(project.summary) || 'Project details are being curated.',
+    long: cleanProjectCopy(project.summary) || 'Project details.',
     g: project.visual.gradient,
     credits: project.credits,
     yt: project.media.platform === 'youtube' ? project.media.url : '',
@@ -1765,6 +1380,24 @@ function isPlayableProject(project) {
   return !project.status || project.status.media === 'active';
 }
 
+function buildVisibleProjectMediaQA() {
+  return PORTFOLIO_PROJECTS.map((project) => ({
+    title: project.title,
+    slug: project.slug,
+    mediaUrl: project.media && project.media.url ? project.media.url : '',
+    embedUrl: project.media && project.media.embedUrl ? project.media.embedUrl : '',
+    thumbnailUrl: getProjectThumbnailUrl(project),
+    playable: isPlayableProject(project),
+  }));
+}
+
+window.PORTFOLIO_VISIBLE_MEDIA_QA = buildVisibleProjectMediaQA();
+window.runPortfolioMediaQA = function() {
+  const rows = buildVisibleProjectMediaQA();
+  console.table(rows);
+  return rows;
+};
+
 function getProjectPlayerUrl(project) {
   if(!project || !project.media) return '';
   return project.media.embedUrl || '';
@@ -1799,15 +1432,9 @@ function renderStagePlayer(project, {preview=false}={}) {
   const frame = $('#frame');
   const iframe = $('#stage-player');
   if(!frame || !iframe) return;
-  const playable = isPlayableProject(project);
-  const playerUrl = playable ? getStagePlayerUrl(project, {forceMute: preview}) : '';
-  frame.classList.toggle('live', !!playerUrl);
-  if(playerUrl) {
-    iframe.title = `${project.title} stage playback`;
-    if(iframe.src !== playerUrl) iframe.src = playerUrl;
-  } else {
-    iframe.removeAttribute('src');
-  }
+  frame.classList.remove('live');
+  iframe.removeAttribute('src');
+  if(project) iframe.title = `${project.title} poster preview`;
 }
 
 function stopStagePlayer() {
@@ -1853,7 +1480,7 @@ function getProjectBackdrop(project) {
   const media = project.media || {};
   const parsed = media.url ? parseMediaSource(media.url) : null;
   if(parsed && parsed.platform === 'youtube') {
-    return `url(https://img.youtube.com/vi/${parsed.id}/hqdefault.jpg)`;
+    return getYouTubeThumbnailStack(parsed.id, project.visual && project.visual.gradient ? project.visual.gradient : '');
   }
   return project.visual && project.visual.gradient ? project.visual.gradient : 'linear-gradient(135deg,#0a1033,#05081f 50%,#1a2150)';
 }
@@ -1926,6 +1553,7 @@ function renderCaseStudy(project, catObj) {
   }
 }
 
+let lastCinemaTrigger = null;
 function closeCinemaViewer() {
   const cinema = $('#cinema');
   const frame = $('#cinema-frame');
@@ -1946,11 +1574,16 @@ function closeCinemaViewer() {
   }
   STATE.viewerSlug = '';
   renderStagePlayer(PORTFOLIO_BY_SLUG[getDisplayedProjectSlug()], {preview: !!STATE.previewSlug});
+  if(lastCinemaTrigger && typeof lastCinemaTrigger.focus === 'function') {
+    lastCinemaTrigger.focus({preventScroll:true});
+  }
+  lastCinemaTrigger = null;
 }
 
 function openCinemaViewer(projectOrSlug) {
   const project = typeof projectOrSlug === 'string' ? PORTFOLIO_BY_SLUG[projectOrSlug] : projectOrSlug;
   if(!project || !isPlayableProject(project)) return false;
+  lastCinemaTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   clearFilmPreview({renderActive:true});
   const cinema = $('#cinema');
   const frame = $('#cinema-frame');
@@ -1983,6 +1616,8 @@ function openCinemaViewer(projectOrSlug) {
   iframe.referrerPolicy = 'strict-origin-when-cross-origin';
   iframe.src = embedUrl;
   STATE.viewerSlug = project.slug;
+  const closeBtn = $('#cinema-close');
+  if(closeBtn) setTimeout(()=>closeBtn.focus({preventScroll:true}), 0);
   return true;
 }
 
@@ -1999,6 +1634,8 @@ function renderProjectSpotlight(project, {preview=false, commit=false}={}) {
   $('#m-total').textContent=runtime;
   $('#m-extra').textContent=`${project.subcategory.toUpperCase()} / ${project.year}`;
   $('#stage-credits').innerHTML=(project.credits||[]).map((credit)=>`<span>${credit.role} <b>${credit.name}</b></span>`).join('');
+  $('#crumb-cat').textContent='Featured';
+  $('#crumb-film').textContent=project.title;
   $('#panA').style.backgroundImage=poster;
   $('#layA').classList.add('on');
   $('#layB').classList.remove('on');
@@ -2056,10 +1693,10 @@ function renderSupportContent() {
   const toolBlocks = $$('.about-sec .tools');
   if(toolBlocks[0]) toolBlocks[0].innerHTML = skills.map((skill) => `<span>${skill.n}</span>`).join('');
   if(toolBlocks[1]) toolBlocks[1].innerHTML = tools.map((tool) => `<span>${tool}</span>`).join('');
-  if(toolBlocks[2]) toolBlocks[2].innerHTML = (profile.collaborators || ['CD Projekt Red', 'Corsair', 'Bethesda', 'A24', 'Nike', 'Mubi', 'Pitchfork', 'Vogue']).map((name) => `<span>${name}</span>`).join('');
+  if(toolBlocks[2]) toolBlocks[2].innerHTML = (profile.collaborators || ['Corsair', 'CD Projekt Red', 'Bethesda']).map((name) => `<span>${name}</span>`).join('');
 
   const lead = $('.c-lead');
-  if(lead) lead.innerHTML = `Available for work<br/><span>Email to start</span>.`;
+  if(lead) lead.innerHTML = `Available for select work.<br/><span>Email to start</span>.`;
 
   const supportBlocks = $$('.c-blk');
   if(supportBlocks[0]) {
@@ -2070,13 +1707,14 @@ function renderSupportContent() {
   }
 
   if(supportBlocks[1]) {
-    supportBlocks[1].innerHTML = `<h4>Project Details</h4><span>Reel / Treatment / Scope</span>`;
+    supportBlocks[1].innerHTML = `<h4>Location</h4><span>${contact.location}</span>`;
   }
 
   if(supportBlocks[2]) {
-    supportBlocks[2].innerHTML = `<h4>Availability</h4><span style="color:var(--tint)">${contact.availability}</span>`;
+    supportBlocks[2].innerHTML = `<h4>Project Details</h4><span>Reel / Treatment / Scope</span>`;
   }
-  const statusBlock = $('.c-blk')[2];
+
+  const statusBlock = supportBlocks[3];
   if(statusBlock) {
     statusBlock.innerHTML = `<h4>Availability</h4><span style="color:var(--tint)">${contact.availability}</span>`;
   }
@@ -2153,9 +1791,11 @@ PORTFOLIO_CATS.forEach((c,i)=>{
   const first=(playableEntries[0] && playableEntries[0].item) || PORTFOLIO_FILMS[c.id][0];
   const stats=getCategoryStats(c.id);
   const runtimeLabel = `${pad(stats.activeMinutes)}:${pad(stats.activeSeconds)}`;
-  const categoryMeta = stats.count ? `${pad(stats.count)} videos / ${runtimeLabel} watch time` : 'Curated selection coming soon';
-  const el=document.createElement('div');
+  const categoryMeta = stats.count ? `${pad(stats.count)} videos / ${runtimeLabel} watch time` : 'Selected work';
+  const el=document.createElement('button');
+  el.type='button';
   el.className='cat';el.dataset.cat=c.id;
+  el.setAttribute('aria-label', `Open ${c.n} work`);
   el.style.setProperty('--ct',c.color);
   el.innerHTML=`
     <div class="s" style="background-image:${getProjectBackdrop(first)}"></div>
@@ -2220,7 +1860,7 @@ function fireGlitch(){
 
 /* ============ STATE ============ */
 const STATE={
-  cat: LS.get(LS.cat,'amvs'),
+  cat: LS.get(LS.cat,'commercial'),
   idx: LS.get(LS.idx,0),
   tc:  LS.get(LS.tc,0),
   total: 0,
@@ -2239,8 +1879,8 @@ const STATE={
   previewIdx: -1,
   viewerSlug: '',
 };
-if(!PORTFOLIO_FILMS[STATE.cat]) STATE.cat='amvs';
-if(!PORTFOLIO_FILMS[STATE.cat][STATE.idx]) STATE.idx=0;
+if(!PORTFOLIO_CATS.some(c=>c.id===STATE.cat)) STATE.cat='commercial';
+if(!PORTFOLIO_FILMS[STATE.cat] || !PORTFOLIO_FILMS[STATE.cat][STATE.idx]) STATE.idx=0;
 const initialPlayableEntries = getPlayableFilmEntries(STATE.cat);
 if(initialPlayableEntries.length && !isPublicFilm(PORTFOLIO_FILMS[STATE.cat][STATE.idx])) STATE.idx = initialPlayableEntries[0].idx;
 STATE.total=parseRT(PORTFOLIO_FILMS[STATE.cat][STATE.idx].r);
@@ -2553,12 +2193,12 @@ function openCategory(id,{fromInit=false}={}){
     $('#d-h').textContent=c.m;
     const playableEntries=getPlayableFilmEntries(id);
     const activeTot=playableEntries.reduce((a,entry)=>a+parseRT(entry.item.r),0);
-    $('#d-m').textContent=playableEntries.length ? `${pad(playableEntries.length)} videos / ${pad(Math.floor(activeTot/60))}:${pad(activeTot%60)} watch time` : 'Curated selection coming soon';
+    $('#d-m').textContent=playableEntries.length ? `${pad(playableEntries.length)} videos / ${pad(Math.floor(activeTot/60))}:${pad(activeTot%60)} watch time` : 'Selected work';
     const host=$('#films-host');host.innerHTML='';
     const activeEntry = playableEntries.find(entry=>id===STATE.cat && entry.idx===STATE.idx) || playableEntries[0];
     if(!playableEntries.length) {
       $('#case-study').hidden = true;
-      host.innerHTML = `<div class="empty-copy">${c.n} are being curated.</div>`;
+      host.innerHTML = `<div class="empty-copy">${c.n} selected work is unavailable.</div>`;
       updateFilmListState();
       return;
     }
@@ -2601,13 +2241,12 @@ $$('#crumb .a').forEach(el=>el.addEventListener('click',()=>{
 }));
 
 /* ============ TABS + PIP ============ */
-const tabs=$$('#tabs button'),sections=$$('.pane-section'),navBtns=$$('#nav button');
+const tabs=$$('#tabs button'),sections=$$('.pane-section');
 function swapTab(name){
   if(name!=='index') clearFilmPreview({renderActive:true});
   STATE.tab=name;
   document.body.dataset.cat = name === 'about' ? 'about' : STATE.cat;
   tabs.forEach(t=>t.classList.toggle('on',t.dataset.t===name));
-  navBtns.forEach(t=>t.classList.toggle('on',t.dataset.t===name));
   sections.forEach(s=>s.classList.toggle('on',s.dataset.s===name));
   // PiP appears when NOT on index (because index IS the home for the viewer's metadata)
   const showPip = (name!=='index');
@@ -2617,7 +2256,6 @@ function swapTab(name){
   np.style.display=(name==='index'||name==='about')?'none':'grid';
 }
 tabs.forEach(t=>t.addEventListener('click',()=>{fireGlitch();setTimeout(()=>swapTab(t.dataset.t),60)}));
-navBtns.forEach(t=>t.addEventListener('click',()=>{fireGlitch();setTimeout(()=>swapTab(t.dataset.t),60)}));
 
 $('#pip').addEventListener('click',e=>{
   if(e.target.id==='pip-x') return;
@@ -2637,7 +2275,7 @@ $('#frame').addEventListener('keydown',e=>{
     openSelectedCinema();
   }
 });
-$('#frame').addEventListener('dblclick',e=>{
+$('#frame').addEventListener('click',e=>{
   if(e.target.closest('button,.muteBadge')) return;
   if(!STATE.viewerSlug) openSelectedCinema();
 });
@@ -2654,16 +2292,15 @@ document.addEventListener('keydown',e=>{
   else if(k==='arrowleft'||k==='h'){prevFilm()}
   else if(k==='j'){nextFilm()}
   else if(k==='k'){prevFilm()}
-  else if(k==='1'){fireGlitch();setTimeout(()=>{swapTab('index');openCategory('amvs')},60)}
-  else if(k==='2'){fireGlitch();setTimeout(()=>{swapTab('index');openCategory('shorts')},60)}
-  else if(k==='3'){fireGlitch();setTimeout(()=>{swapTab('index');openCategory('commercial')},60)}
+  else if(k==='1'){fireGlitch();setTimeout(()=>{swapTab('index');openCategory('commercial')},60)}
+  else if(k==='2'){fireGlitch();setTimeout(()=>{swapTab('index');openCategory('amvs')},60)}
   else if(k==='m'){toggleMute()}
   else if(k===' '){e.preventDefault();STATE.playing=!STATE.playing}
 });
 
 /* ============ MUTE ============ */
 const muteBadge=$('#muteBadge'),muteLabel=$('#muteLabel');
-function refreshMuteLabel(){muteLabel.textContent=STATE.previewSlug?'Muted / Preview':(STATE.muted?'Muted / Autoplay':'Audio / Live')}
+function refreshMuteLabel(){muteLabel.textContent=STATE.previewSlug?'Preview / Poster':(STATE.muted?'Poster / Click Play':'Poster / Cinema Audio')}
 function toggleMute(){
   STATE.muted=!STATE.muted;
   LS.set(LS.mute,STATE.muted);
