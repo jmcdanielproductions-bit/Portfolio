@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jared McDaniel / Set Life Concept</title>
+<meta name="description" content="A cinematic behind-the-scenes Set Life wall concept for Jared McDaniel."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#121014;
+  --bg-deep:#070608;
+  --ink:#f5f0ec;
+  --ink-dim:#c6bcc0;
+  --ink-mute:#7e6f74;
+  --hair:rgba(255,255,255,.08);
+  --hair-strong:rgba(255,255,255,.18);
+  --accent:#ff3b35;
+  --accent-soft:rgba(255,59,53,.22);
+  --blue-glow:rgba(255,59,53,.22);
+  --ff-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --ff-mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.22,.72,.22,1);
+  --mx:0;
+  --my:0;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg-deep);color:var(--ink);font-family:var(--ff-display);-webkit-font-smoothing:antialiased}
+button,a{font:inherit}
+
+/* Set Life standalone page */
+.set-life-page{position:relative;min-height:100svh;overflow:hidden;background:
+  radial-gradient(95% 72% at 50% 34%,rgba(255,59,53,.14),transparent 64%),
+  linear-gradient(to bottom,var(--bg),var(--bg-deep));isolation:isolate}
+.set-life-page::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.24;background-image:
+  linear-gradient(to right,rgba(255,255,255,.055) 1px,transparent 1px),
+  linear-gradient(to bottom,rgba(255,255,255,.042) 1px,transparent 1px);background-size:160px 160px;transform:translate3d(calc(var(--mx) * -8px),calc(var(--my) * -6px),0)}
+.set-life-page::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  radial-gradient(78% 62% at 50% 50%,transparent 52%,rgba(0,0,0,.38) 100%),
+  repeating-linear-gradient(to bottom,rgba(255,255,255,.008) 0,rgba(255,255,255,.008) 1px,transparent 1px,transparent 4px)}
+
+/* Header */
+.set-life-header{position:absolute;z-index:8;top:0;left:0;right:0;padding:clamp(14px,1.5vw,24px) clamp(14px,1.8vw,30px) 0}
+.set-life-header h1{font-size:clamp(56px,13.1vw,250px);line-height:.72;letter-spacing:-.075em;text-transform:uppercase;text-align:center;white-space:nowrap;color:var(--ink);text-shadow:0 12px 54px rgba(0,0,0,.38)}
+.set-life-nav{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(8px,1.6vw,28px);margin-top:clamp(15px,1.8vw,30px);font-size:clamp(9px,.88vw,13px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-align:center}
+.set-life-nav a{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:32px;color:var(--ink);text-decoration:none;text-shadow:0 2px 12px rgba(0,0,0,.48)}
+.set-life-nav a::after{content:"";position:absolute;left:50%;bottom:2px;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:0;transform:translateX(-50%);box-shadow:0 0 14px var(--accent-soft);transition:opacity .2s ease}
+.set-life-nav a:hover::after,.set-life-nav a:focus-visible::after,.set-life-nav a[aria-current="page"]::after{opacity:1}
+.set-life-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+/* 3D BTS wall */
+.scroll-cinema{
+  --scroll-progress:.4;
+  --media-scale:1;
+  --media-opacity:.65;
+  --media-radius:8px;
+  --panel-brightness:.75;
+  --panel-saturation:.85;
+}
+.scroll-cinema-media{opacity:var(--media-opacity);border-radius:var(--media-radius)}
+.scroll-cinema-poster,.scroll-cinema-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.set-life-world{position:absolute;inset:0;z-index:3;perspective:1800px;overflow:hidden}
+.set-life-depth{position:absolute;left:50%;top:56%;width:100vw;height:74vh;transform-style:preserve-3d;transform:
+  translate3d(-50%,-50%,0)
+  rotateX(calc(var(--my) * -2deg))
+  rotateY(calc(var(--mx) * 4deg))
+  translate3d(calc(var(--mx) * -40px),calc(var(--my) * -18px),0);transition:transform .18s linear}
+.set-life-card{position:absolute;left:50%;top:50%;width:var(--w,clamp(320px,28vw,620px));aspect-ratio:16/9;border:1px solid var(--hair);border-radius:var(--media-radius);overflow:hidden;background:#000;box-shadow:0 24px 70px rgba(0,0,0,.48),0 0 34px var(--blue-glow);cursor:pointer;color:var(--ink);transform:
+  translate3d(var(--x),var(--y),var(--z))
+  rotateY(var(--ry))
+  rotateX(var(--rx))
+  scale(var(--s,1));transform-style:preserve-3d;transition:transform .65s var(--ease),width .65s var(--ease),opacity .45s ease,filter .45s ease,box-shadow .45s ease,border-color .45s ease;opacity:var(--media-opacity);filter:brightness(var(--panel-brightness)) saturate(var(--panel-saturation))}
+.set-life-card:hover{--media-opacity:1;--panel-brightness:.94;--panel-saturation:.96;border-color:var(--hair-strong);box-shadow:0 30px 86px rgba(0,0,0,.56),0 0 42px var(--blue-glow)}
+.set-life-card:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.set-life-card video,.set-life-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.set-life-card video{opacity:0;transition:opacity .3s ease}
+.set-life-card.has-video video{opacity:1}
+.set-life-poster{background-image:var(--poster);background-size:cover;background-position:center;filter:contrast(1.06) saturate(1.02) brightness(1.08)}
+.set-life-card::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.54),rgba(0,0,0,.03) 56%,rgba(255,255,255,.055))}
+.set-life-card::after{content:"";position:absolute;inset:10px;z-index:3;pointer-events:none;opacity:.28;background:
+  linear-gradient(var(--accent),var(--accent)) left top/26px 1px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) left top/1px 26px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) right bottom/26px 1px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) right bottom/1px 26px no-repeat}
+.set-life-card-label{position:absolute;left:14px;right:14px;bottom:13px;z-index:4;display:grid;gap:4px;text-align:left}
+.set-life-card-label b{font-size:clamp(18px,2.3vw,32px);line-height:.96;text-transform:uppercase;letter-spacing:-.01em}
+.set-life-card-label span{font-family:var(--ff-mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.set-life-page.has-active .set-life-card:not(.is-active){--scroll-progress:.25;--media-opacity:.35;--panel-brightness:.65;--panel-saturation:.75}
+.set-life-card.is-active{--scroll-progress:1;--media-opacity:1;--panel-brightness:1;--panel-saturation:1;z-index:20;width:clamp(520px,46vw,920px);border-color:var(--hair-strong);box-shadow:0 34px 110px rgba(0,0,0,.68),0 0 58px var(--blue-glow),0 0 0 1px rgba(255,255,255,.06) inset;transform:translate3d(-50%,-50%,320px) rotateY(0deg) rotateX(0deg) scale(1)}
+
+/* Ambient footer/controls */
+.set-life-caption{position:absolute;z-index:8;left:50%;bottom:clamp(74px,8vh,104px);transform:translateX(-50%);display:grid;gap:4px;text-align:center;font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,246,255,.78);text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.set-life-caption b{color:var(--ink);font-weight:500}
+.set-life-controls{position:absolute;z-index:9;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px;border:1px solid var(--hair-strong);border-radius:999px;background:rgba(7,6,8,.68);box-shadow:0 18px 50px rgba(0,0,0,.44),0 0 28px var(--blue-glow);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.set-life-controls button{min-height:38px;padding:0 15px;border:0;border-radius:999px;background:transparent;color:var(--ink-dim);font-family:var(--ff-mono);font-size:9px;letter-spacing:.17em;text-transform:uppercase;cursor:pointer;transition:background .2s ease,color .2s ease}
+.set-life-controls button:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+.set-life-controls button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.set-life-controls .watch{color:#16090a;background:var(--accent);font-weight:600}
+.set-life-controls .watch:hover{color:#16090a;background:#ff625d}
+
+/* Mobile fallback gallery */
+@media (max-width:860px){
+  html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto}
+  .set-life-page{min-height:100svh;overflow:visible;padding-bottom:110px}
+  .set-life-page::before{background-size:110px 110px;opacity:.18}
+  .set-life-header{position:relative;padding:16px 14px 12px}
+  .set-life-header h1{font-size:clamp(48px,18vw,98px);line-height:.78;white-space:normal;text-align:left}
+  .set-life-nav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;margin-top:18px;font-size:9px;text-align:left}
+  .set-life-nav a{min-height:30px;justify-content:flex-start}
+  .set-life-world{position:relative;inset:auto;perspective:none;overflow:visible;padding:12px 14px 0}
+  .set-life-depth{position:relative;left:auto;top:auto;width:auto;height:auto;display:grid;gap:86px;transform:none!important}
+  .set-life-card{position:relative;left:auto;top:auto;width:100%;transform:none!important;opacity:1;filter:none}
+  .set-life-page.has-active .set-life-card:not(.is-active){opacity:.36;filter:brightness(.58)}
+  .set-life-card.is-active{transform:none!important;box-shadow:0 24px 76px rgba(0,0,0,.62),0 0 34px var(--blue-glow)}
+  .set-life-card-label b{font-size:24px}
+  .set-life-caption{position:relative;left:auto;bottom:auto;transform:none;padding:22px 14px 10px;font-size:9px}
+  .set-life-controls{position:fixed;left:10px;right:10px;bottom:10px;transform:none;justify-content:space-between;border-radius:20px;padding:6px;background:rgba(3,8,28,.82)}
+  .set-life-controls button{flex:1;min-height:40px;padding:0 8px;font-size:8px;letter-spacing:.1em}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+
+@media (prefers-reduced-motion:reduce) and (min-width:861px){
+  .set-life-depth{transform:translate3d(-50%,-50%,0)!important}
+}
+</style>
+</head>
+<body>
+<section class="set-life-page" aria-label="Set Life concept">
+  <header class="set-life-header">
+    <h1>Jared McDaniel</h1>
+    <nav class="set-life-nav" aria-label="Portfolio navigation">
+      <a href="index.html#hero">Reel</a>
+      <a href="index.html#work">Commercial</a>
+      <a href="index.html#work">Gaming</a>
+      <a href="index.html#work">Narrative</a>
+      <a href="index.html#work">Music-Driven Edits</a>
+      <a href="#" aria-current="page">Set Life</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="set-life-world">
+    <div class="set-life-depth" id="setLifeDepth">
+      <!-- ASSET HOOK: replace placeholders with Jared BTS clips, curated loop videos, and set-life thumbnails/posters. -->
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media is-active" type="button" data-index="0" data-title="On Set" data-src="" data-watch="" style="--x:-46vw;--y:8vh;--z:-160px;--ry:12deg;--rx:-2deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(135deg,#17090b,#070608 52%,#2a0709)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_01 / READY</span><b>On Set</b></span>
+      </button>
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media" type="button" data-index="1" data-title="Camera Prep" data-src="" data-watch="" style="--x:-24vw;--y:-2vh;--z:40px;--ry:6deg;--rx:1deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(145deg,#16090c,#30090c 48%,#070608)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_02 / LENS CHECK</span><b>Camera Prep</b></span>
+      </button>
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media" type="button" data-index="2" data-title="Lighting" data-src="" data-watch="" style="--x:0vw;--y:6vh;--z:120px;--ry:0deg;--rx:-1deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(145deg,#0d080a,#4a080b 42%,#1f0b0d)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_03 / PRACTICALS</span><b>Lighting</b></span>
+      </button>
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media" type="button" data-index="3" data-title="Monitor View" data-src="" data-watch="" style="--x:26vw;--y:-3vh;--z:20px;--ry:-7deg;--rx:1deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(155deg,#070608,#23090d 54%,#12080a)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_04 / PLAYBACK</span><b>Monitor View</b></span>
+      </button>
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media" type="button" data-index="4" data-title="Editing Room" data-src="" data-watch="" style="--x:48vw;--y:7vh;--z:-180px;--ry:-14deg;--rx:-2deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(160deg,#050405,#3a090d 58%,#070608)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_05 / POST</span><b>Editing Room</b></span>
+      </button>
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media" type="button" data-index="5" data-title="Crew Moment" data-src="" data-watch="" style="--x:-62vw;--y:20vh;--z:-300px;--ry:18deg;--rx:2deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(145deg,#10080b,#33090c 45%,#250b0d)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_06 / BETWEEN TAKES</span><b>Crew Moment</b></span>
+      </button>
+      <button class="set-life-card scroll-cinema scroll-cinema--set-life scroll-cinema-media" type="button" data-index="6" data-title="Location Scout" data-src="" data-watch="" style="--x:64vw;--y:18vh;--z:-320px;--ry:-18deg;--rx:2deg;--s:1;--w:clamp(320px,28vw,620px);--poster:linear-gradient(150deg,#070608,#21090c 46%,#341316)">
+        <span class="set-life-poster scroll-cinema-poster"></span>
+        <video class="scroll-cinema-video" muted loop playsinline preload="metadata"></video>
+        <span class="set-life-card-label"><span>SET_07 / LOCATION</span><b>Location Scout</b></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="set-life-caption" aria-live="polite">
+    <b id="setLifeTitle">On Set</b>
+    <span>BTS / silent loop wall / tactical cinema environment</span>
+  </div>
+
+  <div class="set-life-controls" aria-label="Set Life controls">
+    <button type="button" id="setLifePrev">Prev</button>
+    <button type="button" class="watch" id="setLifeWatch">Watch Selected</button>
+    <button type="button" id="setLifeNext">Next</button>
+  </div>
+</section>
+
+<script>
+const page = document.querySelector('.set-life-page');
+const depth = document.getElementById('setLifeDepth');
+const cards = Array.from(document.querySelectorAll('.set-life-card'));
+const title = document.getElementById('setLifeTitle');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canParallax = window.matchMedia('(pointer: fine) and (min-width: 861px)').matches && !reduceMotion;
+let activeIndex = 0;
+let targetX = 0;
+let targetY = 0;
+let currentX = 0;
+let currentY = 0;
+
+function hydrateVideos() {
+  cards.forEach((card) => {
+    const src = card.dataset.src;
+    const video = card.querySelector('video');
+    if(!src || !video) return;
+    // ASSET HOOK: data-src should point to a short muted BTS loop, e.g. assets/set-life/on-set-loop.mp4.
+    video.src = src;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.addEventListener('canplay', () => card.classList.add('has-video'), {once:true});
+    video.play().catch(() => {});
+  });
+}
+
+function setActive(index) {
+  activeIndex = (index + cards.length) % cards.length;
+  page.classList.add('has-active');
+  cards.forEach((card, i) => {
+    const active = i === activeIndex;
+    card.classList.toggle('is-active', active);
+    card.setAttribute('aria-pressed', active ? 'true' : 'false');
+    card.style.setProperty('--scroll-progress', active ? '1' : '.25');
+    const video = card.querySelector('video');
+    if(video && video.src) active ? video.play().catch(() => {}) : video.pause();
+  });
+  title.textContent = cards[activeIndex].dataset.title || 'Set Life';
+}
+
+function clearActive() {
+  page.classList.remove('has-active');
+  cards.forEach((card) => {
+    card.classList.remove('is-active');
+    card.style.setProperty('--scroll-progress', '.4');
+  });
+}
+
+cards.forEach((card, index) => {
+  card.addEventListener('click', () => setActive(index));
+  card.addEventListener('focus', () => setActive(index));
+});
+
+document.getElementById('setLifePrev').addEventListener('click', () => setActive(activeIndex - 1));
+document.getElementById('setLifeNext').addEventListener('click', () => setActive(activeIndex + 1));
+document.getElementById('setLifeWatch').addEventListener('click', () => {
+  const selected = cards[activeIndex];
+  const watch = selected && selected.dataset.watch;
+  if(watch) window.open(watch, '_blank', 'noopener,noreferrer');
+  else setActive(activeIndex);
+});
+
+document.addEventListener('keydown', (event) => {
+  if(event.key === 'Escape') clearActive();
+  if(event.key === 'ArrowLeft') setActive(activeIndex - 1);
+  if(event.key === 'ArrowRight') setActive(activeIndex + 1);
+});
+
+if(canParallax) {
+  window.addEventListener('mousemove', (event) => {
+    targetX = (event.clientX / window.innerWidth - .5) * 2;
+    targetY = (event.clientY / window.innerHeight - .5) * 2;
+  }, {passive:true});
+
+  function tick() {
+    currentX += (targetX - currentX) * .06;
+    currentY += (targetY - currentY) * .06;
+    page.style.setProperty('--mx', currentX.toFixed(3));
+    page.style.setProperty('--my', currentY.toFixed(3));
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+hydrateVideos();
+setActive(0);
+</script>
+</body>
+</html>
