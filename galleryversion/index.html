@@ -7295,7 +7295,7 @@
             focusEase = 0;
             focusTargetDrift = null;
           }
-        }, 1800);
+        }, 700);
       });
       card.addEventListener("pointermove", (event) => {
         lastPointerX = event.clientX;
@@ -7447,7 +7447,7 @@
 
       node.addEventListener("pointerenter", () => {
         window.clearTimeout(previewTimer);
-        previewTimer = window.setTimeout(() => startHoverPreview(node, project.yt), 1600);
+        previewTimer = window.setTimeout(() => startHoverPreview(node, project.yt), 600);
       });
 
       return node;
@@ -7955,7 +7955,7 @@
       activeCard = card;
       lockCardBasis(card);
       card.classList.add('is-hovered');
-      previewTimer = window.setTimeout(() => openPreview(card), 1700);
+      previewTimer = window.setTimeout(() => openPreview(card), 700);
     }
 
     function unfocusCard(card) {
