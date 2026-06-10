@@ -6681,6 +6681,175 @@
       transition-delay: 0ms;
       transition-duration: 220ms, 240ms, 220ms, 220ms;
     }
+    /* Mobile Optimization Pass */
+
+    /* 1. Show view count badges by default on touch devices */
+    @media (hover: none), (pointer: coarse) {
+      .piece-views {
+        opacity: 1 !important;
+        filter: blur(0) !important;
+        transform: translateY(0) scale(1) !important;
+        transition: none !important;
+        transition-delay: 0ms !important;
+      }
+
+      /* Suppress hover preview portal — touch users tap directly */
+      .hover-preview-portal {
+        display: none !important;
+      }
+
+      /* Active tap feedback for work grid pieces */
+      .archive-piece:active {
+        border-color: rgba(111, 140, 255, 0.42) !important;
+        transform: perspective(900px) translateY(-3px) scale(1.01) !important;
+      }
+
+      .archive-piece:active .piece-arrow {
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+      }
+
+      .archive-piece:active .piece-title {
+        color: #fff8ee;
+      }
+    }
+
+    /* 2. Touch target sizes — minimum 44px */
+    @media (hover: none), (pointer: coarse) {
+      .header-nav-link {
+        min-height: 2.75rem !important;
+      }
+
+      .header-social-link {
+        width: 2.75rem !important;
+        height: 2.75rem !important;
+      }
+
+      .filter-pill,
+      .explore-archive {
+        min-height: 44px !important;
+      }
+
+      .jump-reel,
+      .skip-intro-button {
+        min-height: 44px !important;
+      }
+    }
+
+    /* 3. Touch-action hint so browser knows carousel scrolls horizontally */
+    @media (hover: none), (pointer: coarse) {
+      .archive-stage,
+      .gallery-plane,
+      #galleryTrack {
+        touch-action: pan-x;
+      }
+    }
+
+    /* 4. Performance — reduce expensive GPU effects on mobile */
+    @media (max-width: 760px) {
+      .gallery-card,
+      .archive-piece {
+        will-change: transform;
+      }
+
+      .gallery-plane::before,
+      .gallery-plane::after {
+        backdrop-filter: blur(0.6px);
+      }
+
+      .site-archive-header {
+        backdrop-filter: blur(12px) saturate(1.1) !important;
+      }
+
+      .hover-preview-shell,
+      .console-panel,
+      .focus-label,
+      .filter-pill,
+      .explore-archive,
+      .archive-note,
+      .jump-reel {
+        backdrop-filter: blur(8px) !important;
+      }
+
+      /* Slow down breathing animations to reduce CPU cycles */
+      .environment-light::before,
+      .environment-light::after {
+        animation-duration: 28s;
+      }
+
+      .light-column {
+        animation-duration: 30s;
+      }
+    }
+
+    /* 5. Very small screens (380px) — header cramping */
+    @media (max-width: 400px) {
+      .site-archive-header {
+        grid-template-columns: 1fr auto !important;
+        grid-template-areas:
+          "brand socials"
+          "nav nav" !important;
+      }
+
+      .header-identity {
+        grid-column: auto !important;
+        grid-area: brand !important;
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .header-identity-name {
+        font-size: 0.62rem !important;
+        letter-spacing: 0.04em !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .header-identity-role {
+        font-size: 0.44rem !important;
+      }
+
+      .header-nav {
+        grid-column: auto !important;
+        grid-area: nav !important;
+        justify-content: space-between !important;
+      }
+
+      .header-nav-link {
+        min-width: auto !important;
+        padding-inline: 0.3rem !important;
+        font-size: 0.44rem !important;
+        letter-spacing: 0.04em !important;
+      }
+
+      .header-social-links {
+        grid-area: socials !important;
+        gap: 0.12rem !important;
+      }
+
+      .header-social-link {
+        width: 2.4rem !important;
+        height: 2.4rem !important;
+      }
+    }
+
+    /* 6. Carousel card sizing on small phones */
+    @media (max-width: 480px) {
+      .gallery-card {
+        --stable-card-basis: clamp(280px, 84vw, 400px) !important;
+      }
+
+      .gallery-card.reel-object {
+        --stable-card-basis: clamp(290px, 86vw, 420px) !important;
+      }
+    }
+
+    /* 7. Contact page — email area sizing on touch */
+    @media (hover: none), (pointer: coarse) {
+      .console-email {
+        min-height: auto !important;
+      }
+    }
   </style>
 </head>
 <body class="archive-room-active">
