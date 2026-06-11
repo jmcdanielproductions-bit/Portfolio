@@ -7322,10 +7322,10 @@
     /* === HERO STATEMENT === */
     .hero-statement {
       position: absolute;
-      left: max(4vw, 2.2rem);
-      top: clamp(5rem, 8.8svh, 6.8rem);
+      left: clamp(3rem, 10vw, 14rem);
+      top: clamp(10rem, 28svh, 20rem);
       z-index: 6;
-      max-width: min(34rem, 52vw);
+      max-width: min(38rem, 56vw);
       pointer-events: none;
       opacity: 0;
       transform: translateY(8px);
@@ -7351,7 +7351,7 @@
     .hero-statement-copy {
       color: rgba(248, 242, 233, 0.58);
       font-family: "Space Grotesk", Arial, sans-serif;
-      font-size: clamp(0.86rem, 1.05vw, 1.02rem);
+      font-size: clamp(0.92rem, 1.18vw, 1.12rem);
       font-weight: 500;
       line-height: 1.56;
       letter-spacing: -0.005em;
@@ -7359,17 +7359,18 @@
     }
 
     /* === BRAND PARTNERS === */
+    /* === BRAND PARTNERS — redesigned === */
     .brand-partners {
       position: absolute;
-      bottom: 4.2rem;
+      bottom: max(4.2rem, 6.8svh);
       left: 50%;
       transform: translateX(-50%);
       z-index: 6;
-      width: min(1080px, calc(100vw - 48px));
+      width: min(1100px, calc(100vw - 48px));
       text-align: center;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 1000ms ease 900ms;
+      transition: opacity 1000ms ease 800ms;
     }
 
     body.skip-intro .brand-partners,
@@ -7378,71 +7379,85 @@
     }
 
     .brand-partners-label {
+      margin: 0 0 1.6rem;
       color: rgba(111, 140, 255, 0.44);
       font: 700 0.5rem / 1 "JetBrains Mono", monospace;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
-      margin-bottom: 0.62rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.62rem;
+      gap: 0.75rem;
     }
 
     .brand-partners-label::before,
     .brand-partners-label::after {
       content: "";
       flex: 0 0 auto;
-      width: clamp(1.5rem, 5.5vw, 3.5rem);
+      width: clamp(1.5rem, 5vw, 4rem);
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(111, 140, 255, 0.18));
+      background: linear-gradient(90deg, transparent, rgba(111, 140, 255, 0.2));
     }
 
-    .brand-partners-label::before {
-      transform: scaleX(-1);
-    }
+    .brand-partners-label::before { transform: scaleX(-1); }
 
-    .brand-partners-list {
+    .brand-logos {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 0 0.46rem;
-      row-gap: 0.38rem;
+      flex-wrap: wrap;
+      gap: clamp(2rem, 4.5vw, 6rem);
+      row-gap: 1.4rem;
     }
 
-    .brand-name {
-      color: rgba(248, 242, 233, 0.36);
-      font: 700 0.54rem / 1 "JetBrains Mono", monospace;
-      letter-spacing: 0.13em;
+    .brand-item {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      color: rgba(248, 242, 233, 0.4);
+      font: 700 clamp(0.92rem, 1.3vw, 1.38rem) / 1 "Space Grotesk", Arial, sans-serif;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      transition: color 260ms ease, text-shadow 260ms ease;
-      cursor: default;
       pointer-events: auto;
-    }
-
-    .brand-name:hover {
-      color: rgba(248, 242, 233, 0.62);
-      text-shadow: 0 0 14px rgba(111, 140, 255, 0.24);
-    }
-
-    .brand-sep {
-      color: rgba(111, 140, 255, 0.32);
-      font: 700 0.54rem / 1 "JetBrains Mono", monospace;
+      cursor: default;
+      transition: color 300ms ease, filter 300ms ease;
       user-select: none;
     }
 
+    .brand-item:hover {
+      color: rgba(248, 242, 233, 0.72);
+      filter: drop-shadow(0 0 10px rgba(111, 140, 255, 0.2));
+    }
+
+    .bi-icon {
+      height: clamp(20px, 2.4vw, 30px);
+      width: auto;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .bi-italic { font-style: italic; }
+
     @media (max-width: 900px) {
       .hero-statement {
-        max-width: min(28rem, 70vw);
+        max-width: min(30rem, 72vw);
+      }
+
+      .brand-logos {
+        gap: clamp(1.4rem, 4vw, 3rem);
       }
     }
 
     @media (max-width: 640px) {
       .hero-statement {
-        max-width: calc(100vw - 3rem);
-        left: 1.5rem;
-        top: clamp(4.8rem, 8svh, 6rem);
+        left: 1.8rem;
+        top: clamp(8rem, 22svh, 14rem);
+        max-width: calc(100vw - 3.6rem);
       }
 
       .hero-statement-copy {
@@ -7454,17 +7469,19 @@
         bottom: 3.8rem;
       }
 
-      .brand-name,
-      .brand-sep {
-        font-size: 0.48rem;
-        letter-spacing: 0.09em;
+      .brand-item {
+        font-size: clamp(0.72rem, 3.2vw, 1rem);
+        gap: 0.38rem;
+      }
+
+      .bi-icon {
+        height: clamp(16px, 4vw, 22px);
       }
     }
 
     @media (max-width: 430px) {
-      .brand-partners {
-        bottom: 3.5rem;
-      }
+      .brand-partners { bottom: 3.5rem; }
+      .brand-logos { gap: 1.1rem; row-gap: 1rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -7534,26 +7551,60 @@
           <span class="edge-feedback-right"></span>
         </div>
         <div class="brand-partners" aria-label="Selected work with">
-          <div class="brand-partners-label">Selected Work With</div>
-          <div class="brand-partners-list">
-            <span class="brand-name" data-brand="cd-projekt-red">CD Projekt Red</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="bethesda">Bethesda</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="xbox">Xbox</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="apple">Apple</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="corsair">Corsair</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="best-buy">Best Buy</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="walmart">Walmart</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="invincible">Invincible</span>
-            <span class="brand-sep" aria-hidden="true">·</span>
-            <span class="brand-name" data-brand="westfield-valley-fair">Westfield Valley Fair</span>
-          </div>
+          <p class="brand-partners-label">Selected Work With</p>
+          <ul class="brand-logos">
+
+            <li class="brand-item" data-brand="cd-projekt-red" aria-label="CD Projekt Red">
+              <svg class="bi-icon" viewBox="0 0 22 22" aria-hidden="true">
+                <circle cx="11" cy="11" r="9.8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                <circle cx="11" cy="11" r="4.2" fill="currentColor"/>
+              </svg>
+              <span>CD Projekt Red</span>
+            </li>
+
+            <li class="brand-item" data-brand="bethesda" aria-label="Bethesda">
+              <span>Bethesda</span>
+            </li>
+
+            <li class="brand-item" data-brand="xbox" aria-label="Xbox">
+              <svg class="bi-icon" viewBox="0 0 22 22" aria-hidden="true">
+                <circle cx="11" cy="11" r="9.8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M4.5 5 Q7.5 9.5 11 11 Q14.5 9.5 17.5 5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M4.5 17 Q7.5 12.5 11 11 Q14.5 12.5 17.5 17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M4.5 5 Q9 8 11 11 Q9 14 4.5 17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M17.5 5 Q13 8 11 11 Q13 14 17.5 17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+              <span>Xbox</span>
+            </li>
+
+            <li class="brand-item" data-brand="apple" aria-label="Apple">
+              <svg class="bi-icon" viewBox="0 0 20 24" aria-hidden="true">
+                <defs>
+                  <mask id="apple-bite">
+                    <rect width="20" height="24" fill="white"/>
+                    <circle cx="16.5" cy="8" r="5.2" fill="black"/>
+                  </mask>
+                </defs>
+                <circle cx="10" cy="14" r="8.5" fill="currentColor" mask="url(#apple-bite)"/>
+                <path d="M12 5.5 Q13.5 3 15.5 3.2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <span>Apple</span>
+            </li>
+
+            <li class="brand-item" data-brand="corsair" aria-label="Corsair">
+              <svg class="bi-icon" viewBox="0 0 22 22" aria-hidden="true">
+                <path d="M11 2 L20 7.5 L20 20 L2 20 L2 7.5 Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                <line x1="11" y1="2" x2="11" y2="20" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+                <line x1="2" y1="7.5" x2="20" y2="7.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+              </svg>
+              <span>Corsair</span>
+            </li>
+
+            <li class="brand-item" data-brand="invincible" aria-label="Invincible">
+              <span class="bi-italic">Invincible</span>
+            </li>
+
+          </ul>
         </div>
         <aside class="focus-label" id="focusLabel" aria-hidden="true">
           <span class="focus-label-title">Archive Object</span>
