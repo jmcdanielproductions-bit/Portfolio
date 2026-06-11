@@ -7490,6 +7490,37 @@
         transition: none !important;
       }
     }
+
+    /* Visual clarity pass — remove distracting background noise */
+
+    /* Remove the repeating dot pattern, keep only the subtle side lines + vignette */
+    body::before {
+      background:
+        linear-gradient(90deg, transparent 0 14%, rgba(111, 140, 255, 0.014) 14.1% 14.2%, transparent 14.3% 85%, rgba(111, 140, 255, 0.014) 85.1% 85.2%, transparent 85.3%),
+        radial-gradient(circle at center, transparent 44%, rgba(0, 0, 0, 0.68)) !important;
+    }
+
+    /* Remove the constantly drifting animated framework grid */
+    body::after {
+      opacity: 0 !important;
+      animation: none !important;
+    }
+
+    /* Remove the floating ambient crosshairs */
+    .ambient-crosshair {
+      display: none !important;
+    }
+
+    /* Quiet the rings further */
+    .ring-a { opacity: 0.18 !important; }
+    .ring-b { opacity: 0.08 !important; }
+    .ring-c { opacity: 0 !important; }
+
+    /* Quiet the planes */
+    .plane-a, .plane-b { opacity: 0.18 !important; }
+
+    /* Quiet the light columns */
+    .light-column { opacity: 0.06 !important; }
   </style>
 </head>
 <body class="archive-room-active">
