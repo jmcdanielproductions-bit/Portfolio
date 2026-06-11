@@ -7931,7 +7931,7 @@
           <span class="card-role">${project.role}</span>
         </span>
       `;
-      card.addEventListener("click", () => project.isReel ? openVideo(project.yt) : openProject(project));
+      card.addEventListener("click", () => openVideo(project.yt));
       card.addEventListener("pointerenter", () => {
         if (!isInInspectionZone(card)) {
           updateEdgeMotion(lastPointerX);
@@ -8386,7 +8386,10 @@
       dragging = true;
       lastX = event.clientX;
       body.classList.remove("edge-left", "edge-right");
-      galleryTrack.setPointerCapture(event.pointerId);
+      // Don't capture pointer on card clicks — let the click reach the card naturally
+      if (!event.target.closest(".gallery-card")) {
+        galleryTrack.setPointerCapture(event.pointerId);
+      }
     });
 
     galleryTrack.addEventListener("pointermove", (event) => {
@@ -9164,6 +9167,7 @@
       const isCard = !!event.target.closest('.gallery-card');
       if (event.target.closest('.site-archive-header, .hover-preview-portal, a, input, textarea, select')) return;
       if (event.target.closest('button') && !isCard) return;
+      if (isCard) { pointerId = event.pointerId; startX = event.clientX; lastX = event.clientX; lastMoveTime = performance.now(); startDrift = state.drift || 0; dragged = false; dragVelocity = 0; state.isDragging = true; state.isJumping = false; state.jumpTarget = null; state.velocity = 0; state.targetVelocity = 0; document.body.classList.add('carousel-dragging'); return; }
 
       pointerId = event.pointerId;
       startX = event.clientX;
