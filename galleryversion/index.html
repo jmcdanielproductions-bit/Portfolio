@@ -7206,6 +7206,154 @@
         transition-duration: 900ms, 900ms, 700ms !important;
       }
     }
+
+    /* ============================================
+       POSITIONING PASS — NEW ABOUT SECTIONS
+       ============================================ */
+
+    .director-statement,
+    .what-i-do,
+    .about-cta {
+      display: grid;
+      grid-template-columns: minmax(0, 0.28fr) minmax(0, 0.72fr);
+      gap: clamp(1.5rem, 4vw, 4.8rem);
+      border-bottom: 1px solid rgba(242, 238, 231, 0.09);
+      padding: clamp(2.2rem, 4.8vw, 3.8rem) 0;
+    }
+
+    .about-cta {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .statement-quote {
+      margin: 0;
+      padding: 0 0 0 clamp(1rem, 1.8vw, 1.5rem);
+      border-left: 2px solid rgba(111, 140, 255, 0.58);
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-size: clamp(1.4rem, 2.3vw, 2.5rem);
+      font-weight: 700;
+      font-style: normal;
+      line-height: 1.22;
+      letter-spacing: -0.012em;
+      color: rgba(248, 242, 233, 0.94);
+    }
+
+    .services-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .services-list li {
+      display: grid;
+      grid-template-columns: 2.4rem 1fr;
+      gap: 0.8rem;
+      align-items: baseline;
+      padding: clamp(0.7rem, 1vw, 0.9rem) 0;
+      border-bottom: 1px solid rgba(242, 238, 231, 0.07);
+    }
+
+    .services-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .service-number {
+      color: rgba(111, 140, 255, 0.62);
+      font: 700 0.56rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.1em;
+    }
+
+    .service-name {
+      color: rgba(248, 242, 233, 0.88);
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-size: clamp(1rem, 1.35vw, 1.28rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .cta-statement {
+      max-width: 36rem;
+      margin: 0 0 1.6rem;
+      color: rgba(248, 242, 233, 0.78);
+      font-size: clamp(1rem, 1.3vw, 1.22rem);
+      line-height: 1.65;
+    }
+
+    .about-cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 1.6rem;
+      border: 1px solid rgba(111, 140, 255, 0.3);
+      background: rgba(111, 140, 255, 0.1);
+      color: rgba(248, 242, 233, 0.92);
+      text-decoration: none;
+      text-transform: uppercase;
+      font: 700 0.68rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.14em;
+      transition: border-color 260ms ease, background 260ms ease, color 260ms ease;
+    }
+
+    .about-cta-button:hover {
+      border-color: rgba(111, 140, 255, 0.54);
+      background: rgba(111, 140, 255, 0.18);
+      color: rgba(248, 242, 233, 1);
+    }
+
+    @media (max-width: 820px) {
+      .director-statement,
+      .what-i-do,
+      .about-cta {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .statement-quote {
+        font-size: clamp(1.2rem, 5.8vw, 1.85rem);
+      }
+
+      .service-name {
+        font-size: clamp(0.98rem, 4.5vw, 1.18rem);
+      }
+    }
+
+    /* Archive client roll — homepage */
+    .archive-client-roll {
+      position: absolute;
+      left: 50%;
+      bottom: calc(max(6.4rem, 11svh) + 2.4rem);
+      transform: translateX(-50%);
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      gap: 0.52rem;
+      pointer-events: none;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 800ms ease 400ms;
+    }
+
+    body.skip-intro .archive-client-roll,
+    body.intro-settled .archive-client-roll {
+      opacity: 1;
+    }
+
+    .archive-client-roll span {
+      color: rgba(248, 242, 233, 0.3);
+      font: 700 0.54rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .archive-client-roll .roll-sep {
+      color: rgba(111, 140, 255, 0.36);
+    }
+
+    @media (max-width: 900px) {
+      .archive-client-roll { display: none; }
+    }
   </style>
 </head>
 <body class="archive-room-active">
@@ -7256,11 +7404,22 @@
         <div class="archive-artifacts" aria-hidden="true">
           <span>ARC-37.7749N / BAY AREA</span>
           <span>INDEX / COMMERCIAL / GAMES / STORY</span>
-          <span>FRAME MEMORY / 19 OBJECTS</span>
+          <span>FRAME MEMORY / 17 OBJECTS</span>
         </div>
         <div class="edge-feedback" aria-hidden="true">
           <span class="edge-feedback-left"></span>
           <span class="edge-feedback-right"></span>
+        </div>
+        <div class="archive-client-roll" aria-hidden="true">
+          <span>CD Projekt Red</span>
+          <span class="roll-sep">·</span>
+          <span>Bethesda</span>
+          <span class="roll-sep">·</span>
+          <span>Xbox</span>
+          <span class="roll-sep">·</span>
+          <span>Apple</span>
+          <span class="roll-sep">·</span>
+          <span>Corsair</span>
         </div>
         <aside class="focus-label" id="focusLabel" aria-hidden="true">
           <span class="focus-label-title">Archive Object</span>
@@ -7299,36 +7458,37 @@
 
     <section class="room about-room" id="about" data-room="about" aria-label="About Jared McDaniel">
       <div class="director-room about-profile">
+
         <header class="profile-hero scroll-focus">
-          <div class="profile-kicker">About</div>
-          <h2>Jared McDaniel is a director and editor shaping cinematic work for games, brands, and story-led projects.</h2>
-          <p>Based in the Bay Area, he looks for the emotional center of a piece, then cuts around pace, texture, and visual memory.</p>
+          <div class="profile-kicker">Creative Video Director</div>
+          <h2>I direct cinematic work for games, brands, and campaigns — then edit it myself.</h2>
+          <p>Based in the Bay Area. I develop, direct, and edit trailers, commercials, and brand films for publishers and studios that need creative leadership from brief to final frame.</p>
         </header>
 
-        <section class="directors-note scroll-focus" aria-label="Director's Note">
-          <div class="profile-kicker">Director's Note</div>
-          <p>I'm drawn to projects that create a feeling before they explain themselves. Whether it's a game trailer, product film, commercial, or narrative piece, I'm usually chasing the same thing: emotional clarity and memorable visual rhythm.</p>
+        <section class="director-statement scroll-focus" aria-label="Director's statement">
+          <div class="profile-kicker">Director's Statement</div>
+          <blockquote class="statement-quote">"I look for the visual rhythm that already belongs to a piece. Then I build everything around it."</blockquote>
         </section>
 
-        <section class="work-artifacts scroll-focus" aria-label="Work artifacts">
-          <figure class="work-artifact artifact-wide">
-            <div aria-hidden="true"></div>
-            <figcaption>Edit timeline</figcaption>
-          </figure>
-          <div class="artifact-pair">
-            <figure class="work-artifact">
-              <div aria-hidden="true"></div>
-              <figcaption>Storyboard frame</figcaption>
-            </figure>
-            <figure class="work-artifact">
-              <div aria-hidden="true"></div>
-              <figcaption>Production frame</figcaption>
-            </figure>
-          </div>
+        <section class="what-i-do scroll-focus" aria-label="Focus areas">
+          <div class="profile-kicker">What I Do</div>
+          <ul class="services-list">
+            <li><span class="service-number">01</span><span class="service-name">Game Trailer Direction</span></li>
+            <li><span class="service-number">02</span><span class="service-name">Commercial Direction</span></li>
+            <li><span class="service-number">03</span><span class="service-name">Brand Storytelling</span></li>
+            <li><span class="service-number">04</span><span class="service-name">Creative Direction</span></li>
+            <li><span class="service-number">05</span><span class="service-name">Video Editorial</span></li>
+          </ul>
+        </section>
+
+        <section class="directors-note scroll-focus" aria-label="How I work">
+          <div class="profile-kicker">How I Work</div>
+          <p>I'm drawn to projects that create a feeling before they explain themselves. Whether it's a game trailer, product film, commercial, or narrative piece, I'm chasing the same thing: emotional clarity and a point of view that belongs to the work — not just to the brief.</p>
+          <p style="margin-top:1rem;">Direction and editing are not separate jobs for me. They're the same conversation at different stages. Directing shapes what happens. Editing shapes how it lands.</p>
         </section>
 
         <section class="profile-copy scroll-focus" aria-label="Creative profile">
-          <p class="profile-lede">Direction gives each project a world. Editing gives it pulse.</p>
+          <p class="profile-lede">Direction gives each project a world.<br>Editing gives it pulse.</p>
           <div>
             <p>Together, they turn a brief, a song, a launch, or a character into something people can feel quickly and remember clearly.</p>
             <p>The goal is not to decorate a project with cinematic language. The goal is to find the visual rhythm that already belongs to it.</p>
@@ -7337,7 +7497,7 @@
 
         <section class="selected-clients scroll-focus" aria-label="Selected clients">
           <div class="profile-kicker">Selected Clients</div>
-          <p>Apple <span>/</span> Xbox <span>/</span> Corsair <span>/</span> Bethesda <span>/</span> CD Projekt Red</p>
+          <p>CD Projekt Red <span>/</span> Bethesda <span>/</span> Xbox <span>/</span> Apple <span>/</span> Corsair</p>
         </section>
 
         <section class="profile-principles scroll-focus" aria-label="Creative philosophy">
@@ -7345,39 +7505,49 @@
           <div class="principle-stack">
             <article>
               <h3>Emotion Before Explanation</h3>
-              <p>The audience should feel the world before they analyze it.</p>
+              <p>The audience should feel the world before they analyze it. Every brief has an emotional center. Finding it is the director's first job.</p>
             </article>
             <article>
               <h3>Pacing Is Story</h3>
-              <p>Momentum, silence, impact, and release shape how a film lands.</p>
+              <p>Momentum, silence, impact, and release shape how a film lands. The edit is not separate from the story — it is the story.</p>
             </article>
             <article>
-              <h3>Build The World</h3>
-              <p>Visual identity should support emotional identity.</p>
+              <h3>Vision Over Volume</h3>
+              <p>One project with a clear point of view is worth more than ten that don't know what they are.</p>
             </article>
           </div>
         </section>
 
-        <section class="project-timeline scroll-focus" aria-label="Selected projects timeline">
-          <div class="profile-kicker">Selected Projects</div>
+        <section class="project-timeline scroll-focus" aria-label="Career highlights">
+          <div class="profile-kicker">Career Highlights</div>
           <ol>
-            <li><span>2025</span> DOOM</li>
-            <li><span>2025</span> Cyberpunk 2077</li>
-            <li><span>2024</span> Corsair Product Experience</li>
-            <li><span>2024</span> Fallout / Nuka-Cola</li>
+            <li><span>2025</span> DOOM — Bethesda</li>
+            <li><span>2025</span> Cyberpunk 2077 — CD Projekt Red</li>
+            <li><span>2025</span> The Witcher — CD Projekt Red</li>
+            <li><span>2025</span> Fallout / Nuka-Cola — Bethesda</li>
+            <li><span>2024</span> CORSAIR Brand Campaign — Multiple Executions</li>
           </ol>
         </section>
 
-        <section class="currently-exploring scroll-focus" aria-label="Currently exploring">
-          <div class="profile-kicker">Currently Exploring</div>
+        <section class="currently-exploring scroll-focus" aria-label="Available for">
+          <div class="profile-kicker">Available For</div>
           <div>
-            <span>Narrative Film</span>
-            <span>Interactive Experiences</span>
-            <span>Game Direction</span>
-            <span>AI-Assisted Production</span>
-            <span>Worldbuilding</span>
+            <span>Game Trailer Direction</span>
+            <span>Commercial Direction</span>
+            <span>Brand Films</span>
+            <span>Narrative Projects</span>
+            <span>Creative Direction</span>
           </div>
         </section>
+
+        <section class="about-cta scroll-focus" aria-label="Start a project">
+          <div class="profile-kicker">Next Project</div>
+          <div>
+            <p class="cta-statement">The right brief deserves the right director. If your project needs emotional clarity and a clear point of view — let's talk.</p>
+            <a class="about-cta-button" href="#contact">Start a Conversation</a>
+          </div>
+        </section>
+
       </div>
     </section>
 
@@ -7399,7 +7569,7 @@
           <div class="console-panel">
             <div class="console-available">
               <span>Available For</span>
-              <p>Commercial &middot; Gaming &middot; Branded Narrative &middot; Independent</p>
+              <p>Game Trailer Direction &middot; Commercial Direction &middot; Brand Films &middot; Narrative Projects</p>
             </div>
             <nav class="console-socials" aria-label="Social links">
               <a class="console-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -7451,9 +7621,9 @@
         slug: "cyberpunk-2077",
         code: "T1 / 01",
         title: "Cyberpunk 2077",
-        summary: "High-impact campaign cut with aggressive pacing and cinematic world-building.",
+        summary: "Campaign direction for the world of Cyberpunk — neon pressure, urban speed, and aggressive visual energy.",
         filters: ["Featured", "Gaming"],
-        role: "Direction / Edit",
+        role: "Creative Direction",
         client: "CD Projekt Red",
         year: "2025",
         yt: "Hc_t2eTorhI",
@@ -7467,7 +7637,7 @@
         title: "DOOM",
         summary: "Impact-forward editorial rhythm built around speed, weight, and release energy.",
         filters: ["Featured", "Gaming"],
-        role: "Editorial / Trailer",
+        role: "Trailer Direction",
         client: "Bethesda",
         year: "2025",
         yt: "0WUnGHJXeHc",
@@ -7481,8 +7651,8 @@
         title: "Fallout / Nuka-Cola",
         summary: "Brand-world spot with playful apocalyptic texture and campaign utility.",
         filters: ["Featured", "Commercial"],
-        role: "Commercial / Brand",
-        client: "Nuka-Cola",
+        role: "Commercial Direction",
+        client: "Bethesda",
         year: "2025",
         yt: "VxTBnNhAD3Q",
         thumbPosition: "center 44%",
@@ -7495,7 +7665,7 @@
         title: "The Witcher",
         summary: "Cinematic fantasy cut built around atmosphere, character, and scale.",
         filters: ["Featured", "Gaming", "Narrative"],
-        role: "Cinematic / Trailer",
+        role: "Cinematic Direction",
         client: "CD Projekt Red",
         year: "2025",
         yt: "tr1ajPqpuDs",
@@ -7509,7 +7679,7 @@
         title: "Corsair Product Experience",
         summary: "Product-forward commercial edit with tactile pacing and clean motion language.",
         filters: ["Commercial"],
-        role: "Product / Commercial",
+        role: "Brand Direction",
         client: "Corsair",
         year: "2024",
         yt: "OZZsRSgG70g",
@@ -7522,7 +7692,7 @@
         title: "CORSAIR Invincible Novablade Pro",
         summary: "Product campaign edit built around performance texture, sharp rhythm, and launch-ready brand energy.",
         filters: ["Commercial", "Gaming"],
-        role: "Product / Commercial",
+        role: "Campaign Direction",
         client: "CORSAIR",
         year: "2025",
         yt: "WcOLQd3IycM",
@@ -7530,25 +7700,12 @@
         tags: ["Product", "Commercial"]
       },
       {
-        slug: "corsair-united-kingdom-hr-video",
-        code: "T2 / 07",
-        title: "CORSAIR United Kingdom HR Video",
-        summary: "Corporate brand piece focused on people, culture, and clear internal messaging.",
-        filters: ["Commercial"],
-        role: "Corporate / Brand",
-        client: "CORSAIR",
-        year: "2025",
-        yt: "6Rjr3RMk0d4",
-        thumbPosition: "center 34%",
-        tags: ["Corporate", "Brand"]
-      },
-      {
         slug: "corsair-amazon-prime-gaming-week",
         code: "T2 / 08",
         title: "CORSAIR Amazon Prime Gaming Week",
         summary: "Promotional campaign cut for a gaming-focused retail moment.",
         filters: ["Commercial", "Gaming"],
-        role: "Campaign / Commercial",
+        role: "Campaign Direction",
         client: "CORSAIR",
         year: "2025",
         yt: "x5VkzsCT6eA",
@@ -7556,25 +7713,12 @@
         tags: ["Campaign", "Gaming"]
       },
       {
-        slug: "corsair-frame-4000d",
-        code: "T2 / 09",
-        title: "CORSAIR Frame 4000D",
-        summary: "Product-forward commercial edit highlighting build quality, form, and launch energy.",
-        filters: ["Commercial"],
-        role: "Product / Commercial",
-        client: "CORSAIR",
-        year: "2025",
-        yt: "HJy2MPrsdBI",
-        thumbPosition: "center 46%",
-        tags: ["Product", "Commercial"]
-      },
-      {
         slug: "bmw-fanatec-ad",
         code: "T2 / 10",
         title: "BMW Fanatec AD",
         summary: "Motorsport brand spot combining performance language with sim-racing precision.",
         filters: ["Commercial", "Gaming"],
-        role: "Commercial / Brand",
+        role: "Commercial Direction",
         client: "BMW / Fanatec",
         year: "2025",
         yt: "stQ7DVL4PvE",
@@ -7587,7 +7731,7 @@
         title: "CORSAIR Experience Store",
         summary: "Retail experience film capturing the energy and craft of the CORSAIR flagship store.",
         filters: ["Commercial"],
-        role: "Commercial / Brand",
+        role: "Commercial Direction",
         client: "CORSAIR",
         year: "2025",
         yt: "1MzUb4VSi1s",
@@ -7600,8 +7744,8 @@
         code: "T3 / 11",
         title: "Frame Cut",
         summary: "Music-led editorial exercise focused on rhythm, contrast, and visual release.",
-        filters: ["Music / AMVs"],
-        role: "Edit / Music",
+        filters: ["Experimental"],
+        role: "Experimental Edit",
         client: "Archive",
         year: "2024",
         yt: "nAIy3q5myjY",
@@ -7611,10 +7755,10 @@
       {
         slug: "amv-flow-edit-lil-baby-intro",
         code: "T3 / 12",
-        title: "AMV Flow Edit | Lil Baby - Intro",
-        summary: "Music-driven AMV built around flow, impact cuts, and performance rhythm.",
-        filters: ["Music / AMVs"],
-        role: "AMV / Edit",
+        title: "Flow Edit — Lil Baby",
+        summary: "Rhythm study built around flow, impact cuts, and performance-driven motion.",
+        filters: ["Experimental"],
+        role: "Experimental Edit",
         client: "Archive",
         year: "2025",
         yt: "DvQ-cIp07Mg",
@@ -7624,10 +7768,10 @@
       {
         slug: "amv-iron-man-edit",
         code: "T3 / 13",
-        title: "AMV Iron Man Edit",
-        summary: "Character-focused AMV cut around heroic momentum and cinematic impact.",
-        filters: ["Music / AMVs"],
-        role: "AMV / Edit",
+        title: "Iron Man — Edit Study",
+        summary: "Character-driven cut built around heroic momentum and cinematic impact.",
+        filters: ["Experimental"],
+        role: "Experimental Edit",
         client: "Archive",
         year: "2025",
         yt: "oB9go7Dd1d0",
@@ -7637,10 +7781,10 @@
       {
         slug: "el-beeper-luffy-amv",
         code: "T3 / 14",
-        title: "EL BEEPER Luffy AMV",
-        summary: "Anime music edit built around character energy, punchy rhythm, and visual release.",
-        filters: ["Music / AMVs"],
-        role: "AMV / Edit",
+        title: "Luffy — Edit Study",
+        summary: "Edit study built around character energy, punchy rhythm, and visual momentum.",
+        filters: ["Experimental"],
+        role: "Experimental Edit",
         client: "Archive",
         year: "2025",
         yt: "KAl31zPic9Y",
@@ -7653,7 +7797,7 @@
         title: "Ashfall",
         summary: "Narrative atmosphere piece with restrained pacing and cinematic texture.",
         filters: ["Narrative"],
-        role: "Direction / Narrative",
+        role: "Short Film Direction",
         client: "Independent",
         year: "2024",
         yt: "Nf_lDTJCl2w",
@@ -7663,10 +7807,10 @@
       {
         slug: "kairi-animation-storyboard",
         code: "T4 / 16",
-        title: "Kairi Animation Storyboarded By Me",
-        summary: "Storyboarded animation sequence focused on character motion, emotion, and scene rhythm.",
+        title: "Kairi — Animation Direction",
+        summary: "Animation direction and storyboard developed for a character-driven action sequence.",
         filters: ["Narrative"],
-        role: "Storyboard / Animation",
+        role: "Animation Direction",
         client: "Independent",
         year: "2025",
         yt: "mpTbAcvWflA",
@@ -7677,10 +7821,10 @@
       {
         slug: "shugo-samurai-trailer-ad",
         code: "T4 / 17",
-        title: "Shugo Samurai Trailer Ad",
-        summary: "Trailer-style ad with character-forward action, atmosphere, and campaign pacing.",
+        title: "Shugo Samurai",
+        summary: "Trailer direction with character-forward action, atmosphere, and campaign energy.",
         filters: ["Commercial", "Gaming", "Narrative"],
-        role: "Trailer / Ad",
+        role: "Trailer Direction",
         client: "Shugo Samurai",
         year: "2025",
         yt: "Lpeyg7lq_DY",
@@ -7693,8 +7837,8 @@
         code: "T4 / 18",
         title: "Silent Collapse",
         summary: "Mood-forward short edit with minimal structure and escalating visual tension.",
-        filters: ["Narrative", "Music / AMVs"],
-        role: "Edit / Tone",
+        filters: ["Experimental"],
+        role: "Experimental Direction",
         client: "Independent",
         year: "2024",
         yt: "Yj2ncYs0vGU",
@@ -7729,8 +7873,8 @@
     const reelArchiveItem = {
       slug: "director-reel",
       code: "REEL / 00",
-      title: "Director Portfolio Reel",
-      role: "Director / Editor Reel",
+      title: "Director Reel",
+      role: "Creative Video Director",
       client: "Jared McDaniel",
       year: "2026",
       yt: REEL_ID,
@@ -7779,7 +7923,7 @@
       card.dataset.yt = project.yt;
       card.style.setProperty("--thumb", thumb(project.yt));
       card.innerHTML = `
-        ${project.isReel ? '<span class="reel-badge">Click to watch reel</span>' : ""}
+        ${project.isReel ? '<span class="reel-badge">Director Reel</span>' : ""}
         <span class="preview-layer" aria-hidden="true"><span>Muted Preview</span></span>
         <span class="card-meta">
           <span class="card-code">${project.code}</span>
@@ -7863,7 +8007,7 @@
     const workFilters = document.querySelector("#workFilters");
     const archiveWall = document.querySelector("#archiveWall");
     const exploreArchiveButton = document.querySelector("#exploreArchive");
-    const filterCategories = ["All", "Featured", "Commercial", "Gaming", "Narrative", "Music / AMVs"];
+    const filterCategories = ["All", "Featured", "Gaming", "Commercial", "Narrative", "Experimental"];
     const layoutBySlug = {
       "cyberpunk-2077": "flagship featured-project",
       "doom": "tall featured-project",
@@ -7871,9 +8015,7 @@
       "witcher": "medium featured-project",
       "corsair-storefront": "medium",
       "corsair-invincible-novablade-pro": "medium",
-      "corsair-united-kingdom-hr-video": "compact",
       "corsair-amazon-prime-gaming-week": "medium",
-      "corsair-frame-4000d": "medium",
       "bmw-fanatec-ad": "medium",
       "corsair-experience-store": "medium",
       "frame-cut": "compact",
@@ -8525,7 +8667,7 @@
 <header class="site-archive-header" aria-label="Site header">
   <a class="header-identity" href="#archive" aria-label="Jared McDaniel archive home">
     <span class="header-identity-name">Jared McDaniel</span>
-    <span class="header-identity-role">Director &amp; Editor</span>
+    <span class="header-identity-role">Creative Video Director</span>
   </a>
   <nav class="header-nav" aria-label="Primary navigation">
     <a class="header-nav-link" href="#work">Work</a>
