@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#080a0d;--ink:#f2eee7;--muted:rgba(242,238,231,.64);--blue:#6f8cff;--gold:#d6b77a;--mood:#d6b77a}
+    :root{--bg:#080a0d;--ink:#f2eee7;--muted:rgba(242,238,231,.64);--blue:#6f8cff;--gold:#d6b77a;--mood:#d6b77a;--nuka:rgba(204,51,51,.74)}
     @view-transition{navigation:auto}@keyframes blurPageOut{from{opacity:1;filter:blur(0)}to{opacity:0;filter:blur(10px)}}@keyframes blurPageIn{from{opacity:0;filter:blur(10px)}to{opacity:1;filter:blur(0)}}::view-transition-old(root){animation:blurPageOut 280ms cubic-bezier(.22,1,.36,1) both}::view-transition-new(root){animation:blurPageIn 480ms cubic-bezier(.22,1,.36,1) both}
     *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
     body{min-height:100svh;margin:0;background:linear-gradient(rgba(111,140,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.035) 1px,transparent 1px),radial-gradient(circle at 72% 30%,rgba(214,183,122,.17),transparent 31rem),radial-gradient(circle at 18% 18%,rgba(111,140,255,.15),transparent 34rem),var(--bg);background-size:72px 72px,72px 72px,auto,auto,auto;color:var(--ink);font-family:"Space Grotesk",Arial,sans-serif}
@@ -19,14 +19,15 @@
     .brand{position:fixed;top:calc(22px + env(safe-area-inset-top,0px));left:24px;z-index:5;color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .72rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
     .world{position:relative;z-index:1;width:min(1240px,calc(100vw - 48px));margin:0 auto;padding:6rem 0 clamp(5rem,8vw,7rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,.46fr);gap:clamp(1.4rem,4vw,4rem);align-items:start}
     .world:before{content:"";position:absolute;inset:5rem -6vw 5rem;z-index:-1;border:1px solid rgba(111,140,255,.075);background:linear-gradient(rgba(111,140,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.024) 1px,transparent 1px);background-size:72px 72px}
-    .world:after{content:"";position:absolute;width:min(58rem,82vw);aspect-ratio:1;left:38%;top:50%;z-index:-1;border:1px solid rgba(214,183,122,.075);border-radius:999px;transform:translate(-50%,-50%)}
-    .hero-frame{view-transition-name:project-fallout-nuka-cola;aspect-ratio:16/9;width:100%;border:1px solid rgba(111,140,255,.2);background-image:linear-gradient(180deg,rgba(8,10,13,.04),rgba(8,10,13,.86)),radial-gradient(circle at 58% 36%,rgba(214,183,122,.22),transparent 18rem),url("https://img.youtube.com/vi/VxTBnNhAD3Q/hqdefault.jpg");background-size:cover;background-position:center;box-shadow:0 30px 120px rgba(0,0,0,.48),0 0 80px rgba(111,140,255,.1);position:relative}
-    .hero-frame:after{content:"";position:absolute;inset:16px;border:1px solid rgba(111,140,255,.16);box-shadow:inset 0 0 44px rgba(214,183,122,.07)}
+    .world:after{content:"";position:absolute;width:min(58rem,82vw);aspect-ratio:1;left:38%;top:50%;z-index:-1;border:1px solid rgba(214,183,122,.08);border-radius:999px;transform:translate(-50%,-50%)}
+    .hero-frame{view-transition-name:project-fallout-nuka-cola;aspect-ratio:16/9;width:100%;border:1px solid rgba(214,183,122,.22);background-image:linear-gradient(180deg,rgba(8,10,13,.04),rgba(8,10,13,.86)),radial-gradient(circle at 58% 36%,rgba(214,183,122,.22),transparent 18rem),url("https://img.youtube.com/vi/VxTBnNhAD3Q/hqdefault.jpg");background-size:cover;background-position:center;box-shadow:0 30px 120px rgba(0,0,0,.48),0 0 80px rgba(111,140,255,.1);position:relative}
+    .hero-frame:after{content:"";position:absolute;inset:16px;border:1px solid rgba(214,183,122,.18);box-shadow:inset 0 0 44px rgba(214,183,122,.07)}
     .kicker{color:var(--gold);text-transform:uppercase;font:700 .68rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
-    .title{margin:.8rem 0 .7rem;text-transform:uppercase;font-family:Anton,Impact,sans-serif;font-size:clamp(4.2rem,9.2vw,9.2rem);line-height:.84;letter-spacing:.04em}
+    .title{margin:.8rem 0 .7rem;text-transform:uppercase;font-family:Anton,Impact,sans-serif;font-size:clamp(3.8rem,8.2vw,8.4rem);line-height:.88;letter-spacing:.04em}
+    .title-divider{display:block;color:rgba(214,183,122,.52);font-size:.44em;letter-spacing:.2em;line-height:1.8}
     .mood{color:color-mix(in srgb,var(--mood) 56%,var(--blue));text-transform:uppercase;font:700 .64rem/1.4 "JetBrains Mono",monospace;letter-spacing:.13em;margin:0 0 1.2rem}
-    .meta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:0 0 1.4rem;border:1px solid rgba(111,140,255,.14);background:rgba(111,140,255,.14)}
-    .meta-grid span{display:grid;gap:.45rem;padding:.85rem;background:rgba(8,12,18,.76);color:rgba(242,238,231,.8);font-size:.9rem}
+    .meta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:0 0 1.4rem;border:1px solid rgba(214,183,122,.18);background:rgba(214,183,122,.12)}
+    .meta-grid span{display:grid;gap:.45rem;padding:.85rem;background:rgba(8,12,18,.78);color:rgba(242,238,231,.8);font-size:.9rem}
     .meta-grid b{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.15em}
     .actions{display:flex;gap:.55rem;flex-wrap:wrap}
     .button,.nav a,.nav button{min-height:44px;border:1px solid rgba(111,140,255,.24);border-radius:999px;background:rgba(8,12,18,.62);color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .66rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;padding:0 1rem;display:inline-flex;align-items:center;cursor:pointer}
@@ -38,17 +39,22 @@
     .modal-inner{width:min(1040px,100%);aspect-ratio:16/9;border:1px solid rgba(111,140,255,.34);background:#000;position:relative}
     .modal iframe{width:100%;height:100%;border:0}
     .close{position:absolute;right:0;top:-52px}
-    .case-study{grid-column:1/-1;margin-top:clamp(2.8rem,4.5vw,4.5rem);padding-top:clamp(2rem,3.5vw,3.2rem);border-top:1px solid rgba(111,140,255,.12)}
+    /* Case study — Nuka-Cola accent override */
+    .case-study{grid-column:1/-1;margin-top:clamp(2.8rem,4.5vw,4.5rem);padding-top:clamp(2rem,3.5vw,3.2rem);border-top:1px solid rgba(214,183,122,.18)}
     .cs-intro{max-width:52rem;margin-bottom:clamp(1.8rem,2.8vw,2.6rem)}
     .cs-intro-text{margin:0;color:rgba(248,242,233,.9);font-size:clamp(1.05rem,1.4vw,1.22rem);line-height:1.62;font-weight:500}
     .cs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.2rem,2.4vw,2.2rem)}
     .cs-full{grid-column:1/-1}
     .cs-block{display:grid;gap:.6rem}
-    .cs-label{color:rgba(111,140,255,.68);font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+    .cs-label{color:var(--nuka);font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
     .cs-text{margin:0;color:rgba(242,238,231,.7);font-size:clamp(.96rem,1.06vw,1.05rem);line-height:1.74}
     .cs-approach{color:rgba(248,242,233,.88);font-size:clamp(1rem,1.2vw,1.12rem);font-weight:500}
-    @media(max-width:760px){.world{grid-template-columns:1fr;width:min(100vw - 24px,42rem);padding:5rem 0 clamp(6rem,10vw,8rem)}.hero-frame{aspect-ratio:16/9;order:-1}.title{font-size:clamp(3.2rem,14vw,5.2rem)}.meta-grid{grid-template-columns:1fr}.nav{width:calc(100vw - 20px);justify-content:space-between}.nav a,.nav button{font-size:.56rem;padding:0 .6rem;min-height:44px}.case-study{margin-top:2rem;padding-top:1.8rem}.cs-grid{grid-template-columns:1fr}.cs-full{grid-column:auto}}
-    @media(max-width:430px){.title{font-size:clamp(2.8rem,13vw,4rem)}.world{padding-top:4.5rem}}
+    .cs-divider{grid-column:1/-1;height:1px;background:rgba(214,183,122,.14);margin:clamp(.4rem,.8vw,.6rem) 0}
+    .cs-anchor{border-left:2px solid rgba(204,51,51,.52);padding-left:clamp(1rem,1.8vw,1.4rem);color:rgba(248,242,233,.86);font-size:clamp(1rem,1.2vw,1.12rem);font-weight:500;line-height:1.6;margin:0}
+    .cs-refs{display:flex;flex-wrap:wrap;gap:.42rem;margin-top:.3rem}
+    .cs-refs span{padding:.32rem .65rem;border:1px solid rgba(204,51,51,.22);background:rgba(204,51,51,.06);color:rgba(248,242,233,.62);font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+    @media(max-width:760px){.world{grid-template-columns:1fr;width:min(100vw - 24px,42rem);padding:5rem 0 clamp(6rem,10vw,8rem)}.hero-frame{aspect-ratio:16/9;order:-1}.title{font-size:clamp(3rem,13vw,5rem)}.meta-grid{grid-template-columns:1fr}.nav{width:calc(100vw - 20px);justify-content:space-between}.nav a,.nav button{font-size:.56rem;padding:0 .6rem;min-height:44px}.case-study{margin-top:2rem;padding-top:1.8rem}.cs-grid{grid-template-columns:1fr}.cs-full{grid-column:auto}.cs-divider{margin:.2rem 0}}
+    @media(max-width:430px){.title{font-size:clamp(2.6rem,12vw,3.8rem)}.world{padding-top:4.5rem}}
   </style>
 </head>
 <body>
@@ -57,8 +63,8 @@
     <div class="hero-frame" aria-hidden="true"></div>
     <section>
       <div class="kicker">Commercial Direction / Bethesda</div>
-      <h1 class="title">Fallout<br>Nuka-Cola</h1>
-      <p class="mood">Post-apocalyptic americana / tonal precision / brand absurdity</p>
+      <h1 class="title">Fallout<span class="title-divider">/</span>Nuka-Cola</h1>
+      <p class="mood">Post-Apocalyptic Americana / Nuka-Cola Nostalgia / Retro Broadcast Weirdness</p>
       <div class="meta-grid">
         <span><b>Role</b>Commercial Direction</span>
         <span><b>Client</b>Bethesda</span>
@@ -71,21 +77,73 @@
     </section>
     <section class="case-study" aria-label="Project case study">
       <div class="cs-intro">
-        <p class="cs-intro-text">Brand spot for Nuka-Cola — Fallout's most iconic fictional product — for Bethesda. The piece had to function simultaneously as a genuine commercial and a piece of world-building: believable as in-universe advertising, immediately recognizable as Fallout.</p>
+        <p class="cs-intro-text">This project was created for Bethesda's Fallout Nuka-Cola collection. The brief wasn't to advertise a keyboard, desk mat, Stream Deck, and microphone. The brief was to make a real Nuka-Cola commercial — a lost retro-futuristic advertisement recovered from another timeline. Cheerful, strange, nostalgic, and slightly unsettling.</p>
       </div>
       <div class="cs-grid">
+
         <div class="cs-block">
           <span class="cs-label">Challenge</span>
-          <p class="cs-text">Fallout's tonal signature is a precise balance: cheerful surface, dark undercurrent, flawless period pastiche. Lean too sincere and it becomes a history lesson. Lean too winking and it becomes a parody. The challenge is finding the exact frequency where both things are simultaneously true.</p>
+          <p class="cs-text">Fallout has one of the most specific tonal signatures in gaming. The challenge wasn't intensity or atmosphere — it was capturing the contradiction that makes the franchise unforgettable: bright 1950s optimism layered over corporate propaganda, post-apocalyptic darkness, and genuinely dark humor. The piece needed to feel like a real Nuka-Cola advertisement while remaining strange enough to belong to that world.</p>
         </div>
         <div class="cs-block">
-          <span class="cs-label">Execution</span>
-          <p class="cs-text">Visual language is mid-century American broadcast television: warm, saturated, optimistic. Every production decision reinforces the period. The cut is clean and uncomplicated in exactly the way genuine 1950s advertising was. Nothing in the execution tries to be funny.</p>
+          <span class="cs-label">The Concept</span>
+          <p class="cs-text">The concept came down to a single question: what would a Nuka-Cola commercial look like if the company actually existed? Not a parody — the commercial itself. A piece of in-universe media recovered from the Fallout timeline, broadcast-ready and slightly wrong in ways you can't quite name.</p>
         </div>
+
         <div class="cs-block cs-full">
           <span class="cs-label">Creative Approach</span>
-          <p class="cs-text cs-approach">The creative decision that drove everything: play it completely straight. No winking at the camera, no acknowledging the fiction. The humor comes entirely from context — the audience knows what this world is, the commercial doesn't. That gap is where all the comedy lives. The moment the direction breaks character, the joke collapses. When you commit completely to sincerity, irony takes care of itself.</p>
+          <p class="cs-text cs-approach">The creative direction started with one rule: play it completely straight. The humor couldn't come from winking at the audience — it had to come from total sincerity. The actress was directed to feel like she stepped out of a 1950s television commercial: upbeat energy, polished presentation, the slightly eerie optimism of someone who completely believes in what they're selling. Visual references were Fallout's own in-game media, Nuka-Cola branding, vintage Coca-Cola advertising, and Atomic Age Americana. The moment the production breaks character, the concept collapses. You either commit fully or it doesn't work.</p>
         </div>
+
+        <div class="cs-block cs-divider"></div>
+
+        <div class="cs-block">
+          <span class="cs-label">Performance</span>
+          <p class="cs-text">Direction focused on cheerful, sincere, and slightly too perfect — the kind of commercial host who believes everything she's saying. No irony, no self-awareness. The performance needed to land as genuine advertising from inside the Fallout world, not as an impression of it. That distinction is everything.</p>
+        </div>
+        <div class="cs-block">
+          <span class="cs-label">Visual Language</span>
+          <p class="cs-text">The opening was shot in black-and-white broadcast style to establish the feeling of a recovered old commercial. A crank-up transition sound bridges the black-and-white section into full color. That cut is the moment the audience understands the concept — this is an in-universe advertisement, not a product showcase. Everything before it is setup; everything after is payoff.</p>
+        </div>
+
+        <div class="cs-block cs-divider"></div>
+
+        <div class="cs-block">
+          <span class="cs-label">Worldbuilding</span>
+          <p class="cs-text">Gameplay footage and live-action footage were blended through in-game television-style transitions, connecting the campaign to the Fallout world rather than keeping it separate. Nuka-Cola visual language — brand elements, in-universe ad aesthetics, Bottle and Cappy-style references — helped the live-action material feel like it already existed inside the game.</p>
+        </div>
+        <div class="cs-block">
+          <span class="cs-label">Sound & Tone</span>
+          <p class="cs-text">Old-style broadcast music and sound effects reinforced the feeling of a recovered advertisement. The piece leans into Fallout's particular brand of weirdness: nostalgic, charming, commercial, and slightly creepy simultaneously. The tone never breaks. That consistency is what separates a piece that feels authentic from one that just references the source material.</p>
+        </div>
+
+        <div class="cs-block cs-divider"></div>
+
+        <div class="cs-block cs-full">
+          <span class="cs-label">Creative Anchor</span>
+          <p class="cs-anchor">The black-and-white commercial opening transitioning into the full-color Fallout campaign is the moment the piece earns its concept. Before the cut, it's a period commercial. After the cut, it's Fallout. That transition is the whole argument in two seconds.</p>
+        </div>
+
+        <div class="cs-block cs-divider"></div>
+
+        <div class="cs-block">
+          <span class="cs-label">References & Process</span>
+          <div class="cs-refs">
+            <span>1950s TV Commercials</span>
+            <span>Nuka-Cola Brand Design</span>
+            <span>Vintage Coca-Cola Ads</span>
+            <span>Atomic Age Americana</span>
+            <span>Fallout In-Game Media</span>
+            <span>B&W Broadcast Look</span>
+            <span>Gameplay Integration</span>
+            <span>Performance Direction</span>
+          </div>
+        </div>
+        <div class="cs-block">
+          <span class="cs-label">Outcome</span>
+          <p class="cs-text">The project translated the identity of Nuka-Cola into a real-world campaign while staying faithful to the tone Fallout fans recognize immediately. It demonstrated how humor, nostalgia, gameplay integration, commercial performance direction, and retro visual language can work together to create something that feels like a natural extension of an existing world — not a product placed inside one.</p>
+        </div>
+
       </div>
     </section>
   </main>
