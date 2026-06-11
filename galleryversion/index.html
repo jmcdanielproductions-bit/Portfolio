@@ -7931,7 +7931,7 @@
           <span class="card-role">${project.role}</span>
         </span>
       `;
-      card.addEventListener("click", () => openVideo(project.yt));
+      card.addEventListener("click", () => project.isReel ? openVideo(project.yt) : openProject(project));
       card.addEventListener("pointerenter", () => {
         if (!isInInspectionZone(card)) {
           updateEdgeMotion(lastPointerX);
