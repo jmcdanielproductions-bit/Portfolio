@@ -8,49 +8,77 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#080a0d;--ink:#f2eee7;--muted:rgba(242,238,231,.64);--blue:#6f8cff;--gold:#d6b77a;--mood:#9fc7ff}
+    :root{--bg:#080a0d;--ink:#f2eee7;--blue:#6f8cff;--gold:#d6b77a;--mood:#9fc7ff}
     @view-transition{navigation:auto}@keyframes blurPageOut{from{opacity:1;filter:blur(0)}to{opacity:0;filter:blur(10px)}}@keyframes blurPageIn{from{opacity:0;filter:blur(10px)}to{opacity:1;filter:blur(0)}}::view-transition-old(root){animation:blurPageOut 280ms cubic-bezier(.22,1,.36,1) both}::view-transition-new(root){animation:blurPageIn 480ms cubic-bezier(.22,1,.36,1) both}
     *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-    body{min-height:100svh;margin:0;background:linear-gradient(rgba(111,140,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.035) 1px,transparent 1px),radial-gradient(circle at 72% 30%,rgba(159,199,255,.17),transparent 31rem),radial-gradient(circle at 18% 18%,rgba(111,140,255,.16),transparent 34rem),var(--bg);background-size:72px 72px,72px 72px,auto,auto,auto;color:var(--ink);font-family:"Space Grotesk",Arial,sans-serif}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at center,transparent 42%,rgba(0,0,0,.78));z-index:0}
+    body{min-height:100svh;margin:0;background:linear-gradient(rgba(111,140,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.025) 1px,transparent 1px),radial-gradient(circle at 72% 30%,rgba(159,199,255,.12),transparent 34rem),radial-gradient(circle at 18% 18%,rgba(111,140,255,.13),transparent 36rem),var(--bg);background-size:72px 72px,72px 72px,auto,auto,auto;color:var(--ink);font-family:"Space Grotesk",Arial,sans-serif}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at center,transparent 44%,rgba(0,0,0,.72));z-index:0}
     :root{--cursor-x:50%;--cursor-y:50%}
-    body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at var(--cursor-x) var(--cursor-y),rgba(159,199,255,.065),transparent 18rem),radial-gradient(ellipse at center,rgba(111,140,255,.075),transparent 34rem);mix-blend-mode:screen;animation:worldBreath 18s ease-in-out infinite}
-    @keyframes worldBreath{0%,100%{opacity:.82;filter:brightness(.97)}50%{opacity:1;filter:brightness(1.05)}}
+    body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at var(--cursor-x) var(--cursor-y),rgba(159,199,255,.055),transparent 20rem);mix-blend-mode:screen;animation:worldBreath 20s ease-in-out infinite}
+    @keyframes worldBreath{0%,100%{opacity:.8}50%{opacity:1}}
     .brand{position:fixed;top:calc(22px + env(safe-area-inset-top,0px));left:24px;z-index:5;color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .72rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
-    .world{position:relative;z-index:1;width:min(1240px,calc(100vw - 48px));margin:0 auto;padding:6rem 0 clamp(5rem,8vw,7rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,.46fr);gap:clamp(1.4rem,4vw,4rem);align-items:start}
-    .world:before{content:"";position:absolute;inset:5rem -6vw 5rem;z-index:-1;border:1px solid rgba(111,140,255,.075);background:linear-gradient(rgba(111,140,255,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.026) 1px,transparent 1px);background-size:72px 72px}
-    .world:after{content:"";position:absolute;width:min(58rem,82vw);aspect-ratio:1;left:38%;top:50%;z-index:-1;border:1px solid rgba(159,199,255,.07);border-radius:999px;transform:translate(-50%,-50%)}
-    .hero-frame{view-transition-name:project-witcher;aspect-ratio:16/9;width:100%;border:1px solid rgba(111,140,255,.2);background-image:linear-gradient(180deg,rgba(8,10,13,.04),rgba(8,10,13,.88)),radial-gradient(circle at 60% 30%,rgba(159,199,255,.2),transparent 18rem),url("https://img.youtube.com/vi/tr1ajPqpuDs/hqdefault.jpg");background-size:cover;background-position:center;box-shadow:0 30px 120px rgba(0,0,0,.48),0 0 84px rgba(111,140,255,.12);position:relative}
-    .hero-frame:after{content:"";position:absolute;inset:16px;border:1px solid rgba(111,140,255,.16);box-shadow:inset 0 0 44px rgba(159,199,255,.075)}
-    .kicker{color:var(--gold);text-transform:uppercase;font:700 .68rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
-    .title{margin:.8rem 0 .7rem;text-transform:uppercase;font-family:Anton,Impact,sans-serif;font-size:clamp(4.5rem,10vw,10rem);line-height:.84;letter-spacing:.04em}
-    .mood{color:color-mix(in srgb,var(--mood) 58%,var(--blue));text-transform:uppercase;font:700 .64rem/1.4 "JetBrains Mono",monospace;letter-spacing:.13em;margin:0 0 1.2rem}
-    .meta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:0 0 1.4rem;border:1px solid rgba(111,140,255,.14);background:rgba(111,140,255,.14)}
-    .meta-grid span{display:grid;gap:.45rem;padding:.85rem;background:rgba(8,12,18,.76);color:rgba(242,238,231,.8);font-size:.9rem}
-    .meta-grid b{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.15em}
-    .actions{display:flex;gap:.55rem;flex-wrap:wrap}
-    .button,.nav a,.nav button{min-height:44px;border:1px solid rgba(111,140,255,.24);border-radius:999px;background:rgba(8,12,18,.62);color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .66rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;padding:0 1rem;display:inline-flex;align-items:center;cursor:pointer}
-    .button.primary{background:var(--ink);color:var(--bg);border-color:transparent}
-    .nav{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:10;transform:translateX(-50%);padding:.42rem;border:1px solid rgba(111,140,255,.18);border-radius:999px;background:rgba(8,12,18,.68);backdrop-filter:blur(28px);box-shadow:0 18px 58px rgba(0,0,0,.44),0 0 46px rgba(111,140,255,.11)}
-    .nav a,.nav button{background:transparent;border-color:transparent}
+    .world{position:relative;z-index:1;width:min(1280px,calc(100vw - 48px));margin:0 auto;padding:clamp(5rem,8svh,7rem) 0 clamp(7rem,12vw,10rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,.82fr);gap:clamp(2rem,4vw,3.5rem);align-items:start}
+    .world:before{content:"";position:absolute;inset:4rem -4vw 4rem;z-index:-1;border:1px solid rgba(111,140,255,.06);background:linear-gradient(rgba(111,140,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.018) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+    .hero-frame{view-transition-name:project-witcher;aspect-ratio:16/9;width:100%;position:relative;border:1px solid rgba(111,140,255,.18);background-image:linear-gradient(180deg,rgba(8,10,13,.04),rgba(8,10,13,.82)),radial-gradient(circle at 60% 30%,rgba(159,199,255,.16),transparent 20rem),url("https://img.youtube.com/vi/tr1ajPqpuDs/hqdefault.jpg");background-size:cover;background-position:center;box-shadow:0 32px 120px rgba(0,0,0,.5),0 0 84px rgba(111,140,255,.1)}
+    .hero-frame:after{content:"";position:absolute;inset:12px;border:1px solid rgba(111,140,255,.12);pointer-events:none}
+    .hero-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:transparent;border:0;cursor:pointer;z-index:2;transition:background 280ms ease}
+    .hero-play:hover{background:rgba(0,0,0,.16)}
+    .hero-play-ring{width:clamp(3.8rem,7vw,5.4rem);aspect-ratio:1;display:grid;place-items:center;border:1px solid rgba(248,242,233,.52);border-radius:999px;background:rgba(8,10,13,.44);backdrop-filter:blur(16px);transition:transform 280ms ease,background 280ms ease,border-color 280ms ease;box-shadow:0 0 40px rgba(0,0,0,.38)}
+    .hero-play:hover .hero-play-ring{transform:scale(1.06);background:rgba(8,10,13,.62);border-color:rgba(248,242,233,.82)}
+    .hero-play-icon{margin-left:.14em;font-size:clamp(1.1rem,2.2vw,1.6rem);color:rgba(248,242,233,.9);line-height:1}
+    .hero-frame.is-playing .hero-play{display:none}
+    .hero-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3}
+    .hero-frame.is-playing{background-image:none!important}
+    .project-header{display:flex;flex-direction:column;gap:clamp(1rem,1.8vw,1.5rem)}
+    .kicker{color:var(--gold);text-transform:uppercase;font:700 .66rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
+    .title{margin:0;text-transform:uppercase;font-family:Anton,Impact,sans-serif;font-size:clamp(3rem,4.8vw,5.6rem);line-height:.88;letter-spacing:.04em}
+    .tone-tags{display:flex;flex-wrap:wrap;gap:.36rem}
+    .tone-tag{padding:.28rem .6rem;border:1px solid rgba(111,140,255,.16);background:rgba(111,140,255,.06);color:rgba(248,242,233,.58);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+    .meta-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(111,140,255,.14);border:1px solid rgba(111,140,255,.14)}
+    .meta-item{display:grid;gap:.35rem;padding:.75rem;background:rgba(5,7,12,.82)}
+    .meta-item dt{color:var(--gold);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
+    .meta-item dd{margin:0;color:rgba(248,242,233,.82);font-size:.88rem;font-weight:500}
+    .project-summary{margin:0;color:rgba(248,242,233,.74);font-size:clamp(.94rem,1.1vw,1.05rem);line-height:1.66}
+    .cta-row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .btn-primary,.btn-secondary{min-height:44px;display:inline-flex;align-items:center;font:700 .64rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;padding:0 1.1rem;cursor:pointer;text-decoration:none;transition:background 240ms ease,border-color 240ms ease,color 240ms ease}
+    .btn-primary{background:var(--ink);color:var(--bg);border:1px solid transparent}
+    .btn-secondary{background:rgba(5,7,12,.62);color:rgba(248,242,233,.82);border:1px solid rgba(111,140,255,.22)}
+    .btn-primary:hover{background:rgba(248,242,233,.88)}
+    .btn-secondary:hover{border-color:rgba(111,140,255,.44);background:rgba(111,140,255,.08);color:var(--ink)}
+    .case-study{grid-column:1/-1;margin-top:clamp(2.4rem,4vw,3.8rem)}
+    .cs-section{margin-bottom:clamp(2.4rem,4.5vw,4rem)}
+    .cs-section-head{display:flex;align-items:center;gap:1rem;margin-bottom:clamp(1rem,2vw,1.6rem);padding-bottom:.75rem;border-bottom:1px solid rgba(111,140,255,.1)}
+    .cs-section-label{color:var(--gold);text-transform:uppercase;font:700 .6rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;white-space:nowrap}
+    .cs-section-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(111,140,255,.1),transparent)}
+    .overview-panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.7rem,1.4vw,1rem)}
+    .overview-panel{padding:clamp(1.1rem,1.8vw,1.5rem);border:1px solid rgba(111,140,255,.1);background:rgba(5,7,12,.56);display:flex;flex-direction:column;gap:.75rem}
+    .overview-panel-featured{border-color:rgba(111,140,255,.18);background:rgba(5,7,12,.72)}
+    .panel-label{color:rgba(111,140,255,.68);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.16em}
+    .panel-text{margin:0;color:rgba(242,238,231,.7);font-size:clamp(.92rem,1.02vw,1rem);line-height:1.72}
+    .panel-text-lead{color:rgba(248,242,233,.86);font-size:clamp(.96rem,1.08vw,1.05rem);font-weight:500}
+    .exec-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.7rem,1.4vw,1rem)}
+    .exec-card{padding:clamp(1.1rem,1.8vw,1.6rem);border:1px solid rgba(111,140,255,.1);background:rgba(5,7,12,.52);display:grid;gap:.65rem}
+    .exec-card-num{color:rgba(111,140,255,.52);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.12em}
+    .exec-card-title{margin:0;color:rgba(248,242,233,.9);font-family:"Space Grotesk",Arial,sans-serif;font-size:clamp(.98rem,1.3vw,1.18rem);font-weight:700;line-height:1.2}
+    .exec-card-text{margin:0;color:rgba(242,238,231,.66);font-size:clamp(.9rem,1vw,.98rem);line-height:1.72}
+    .outcome-block{padding:clamp(1.3rem,2.2vw,2rem);border:1px solid rgba(111,140,255,.14);background:rgba(5,7,12,.62);border-left:2px solid rgba(111,140,255,.44)}
+    .outcome-text{margin:0;color:rgba(248,242,233,.8);font-size:clamp(.96rem,1.12vw,1.08rem);line-height:1.68}
+    .strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.6rem,1.2vw,.9rem)}
+    .strip-card{display:flex;flex-direction:column}
+    .strip-card-media{overflow:hidden;background:repeating-linear-gradient(90deg,rgba(111,140,255,.04) 0,rgba(111,140,255,.04) 1px,transparent 1px,transparent 22px),repeating-linear-gradient(rgba(111,140,255,.032) 0,rgba(111,140,255,.032) 1px,transparent 1px,transparent 22px),rgba(4,6,11,.78);display:grid;place-items:center;border:1px solid rgba(111,140,255,.1);border-bottom:0;aspect-ratio:4/3}
+    .bts-card .strip-card-media{aspect-ratio:16/9}
+    .strip-card-idx{color:rgba(111,140,255,.3);font:700 1.4rem/1 "JetBrains Mono",monospace;letter-spacing:.04em}
+    .strip-card figcaption{padding:.5rem .62rem;border:1px solid rgba(111,140,255,.08);background:rgba(4,6,11,.62);color:rgba(248,242,233,.44);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+    .nav{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:10;transform:translateX(-50%);padding:.42rem;border:1px solid rgba(111,140,255,.18);border-radius:999px;background:rgba(8,12,18,.68);backdrop-filter:blur(28px);box-shadow:0 18px 58px rgba(0,0,0,.44),0 0 46px rgba(111,140,255,.11);display:flex;gap:.28rem}
+    .nav a,.nav button{min-height:40px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;padding:0 .9rem;display:inline-flex;align-items:center;cursor:pointer}
     .modal{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:24px;background:rgba(2,3,5,.84);backdrop-filter:blur(18px)}
     .modal.active{display:grid}
     .modal-inner{width:min(1040px,100%);aspect-ratio:16/9;border:1px solid rgba(111,140,255,.34);background:#000;position:relative}
     .modal iframe{width:100%;height:100%;border:0}
-    .close{position:absolute;right:0;top:-52px}
-    .case-study{grid-column:1/-1;margin-top:clamp(2.8rem,4.5vw,4.5rem);padding-top:clamp(2rem,3.5vw,3.2rem);border-top:1px solid rgba(111,140,255,.12)}
-    .cs-intro{max-width:52rem;margin-bottom:clamp(1.8rem,2.8vw,2.6rem)}
-    .cs-intro-text{margin:0;color:rgba(248,242,233,.9);font-size:clamp(1.05rem,1.4vw,1.22rem);line-height:1.62;font-weight:500}
-    .cs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.2rem,2.4vw,2.2rem)}
-    .cs-full{grid-column:1/-1}
-    .cs-block{display:grid;gap:.6rem}
-    .cs-label{color:rgba(111,140,255,.68);font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
-    .cs-text{margin:0;color:rgba(242,238,231,.7);font-size:clamp(.96rem,1.06vw,1.05rem);line-height:1.74}
-    .cs-approach{color:rgba(248,242,233,.88);font-size:clamp(1rem,1.2vw,1.12rem);font-weight:500}
-    .cs-divider{grid-column:1/-1;height:1px;background:rgba(111,140,255,.1);margin:clamp(.4rem,.8vw,.6rem) 0}
-    .hero-frame{position:relative}.hero-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:transparent;border:0;cursor:pointer;z-index:2;transition:background 280ms ease}.hero-play:hover{background:rgba(0,0,0,.16)}.hero-play-ring{width:clamp(3.8rem,8vw,5.6rem);aspect-ratio:1;display:grid;place-items:center;border:1px solid rgba(248,242,233,.56);border-radius:999px;background:rgba(8,10,13,.44);backdrop-filter:blur(16px);transition:transform 280ms ease,background 280ms ease,border-color 280ms ease;box-shadow:0 0 40px rgba(0,0,0,.38)}.hero-play:hover .hero-play-ring{transform:scale(1.06);background:rgba(8,10,13,.62);border-color:rgba(248,242,233,.82)}.hero-play-icon{margin-left:.14em;font-size:clamp(1.1rem,2.4vw,1.7rem);color:rgba(248,242,233,.9);line-height:1}.hero-frame.is-playing .hero-play{display:none}.hero-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3}.hero-frame.is-playing{background-image:none!important}
-    @media(max-width:760px){.world{grid-template-columns:1fr;width:min(100vw - 24px,42rem);padding:5rem 0 clamp(6rem,10vw,8rem)}.hero-frame{aspect-ratio:16/9;order:-1}.title{font-size:clamp(3.2rem,15vw,5.5rem)}.meta-grid{grid-template-columns:1fr}.nav{width:calc(100vw - 20px);justify-content:space-between}.nav a,.nav button{font-size:.56rem;padding:0 .6rem;min-height:44px}.case-study{margin-top:2rem;padding-top:1.8rem}.cs-grid{grid-template-columns:1fr}.cs-full{grid-column:auto}.cs-divider{margin:.2rem 0}}
-    @media(max-width:430px){.title{font-size:clamp(2.8rem,14vw,4rem)}.world{padding-top:4.5rem}}
+    .close{position:absolute;right:0;top:-52px;min-height:40px;padding:0 1rem;border:1px solid rgba(248,242,233,.2);border-radius:999px;background:rgba(8,10,13,.76);color:var(--ink);text-transform:uppercase;font:700 .64rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;cursor:pointer}
+    @media(max-width:900px){.world{grid-template-columns:1fr;padding-top:5rem}.hero-frame{order:-1}.overview-panels,.exec-grid{grid-template-columns:1fr}}
+    @media(max-width:760px){.world{width:min(100vw - 24px,44rem);padding-top:5rem;padding-bottom:8rem}.title{font-size:clamp(2.8rem,12vw,4.5rem)}.meta-row{grid-template-columns:1fr}.nav{width:calc(100vw - 20px);justify-content:space-between}.nav a,.nav button{font-size:.54rem;padding:0 .55rem}.strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:.4rem}.strip::-webkit-scrollbar{display:none}.strip-card{flex:0 0 clamp(180px,66vw,250px);scroll-snap-align:start}}
+    @media(max-width:430px){.title{font-size:clamp(2.4rem,11vw,3.5rem)}.world{padding-top:4.5rem}}
   </style>
 </head>
 <body>
@@ -61,67 +89,103 @@
         <span class="hero-play-ring"><span class="hero-play-icon" aria-hidden="true">▶</span></span>
       </button>
     </div>
-    <section>
+    <section class="project-header">
       <div class="kicker">Cinematic Direction / CD Projekt Red</div>
       <h1 class="title">The<br>Witcher</h1>
-      <p class="mood">Discovery / worldbuilding / practical atmosphere</p>
-      <div class="meta-grid">
-        <span><b>Role</b>Cinematic Direction</span>
-        <span><b>Client</b>CD Projekt Red</span>
-        <span><b>Year</b>2025</span>
+      <div class="tone-tags">
+        <span class="tone-tag">Discovery</span>
+        <span class="tone-tag">Worldbuilding</span>
+        <span class="tone-tag">Practical Atmosphere</span>
       </div>
-      <div class="actions">
-        <button class="button primary" data-video="tr1ajPqpuDs">Watch Film</button>
-        <a class="button" href="../index.html#work" data-back>Back to Archive</a>
+      <dl class="meta-row">
+        <div class="meta-item"><dt>Role</dt><dd>Cinematic Direction</dd></div>
+        <div class="meta-item"><dt>Client</dt><dd>CD Projekt Red</dd></div>
+        <div class="meta-item"><dt>Year</dt><dd>2025</dd></div>
+      </dl>
+      <p class="project-summary">Built for CD Projekt Red and The Witcher 3: Wild Hunt. The brief was a promotional film that felt like it existed inside the universe — not a modern product shoot with a fantasy aesthetic applied over it. The products needed to feel like they'd always been there.</p>
+      <div class="cta-row">
+        <button class="btn-primary" data-video="tr1ajPqpuDs">Watch Film</button>
+        <a class="btn-secondary" href="../index.html#work" data-back>Back to Archive</a>
       </div>
     </section>
-    <section class="case-study" aria-label="Project case study">
-      <div class="cs-intro">
-        <p class="cs-intro-text">This project was built for CD Projekt Red and The Witcher 3: Wild Hunt. The brief was to create a promotional film that felt like it existed inside the universe — not a modern product shoot with a fantasy aesthetic applied over it. The products needed to feel like they'd always been there.</p>
+
+    <section class="case-study" aria-label="Case study">
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Project</span><div class="cs-section-line"></div></div>
+        <div class="overview-panels">
+          <div class="overview-panel">
+            <span class="panel-label">Overview</span>
+            <p class="panel-text">The story follows a traveler who stumbles across something unexpected — something that doesn't seem possible but draws them toward it instead of frightening them. Every creative decision served that feeling: curiosity, wonder, and the atmosphere of finding something ancient and beautiful in a world that hides its secrets.</p>
+          </div>
+          <div class="overview-panel">
+            <span class="panel-label">Challenge</span>
+            <p class="panel-text">The challenge was making the viewer believe this environment extended beyond the frame. We were working inside a controlled studio space. Creating the scale, depth, and lived-in quality of a Witcher environment within those constraints became the central creative problem.</p>
+          </div>
+          <div class="overview-panel overview-panel-featured">
+            <span class="panel-label">Creative Approach</span>
+            <p class="panel-text panel-text-lead">I approached this through worldbuilding rather than product showcase. Visual references came directly from The Witcher 3's environments — the forests, village interiors, the quality of light that makes everything feel like it exists just at the edge of understanding. Atmosphere was the primary storytelling tool. The world should feel ancient and dangerous before a word is spoken.</p>
+          </div>
+        </div>
       </div>
-      <div class="cs-grid">
 
-        <div class="cs-block">
-          <span class="cs-label">Challenge</span>
-          <p class="cs-text">The challenge was making the viewer believe this environment extended beyond the frame. We were working inside a controlled studio space. Creating the scale, depth, and lived-in quality of a Witcher environment — forests, candlelit interiors, ancient textures — within those constraints became the central creative problem.</p>
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Execution</span><div class="cs-section-line"></div></div>
+        <div class="exec-grid">
+          <div class="exec-card">
+            <span class="exec-card-num">01</span>
+            <h3 class="exec-card-title">Performance Direction</h3>
+            <p class="exec-card-text">Stephanie was directed toward genuine curiosity — drawn toward the impossible, not afraid of it. The difference between those two reactions is everything. References from adventure films where discovery drives the emotional experience.</p>
+          </div>
+          <div class="exec-card">
+            <span class="exec-card-num">02</span>
+            <h3 class="exec-card-title">Production Design</h3>
+            <p class="exec-card-text">Foliage, flowers, props, candles, coins, and practical set dressing carefully placed to create a space that extended far beyond what the camera could show. Breaking up modern surfaces — that's the work that determines whether the audience believes the world.</p>
+          </div>
+          <div class="exec-card">
+            <span class="exec-card-num">03</span>
+            <h3 class="exec-card-title">Atmosphere & Lighting</h3>
+            <p class="exec-card-text">Practical haze, candlelight, and layered lighting built depth throughout. VFX embers and atmospheric enhancements supported the feeling of a living world. Warm candlelight contrasted against muted greens and soft shadow.</p>
+          </div>
+          <div class="exec-card">
+            <span class="exec-card-num">04</span>
+            <h3 class="exec-card-title">Music & Sound</h3>
+            <p class="exec-card-text">"Drink Up" became the emotional anchor — it shaped the pacing and rhythm of the edit in ways that determined how everything else moved. Wolf snarls, sword impacts, and environmental effects were layered throughout to reinforce the world.</p>
+          </div>
         </div>
-        <div class="cs-block">
-          <span class="cs-label">Production Design</span>
-          <p class="cs-text">A significant part of the production was environmental transformation. Foliage, flowers, props, candles, coins, and practical set dressing were carefully placed to create the illusion of a space that extended far beyond what the camera could show. Breaking up modern surfaces and hiding depth cues — that's the work that happens before the camera rolls and determines whether the audience believes the world or just observes it.</p>
-        </div>
-
-        <div class="cs-block cs-full">
-          <span class="cs-label">Creative Approach</span>
-          <p class="cs-text cs-approach">As a fan of The Witcher universe, I approached this through worldbuilding rather than product showcase. The story follows a traveler who stumbles across something unexpected — something that doesn't seem possible but draws them toward it instead of frightening them. Every creative decision served that feeling: curiosity, wonder, and the particular atmosphere of finding something ancient and beautiful in a world that hides its secrets. Visual references came directly from The Witcher 3's environments — the forests, the village interiors, the quality of light that makes everything feel like it exists just at the edge of understanding.</p>
-        </div>
-
-        <div class="cs-block cs-divider"></div>
-
-        <div class="cs-block">
-          <span class="cs-label">Performance Direction</span>
-          <p class="cs-text">Stephanie's performance became one of the primary storytelling tools. The direction focused on genuine curiosity rather than exaggerated fantasy reaction — the difference between someone frightened by the impossible and someone drawn toward it. The second one is more interesting. References came from adventure and fantasy films where discovery is the emotional engine. The performance needed to feel grounded enough that the audience could place themselves in the same moment.</p>
-        </div>
-        <div class="cs-block">
-          <span class="cs-label">Atmosphere & Lighting</span>
-          <p class="cs-text">Practical haze, candlelight, and layered lighting built the depth throughout. Additional VFX — embers, atmospheric enhancements — supported the feeling of a living world rather than a set. Warm candlelight contrasted against muted greens, natural textures, and soft shadow. The Witcher's palette lives in those contrasts. Maintaining detail without losing darkness was an ongoing balance in production and post.</p>
-        </div>
-
-        <div class="cs-block cs-divider"></div>
-
-        <div class="cs-block">
-          <span class="cs-label">Music & Sound</span>
-          <p class="cs-text">"Drink Up" became the emotional anchor once it was selected — it shaped the pacing and rhythm of the edit in ways that determined how everything else moved. Sound design was layered throughout: environmental effects, creature sounds, wolf snarls, sword impacts, atmospheric textures. Together they reinforced that the audience was stepping into an existing world, not watching an advertisement.</p>
-        </div>
-        <div class="cs-block">
-          <span class="cs-label">Outcome</span>
-          <p class="cs-text">The project demonstrated how production design, performance direction, practical lighting, and editorial pacing work together to create genuine worldbuilding inside a controlled studio environment. The hero frame — Stephanie discovering the artifacts — captures exactly what the piece was built around: curiosity, wonder, and the feeling that this world existed before the camera arrived.</p>
-        </div>
-
       </div>
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Outcome</span><div class="cs-section-line"></div></div>
+        <div class="outcome-block">
+          <p class="outcome-text">The project demonstrated how production design, performance direction, practical lighting, and editorial pacing work together to create genuine worldbuilding inside a controlled studio environment. The hero frame — Stephanie discovering the artifacts — captures exactly what the piece was built around: curiosity, wonder, and the feeling that this world existed before the camera arrived.</p>
+        </div>
+      </div>
+
+      <div class="cs-section strip-section">
+        <div class="cs-section-head"><span class="cs-section-label">Process</span><div class="cs-section-line"></div></div>
+        <div class="strip">
+          <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">01</span></div><figcaption>Environmental References</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">02</span></div><figcaption>Production Design</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">03</span></div><figcaption>Lighting Notes</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">04</span></div><figcaption>Sound Design</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="cs-section strip-section">
+        <div class="cs-section-head"><span class="cs-section-label">Behind The Scenes</span><div class="cs-section-line"></div></div>
+        <div class="strip">
+          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">01</span></div><figcaption>Set Dressing</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">02</span></div><figcaption>Lighting Setup</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">03</span></div><figcaption>Talent Direction</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">04</span></div><figcaption>Final Frames</figcaption></figure>
+        </div>
+      </div>
+
     </section>
   </main>
   <nav class="nav"><a href="../index.html#work">Work</a><a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a><button data-video="mFeMMMmdW24">▶ Reel</button></nav>
-  <div class="modal" id="modal"><div class="modal-inner"><button class="button close" type="button">Close</button><iframe id="frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video player"></iframe></div></div>
+  <div class="modal" id="modal"><div class="modal-inner"><button class="close" type="button">Close</button><iframe id="frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video player"></iframe></div></div>
   <script>const modal=document.querySelector("#modal"),frame=document.querySelector("#frame"),back=document.querySelector("[data-back]");try{const saved=JSON.parse(sessionStorage.getItem("jm_archive_return")||"null");if(saved?.route)back.href=`../index.html#${saved.route}`}catch(e){}document.querySelectorAll("[data-video]").forEach(b=>b.addEventListener("click",()=>{frame.src=`https://www.youtube.com/embed/${b.dataset.video}?autoplay=1&rel=0`;modal.classList.add("active")}));document.querySelector(".close").addEventListener("click",()=>{modal.classList.remove("active");frame.src=""});modal.addEventListener("click",e=>{if(e.target===modal)document.querySelector(".close").click()});document.querySelector('.hero-play')?.addEventListener('click',function(){const v=this.dataset.heroVideo;if(!v)return;const f=document.createElement('iframe');f.className='hero-iframe';f.src=`https://www.youtube.com/embed/${v}?autoplay=1&rel=0`;f.allow='autoplay;encrypted-media;picture-in-picture';f.setAttribute('allowfullscreen','');f.title='Film player';const h=this.closest('.hero-frame');h.appendChild(f);h.classList.add('is-playing');});</script>
   <script>window.addEventListener("pointermove",e=>{document.documentElement.style.setProperty("--cursor-x",`${e.clientX}px`);document.documentElement.style.setProperty("--cursor-y",`${e.clientY}px`)});</script>
 </body>
