@@ -5263,7 +5263,7 @@
       top: clamp(0.55rem, 1.2svh, 0.85rem) !important;
       left: clamp(0.85rem, 1.8vw, 1.45rem) !important;
       right: clamp(0.85rem, 1.8vw, 1.45rem) !important;
-      z-index: 320;
+      z-index: 460;
       display: grid !important;
       grid-template-columns: minmax(10rem, 1fr) auto minmax(10rem, 1fr) !important;
       grid-template-areas: "brand nav socials" !important;
@@ -6736,20 +6736,25 @@
       }
     }
 
-    /* 3. Touch-action hint so browser knows carousel scrolls horizontally */
+    /* 3. Touch: JS owns horizontal swipe on carousel — tell browser not to interfere */
     @media (hover: none), (pointer: coarse) {
-      .archive-stage,
       .gallery-plane,
       #galleryTrack {
-        touch-action: pan-x;
+        touch-action: none;
       }
     }
 
     /* 4. Performance — reduce expensive GPU effects on mobile */
     @media (max-width: 760px) {
-      .gallery-card,
-      .archive-piece {
+      /* Cards: drop will-change entirely — let browser decide. Only the track needs a layer. */
+      .gallery-card {
+        will-change: auto;
+      }
+      .gallery-track, #galleryTrack {
         will-change: transform;
+      }
+      .archive-piece {
+        will-change: auto;
       }
 
       .gallery-plane::before,
@@ -7192,13 +7197,11 @@
       }
     }
 
-    /* === CAROUSEL TOUCH FIX: allow swipe on card buttons === */
+    /* === CAROUSEL TOUCH FIX: JS owns swipe — no browser interference === */
     @media (hover: none), (pointer: coarse) {
       .gallery-track,
-      .gallery-plane,
-      .archive-stage {
-        touch-action: pan-x;
-        -webkit-overflow-scrolling: touch;
+      .gallery-plane {
+        touch-action: none;
       }
 
       /* Prevent the intro animation from being too slow on mobile */
@@ -8091,6 +8094,7 @@
 
     function startHoverPreview(card, videoId) {
       if (!videoId || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (window.matchMedia("(pointer: coarse)").matches) return; // no iframes on touch — kills mobile
       stopHoverPreview();
 
       const iframe = document.createElement("iframe");
@@ -8582,18 +8586,19 @@
     }
 
     galleryTrack.addEventListener("pointerdown", (event) => {
+      if (window.__archiveCarouselStateController) return; // state controller owns drag
       if (event.target.closest("a")) return;
       if (event.target.closest("button") && !event.target.closest(".gallery-card")) return;
       dragging = true;
       lastX = event.clientX;
       body.classList.remove("edge-left", "edge-right");
-      // Don't capture pointer on card clicks — let the click reach the card naturally
       if (!event.target.closest(".gallery-card")) {
         galleryTrack.setPointerCapture(event.pointerId);
       }
     });
 
     galleryTrack.addEventListener("pointermove", (event) => {
+      if (window.__archiveCarouselStateController) return;
       if (!dragging) return;
       dragVelocity = event.clientX - lastX;
       drift += dragVelocity;
@@ -8601,6 +8606,7 @@
     });
 
     galleryTrack.addEventListener("pointerup", () => {
+      if (window.__archiveCarouselStateController) return;
       dragging = false;
       targetVelocity = idleVelocity;
       dragVelocity = 0;
@@ -8608,6 +8614,7 @@
     });
 
     galleryTrack.addEventListener("pointerleave", () => {
+      if (window.__archiveCarouselStateController) return;
       dragging = false;
     });
 
@@ -8642,6 +8649,12 @@
     });
 
     function animateGallery(now = performance.now()) {
+      // Mobile: state controller manages the transform and velocity — skip entirely to avoid
+      // double-write conflicts and the 57-card per-frame style loop that crashes Safari.
+      if (window.__archiveCarouselStateController && window.matchMedia("(pointer: coarse)").matches) {
+        requestAnimationFrame(animateGallery);
+        return;
+      }
       const width = galleryTrack.scrollWidth / 3 || 1;
       const delta = Math.min(40, Math.max(8, now - lastFrameTime));
       lastFrameTime = now;
@@ -9344,6 +9357,7 @@
 
     let pointerId = null;
     let startX = 0;
+    let startY = 0;
     let lastX = 0;
     let lastMoveTime = 0;
     let startDrift = 0;
@@ -9368,10 +9382,11 @@
       const isCard = !!event.target.closest('.gallery-card');
       if (event.target.closest('.site-archive-header, .hover-preview-portal, a, input, textarea, select')) return;
       if (event.target.closest('button') && !isCard) return;
-      if (isCard) { pointerId = event.pointerId; startX = event.clientX; lastX = event.clientX; lastMoveTime = performance.now(); startDrift = state.drift || 0; dragged = false; dragVelocity = 0; state.isDragging = true; state.isJumping = false; state.jumpTarget = null; state.velocity = 0; state.targetVelocity = 0; document.body.classList.add('carousel-dragging'); return; }
+      if (isCard) { pointerId = event.pointerId; startX = event.clientX; startY = event.clientY; lastX = event.clientX; lastMoveTime = performance.now(); startDrift = state.drift || 0; dragged = false; dragVelocity = 0; state.isDragging = true; state.isJumping = false; state.jumpTarget = null; state.velocity = 0; state.targetVelocity = 0; document.body.classList.add('carousel-dragging'); return; }
 
       pointerId = event.pointerId;
       startX = event.clientX;
+      startY = event.clientY;
       lastX = event.clientX;
       lastMoveTime = performance.now();
       startDrift = state.drift || 0;
@@ -9389,9 +9404,18 @@
     function moveDrag(event) {
       if (event.pointerId !== pointerId) return;
       const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
       const now = performance.now();
       const step = event.clientX - lastX;
       const dt = Math.max(8, now - lastMoveTime);
+
+      // If user is clearly scrolling vertically, abandon the drag so native scroll takes over
+      if (!dragged && Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.4) {
+        pointerId = null;
+        state.isDragging = false;
+        document.body.classList.remove('carousel-dragging');
+        return;
+      }
 
       if (Math.abs(dx) > 6) {
         dragged = true;
@@ -9435,6 +9459,8 @@
 
     document.addEventListener('click', (event) => {
       if (!suppressClick) return;
+      // Never suppress navigation — header, menu toggle, or any nav/anchor
+      if (event.target.closest?.('.site-archive-header, .mobile-menu-toggle, .mobile-menu-overlay, .glass-nav, a[href], button:not(.gallery-card)')) return;
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
@@ -9546,6 +9572,11 @@
 
     toggle.addEventListener('click', () => {
       document.body.classList.contains('menu-open') ? closeMenu() : openMenu();
+    });
+
+    // Close on backdrop tap (tapping outside the inner panel)
+    menu.addEventListener('click', (e) => {
+      if (!e.target.closest('.mobile-menu-inner')) closeMenu();
     });
 
     // Close on anchor nav link tap
