@@ -7669,6 +7669,89 @@
     }
     body.rw-pull .rw-gradeveil{opacity:.16}
 
+    /* ---------- record selection / dossier preview ---------- */
+    .rw-preview{
+      position:fixed;inset:0;z-index:245;display:none;overflow-y:auto;
+      background:radial-gradient(90rem 52rem at 68% 0,var(--rw-mood-soft),transparent 62%),
+                 rgba(3,4,6,.86);
+      backdrop-filter:blur(18px);
+    }
+    body.rw-preview-open{overflow:hidden}
+    body.rw-preview-open .rw-preview{display:block}
+    body.rw-preview-open .rw-stage{pointer-events:none}
+    body.rw-preview-open .rw-world{filter:brightness(.34) saturate(.62)}
+    .rw-preview::before{
+      content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;
+      background-image:linear-gradient(var(--rw-mood-soft) 1px,transparent 1px),
+                       linear-gradient(90deg,var(--rw-mood-soft) 1px,transparent 1px);
+      background-size:72px 72px;
+    }
+    .rw-preview-inner{
+      position:relative;z-index:1;min-height:100%;display:flex;flex-direction:column;
+      align-items:center;padding:5.4rem clamp(1rem,4vw,2rem) 7rem;
+    }
+    .rw-preview-back{
+      position:fixed;top:1.35rem;right:1.6rem;z-index:2;
+      min-height:40px;border:1px solid rgba(242,238,231,.16);border-radius:999px;
+      background:rgba(8,12,18,.72);color:var(--ink);backdrop-filter:blur(10px);
+      font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.22em;text-transform:uppercase;
+      padding:0 1rem;cursor:pointer;
+    }
+    .rw-preview-kicker{
+      width:min(74vw,68rem);
+      font:700 .56rem/1 "JetBrains Mono",monospace;letter-spacing:.28em;text-transform:uppercase;
+      color:var(--rw-mood);margin-bottom:.8rem;
+    }
+    .rw-preview-hero{
+      position:relative;width:min(74vw,68rem);aspect-ratio:16/9;
+      border:1px solid rgba(242,238,231,.18);border-radius:6px;
+      background:#020305;box-shadow:0 34px 110px rgba(0,0,0,.6),0 0 60px var(--rw-mood-soft);
+      overflow:hidden;
+    }
+    .rw-preview-hero .rw-card,
+    .rw-preview-hero .rw-mcard{
+      position:relative;inset:auto;width:100%;height:100%;transform:none!important;
+      border:0;border-radius:0;box-shadow:none;pointer-events:none;
+    }
+    .rw-preview-hero .rw-card .rw-title,
+    .rw-preview-hero .rw-mcard .rw-title{
+      font-size:clamp(2rem,4.6vw,4rem);
+    }
+    .rw-preview-hero .rw-card .rw-expand,
+    .rw-preview-hero .rw-card .rw-play,
+    .rw-preview-hero .rw-card .rw-tally{
+      max-height:8rem;opacity:1;display:flex;
+    }
+    .rw-preview-hero .rw-card .rw-play{display:none}
+    .rw-preview-slate{
+      width:min(74vw,68rem);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:1.2rem;margin-top:1.5rem;padding-top:1.3rem;border-top:1px solid rgba(242,238,231,.12);
+    }
+    .rw-preview-sk{
+      font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.26em;
+      color:rgba(242,238,231,.34);text-transform:uppercase;
+    }
+    .rw-preview-sv{
+      margin-top:.35rem;font-size:.9rem;font-weight:500;letter-spacing:.04em;
+      text-transform:uppercase;color:rgba(242,238,231,.86);
+    }
+    .rw-preview-sv.is-mood{color:var(--rw-mood)}
+    .rw-preview-brief{
+      width:min(74vw,68rem);max-width:44rem;align-self:flex-start;
+      margin-top:2rem;margin-left:calc((100% - min(74vw,68rem))/2);
+    }
+    .rw-preview-brief p{
+      margin:0;color:rgba(242,238,231,.68);font-size:1.02rem;line-height:1.75;
+    }
+    .rw-preview-open{
+      display:inline-flex;align-items:center;min-height:42px;margin-top:1.4rem;
+      border:1px solid var(--rw-mood);border-radius:999px;color:var(--ink);
+      text-decoration:none;background:rgba(8,12,18,.52);padding:0 1.2rem;
+      font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.24em;text-transform:uppercase;
+      transition:background .25s ease,color .25s ease;
+    }
+    .rw-preview-open:hover{background:var(--rw-mood);color:#030406}
+
     .rw-statusline{
       position:absolute;left:0;right:0;bottom:1.25rem;z-index:6;
       display:flex;justify-content:center;gap:2.2rem;pointer-events:none;
@@ -7683,6 +7766,33 @@
 
     /* ---------- mobile / touch / reduced-motion: archive index ---------- */
     .rw-mobile{display:none}
+    .rw-mobile-head{
+      display:grid;gap:.55rem;margin:.15rem 0 .65rem;
+    }
+    .rw-mobile-kicker{
+      font:700 .56rem/1 "JetBrains Mono",monospace;letter-spacing:.28em;
+      color:var(--gold);text-transform:uppercase;
+    }
+    .rw-mobile-statement{
+      margin:0;color:rgba(242,238,231,.66);font-size:.95rem;line-height:1.6;
+      max-width:31rem;
+    }
+    .rw-mobile-filters{
+      display:flex;gap:.38rem;overflow-x:auto;padding:.15rem 0 .55rem;
+      scrollbar-width:none;
+    }
+    .rw-mobile-filters::-webkit-scrollbar{display:none}
+    .rw-mobile-filter{
+      min-height:34px;flex:0 0 auto;border:1px solid rgba(242,238,231,.13);
+      border-radius:999px;background:rgba(3,4,6,.58);color:rgba(242,238,231,.62);
+      padding:0 .72rem;font:700 .52rem/1 "JetBrains Mono",monospace;
+      letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+    }
+    .rw-mobile-filter.on{border-color:var(--rw-mood);color:var(--ink);background:var(--rw-mood-soft)}
+    .rw-mobile-empty{
+      padding:1.4rem 0;color:rgba(242,238,231,.46);
+      font:700 .56rem/1.7 "JetBrains Mono",monospace;letter-spacing:.18em;text-transform:uppercase;
+    }
     .rw-mcard,.rw-mrow{
       position:relative;display:block;overflow:hidden;border-radius:6px;
       border:1px solid rgba(111,140,255,.16);background:#020305;color:var(--ink);
@@ -7736,6 +7846,11 @@
         position:static !important;transform:none !important;width:auto !important;
         margin:2.6rem auto 5.5rem;left:auto !important;bottom:auto !important;
       }
+      .rw-preview-inner{padding:4.8rem 1rem 6rem}
+      .rw-preview-kicker,.rw-preview-hero,.rw-preview-slate,.rw-preview-brief{width:min(100%,34rem)}
+      .rw-preview-brief{align-self:center;margin-left:0}
+      .rw-preview-slate{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+      .rw-preview-back{right:1rem}
     }
     /* reduced motion on desktop: calm index instead of the physics wall */
     @media (prefers-reduced-motion:reduce) and (min-width:900px){
@@ -7998,6 +8113,24 @@
       </div>
     </section>
   </main>
+
+  <div class="rw-preview" id="rwPreview" aria-hidden="true" role="dialog" aria-label="Selected record dossier preview">
+    <div class="rw-preview-inner">
+      <button class="rw-preview-back" id="rwPreviewBack" type="button">Back to the wall</button>
+      <div class="rw-preview-kicker" id="rwPreviewKicker">Record selected</div>
+      <div class="rw-preview-hero" id="rwPreviewHero"></div>
+      <div class="rw-preview-slate" aria-label="Selected record metadata">
+        <div><div class="rw-preview-sk">Record</div><div class="rw-preview-sv is-mood" id="rwPreviewCode">-</div></div>
+        <div><div class="rw-preview-sk">Role</div><div class="rw-preview-sv" id="rwPreviewRole">-</div></div>
+        <div><div class="rw-preview-sk">Client</div><div class="rw-preview-sv" id="rwPreviewClient">-</div></div>
+        <div><div class="rw-preview-sk">Year</div><div class="rw-preview-sv" id="rwPreviewYear">-</div></div>
+      </div>
+      <div class="rw-preview-brief">
+        <p id="rwPreviewBrief"></p>
+        <a class="rw-preview-open" id="rwPreviewOpen" href="#">Open full dossier</a>
+      </div>
+    </div>
+  </div>
 
   <nav class="glass-nav" aria-label="Primary navigation">
     <a href="#work" data-route="work">Work</a>
@@ -8914,10 +9047,36 @@
       const rest = all.filter((r) => !FLAG_ORDER.includes(r.slug));
       return [...head, ...rest];
     })();
+    const RECORD_CODE = new Map(RECORDS.map((r, i) => [r.slug, i === 0 ? "REC.00" : `REC.${String(i).padStart(2, "0")}`]));
+    const RECORD_BRIEFS = {
+      "director-reel": "The archive reel is the live screening room: a fast pass through the worlds, trailers, campaigns, and edits on file.",
+      "cyberpunk-2077": "The brief said 'show the city.' The city is not the subject. The loneliness is. Night City had to feel like a character who never blinks.",
+      "doom": "DOOM does not build tension. It applies pressure. Every cut lands with weight, heat, and release energy.",
+      "witcher": "The Continent is old, and the camera should feel it. Atmosphere, character, and scale move in the same rhythm.",
+      "fallout-nuka-cola": "A commercial from a world that ended. The spot plays the product straight and lets the wrongness leak through the grade."
+    };
+    function recordCode(rec) {
+      return RECORD_CODE.get(rec.slug) || rec.code || "";
+    }
+    function recordBrief(rec) {
+      return RECORD_BRIEFS[rec.slug] || rec.summary || "Selected record from the director's archive.";
+    }
 
     const countEl = document.getElementById("rwCount");
     if (countEl) countEl.textContent = `${RECORDS.length} records`;
     const focusLine = document.getElementById("rwFocusLine");
+    const preview = {
+      el: document.getElementById("rwPreview"),
+      back: document.getElementById("rwPreviewBack"),
+      hero: document.getElementById("rwPreviewHero"),
+      kicker: document.getElementById("rwPreviewKicker"),
+      code: document.getElementById("rwPreviewCode"),
+      role: document.getElementById("rwPreviewRole"),
+      client: document.getElementById("rwPreviewClient"),
+      year: document.getElementById("rwPreviewYear"),
+      brief: document.getElementById("rwPreviewBrief"),
+      open: document.getElementById("rwPreviewOpen")
+    };
     const IDLE_LINE = "Director's archive — open";
 
     /* ---------------- card builders ---------------- */
@@ -8935,7 +9094,7 @@
         <span class="rw-shade" aria-hidden="true"></span>
         <span class="rw-top">${logo
           ? `<img class="rw-logo" src="${logo}" alt="" draggable="false">`
-          : `<span class="rw-logotext">${rec.client || "Archive"}</span>`}<span class="rw-code">${rec.code || ""}</span></span>
+          : `<span class="rw-logotext">${rec.client || "Archive"}</span>`}<span class="rw-code">${recordCode(rec)}</span></span>
         <span class="rw-tally" aria-hidden="true">Rec</span>
         ${isLink ? "" : `<span class="rw-play" aria-hidden="true"><span>${rec.isReel ? "Screen the reel" : "Play film"}</span></span>`}
         <span class="rw-bottom">
@@ -9167,7 +9326,7 @@
       }
       if (focusLine) {
         focusLine.textContent =
-          `${rec.code || ""} — ${rec.title} · ${rec.role}` + (mood ? ` · ${mood.line}` : "");
+          `${recordCode(rec)} - ${rec.title} / ${rec.role}` + (mood ? ` / ${mood.line}` : "");
       }
     }
 
@@ -9232,90 +9391,204 @@
       });
     }
 
-    /* ---------------- the pull-out ----------------
-       Card flattens to camera and lifts while the room grades to the
-       project accent, then the cross-document transition carries the
-       blur into the dossier. Navigation always completes. */
+    /* ---------------- the pull-out / preview handoff ----------------
+       Card flattens to camera, the room grades to the project's world,
+       then a dossier preview exposes slate, brief, and the full dossier
+       CTA. Mobile uses the same handoff without the desktop geometry. */
     let veil = null;
-    function openRecord(card, rec) {
-      if (!rec.page) { openVideo(rec.yt); return; }
-      rememberArchivePosition("archive");
-      if (reduced) { location.href = rec.page; return; }
-      if (document.body.classList.contains("rw-pull")) return;
-      if (!veil) {
-        veil = document.createElement("div");
-        veil.className = "rw-gradeveil";
-        veil.setAttribute("aria-hidden", "true");
-        document.body.appendChild(veil);
-      }
+    let previewSource = null;
+    let previewFrozenCol = null;
+
+    function ensureVeil() {
+      if (veil) return;
+      veil = document.createElement("div");
+      veil.className = "rw-gradeveil";
+      veil.setAttribute("aria-hidden", "true");
+      document.body.appendChild(veil);
+    }
+
+    function applyMood(rec) {
       const mood = MOODS[rec.slug];
       if (mood) {
         root.style.setProperty("--rw-mood", mood.mood);
         root.style.setProperty("--rw-mood-soft", mood.soft);
+      } else {
+        root.style.setProperty("--rw-mood", "#6f8cff");
+        root.style.setProperty("--rw-mood-soft", "rgba(111,140,255,.13)");
       }
-      setFocus(null);
-      document.body.classList.add("rw-pull");
-      const col = card.closest(".rw-col");
-      if (col) {
-        col.dataset.frozen = "1";
-        col.classList.add("rw-flatten");
-        col.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(90px)";
-      }
-      card.classList.add("rw-pulling");
-      setTimeout(() => { location.href = rec.page; }, 330);
+      return mood;
     }
 
+    function previewCard(rec, source) {
+      const clone = source ? source.cloneNode(true) : wallCard(rec);
+      clone.querySelectorAll("video, iframe").forEach((node) => node.remove());
+      clone.removeAttribute("href");
+      clone.removeAttribute("target");
+      clone.removeAttribute("rel");
+      if (clone.tagName === "BUTTON") clone.type = "button";
+      clone.classList.remove("is-focus", "rw-pulling");
+      return clone;
+    }
+
+    function closePreview() {
+      if (!preview.el || !document.body.classList.contains("rw-preview-open")) return;
+      document.body.classList.remove("rw-preview-open", "rw-pull");
+      preview.el.setAttribute("aria-hidden", "true");
+      preview.hero.innerHTML = "";
+      previewSource?.classList.remove("rw-pulling");
+      previewSource = null;
+      if (previewFrozenCol) {
+        delete previewFrozenCol.dataset.frozen;
+        previewFrozenCol.classList.remove("rw-flatten");
+        previewFrozenCol.style.transform = "";
+        previewFrozenCol = null;
+      }
+      root.style.setProperty("--rw-mood", "#6f8cff");
+      root.style.setProperty("--rw-mood-soft", "rgba(111,140,255,.13)");
+      if (focusLine) focusLine.textContent = IDLE_LINE;
+    }
+
+    function showPreview(source, rec) {
+      if (!rec.page) { openVideo(rec.yt); return; }
+      if (!preview.el || !preview.hero) { rememberArchivePosition("archive"); location.href = rec.page; return; }
+      if (document.body.classList.contains("rw-preview-open")) return;
+      rememberArchivePosition("archive");
+      ensureVeil();
+      const mood = applyMood(rec);
+      setFocus(null);
+
+      previewSource = source?.classList?.contains("rw-card") ? source : null;
+      previewFrozenCol = previewSource?.closest(".rw-col") || null;
+      if (previewFrozenCol && !reduced) {
+        previewFrozenCol.dataset.frozen = "1";
+        previewFrozenCol.classList.add("rw-flatten");
+        previewFrozenCol.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(90px)";
+      }
+      previewSource?.classList.add("rw-pulling");
+
+      preview.kicker.textContent = `${recordCode(rec)} / selected record` + (mood ? ` / ${mood.line}` : "");
+      preview.code.textContent = recordCode(rec);
+      preview.role.textContent = rec.role || "-";
+      preview.client.textContent = rec.client || "Archive";
+      preview.year.textContent = rec.year || "-";
+      preview.brief.textContent = recordBrief(rec);
+      preview.open.href = rec.page;
+      preview.open.style.display = rec.page ? "inline-flex" : "none";
+      preview.hero.innerHTML = "";
+      preview.hero.appendChild(previewCard(rec, source));
+
+      document.body.classList.add("rw-pull", "rw-preview-open");
+      preview.el.setAttribute("aria-hidden", "false");
+    }
+
+    function openRecord(card, rec) {
+      if (!rec.page) { openVideo(rec.yt); return; }
+      if (document.body.classList.contains("rw-preview-open")) return;
+      showPreview(card, rec);
+    }
+
+    preview.back?.addEventListener("click", closePreview);
+    preview.el?.addEventListener("click", (e) => { if (e.target === preview.el) closePreview(); });
+    preview.open?.addEventListener("click", () => rememberArchivePosition("archive"));
+    addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closePreview();
+    });
+
     /* ---------------- mobile / reduced-motion archive index ---------------- */
-    function mobileNav(rec) {
-      if (rec.page) { rememberArchivePosition("archive"); location.href = rec.page; }
+    const MOBILE_FILTERS = ["All", "Featured", "Gaming", "Commercial", "Narrative", "Experimental"];
+    let mobileFilter = "All";
+    function mobileMatches(rec) {
+      if (mobileFilter === "All") return true;
+      if (rec.isReel) return false;
+      return (rec.filters || []).includes(mobileFilter) || (rec.tags || []).includes(mobileFilter);
+    }
+    function mobileNav(rec, source) {
+      if (rec.page) showPreview(source, rec);
       else openVideo(rec.yt);
     }
     function mobileCard(rec) {
       const el = document.createElement(rec.page ? "a" : "button");
       el.className = "rw-mcard";
       if (rec.page) el.href = rec.page; else el.type = "button";
+      el.dataset.slug = rec.slug;
       const logo = logoFor(rec.client);
       el.innerHTML = `
         <img src="${thumbSrc(rec.yt)}" alt="${rec.title} still" loading="lazy" decoding="async">
         <span class="rw-top">${logo
           ? `<img class="rw-logo" src="${logo}" alt="">`
-          : `<span class="rw-logotext">${rec.client || "Archive"}</span>`}<span class="rw-code">${rec.code || ""}</span></span>
+          : `<span class="rw-logotext">${rec.client || "Archive"}</span>`}<span class="rw-code">${recordCode(rec)}</span></span>
         ${rec.isReel ? `<span class="rw-mlive">Watch reel</span>` : ""}
         <span class="rw-bottom">
           <span class="rw-title">${rec.title}</span>
           <span class="rw-role">${rec.role}${rec.year ? " · " + rec.year : ""}</span>
           <span class="rw-mtags">${(rec.tags || []).slice(0, 3).map((t) => `<span>${t}</span>`).join("")}</span>
         </span>`;
-      el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec); });
+      el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec, el); });
       return el;
     }
     function mobileRow(rec) {
       const el = document.createElement(rec.page ? "a" : "button");
       el.className = "rw-mrow";
       if (rec.page) el.href = rec.page; else el.type = "button";
+      el.dataset.slug = rec.slug;
       el.innerHTML = `
         <span class="rw-mthumb"><img src="${thumbSrc(rec.yt)}" alt="${rec.title} still" loading="lazy" decoding="async"></span>
         <span class="rw-mmeta">
           <span class="rw-mtitle">${rec.title}</span>
           <span class="rw-mrole">${rec.role}${rec.year ? " · " + rec.year : ""}</span>
         </span>
-        <span class="rw-mcode">${rec.code || ""}</span>`;
-      el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec); });
+        <span class="rw-mcode">${recordCode(rec)}</span>`;
+      el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec, el); });
       return el;
+    }
+    function mobileHeader() {
+      const head = document.createElement("div");
+      head.className = "rw-mobile-head";
+      head.innerHTML = `
+        <div class="rw-mobile-kicker">Director's archive / ${RECORDS.length} records</div>
+        <p class="rw-mobile-statement">No wall. Same archive. Flagship records stay weighted first; filters refine the feed.</p>
+        <div class="rw-mobile-filters" aria-label="Mobile archive filters"></div>`;
+      const strip = head.querySelector(".rw-mobile-filters");
+      MOBILE_FILTERS.forEach((name) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `rw-mobile-filter${name === mobileFilter ? " on" : ""}`;
+        btn.textContent = name;
+        btn.addEventListener("click", () => {
+          mobileFilter = name;
+          buildMobile();
+        });
+        strip.appendChild(btn);
+      });
+      return head;
     }
     function buildMobile() {
       mobileEl.innerHTML = "";
       const frag = document.createDocumentFragment();
-      const s1 = document.createElement("div");
-      s1.className = "rw-msection";
-      s1.textContent = "Flagship records";
-      frag.appendChild(s1);
-      RECORDS.filter((r) => FLAG_ORDER.includes(r.slug)).forEach((r) => frag.appendChild(mobileCard(r)));
-      const s2 = document.createElement("div");
-      s2.className = "rw-msection";
-      s2.textContent = "The archive";
-      frag.appendChild(s2);
-      RECORDS.filter((r) => !FLAG_ORDER.includes(r.slug)).forEach((r) => frag.appendChild(mobileRow(r)));
+      frag.appendChild(mobileHeader());
+      const visible = RECORDS.filter(mobileMatches);
+      const flags = visible.filter((r) => FLAG_ORDER.includes(r.slug));
+      const rest = visible.filter((r) => !FLAG_ORDER.includes(r.slug));
+      if (flags.length) {
+        const s1 = document.createElement("div");
+        s1.className = "rw-msection";
+        s1.textContent = "Flagship records";
+        frag.appendChild(s1);
+        flags.forEach((r) => frag.appendChild(mobileCard(r)));
+      }
+      if (rest.length) {
+        const s2 = document.createElement("div");
+        s2.className = "rw-msection";
+        s2.textContent = "The archive";
+        frag.appendChild(s2);
+        rest.forEach((r) => frag.appendChild(mobileRow(r)));
+      }
+      if (!flags.length && !rest.length) {
+        const empty = document.createElement("div");
+        empty.className = "rw-mobile-empty";
+        empty.textContent = "No records in this filter.";
+        frag.appendChild(empty);
+      }
       mobileEl.appendChild(frag);
     }
 
