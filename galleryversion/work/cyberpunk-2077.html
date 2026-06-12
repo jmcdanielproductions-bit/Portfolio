@@ -92,6 +92,8 @@
     @media(max-width:900px){.world{grid-template-columns:1fr;padding-top:5rem}.hero-frame{order:-1}.overview-panels,.exec-grid{grid-template-columns:1fr}}
     @media(max-width:760px){.world{width:min(100vw - 24px,44rem);padding-top:5rem;padding-bottom:8rem}.title{font-size:clamp(2.8rem,12vw,4.5rem)}.meta-row{grid-template-columns:1fr}.nav{width:calc(100vw - 20px);justify-content:space-between}.nav a,.nav button{font-size:.54rem;padding:0 .55rem}.strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:.4rem}.strip::-webkit-scrollbar{display:none}.strip-card{flex:0 0 clamp(180px,66vw,250px);scroll-snap-align:start}}
     @media(max-width:430px){.title{font-size:clamp(2.4rem,11vw,3.5rem)}.world{padding-top:4.5rem}}
+    .editorial{margin-bottom:clamp(2.4rem,4.5vw,4rem)}.editorial-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3.5vw,3rem);align-items:center}.editorial-img-group{display:flex;flex-direction:column}.editorial-inner.img-left .editorial-img-group{order:-1}.editorial-media{overflow:hidden;border:1px solid rgba(111,140,255,.14);background:rgba(4,6,11,.78);aspect-ratio:4/3}.editorial-media img{width:100%;height:100%;object-fit:cover;display:block}.editorial-caption{padding:.5rem .75rem;border:1px solid rgba(111,140,255,.08);border-top:none;background:rgba(4,6,11,.62);color:rgba(248,242,233,.38);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}.editorial-text-wrap{display:flex;flex-direction:column;gap:.9rem}.editorial-eyebrow{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.2em}.editorial-head{margin:0;font-family:Anton,Impact,sans-serif;font-size:clamp(1.8rem,3vw,3.2rem);line-height:.9;letter-spacing:.03em;text-transform:uppercase}.editorial-body{margin:0;color:rgba(248,242,233,.7);font-size:clamp(.92rem,1.05vw,1.02rem);line-height:1.72}.feature-block{margin-bottom:clamp(2.4rem,4.5vw,4rem);position:relative;border:1px solid rgba(111,140,255,.14);overflow:hidden}.feature-block img{width:100%;display:block;max-height:58vh;object-fit:cover;object-position:center}.feature-overlay{position:absolute;bottom:0;left:0;right:0;padding:clamp(1.2rem,3vw,2.4rem);background:linear-gradient(transparent,rgba(8,10,13,.92))}.feature-eyebrow{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;display:block;margin-bottom:.55rem}.feature-head{margin:0 0 .6rem;font-family:Anton,Impact,sans-serif;font-size:clamp(1.6rem,3vw,3rem);line-height:.9;letter-spacing:.03em;text-transform:uppercase}.feature-body{margin:0;color:rgba(248,242,233,.72);font-size:clamp(.88rem,1.02vw,.98rem);line-height:1.66;max-width:58ch}.strip-card-media img{width:100%;height:100%;object-fit:cover;display:block}
+    @media(max-width:760px){.editorial-inner{grid-template-columns:1fr}.editorial-img-group{order:-1}.feature-block img{max-height:44vh}}
   </style>
 </head>
 <body>
@@ -142,6 +144,15 @@
         </div>
       </div>
 
+      <div class="feature-block">
+        <img src="../images/cyberpunk/bts-01-night-city.jpg" alt="Cyberpunk 2077 production set with Godox lighting rigs, red and green atmosphere, camera on tripod." loading="lazy">
+        <div class="feature-overlay">
+          <span class="feature-eyebrow">Production</span>
+          <h3 class="feature-head">Building Night City</h3>
+          <p class="feature-body">The world was built through practical atmosphere first: lighting, haze, red/green separation, dark surfaces, and controlled production design. The goal was not to create a clean product setup, but to make the frame feel like it already belonged inside Arasaka's world.</p>
+        </div>
+      </div>
+
       <div class="cs-section">
         <div class="cs-section-head"><span class="cs-section-label">Execution</span><div class="cs-section-line"></div></div>
         <div class="exec-grid">
@@ -168,6 +179,34 @@
         </div>
       </div>
 
+      <div class="editorial">
+        <div class="editorial-inner">
+          <div class="editorial-text-wrap">
+            <span class="editorial-eyebrow">Direction</span>
+            <h3 class="editorial-head">Through The Monitor</h3>
+            <p class="editorial-body">The monitor became the place where the world either worked or fell apart. Every product shot had to carry the same red-black tension as the performance footage — lighting, reflections, haze, and background texture treated as part of the storytelling, not the setup.</p>
+          </div>
+          <div class="editorial-img-group">
+            <div class="editorial-media"><img src="../images/cyberpunk/bts-03-monitor.jpg" alt="Director's monitor showing Cyberpunk keyboard product shot with red-orange bokeh lighting." loading="lazy"></div>
+            <div class="editorial-caption">Director's Monitor</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="editorial">
+        <div class="editorial-inner img-left">
+          <div class="editorial-text-wrap">
+            <span class="editorial-eyebrow">Visual Language</span>
+            <h3 class="editorial-head">Color Under Pressure</h3>
+            <p class="editorial-body">The palette stayed aggressive: red and black first, with blue buried deep in the shadows. Practical fog added density and separation, helping the frame feel polluted, industrial, and slightly unstable.</p>
+          </div>
+          <div class="editorial-img-group">
+            <div class="editorial-media"><img src="../images/cyberpunk/process-03-color.jpg" alt="Director's monitor showing red-lit Cyberpunk set with neon strip and dark curtain." loading="lazy" style="object-position:top"></div>
+            <div class="editorial-caption">Color Studies</div>
+          </div>
+        </div>
+      </div>
+
       <div class="cs-section">
         <div class="cs-section-head"><span class="cs-section-label">Outcome</span><div class="cs-section-line"></div></div>
         <div class="outcome-block">
@@ -182,9 +221,9 @@
       <div class="cs-section strip-section">
         <div class="cs-section-head"><span class="cs-section-label">Process</span><div class="cs-section-line"></div></div>
         <div class="strip">
-          <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">01</span></div><figcaption>Visual References</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><img src="../images/cyberpunk/process-01-references.jpg" alt="Director's monitor showing Cyberpunk neon set background with blue smoke and red LED signs." loading="lazy"></div><figcaption>Visual References</figcaption></figure>
           <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">02</span></div><figcaption>Arasaka Identity</figcaption></figure>
-          <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">03</span></div><figcaption>Color Studies</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><img src="../images/cyberpunk/process-03-color.jpg" alt="Director's monitor showing red-lit Cyberpunk set angle with neon strip and dark curtain." loading="lazy" style="object-position:top"></div><figcaption>Color Studies</figcaption></figure>
           <figure class="strip-card"><div class="strip-card-media"><span class="strip-card-idx">04</span></div><figcaption>Atmospheric Tests</figcaption></figure>
         </div>
       </div>
@@ -192,10 +231,10 @@
       <div class="cs-section strip-section">
         <div class="cs-section-head"><span class="cs-section-label">Behind The Scenes</span><div class="cs-section-line"></div></div>
         <div class="strip">
-          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">01</span></div><figcaption>Production Set</figcaption></figure>
-          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">02</span></div><figcaption>Lighting Setup</figcaption></figure>
-          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">03</span></div><figcaption>Talent Direction</figcaption></figure>
-          <figure class="strip-card bts-card"><div class="strip-card-media"><span class="strip-card-idx">04</span></div><figcaption>Final Frames</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><img src="../images/cyberpunk/bts-01-night-city.jpg" alt="Cyberpunk 2077 production set with lighting rigs and red-green atmosphere." loading="lazy"></div><figcaption>Building Night City</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><img src="../images/cyberpunk/bts-02-directing.jpg" alt="Director and talent at desk on Cyberpunk production set during performance direction." loading="lazy" style="object-position:center 30%"></div><figcaption>Directing Performance</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><img src="../images/cyberpunk/bts-03-monitor.jpg" alt="Director's monitor showing keyboard product shot with red-orange bokeh." loading="lazy"></div><figcaption>Director's Monitor</figcaption></figure>
+          <figure class="strip-card bts-card"><div class="strip-card-media"><img src="../images/cyberpunk/bts-04-final.jpg" alt="Polished Cyberpunk talent shot with red and teal hair, black blazer, cascading code backdrop." loading="lazy"></div><figcaption>Final Frames</figcaption></figure>
         </div>
       </div>
 
