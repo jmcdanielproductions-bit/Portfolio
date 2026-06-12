@@ -179,6 +179,19 @@
     .marker{display:none}
     .grid-2,.metrics{grid-template-columns:1fr}
   }
+  @media (max-width:760px){
+    .topbar{padding:.78rem 1rem;gap:.9rem;font-size:.52rem;letter-spacing:.15em}
+    .topbar .tc{display:none}
+    .topbar a{min-height:44px;display:inline-flex;align-items:center}
+    .topbar a[href="#outcome"]{font-size:0}
+    .topbar a[href="#outcome"]::after{content:"Outcome";font-size:.52rem}
+    .wrap{padding-top:5.8rem;padding-bottom:8rem}
+    .commentary-toggle{
+      position:static;top:auto;bottom:auto;left:auto;right:auto;width:100%;justify-content:center;
+      min-height:44px;margin:1.15rem 0 .2rem;padding:.78rem .9rem;font-size:.52rem;letter-spacing:.16em;
+    }
+  }
+  .wrap + .commentary-toggle{display:none !important}
 </style>
 </head>
 <body>
@@ -218,6 +231,11 @@
         <div class="note-label">Director's note — 01A</div>
         <div class="note-text">The brief said "show the city." The city isn't the subject — the loneliness is. We framed Night City like a character who never blinks.</div>
       </div>
+      <div class="marker" style="bottom:18%;left:9%;--d:.22s"></div>
+      <div class="note side-left" style="top:52%;--tilt:1.4deg;--d:.28s">
+        <div class="note-label">Director's note - 01B</div>
+        <div class="note-text">The hero frame had to feel observed, not presented. The audience should feel like they intercepted the feed.</div>
+      </div>
     </div>
 
     <div class="slate">
@@ -226,6 +244,10 @@
       <div><div class="sk">Client</div><div class="sv">CD Projekt Red</div></div>
       <div><div class="sk">Year</div><div class="sv">2025</div></div>
     </div>
+    <button class="commentary-toggle" id="toggle" type="button" aria-pressed="false">
+      <span class="dot"></span>
+      Director's commentary - <span class="state"></span>
+    </button>
   </section>
 
   <!-- 01 APPROACH -->
@@ -253,6 +275,10 @@
         <div class="note side-right" style="top:42%;--tilt:-1.4deg;--d:.35s">
           <div class="note-label">Director's note — 02B</div>
           <div class="note-text">Three palettes tested. We chose the one that hurt a little.</div>
+        </div>
+        <div class="note side-left" style="top:68%;--tilt:1.8deg;--d:.42s">
+          <div class="note-label">Director's note - 02C</div>
+          <div class="note-text">The magenta is not decoration. It is pressure. It should make skin, signage, and chrome argue in the same frame.</div>
         </div>
       </figure>
     </div>
@@ -316,6 +342,10 @@
         <div class="note-label">Director's note — 04A</div>
         <div class="note-text">The wide was beautiful. Beautiful wasn't the assignment.</div>
       </div>
+      <div class="note side-left" style="top:-4.5rem;--tilt:1.5deg;--d:.25s">
+        <div class="note-label">Director's note - 04B</div>
+        <div class="note-text">The cut point lands before comfort. If the viewer settles, the city stops feeling hostile.</div>
+      </div>
     </figure>
   </section>
 
@@ -339,6 +369,10 @@
         <div class="note-label">Director's note — 05A</div>
         <div class="note-text">The final frame is the first one we boarded. Sometimes you know.</div>
       </div>
+      <div class="note side-left" style="top:16%;--tilt:1.7deg;--d:.3s">
+        <div class="note-label">Director's note - 05B</div>
+        <div class="note-text">The ending does not resolve the pressure. It just proves the surveillance never turned off.</div>
+      </div>
     </figure>
   </section>
 
@@ -348,7 +382,7 @@
   </div>
 </div>
 
-<button class="commentary-toggle" id="toggle" aria-pressed="false">
+<button class="commentary-toggle" id="toggleLegacy" aria-pressed="false" hidden>
   <span class="dot"></span>
   Director's commentary — <span class="state"></span>
 </button>
