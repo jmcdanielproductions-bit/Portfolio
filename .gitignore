@@ -6,3 +6,7 @@ old design/
 *.mov
 *.avi
 *.mkv
+
+# Web-optimized record wall loops ARE deployed (exception to the video ignores above)
+!galleryversion/videos/
+!galleryversion/videos/**

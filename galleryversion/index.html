@@ -7584,7 +7584,11 @@
       position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
       opacity:.86;transition:opacity .45s ease,transform 5s ease-out;
     }
-    .rw-card video.rw-loop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+    .rw-card video.rw-loop{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;
+      opacity:0;transition:opacity .55s ease;
+    }
+    .rw-card video.rw-loop.on{opacity:1}
     .rw-card::after{
       content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
       background:linear-gradient(180deg,rgba(2,3,5,.42) 0%,transparent 27%,transparent 56%,rgba(2,3,5,.9) 100%);
@@ -8022,6 +8026,7 @@
     const projects = [
       {
         slug: "cyberpunk-2077",
+        loop: "videos/loops/cyberpunk-loop.mp4",
         code: "T1 / 01",
         title: "Cyberpunk 2077",
         summary: "Campaign direction for the world of Cyberpunk — neon pressure, urban speed, and aggressive visual energy.",
@@ -8036,6 +8041,7 @@
       },
       {
         slug: "doom",
+        loop: "videos/loops/doom-loop.mp4",
         code: "T1 / 02",
         title: "DOOM",
         summary: "Impact-forward editorial rhythm built around speed, weight, and release energy.",
@@ -8050,6 +8056,7 @@
       },
       {
         slug: "fallout-nuka-cola",
+        loop: "videos/loops/fallout-loop.mp4",
         code: "T1 / 03",
         title: "Fallout / Nuka-Cola",
         summary: "Brand-world spot with playful apocalyptic texture and campaign utility.",
@@ -8064,6 +8071,7 @@
       },
       {
         slug: "witcher",
+        loop: "videos/loops/witcher-loop.mp4",
         code: "T1 / 04",
         title: "The Witcher",
         summary: "Cinematic fantasy cut built around atmosphere, character, and scale.",
@@ -8091,6 +8099,7 @@
       },
       {
         slug: "corsair-invincible-novablade-pro",
+        loop: "videos/loops/novablade-loop.mp4",
         code: "T2 / 06",
         title: "CORSAIR Invincible Novablade Pro",
         summary: "Product campaign edit built around performance texture, sharp rhythm, and launch-ready brand energy.",
@@ -8104,6 +8113,7 @@
       },
       {
         slug: "corsair-amazon-prime-gaming-week",
+        loop: "videos/loops/primeweek-loop.mp4",
         code: "T2 / 08",
         title: "CORSAIR Amazon Prime Gaming Week",
         summary: "Promotional campaign cut for a gaming-focused retail moment.",
@@ -8117,6 +8127,7 @@
       },
       {
         slug: "bmw-fanatec-ad",
+        loop: "videos/loops/bmw-loop.mp4",
         code: "T2 / 10",
         title: "BMW Fanatec AD",
         summary: "Motorsport brand spot combining performance language with sim-racing precision.",
@@ -8144,6 +8155,7 @@
       },
       {
         slug: "frame-cut",
+        loop: "videos/loops/framecut-loop.mp4",
         code: "T3 / 11",
         title: "Frame Cut",
         summary: "Music-led editorial exercise focused on rhythm, contrast, and visual release.",
@@ -8157,6 +8169,7 @@
       },
       {
         slug: "amv-flow-edit-lil-baby-intro",
+        loop: "videos/loops/lilbaby-loop.mp4",
         code: "T3 / 12",
         title: "Flow Edit — Lil Baby",
         summary: "Rhythm study built around flow, impact cuts, and performance-driven motion.",
@@ -8170,6 +8183,7 @@
       },
       {
         slug: "amv-iron-man-edit",
+        loop: "videos/loops/ironman-loop.mp4",
         code: "T3 / 13",
         title: "Iron Man — Edit Study",
         summary: "Character-driven cut built around heroic momentum and cinematic impact.",
@@ -8183,6 +8197,7 @@
       },
       {
         slug: "el-beeper-luffy-amv",
+        loop: "videos/loops/luffy-loop.mp4",
         code: "T3 / 14",
         title: "Luffy — Edit Study",
         summary: "Edit study built around character energy, punchy rhythm, and visual momentum.",
@@ -8209,6 +8224,7 @@
       },
       {
         slug: "kairi-animation-storyboard",
+        loop: "videos/loops/kairi-loop.mp4",
         code: "T4 / 16",
         title: "Kairi — Animation Direction",
         summary: "Animation direction and storyboard developed for a character-driven action sequence.",
@@ -8223,6 +8239,7 @@
       },
       {
         slug: "shugo-samurai-trailer-ad",
+        loop: "videos/loops/shugo-loop.mp4",
         code: "T4 / 17",
         title: "Shugo Samurai",
         summary: "Trailer direction with character-forward action, atmosphere, and campaign energy.",
@@ -8278,6 +8295,7 @@
       client: "Jared McDaniel",
       year: "2026",
       yt: REEL_ID,
+      loop: "videos/loops/reel-loop.mp4",
       isReel: true
     };
 
@@ -9043,7 +9061,69 @@
         col.style.transform = `rotateX(${pitch}deg) rotateY(${-a}deg) translateZ(${-Math.abs(a) * 12}px)`;
         col.style.setProperty("--shade", Math.min(0.55, Math.abs(a) / 40 * 0.55).toFixed(3));
       }
+      updateLoops(now);
       requestAnimationFrame(frame);
+    }
+
+    /* ---------------- loop budget ----------------
+       Local motion loops only (no YouTube iframes, ever). At most
+       LOOP_BUDGET records play at once: the focused card plus the
+       nearest center-zone cards. Everything else shows its poster;
+       loops fully unload (element removed) when they leave the zone.
+       Desktop wall only — mobile and reduced-motion never run this. */
+    const LOOP_BUDGET = 3;
+    const LOOP_ZONE = 0.36; // fraction of viewport width from center
+    let loopTickAt = 0;
+
+    function mountLoop(card, rec) {
+      const v = document.createElement("video");
+      v.className = "rw-loop";
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.setAttribute("muted", "");
+      v.setAttribute("playsinline", "");
+      v.src = rec.loop;
+      v.addEventListener("playing", () => v.classList.add("on"), { once: true });
+      v.addEventListener("error", () => v.remove(), { once: true });
+      const thumb = card.querySelector(".rw-thumb");
+      thumb ? thumb.after(v) : card.prepend(v);
+      const p = v.play();
+      if (p && p.catch) p.catch(() => v.remove());
+    }
+
+    function updateLoops(now) {
+      if (now - loopTickAt < 350) return;
+      loopTickAt = now;
+      if (document.hidden || document.body.classList.contains("rw-pull")) return;
+      const zone = innerWidth * LOOP_ZONE;
+      const center = innerWidth / 2;
+      const candidates = [];
+      for (const card of wallEl.querySelectorAll(".rw-card")) {
+        const rec = recOf(card);
+        if (!rec || !rec.loop) continue;
+        const r = card.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const onScreen = r.right > 0 && r.left < innerWidth;
+        const d = Math.abs(cx - center);
+        /* flagship band priority: mid-row records (the flagships) win
+           over edge-row neighbors at comparable distance */
+        const mid = card.closest(".rw-cell")?.classList.contains("rw-mid");
+        const rank = d - (mid ? 150 : 0) - (rec.isReel ? 60 : 0);
+        candidates.push({ card, d, rank, eligible: onScreen && d < zone, focus: card === focusCard });
+      }
+      const keep = new Set(
+        candidates
+          .filter((c) => c.eligible || (c.focus && c.d < innerWidth * 0.5))
+          .sort((a, b) => (a.focus ? -1e6 : a.rank) - (b.focus ? -1e6 : b.rank))
+          .slice(0, LOOP_BUDGET)
+          .map((c) => c.card)
+      );
+      candidates.forEach(({ card }) => {
+        const live = card.querySelector("video.rw-loop");
+        if (keep.has(card) && !live) mountLoop(card, recOf(card));
+        else if (!keep.has(card) && live) { live.pause(); live.remove(); }
+      });
     }
 
     /* ---------------- manual picking ----------------
