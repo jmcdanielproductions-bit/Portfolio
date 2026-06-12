@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 04 — The Record Wall / Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#080a0d; --bg-deep:#030406;
+    --ink:#f2eee7; --muted:rgba(242,238,231,.62); --faint:rgba(242,238,231,.34);
+    --line:rgba(242,238,231,.12); --glass:rgba(8,12,18,.66); --gold:#d6b77a;
+    --mood:#6f8cff; --mood-soft:rgba(111,140,255,.13);
+    --tally:#ff3b30;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--bg-deep);color:var(--ink);overflow:hidden;
+    font-family:"Space Grotesk",sans-serif;-webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ ENVIRONMENT — the village, not an OS ============ */
+  .env{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .env-floor{
+    position:absolute;left:-10%;right:-10%;bottom:-14%;height:46%;
+    background:radial-gradient(60% 100% at 50% 100%,var(--mood-soft),transparent 70%);
+    filter:blur(20px);opacity:.7;transition:background 1s;
+  }
+  .env-spill{
+    position:absolute;inset:0;
+    background:radial-gradient(90rem 48rem at 50% 30%,rgba(111,140,255,.06),transparent 62%);
+    animation:spillBreath 24s ease-in-out infinite;
+  }
+  @keyframes spillBreath{0%,100%{opacity:.7}50%{opacity:1}}
+  .env-vignette{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,transparent 36%,rgba(0,0,0,.82))}
+  .grain{
+    position:fixed;inset:-100px;z-index:80;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grainShift .9s steps(4) infinite;
+  }
+  @keyframes grainShift{
+    0%{transform:translate(0,0)}25%{transform:translate(-34px,22px)}
+    50%{transform:translate(20px,-40px)}75%{transform:translate(-12px,-18px)}100%{transform:translate(0,0)}
+  }
+
+  /* ============ CHROME ============ */
+  .chrome{position:fixed;inset:0;pointer-events:none;z-index:50;
+    font-family:"JetBrains Mono",monospace;text-transform:uppercase}
+  .chrome > *{position:absolute;pointer-events:auto}
+  .ch-name{top:1.5rem;left:1.8rem}
+  .ch-name .n1{font-family:"Anton",sans-serif;font-size:1.05rem;letter-spacing:.07em;text-transform:uppercase}
+  .ch-name .n2{font-size:.54rem;letter-spacing:.3em;color:var(--mood);margin-top:.3rem;transition:color .8s}
+  .ch-statement{
+    top:1.7rem;left:50%;transform:translateX(-50%);text-align:center;
+    font-size:.56rem;letter-spacing:.3em;color:var(--muted);line-height:1.9;
+  }
+  .ch-status{top:1.7rem;right:1.8rem;text-align:right;font-size:.56rem;letter-spacing:.22em;color:var(--faint);line-height:1.9}
+  .ch-status b{color:var(--muted);font-weight:400}
+  .ch-status .dot{display:inline-block;width:.4rem;height:.4rem;border-radius:50%;background:var(--gold);margin-right:.4rem;animation:openBlink 3s ease-in-out infinite}
+  @keyframes openBlink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  .ch-nav{
+    bottom:1.6rem;left:50%;transform:translateX(-50%);
+    display:flex;gap:.3rem;background:var(--glass);border:1px solid var(--line);
+    border-radius:99px;padding:.34rem;backdrop-filter:blur(12px);
+  }
+  .ch-nav a{
+    font-size:.58rem;letter-spacing:.22em;color:var(--muted);text-decoration:none;
+    padding:.55rem 1.1rem;border-radius:99px;transition:all .25s;
+  }
+  .ch-nav a:hover{color:var(--ink)}
+  .ch-nav a.on{background:var(--ink);color:var(--bg-deep)}
+
+  .ch-onfile{bottom:1.9rem;left:1.8rem;display:flex;align-items:center;gap:1rem}
+  .ch-onfile .lbl{font-size:.52rem;letter-spacing:.26em;color:var(--faint)}
+  .ch-onfile img{height:.85rem;filter:brightness(0) invert(1);opacity:.34;transition:opacity .3s}
+  .ch-onfile img:hover{opacity:.7}
+
+  .ch-hint{bottom:1.9rem;right:1.8rem;text-align:right;font-size:.54rem;letter-spacing:.24em;color:var(--faint);line-height:2}
+  .ch-hint button{
+    background:none;border:1px solid var(--line);border-radius:99px;color:var(--muted);
+    font:inherit;letter-spacing:.24em;text-transform:uppercase;padding:.3rem .8rem;cursor:pointer;
+    transition:border-color .3s,color .3s;
+  }
+  .ch-hint button:hover{border-color:var(--gold);color:var(--ink)}
+
+  /* ============ THE WALL ============ */
+  .stage{
+    position:fixed;inset:0;z-index:10;
+    perspective:1500px;perspective-origin:50% 44%;
+    cursor:grab;
+  }
+  .stage.dragging{cursor:grabbing}
+  .world{
+    position:absolute;inset:0;
+    transition:filter .5s;
+  }
+  /* NOTE: single 3D level — the column is the only animated 3D transform.
+     Nested animated preserve-3d layers break Chromium pointer hit-testing. */
+  .wall{
+    position:absolute;top:50%;left:50%;display:flex;align-items:center;gap:var(--wallgap,1.5rem);
+    transform-style:preserve-3d;
+  }
+  /* width is computed by the layout engine from record count + viewport */
+  .col{
+    display:flex;flex-direction:column;justify-content:center;gap:var(--wallgap,1.5rem);
+    width:var(--colw,17rem);flex-shrink:0;
+    transform-style:preserve-3d;will-change:transform;
+  }
+
+  .cell{position:relative;aspect-ratio:16/9;transform-style:preserve-3d}
+  .cell.row-edge{transform:scale(.87) translateZ(-55px)}
+  .cell.row-mid{transform:translateZ(45px)}
+  .cell.is-reel{transform:scale(1.12) translateZ(85px)}
+
+  /* record = a monitor */
+  .card{
+    position:absolute;inset:0;border-radius:5px;overflow:hidden;cursor:pointer;
+    background:var(--bg-deep);
+    border:1px solid rgba(242,238,231,.14);
+    box-shadow:0 0 0 3px rgba(3,4,6,.9),0 22px 50px rgba(0,0,0,.55);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .4s,opacity .4s,filter .4s;
+  }
+  .card img.thumb{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .4s,transform 6s ease-out}
+  .card iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+  .card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(3,4,6,.42) 0%,transparent 26%,transparent 58%,rgba(3,4,6,.9) 100%);
+  }
+  .c-top{
+    position:absolute;top:.6rem;left:.7rem;right:.7rem;z-index:3;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .c-logo{height:.78rem;filter:brightness(0) invert(1);opacity:.55}
+  .c-logotext{font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+  .c-code{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.2em;color:var(--faint)}
+  .c-tally{
+    position:absolute;top:.62rem;right:.7rem;z-index:4;display:none;align-items:center;gap:.35rem;
+    font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:.22em;color:var(--tally);
+  }
+  .c-tally::before{content:"";width:.42rem;height:.42rem;border-radius:50%;background:var(--tally);box-shadow:0 0 10px var(--tally);animation:openBlink 1.2s ease-in-out infinite}
+
+  .c-bottom{position:absolute;left:.75rem;right:.75rem;bottom:.65rem;z-index:3}
+  .c-title{font-family:"Anton",sans-serif;font-size:1rem;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
+  .c-expand{
+    max-height:0;overflow:hidden;opacity:0;
+    transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .35s,margin .35s;
+  }
+  .c-role{font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:.35rem}
+  .c-tags{display:flex;gap:.3rem;margin-top:.45rem;flex-wrap:wrap}
+  .c-tags span{
+    font-family:"JetBrains Mono",monospace;font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:.18rem .5rem;
+  }
+
+  /* hover focus — the village turns to one monitor */
+  .wall.has-focus .card:not(.focus){opacity:.42;filter:saturate(.6) brightness(.6)}
+  .card.focus{
+    transform:scale(1.07);border-color:rgba(242,238,231,.34);
+    box-shadow:0 0 0 3px rgba(3,4,6,.9),0 30px 70px rgba(0,0,0,.75),0 0 56px var(--mood-soft);
+  }
+  .card.focus img.thumb{opacity:1;transform:scale(1.06)}
+  .card.focus .c-tally{display:flex}
+  .card.focus .c-expand{max-height:5rem;opacity:1;margin-bottom:.1rem}
+
+  /* density test switcher */
+  .ch-hint a{color:var(--muted);text-decoration:none;transition:color .25s}
+  .ch-hint a:hover,.ch-hint a.on{color:var(--ink)}
+  .ch-hint .density{margin-bottom:.55rem}
+
+  /* timecode strip under the wall */
+  .tc-strip{
+    position:fixed;left:0;right:0;bottom:5.4rem;z-index:12;pointer-events:none;
+    text-align:center;font-family:"JetBrains Mono",monospace;font-size:.54rem;
+    letter-spacing:.34em;color:var(--faint);text-transform:uppercase;
+  }
+  .tc-strip b{color:var(--mood);font-weight:400;transition:color .8s}
+
+  /* ============ PULL OVERLAY (live spike) ============ */
+  .overlay{position:fixed;inset:0;z-index:60;display:none;overflow-y:auto}
+  body.pulled .overlay{display:block}
+  body.pulled .stage{pointer-events:none}
+  body.pulled .world{filter:brightness(.32) saturate(.5)}
+  .ov-inner{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:5.2rem 2rem 6rem}
+  .hero-slot{position:relative;width:min(74vw,68rem);aspect-ratio:16/9}
+  .card.pulled-card{cursor:default;border-color:rgba(242,238,231,.28)}
+  .card.pulled-card .c-title{font-size:clamp(2.2rem,4.6vw,4rem)}
+  .card.pulled-card .c-expand{max-height:5rem;opacity:1}
+  .card.pulled-card .c-top{top:1rem;left:1.1rem;right:1.1rem}
+  .card.pulled-card .c-logo{height:1rem}
+  .card.pulled-card .c-bottom{left:1.2rem;right:1.2rem;bottom:1rem}
+  .ov-slate{
+    width:min(74vw,68rem);display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;
+    margin-top:1.5rem;padding-top:1.3rem;border-top:1px solid var(--line);
+  }
+  .ov-slate>div{visibility:hidden}
+  .sk{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
+  .sv{font-size:.9rem;font-weight:500;margin-top:.35rem;text-transform:uppercase;letter-spacing:.04em}
+  .sv.mood{color:var(--mood);transition:color .8s}
+  .ov-brief{width:min(74vw,68rem);max-width:44rem;margin-top:2rem;opacity:0;align-self:flex-start;margin-left:calc((100% - min(74vw,68rem))/2)}
+  .ov-brief p{color:var(--muted);line-height:1.75;font-size:1.02rem}
+  .ov-open{
+    display:inline-block;margin-top:1.4rem;font-family:"JetBrains Mono",monospace;font-size:.6rem;
+    letter-spacing:.26em;text-transform:uppercase;color:var(--ink);text-decoration:none;
+    border:1px solid var(--mood);border-radius:99px;padding:.7rem 1.3rem;transition:background .3s,color .3s;
+  }
+  .ov-open:hover{background:var(--mood);color:var(--bg-deep)}
+  .back{
+    position:fixed;top:1.4rem;right:1.8rem;z-index:70;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--ink);background:var(--glass);border:1px solid var(--line);border-radius:99px;
+    padding:.6rem 1.1rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s;backdrop-filter:blur(8px);
+  }
+  body.pulled .back{opacity:1;pointer-events:auto}
+
+  .mock-tag{
+    position:fixed;top:50%;left:0;z-index:50;transform:rotate(-90deg) translateY(-100%);transform-origin:top left;
+    font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:.3em;color:var(--faint);
+    text-transform:uppercase;padding:.5rem;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .grain,.env-spill{animation:none}
+    .card,.c-expand{transition:none}
+  }
+  @media (max-width:900px){
+    .ch-statement,.ch-onfile,.tc-strip{display:none}
+    .stage{position:fixed}
+  }
+</style>
+</head>
+<body>
+
+<div class="env">
+  <div class="env-spill"></div>
+  <div class="env-floor" id="floor"></div>
+  <div class="env-vignette"></div>
+</div>
+<div class="grain"></div>
+
+<div class="stage" id="stage">
+  <div class="world" id="world">
+    <div class="wall" id="wall"></div>
+  </div>
+</div>
+
+<div class="tc-strip">Archive plane · <b id="tcMood">Base grade</b> · drag to look · click to pull a record</div>
+
+<div class="chrome">
+  <div class="ch-name">
+    <div class="n1">Jared McDaniel</div>
+    <div class="n2">Director's Archive</div>
+  </div>
+  <div class="ch-statement">Trailers, commercials & worlds.<br>Director of record.</div>
+  <div class="ch-status">
+    <div><span class="dot"></span><b>Archive open</b></div>
+    <div>Los Angeles <b id="clock">--:--:--</b> · <span id="recCount">18 records</span> · last entry 2026</div>
+  </div>
+  <div class="ch-onfile">
+    <span class="lbl">On file</span>
+    <img src="../images/logos/cdprojekt.svg" alt="CD Projekt Red">
+    <img src="../images/logos/bethesda.svg" alt="Bethesda">
+    <img src="../images/logos/xbox.svg" alt="Xbox">
+    <img src="../images/logos/apple.svg" alt="Apple">
+    <img src="../images/logos/corsair.svg" alt="Corsair">
+  </div>
+  <nav class="ch-nav">
+    <a class="on" href="#">Archive</a><a href="#">Work</a><a href="#">About</a><a href="#">Contact</a>
+  </nav>
+  <div class="ch-hint">
+    <div class="density">Density test —
+      <a href="?records=18">18</a> · <a href="?records=25">25</a> ·
+      <a href="?records=40">40</a> · <a href="?records=60">60</a>
+    </div>
+    <div><button id="soundBtn">Reel sound — off</button></div>
+  </div>
+</div>
+
+<div class="mock-tag">Mockup 04 — The Record Wall</div>
+
+<!-- PULL DESTINATION -->
+<div class="overlay" id="overlay">
+  <div class="ov-inner">
+    <div class="hero-slot" id="heroSlot"></div>
+    <div class="ov-slate" id="ovSlate">
+      <div><div class="sk">Record</div><div class="sv mood" id="svCode">—</div></div>
+      <div><div class="sk">Role</div><div class="sv" id="svRole">—</div></div>
+      <div><div class="sk">Client</div><div class="sv" id="svClient">—</div></div>
+      <div><div class="sk">Year</div><div class="sv" id="svYear">—</div></div>
+    </div>
+    <div class="ov-brief" id="ovBrief">
+      <p id="ovBriefText"></p>
+      <a class="ov-open" id="ovOpen" href="#">Open full dossier →</a>
+    </div>
+  </div>
+</div>
+<button class="back" id="back">← Back to the wall</button>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+<script>
+  gsap.registerPlugin(Flip);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine    = matchMedia("(pointer: fine)").matches;
+
+  /* ---------------- data ---------------- */
+  const LOGOS = { cdpr:"cdprojekt.svg", beth:"bethesda.svg", corsair:"corsair.svg" };
+  const R = {
+    reel:      { code:"REC.00", title:"Director Reel", role:"Creative Video Director", client:"J. McDaniel", year:"2026", yt:"mFeMMMmdW24", tags:["Reel","2026 Cut"], reel:true },
+    cyberpunk: { code:"REC.01", title:"Cyberpunk 2077", role:"Creative Direction", client:"CD Projekt Red", year:"2025", yt:"Hc_t2eTorhI", logo:"cdpr", tags:["Trailer","In-Engine","Worldbuild"], mood:"#ff3d72", soft:"rgba(255,61,114,.13)", world:"Night City / digital decay",
+      brief:"The brief said 'show the city.' But the city isn't the subject — the loneliness is. We framed Night City like a character who never blinks.", dossier:"06-dossier-cyberpunk.html" },
+    doom:      { code:"REC.02", title:"DOOM", role:"Trailer Direction", client:"Bethesda", year:"2025", yt:"0WUnGHJXeHc", logo:"beth", tags:["Trailer","Practical","Heavy"], mood:"#ff6b35", soft:"rgba(255,107,53,.13)", world:"Heat / industrial brutality",
+      brief:"DOOM doesn't build tension — it applies pressure. Every cut lands like a hydraulic press. The edit never apologizes." },
+    fallout:   { code:"REC.03", title:"Fallout / Nuka-Cola", role:"Commercial Direction", client:"Bethesda", year:"2025", yt:"VxTBnNhAD3Q", logo:"beth", tags:["Commercial","Broadcast","Retro"], mood:"#cc3333", soft:"rgba(204,51,51,.13)", world:"Atomic Americana",
+      brief:"A commercial from a world that ended. We directed it completely straight and let the wrongness leak in through the grade." },
+    witcher:   { code:"REC.04", title:"The Witcher", role:"Cinematic Direction", client:"CD Projekt Red", year:"2025", yt:"tr1ajPqpuDs", logo:"cdpr", tags:["Cinematic","Atmosphere","Organic"], mood:"#9fc7ff", soft:"rgba(159,199,255,.12)", world:"Candlelight / ancient texture",
+      brief:"The Continent is old, and the camera should feel it. Nothing in this world moves in straight lines — neither does the edit." },
+    corsairpx: { code:"REC.05", title:"Product Experience", role:"Brand Direction", client:"Corsair", year:"2024", yt:"OZZsRSgG70g", logo:"corsair", tags:["Brand","Product"] },
+    novablade: { code:"REC.06", title:"Novablade Pro", role:"Campaign Direction", client:"Corsair × Invincible", year:"2025", yt:"WcOLQd3IycM", logo:"corsair", tags:["Campaign","IP Collab"] },
+    primeweek: { code:"REC.07", title:"Prime Gaming Week", role:"Campaign Direction", client:"Corsair", year:"2025", yt:"x5VkzsCT6eA", logo:"corsair", tags:["Campaign","Retail"] },
+    bmw:       { code:"REC.08", title:"BMW Fanatec", role:"Commercial Direction", client:"BMW / Fanatec", year:"2025", yt:"stQ7DVL4PvE", logotext:"BMW · Fanatec", tags:["Commercial","Auto"] },
+    expstore:  { code:"REC.09", title:"Experience Store", role:"Commercial Direction", client:"Corsair", year:"2025", yt:"1MzUb4VSi1s", logo:"corsair", tags:["Commercial","Spatial"] },
+    framecut:  { code:"REC.10", title:"Frame Cut", role:"Experimental Edit", client:"Archive", year:"2024", yt:"nAIy3q5myjY", logotext:"Archive", tags:["Edit Study"] },
+    flowedit:  { code:"REC.11", title:"Flow Edit", role:"Experimental Edit", client:"Archive", year:"2025", yt:"DvQ-cIp07Mg", logotext:"Archive", tags:["Edit Study","Music"] },
+    ironman:   { code:"REC.12", title:"Iron Man Study", role:"Experimental Edit", client:"Archive", year:"2025", yt:"oB9go7Dd1d0", logotext:"Archive", tags:["Edit Study"] },
+    luffy:     { code:"REC.13", title:"Luffy Study", role:"Experimental Edit", client:"Archive", year:"2025", yt:"KAl31zPic9Y", logotext:"Archive", tags:["Edit Study","Anime"] },
+    ashfall:   { code:"REC.14", title:"Ashfall", role:"Short Film Direction", client:"Independent", year:"2024", yt:"Nf_lDTJCl2w", logotext:"Independent", tags:["Narrative","Short"] },
+    kairi:     { code:"REC.15", title:"Kairi", role:"Animation Direction", client:"Independent", year:"2025", yt:"mpTbAcvWflA", logotext:"Independent", tags:["Animation"] },
+    shugo:     { code:"REC.16", title:"Shugo Samurai", role:"Trailer Direction", client:"Shugo Samurai", year:"2025", yt:"Lpeyg7lq_DY", logotext:"Shugo", tags:["Trailer","Indie"] },
+    collapse:  { code:"REC.17", title:"Silent Collapse", role:"Experimental Direction", client:"Independent", year:"2024", yt:"Yj2ncYs0vGU", logotext:"Independent", tags:["Experimental"] },
+  };
+
+  /* ================= WALL LAYOUT ENGINE =================
+     A framework, not an arrangement. Placement, density, sizing and
+     curvature are all computed from (record count × viewport), so the
+     wall holds at 18, 25, 40 or 60+ records without redesign.
+
+     Rules encoded here:
+     - PRIORITY: reel + flagships always own the center of the middle
+       band; new records populate outward in rings, never displacing them.
+     - NO HOLES: excess grid cells are trimmed from the outermost
+       columns (which curve away anyway) and short columns self-center —
+       the wall is always exactly as large as its content.
+     - DENSITY: fewer records → fewer/larger cards, tighter arc.
+       More records → more columns/rows, smaller cards, wider wall,
+       deeper curve, more overflow past the viewport edges.            */
+
+  const PRIORITY = ["reel","cyberpunk","doom","witcher","fallout",
+    "corsairpx","novablade","primeweek","bmw","expstore",
+    "framecut","flowedit","ironman","luffy","ashfall","kairi","shugo","collapse"];
+
+  /* density test: ?records=N synthesizes future records from real footage */
+  const SYNTH_TITLES = ["Night Shift","Override","Western Reach","Signal Lost","Coldstart",
+    "Afterimage","Redline","Low Orbit","Second Unit","Static Field","Glass Run","Halflight",
+    "Vantage","Echo Block","Daybreak","Slow Burn","Northpoint","Killswitch","Open World",
+    "Final Pass","Wireframe","Motor City","Deep Field","Longplay","White Room","Crosscut",
+    "Overcast","Blacksite","Freefall","Homefront","Latch","Renderfarm","Sundown","Paydirt",
+    "Ghostlight","Outpost","Reroute","Skylark","Tailslate","Undertow","Bright Field","Holdframe"];
+  const wantCount = (() => {
+    const v = parseInt(new URLSearchParams(location.search).get("records"), 10);
+    return Number.isFinite(v) ? Math.max(5, Math.min(99, v)) : 0;
+  })();
+
+  function buildRecordList(){
+    const base = PRIORITY.map(slug => ({ slug, ...R[slug] }));
+    const want = wantCount || base.length;
+    const out = base.slice(0, Math.min(want, base.length));
+    const donors = base.filter(r => !r.reel);
+    for (let i = base.length; i < want; i++){
+      const donor = donors[(i - base.length) % donors.length];
+      out.push({
+        slug: `synth-${i}`, code: `REC.${String(i).padStart(2, "0")}`,
+        title: SYNTH_TITLES[(i - base.length) % SYNTH_TITLES.length],
+        role: donor.role, client: "Archive", year: "2026", yt: donor.yt,
+        logotext: "Archive", tags: ["Density Test"], synth: true,
+      });
+    }
+    return out;
+  }
+
+  function computeLayout(n, vw, vh){
+    const gap = 22;
+    const stageH = Math.max(380, vh - 210);            // chrome clearance
+    let rows = n <= 24 ? 3 : n <= 46 ? 4 : 5;          // density-driven…
+    const spread = 1.3 + Math.min(n, 60) / 60 * 0.5;   // wall width ÷ viewport
+    let colsN, colW;
+    while (true){                                       // …height-checked
+      colsN = Math.ceil(n / rows);
+      colW = (vw * spread - gap * (colsN - 1)) / colsN;
+      colW = Math.max(225, Math.min(440, colW));
+      const colH = rows * (colW * 9 / 16) + (rows - 1) * gap;
+      if (colH <= stageH || rows === 3) break;
+      rows--;
+    }
+    colW = Math.min(colW, ((stageH - (rows - 1) * gap) / rows) * 16 / 9);
+    return { rows, cols: colsN, colW, gap, spread };
+  }
+
+  const wall = document.getElementById("wall");
+  let REC = {};        // slug -> record, rebuilt with the wall
+  let cols = [];       // live column elements
+  let curveK = 0.03;   // adaptive curvature, set by buildWall
+
+  function cardHTML(r){
+    const logo = r.logo
+      ? `<img class="c-logo" src="../images/logos/${LOGOS[r.logo]}" alt="${r.client}">`
+      : `<span class="c-logotext">${r.logotext || r.client}</span>`;
+    return `<div class="card" data-slug="${r.slug}" tabindex="0">
+      <img class="thumb" src="https://img.youtube.com/vi/${r.yt}/hqdefault.jpg" alt="${r.title}" loading="lazy" decoding="async">
+      <div class="c-top">${logo}<span class="c-code">${r.code}</span></div>
+      <span class="c-tally">Rec</span>
+      <div class="c-bottom">
+        <div class="c-title">${r.title}</div>
+        <div class="c-expand">
+          <div class="c-role">${r.role} · ${r.client} · ${r.year}</div>
+          <div class="c-tags">${r.tags.map(t=>`<span>${t}</span>`).join("")}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function buildWall(){
+    const list = buildRecordList();
+    const n = list.length;
+    const L = computeLayout(n, innerWidth, innerHeight);
+    REC = {};
+    list.forEach(r => REC[r.slug] = r);
+
+    /* column order, center-out — priority records land nearest the gaze */
+    const order = [...Array(L.cols).keys()]
+      .sort((a, b) => Math.abs(a - (L.cols - 1) / 2) - Math.abs(b - (L.cols - 1) / 2));
+
+    /* trim excess cells from the outermost columns — no holes, ever */
+    const counts = new Array(L.cols).fill(L.rows);
+    let excess = L.cols * L.rows - n, t = 0;
+    const trimOrder = [...order].reverse();
+    while (excess > 0){
+      const c = trimOrder[t % trimOrder.length];
+      if (counts[c] > 1){ counts[c]--; excess--; }
+      t++;
+    }
+
+    /* each column exposes slots middle-first, then alternating up/down */
+    const mid = Math.floor((L.rows - 1) / 2);
+    const slotRows = count => {
+      const seq = [mid];
+      for (let d = 1; seq.length < L.rows; d++){
+        if (mid - d >= 0) seq.push(mid - d);
+        if (mid + d < L.rows) seq.push(mid + d);
+      }
+      return seq.slice(0, count);
+    };
+
+    /* assign records ring by ring: middle band first (reel + flagships
+       center-out), then the rows above/below — the archive grows outward */
+    const cells = Array.from({ length: L.cols }, () => ({}));
+    let idx = 0;
+    for (let ring = 0; ring < L.rows && idx < n; ring++){
+      for (const c of order){
+        const rowsHere = slotRows(counts[c]);
+        if (ring >= rowsHere.length) continue;
+        cells[c][rowsHere[ring]] = list[idx++];
+        if (idx >= n) break;
+      }
+    }
+
+    /* render */
+    wall.innerHTML = "";
+    wall.style.setProperty("--colw", L.colW.toFixed(1) + "px");
+    wall.style.setProperty("--wallgap", L.gap + "px");
+    for (let c = 0; c < L.cols; c++){
+      const col = document.createElement("div");
+      col.className = "col";
+      Object.keys(cells[c]).map(Number).sort((a, b) => a - b).forEach(rIdx => {
+        const rec = cells[c][rIdx];
+        const cell = document.createElement("div");
+        cell.className = `cell ${rIdx === mid ? "row-mid" : "row-edge"}${rec.reel ? " is-reel" : ""}`;
+        cell.innerHTML = cardHTML(rec);
+        col.appendChild(cell);
+      });
+      wall.appendChild(col);
+    }
+    cols = [...wall.querySelectorAll(".col")];
+
+    /* deeper curve as the wall outgrows the viewport */
+    curveK = (26 + (L.spread - 1.3) * 26) / (innerWidth * 0.62);
+
+    document.getElementById("recCount").textContent =
+      `${n} records${wantCount && wantCount !== 18 ? " · density test" : ""}`;
+    document.querySelectorAll(".ch-hint .density a").forEach(a =>
+      a.classList.toggle("on", a.href.endsWith(`=${n}`)));
+
+    requestAnimationFrame(measure);
+  }
+
+  /* ---------------- wall physics: drag-to-look ---------------- */
+  const stage = document.getElementById("stage");
+  const world = document.getElementById("world");
+  let wallX = 0, wallXT = 0, vel = 0, dragging = false, lastX = 0, lastT = 0, dragDist = 0;
+  let pitch = 0, pitchT = 0, yawNudge = 0, yawNudgeT = 0;
+  let wallW = 0, bound = 0, lastInput = performance.now();
+  let colCenters = [];
+
+  function measure(){
+    wallW = wall.scrollWidth;
+    bound = Math.max(0, (wallW - innerWidth) / 2 + 120);
+    colCenters = cols.map(c => c.offsetLeft + c.offsetWidth / 2);
+    wall.style.marginTop = -(wall.offsetHeight / 2) + "px";
+    if (reduced) wall.style.marginLeft = (-wallW / 2) + "px";
+  }
+
+  buildWall();
+
+  /* viewport change → recompute the whole arrangement (debounced) */
+  let resizeT;
+  addEventListener("resize", () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => {
+      if (pulledCard){ measure(); return; } // never rebuild under a pulled record
+      wallX = wallXT = 0;
+      buildWall();
+    }, 220);
+  });
+
+  stage.addEventListener("pointerdown", e => {
+    dragging = true; stage.classList.add("dragging");
+    lastX = e.clientX; lastT = performance.now(); vel = 0; lastInput = lastT; dragDist = 0;
+    stage.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener("pointermove", e => {
+    lastInput = performance.now();
+    pitchT   = ((e.clientY / innerHeight) - .5) * -3.2;     // gaze pitch ±1.6°
+    yawNudgeT= ((e.clientX / innerWidth)  - .5) *  2.4;     // gaze yaw sway
+    if (!dragging) return;
+    const dx = e.clientX - lastX, now = performance.now();
+    dragDist += Math.abs(dx);
+    wallXT += dx;
+    vel = dx / Math.max(now - lastT, 1) * 16;
+    lastX = e.clientX; lastT = now;
+  });
+  addEventListener("pointerup", () => {
+    dragging = false; stage.classList.remove("dragging");
+    wallXT += vel * 14;  // inertia throw
+  });
+
+  function frame(now){
+    if (!dragging && now - lastInput > 4000) wallXT += Math.sin(now * 0.00018) * 0.22; // idle drift
+    wallXT = Math.max(-bound, Math.min(bound, wallXT));
+    wallX += (wallXT - wallX) * (dragging ? 0.32 : 0.075);
+    pitch += (pitchT - pitch) * 0.06;
+    yawNudge += (yawNudgeT - yawNudge) * 0.06;
+
+    /* pan via layout margin — keeps the wall itself transform-free so column
+       hit-testing stays correct; the column is the single 3D layer */
+    wall.style.marginLeft = (-wallW / 2 + wallX) + "px";
+
+    const wallLeft = innerWidth / 2 - wallW / 2 + wallX;
+    cols.forEach((col, i) => {
+      if (col.dataset.frozen) return;
+      const screenX = wallLeft + colCenters[i];
+      let a = (screenX - innerWidth / 2) * curveK;
+      a = Math.max(-32, Math.min(32, a));
+      col.style.transform =
+        `rotateX(${pitch}deg) rotateY(${-a + yawNudge}deg) translateZ(${-Math.abs(a) * 10}px)`;
+    });
+    updateLoopBudget(now);
+    requestAnimationFrame(frame);
+  }
+  if (!reduced) requestAnimationFrame(frame);
+
+  /* ---------------- hover focus + loop previews ----------------
+     Manual picking: browser hit-testing is unreliable for perspective-
+     projected elements, but getBoundingClientRect projects correctly —
+     so we raycast the pointer against projected card rects ourselves
+     (same pattern a WebGL wall would use). */
+  const allCards = () => [...document.querySelectorAll(".wall .card")];
+  let focusCard = null, loopTimer = null;
+
+  function pick(x, y){
+    let best = null, bestD = Infinity;
+    for (const card of allCards()){
+      const r = card.getBoundingClientRect();
+      if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
+      const d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
+      if (d < bestD){ bestD = d; best = card; }
+    }
+    return best;
+  }
+
+  function setFocus(card){
+    if (card === focusCard) return;
+    if (focusCard){
+      focusCard.classList.remove("focus");
+      clearTimeout(loopTimer);
+      focusCard.querySelector("iframe.hoverloop")?.remove(); // budget loops persist
+    }
+    focusCard = card;
+    wall.classList.toggle("has-focus", !!card);
+    stage.style.cursor = card ? "pointer" : "";
+    if (!card){
+      document.documentElement.style.setProperty("--mood-soft", "rgba(111,140,255,.13)");
+      return;
+    }
+    card.classList.add("focus");
+    const r = REC[card.dataset.slug];
+    if (r.mood) document.documentElement.style.setProperty("--mood-soft", r.soft);
+    if (fine && !reduced && !card.querySelector("iframe") && !r.reel){
+      loopTimer = setTimeout(() => {
+        const f = document.createElement("iframe");
+        f.className = "hoverloop";
+        f.src = `https://www.youtube-nocookie.com/embed/${r.yt}?autoplay=1&mute=1&loop=1&playlist=${r.yt}&controls=0&playsinline=1&rel=0`;
+        f.allow = "autoplay; encrypted-media";
+        card.insertBefore(f, card.querySelector(".c-top"));
+      }, 650);
+    }
+  }
+
+  stage.addEventListener("pointermove", e => {
+    if (dragging || pulledCard){ if (dragging) setFocus(null); return; }
+    setFocus(pick(e.clientX, e.clientY));
+  });
+  stage.addEventListener("pointerleave", () => setFocus(null));
+
+  /* ---------------- THE PULL — flatten, then come off the wall ---------------- */
+  const overlay = document.getElementById("overlay"), heroSlot = document.getElementById("heroSlot");
+  let pulledCard = null, homeCell = null, homeCol = null, busy = false;
+
+  function grade(mood, soft, dur){
+    gsap.to("html", { "--mood": mood, "--mood-soft": soft, duration: dur, ease: "sine.inOut" });
+  }
+
+  stage.addEventListener("click", e => {
+    if (dragDist > 8) return; // it was a drag, not a click
+    const card = focusCard || pick(e.clientX, e.clientY);
+    if (!card || busy || pulledCard) return;
+    const slug = card.dataset.slug, r = REC[slug];
+    if (!r.brief){ return; } // mockup: only flagships pull
+    busy = true;
+    setFocus(null);
+    card.classList.remove("focus");
+    homeCell = card.parentElement; homeCol = homeCell.closest(".col");
+    pulledCard = card;
+    card.querySelector("iframe")?.remove();
+
+    svCode.textContent = r.code; svRole.textContent = r.role;
+    svClient.textContent = r.client; svYear.textContent = r.year;
+    ovBriefText.textContent = r.brief;
+    const open = document.getElementById("ovOpen");
+    if (r.dossier){ open.style.display = "inline-block"; open.href = r.dossier; }
+    else open.style.display = "none";
+    const hi = new Image();
+    hi.onload = () => { if (pulledCard) card.querySelector(".thumb").src = hi.src; };
+    hi.src = `https://img.youtube.com/vi/${r.yt}/maxresdefault.jpg`;
+    document.getElementById("tcMood").textContent = r.world || "Base grade";
+
+    /* 1 — FLATTEN: the record comes square to camera (~250ms) */
+    homeCol.dataset.frozen = "1";
+    gsap.to(homeCol, { rotateY: 0, z: 60, duration: reduced ? 0 : .26, ease: "power2.out",
+      onComplete(){
+        /* 2 — PULL: off the wall, into the dossier hero */
+        const state = Flip.getState(card);
+        document.body.classList.add("pulled");
+        card.classList.add("pulled-card");
+        heroSlot.appendChild(card);
+        Flip.from(state, { duration: reduced ? 0 : .9, ease: "power3.inOut", absolute: true,
+          onComplete(){ busy = false; } });
+        if (r.mood) grade(r.mood, r.soft, reduced ? 0 : .85);
+        const tl = gsap.timeline({ delay: reduced ? 0 : .5 });
+        tl.set("#ovSlate > div", { visibility: "visible", stagger: reduced ? 0 : .07 })
+          .to("#ovBrief", { opacity: 1, y: 0, startAt: { y: 12 }, duration: reduced ? 0 : .55, ease: "power2.out" });
+      }
+    });
+  });
+
+  function release(){
+    if (busy || !pulledCard) return;
+    busy = true;
+    const card = pulledCard;
+    gsap.to("#ovBrief", { opacity: 0, duration: .2 });
+    gsap.set("#ovSlate > div", { visibility: "hidden" });
+    const state = Flip.getState(card);
+    card.classList.remove("pulled-card");
+    homeCell.appendChild(card);
+    document.body.classList.remove("pulled");
+    Flip.from(state, { duration: reduced ? 0 : .75, ease: "power3.inOut", absolute: true,
+      onComplete(){
+        delete homeCol.dataset.frozen;
+        gsap.set(homeCol, { clearProps: "transform" });
+        pulledCard = null; busy = false;
+      }
+    });
+    grade("#6f8cff", "rgba(111,140,255,.13)", reduced ? 0 : .7);
+    document.getElementById("tcMood").textContent = "Base grade";
+  }
+  document.getElementById("back").addEventListener("click", release);
+  addEventListener("keydown", e => { if (e.key === "Escape") release(); });
+
+  /* ---------------- LOOP BUDGET ----------------
+     The motion-media lifecycle that keeps the wall performant at any
+     archive size: only the few middle-band records nearest the gaze
+     center play loops; everything else shows its poster; loops unload
+     the moment a record leaves the center zone or the viewport.
+     (Mockup uses YouTube iframes — production swaps in a pooled set of
+     local <video> elements with the identical mount/unmount contract,
+     plus poster preloading for the next ring of nearby cards.)        */
+  const LOOP_BUDGET = 3;
+  let reelFrame = null, soundOn = false, loopTickAt = 0;
+
+  function updateLoopBudget(now){
+    if (now - loopTickAt < 350) return;
+    loopTickAt = now;
+    if (!fine || reduced || pulledCard) return;
+    const zone = innerWidth * 0.34;
+    const mids = [...wall.querySelectorAll(".cell.row-mid .card")];
+    const keep = new Set(
+      mids.map(card => {
+          const r = card.getBoundingClientRect();
+          return { card, d: Math.abs(r.left + r.width / 2 - innerWidth / 2),
+                   on: r.right > 0 && r.left < innerWidth };
+        })
+        .filter(x => x.on && x.d < zone)
+        .sort((a, b) => a.d - b.d)
+        .slice(0, LOOP_BUDGET)
+        .map(x => x.card)
+    );
+    mids.forEach(card => {
+      const rec = REC[card.dataset.slug];
+      const live = card.querySelector("iframe.autoloop");
+      if (keep.has(card) && !live && !card.querySelector("iframe")){
+        const f = document.createElement("iframe");
+        f.className = "autoloop";
+        f.src = `https://www.youtube-nocookie.com/embed/${rec.yt}?autoplay=1&mute=1&loop=1&playlist=${rec.yt}&controls=0&playsinline=1&rel=0${rec.reel ? "&enablejsapi=1" : ""}`;
+        f.allow = "autoplay; encrypted-media";
+        card.insertBefore(f, card.querySelector(".c-top"));
+        if (rec.reel) reelFrame = f;
+      } else if (!keep.has(card) && live){
+        live.remove();
+        if (rec.reel){ reelFrame = null; soundOn = false; syncSoundBtn(); }
+      }
+    });
+  }
+
+  function syncSoundBtn(){
+    document.getElementById("soundBtn").textContent =
+      soundOn ? "Reel sound — on" : "Reel sound — off";
+  }
+  document.getElementById("soundBtn").addEventListener("click", () => {
+    if (!reelFrame) return;
+    soundOn = !soundOn;
+    reelFrame.contentWindow.postMessage(JSON.stringify({ event: "command", func: soundOn ? "unMute" : "mute", args: [] }), "*");
+    syncSoundBtn();
+  });
+
+  /* ---------------- LA clock ---------------- */
+  function tickClock(){
+    document.getElementById("clock").textContent =
+      new Date().toLocaleTimeString("en-US", { hour12: false, timeZone: "America/Los_Angeles" });
+  }
+  tickClock(); setInterval(tickClock, 1000);
+</script>
+</body>
+</html>

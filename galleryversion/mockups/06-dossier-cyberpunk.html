@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 06 — Cyberpunk 2077 / Production Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#080a0d; --bg-deep:#030406;
+    --ink:#f2eee7; --muted:rgba(242,238,231,.62); --faint:rgba(242,238,231,.34);
+    --line:rgba(242,238,231,.12); --glass:rgba(8,12,18,.66); --gold:#d6b77a;
+    --mood:#ff3d72; --mood-soft:rgba(255,61,114,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:"Space Grotesk",sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  /* world grade environment */
+  .env{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .env-grid{position:absolute;inset:0;opacity:.35;
+    background-image:linear-gradient(var(--mood-soft) 1px,transparent 1px),linear-gradient(90deg,var(--mood-soft) 1px,transparent 1px);
+    background-size:72px 72px}
+  .env-bleed{position:absolute;inset:0;
+    background:radial-gradient(110rem 60rem at 76% -10%,var(--mood-soft),transparent 60%);
+    animation:wb 20s ease-in-out infinite}
+  @keyframes wb{0%,100%{opacity:.75}50%{opacity:1}}
+  .env-vignette{position:absolute;inset:0;background:radial-gradient(circle at center,transparent 42%,rgba(0,0,0,.76))}
+  .env-scan{position:absolute;inset:0;opacity:.045;background:repeating-linear-gradient(0deg,rgba(0,0,0,.6) 0 1px,transparent 1px 3px)}
+  .grain{position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:gs .9s steps(4) infinite}
+  @keyframes gs{0%{transform:translate(0,0)}25%{transform:translate(-34px,22px)}50%{transform:translate(20px,-40px)}75%{transform:translate(-12px,-18px)}100%{transform:translate(0,0)}}
+
+  /* ============ CHAPTER RAIL ============ */
+  .rail{
+    position:fixed;left:1.6rem;top:50%;transform:translateY(-50%);z-index:50;
+    display:flex;flex-direction:column;gap:1rem;
+    font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+  }
+  .rail a{
+    color:var(--faint);text-decoration:none;display:flex;align-items:center;gap:.6rem;transition:color .3s;
+  }
+  .rail a::before{content:"";width:1.1rem;height:1px;background:var(--faint);transition:all .3s}
+  .rail a.live{color:var(--mood)}
+  .rail a.live::before{width:2rem;background:var(--mood)}
+  .rail a:hover{color:var(--ink)}
+
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:55;display:flex;justify-content:space-between;align-items:center;
+    padding:1.1rem 1.6rem;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
+    background:linear-gradient(180deg,rgba(3,4,6,.85),transparent);
+  }
+  .topbar a{color:var(--muted);text-decoration:none}
+  .topbar a:hover{color:var(--ink)}
+  .topbar .tc{color:var(--faint)}
+  .topbar .tc b{color:var(--mood);font-weight:400}
+
+  /* ============ CONTENT ============ */
+  .wrap{
+    position:relative;z-index:2;max-width:76rem;margin:0 auto;
+    padding:5.6rem clamp(1.4rem,11vw,12rem) 8rem;
+  }
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.32em;color:var(--mood);text-transform:uppercase}
+  h1{font-family:"Anton",sans-serif;font-size:clamp(3rem,7vw,5.8rem);text-transform:uppercase;line-height:1.04;margin-top:.8rem}
+  .tone{margin-top:.9rem;font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.26em;color:var(--muted);text-transform:uppercase}
+
+  .slate{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:1.8rem;padding-top:1.3rem;border-top:1px solid var(--line)}
+  .sk{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
+  .sv{font-size:.92rem;font-weight:500;margin-top:.4rem;text-transform:uppercase;letter-spacing:.04em}
+  .sv.m{color:var(--mood)}
+
+  .chapter{margin-top:5rem;scroll-margin-top:5rem;
+    font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.3em;color:var(--mood);text-transform:uppercase;
+    display:flex;align-items:center;gap:1rem}
+  .chapter::after{content:"";flex:1;height:1px;background:var(--line)}
+  .prose{max-width:42rem;margin-top:1.5rem;font-size:1.04rem;line-height:1.78;color:var(--muted)}
+  .prose + .prose{margin-top:1rem}
+
+  figure{position:relative;margin-top:2.2rem}
+  .frame{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--bg-deep)}
+  .frame img{width:100%;display:block;opacity:.92}
+  .frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(3,4,6,.12),transparent 30%,transparent 70%,rgba(3,4,6,.5))}
+  figcaption{margin-top:.65rem;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.22em;color:var(--faint);text-transform:uppercase}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+
+  /* hero video */
+  .hero{position:relative;margin-top:2.4rem;cursor:pointer}
+  .hero .frame{aspect-ratio:16/9}
+  .hero iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .hero .play{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;
+    transition:opacity .4s;
+  }
+  .hero .play span{
+    display:flex;align-items:center;gap:.8rem;font-family:"JetBrains Mono",monospace;
+    font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);
+    background:var(--glass);border:1px solid var(--line);border-radius:99px;padding:.9rem 1.6rem;backdrop-filter:blur(8px);
+  }
+  .hero .play span::before{content:"▶";color:var(--mood);font-size:.8rem}
+  .hero.playing .play{opacity:0;pointer-events:none}
+
+  /* THE CUT — comparison wipe */
+  .wipe{position:relative;margin-top:2.2rem;border:1px solid var(--line);border-radius:6px;overflow:hidden;aspect-ratio:16/9;background:var(--bg-deep);cursor:ew-resize;user-select:none}
+  .wipe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+  .wipe .top{clip-path:inset(0 calc(100% - var(--w,50%)) 0 0)}
+  .wipe .bar{position:absolute;top:0;bottom:0;left:var(--w,50%);width:1px;background:var(--mood);box-shadow:0 0 14px var(--mood);pointer-events:none}
+  .wipe .bar::after{
+    content:"◂ ▸";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:.62rem;color:var(--bg-deep);background:var(--mood);border-radius:99px;padding:.34rem .5rem;letter-spacing:.05em;
+  }
+  .wipe .tag{position:absolute;bottom:.7rem;z-index:3;font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.2em;color:var(--ink);text-transform:uppercase;background:rgba(3,4,6,.7);padding:.3rem .6rem;border-radius:3px;pointer-events:none}
+  .wipe .tag.l{left:.7rem}.wipe .tag.r{right:.7rem}
+
+  /* outcome metrics */
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.2rem}
+  .metric{border:1px solid var(--line);border-radius:6px;padding:1.3rem;background:rgba(8,12,18,.5)}
+  .metric b{font-family:"Anton",sans-serif;font-size:2rem;letter-spacing:.02em;color:var(--mood)}
+  .metric div{margin-top:.45rem;font-family:"JetBrains Mono",monospace;font-size:.54rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;line-height:1.8}
+
+  /* ============ COMMENTARY TRACK ============ */
+  .note{
+    position:absolute;width:11rem;z-index:8;pointer-events:none;
+    opacity:0;transform:translateY(10px) rotate(var(--tilt,-2deg));
+    transition:opacity .5s ease var(--d,0s),transform .5s cubic-bezier(.2,.9,.3,1.2) var(--d,0s);
+  }
+  body.commentary .note{opacity:1;transform:translateY(0) rotate(var(--tilt,-2deg));pointer-events:auto}
+  .note-label{font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:.26em;color:var(--mood);text-transform:uppercase;margin-bottom:.35rem}
+  .note-text{font-family:"Caveat",cursive;font-size:1.26rem;line-height:1.3;font-weight:500;color:#ffd9e4;text-shadow:0 2px 18px rgba(255,61,114,.25)}
+  .note::before{content:"";position:absolute;top:.9rem;width:2.4rem;height:1px}
+  .note.side-right{left:calc(100% + 1.5rem)}
+  .note.side-right::before{right:100%;background:linear-gradient(270deg,transparent,var(--mood))}
+  .note.side-left{right:calc(100% + 1.5rem);text-align:right}
+  .note.side-left::before{left:100%;background:linear-gradient(90deg,var(--mood),transparent)}
+  .marker{position:absolute;width:.55rem;height:.55rem;border-radius:50%;background:var(--mood);box-shadow:0 0 14px var(--mood);z-index:7;opacity:0;transition:opacity .4s ease var(--d,0s)}
+  body.commentary .marker{opacity:1;animation:mp 2.6s ease-in-out infinite}
+  @keyframes mp{0%,100%{box-shadow:0 0 8px var(--mood)}50%{box-shadow:0 0 20px var(--mood)}}
+
+  .commentary-toggle{
+    position:fixed;right:1.6rem;bottom:3.6rem;z-index:80;display:flex;align-items:center;gap:.7rem;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--muted);background:var(--glass);border:1px solid var(--line);border-radius:99px;
+    padding:.7rem 1.2rem;cursor:pointer;backdrop-filter:blur(10px);transition:all .3s;
+  }
+  .commentary-toggle:hover{border-color:var(--mood);color:var(--ink)}
+  .commentary-toggle .dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--faint);transition:all .3s}
+  body.commentary .commentary-toggle{border-color:var(--mood);color:var(--ink);box-shadow:0 0 24px rgba(255,61,114,.18)}
+  body.commentary .commentary-toggle .dot{background:var(--mood);box-shadow:0 0 10px var(--mood)}
+  .commentary-toggle .state::after{content:"OFF"}
+  body.commentary .commentary-toggle .state::after{content:"ON"}
+
+  /* next record footer */
+  .next{
+    margin-top:6rem;padding-top:2rem;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .next a{text-decoration:none;color:var(--ink)}
+  .next .nk{font-family:"JetBrains Mono",monospace;font-size:.54rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
+  .next .nt{font-family:"Anton",sans-serif;font-size:1.6rem;text-transform:uppercase;margin-top:.4rem;transition:color .3s}
+  .next a:hover .nt{color:var(--mood)}
+
+  .mock-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;justify-content:space-between;align-items:center;
+    padding:.55rem 1.4rem;border-top:1px solid var(--line);background:var(--glass);backdrop-filter:blur(8px);
+    font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .mock-bar span{color:var(--gold)}
+  .mock-bar nav{display:flex;gap:1.4rem}
+  .mock-bar a{color:var(--muted);text-decoration:none}
+  .mock-bar a:hover{color:var(--ink)}
+
+  @media (prefers-reduced-motion:reduce){
+    .grain,.env-bleed{animation:none}
+    body.commentary .marker{animation:none}
+    html{scroll-behavior:auto}
+  }
+  @media (max-width:1280px){
+    .rail{display:none}
+    .wrap{padding:5.6rem 1.4rem 8rem}
+    .note{position:static;width:auto;margin-top:.8rem;transform:rotate(0) !important;display:none;border-left:2px solid var(--mood);padding-left:.9rem}
+    body.commentary .note{display:block}
+    .note::before{display:none}
+    .note.side-left{text-align:left}
+    .marker{display:none}
+    .grid-2,.metrics{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="env"><div class="env-grid"></div><div class="env-bleed"></div><div class="env-scan"></div><div class="env-vignette"></div></div>
+<div class="grain"></div>
+
+<div class="topbar">
+  <a href="04-record-wall.html">← The wall</a>
+  <span class="tc">REC.01 · <b>Night City grade active</b> · production dossier</span>
+  <a href="#outcome">Skip to outcome</a>
+</div>
+
+<nav class="rail" id="rail">
+  <a href="#brief" class="live">00 Brief</a>
+  <a href="#approach">01 Approach</a>
+  <a href="#onset">03 On set</a>
+  <a href="#cut">04 The cut</a>
+  <a href="#outcome">05 Outcome</a>
+</nav>
+
+<div class="wrap">
+  <!-- 00 BRIEF -->
+  <section id="brief">
+    <div class="kicker">REC.01 — Production dossier · CD Projekt Red</div>
+    <h1>Cyberpunk 2077</h1>
+    <div class="tone">Neon noir · corporate surveillance · digital decay</div>
+
+    <div class="hero" id="hero">
+      <div class="frame">
+        <img src="https://img.youtube.com/vi/Hc_t2eTorhI/maxresdefault.jpg"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg'" alt="Cyberpunk 2077 trailer">
+      </div>
+      <div class="play"><span>Screen the cut — 02:14</span></div>
+      <div class="marker" style="top:16%;right:6%;--d:.1s"></div>
+      <div class="note side-right" style="top:10%;--tilt:-2deg;--d:.15s">
+        <div class="note-label">Director's note — 01A</div>
+        <div class="note-text">The brief said "show the city." The city isn't the subject — the loneliness is. We framed Night City like a character who never blinks.</div>
+      </div>
+    </div>
+
+    <div class="slate">
+      <div><div class="sk">Record</div><div class="sv m">REC.01</div></div>
+      <div><div class="sk">Role</div><div class="sv">Creative Direction</div></div>
+      <div><div class="sk">Client</div><div class="sv">CD Projekt Red</div></div>
+      <div><div class="sk">Year</div><div class="sv">2025</div></div>
+    </div>
+  </section>
+
+  <!-- 01 APPROACH -->
+  <section id="approach">
+    <div class="chapter">01 — Approach</div>
+    <p class="prose">
+      Night City is the most photographed fictional city of the decade. The only way to make it feel new was to
+      stop photographing it and start surveilling it: hard angles, held frames, cuts timed to the electrical hum
+      of the signage rather than the music. The audience shouldn't feel like a tourist. They should feel watched.
+    </p>
+    <div class="grid-2">
+      <figure>
+        <div class="frame"><img src="../images/cyberpunk/process-01-references.jpg" alt="Reference wall"></div>
+        <figcaption>Process · Reference wall</figcaption>
+        <div class="marker" style="top:22%;left:8%;--d:.2s"></div>
+        <div class="note side-left" style="top:8%;--tilt:1.6deg;--d:.25s">
+          <div class="note-label">Director's note — 02A</div>
+          <div class="note-text">Blade Runner was banned from the reference wall. Too easy. We pulled from CCTV footage and Tokyo street photography instead.</div>
+        </div>
+      </figure>
+      <figure>
+        <div class="frame"><img src="../images/cyberpunk/process-03-color.jpg" alt="Color study"></div>
+        <figcaption>Process · Color study</figcaption>
+        <div class="marker" style="bottom:18%;right:10%;--d:.3s"></div>
+        <div class="note side-right" style="top:42%;--tilt:-1.4deg;--d:.35s">
+          <div class="note-label">Director's note — 02B</div>
+          <div class="note-text">Three palettes tested. We chose the one that hurt a little.</div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 03 ON SET -->
+  <section id="onset">
+    <div class="chapter">03 — On set</div>
+    <p class="prose">
+      Practical neon wherever possible. Real light wraps around skin in a way comp never does — and the actors
+      play differently when the set glows back at them.
+    </p>
+    <figure>
+      <div class="frame"><img src="../images/cyberpunk/bts-01-night-city.jpg" alt="Night City set"></div>
+      <figcaption>B-CAM · Day 01 · Practical neon test</figcaption>
+      <div class="marker" style="top:30%;left:5%;--d:.1s"></div>
+      <div class="note side-left" style="top:22%;--tilt:2deg;--d:.15s">
+        <div class="note-label">Director's note — 03A</div>
+        <div class="note-text">We killed every fill light on this setup. If the neon couldn't reach it, the audience didn't need to see it.</div>
+      </div>
+    </figure>
+    <div class="grid-2">
+      <figure>
+        <div class="frame"><img src="../images/cyberpunk/bts-02-directing.jpg" alt="Directing"></div>
+        <figcaption>BTS · Day 02 · Blocking</figcaption>
+        <div class="marker" style="top:40%;left:12%;--d:.2s"></div>
+        <div class="note side-left" style="top:34%;--tilt:1.2deg;--d:.25s">
+          <div class="note-label">Director's note — 03B</div>
+          <div class="note-text">We held this take 18 frames longer than the client wanted. It needed to breathe.</div>
+        </div>
+      </figure>
+      <figure>
+        <div class="frame"><img src="../images/cyberpunk/bts-03-monitor.jpg" alt="Video village"></div>
+        <figcaption>BTS · Day 02 · Video village</figcaption>
+        <div class="marker" style="top:24%;right:8%;--d:.3s"></div>
+        <div class="note side-right" style="top:14%;--tilt:-1.8deg;--d:.35s">
+          <div class="note-label">Director's note — 03C</div>
+          <div class="note-text">Graded the monitors hotter than reality, so the cut back to the streets feels colder than it is.</div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 04 THE CUT -->
+  <section id="cut">
+    <div class="chapter">04 — The cut</div>
+    <p class="prose">
+      The most contested fourteen frames of the edit. Drag the wipe: the alternate assembly held the wide;
+      the shipped cut punches in on the turn — colder, closer, more surveilled.
+    </p>
+    <div class="wipe" id="wipe" style="--w:50%">
+      <img src="../images/cyberpunk/bts-03-monitor.jpg" alt="Alternate assembly">
+      <img class="top" src="../images/cyberpunk/bts-04-final.jpg" alt="Shipped cut">
+      <div class="bar"></div>
+      <div class="tag l">Shipped cut</div>
+      <div class="tag r">Alternate assembly</div>
+    </div>
+    <figure style="margin-top:0">
+      <figcaption style="margin-top:.8rem">Comparison · A/B assembly · drag to wipe</figcaption>
+      <div class="note side-right" style="top:-9rem;--tilt:-2.2deg;--d:.15s">
+        <div class="note-label">Director's note — 04A</div>
+        <div class="note-text">The wide was beautiful. Beautiful wasn't the assignment.</div>
+      </div>
+    </figure>
+  </section>
+
+  <!-- 05 OUTCOME -->
+  <section id="outcome">
+    <div class="chapter">05 — Outcome</div>
+    <p class="prose">
+      Delivered as the flagship spot of the campaign window — broadcast, pre-roll, and in-store wall loops,
+      with the cutdown family derived from this master.
+    </p>
+    <div class="metrics">
+      <div class="metric"><b>02:14</b><div>Master runtime · 6 cutdowns shipped</div></div>
+      <div class="metric"><b>4 / 4</b><div>Client approvals · first presentation</div></div>
+      <div class="metric"><b>18 fr</b><div>Held longer than asked · worth it</div></div>
+    </div>
+    <figure>
+      <div class="frame"><img src="../images/cyberpunk/bts-04-final.jpg" alt="Final frame"></div>
+      <figcaption>A-CAM · Final frame as shipped</figcaption>
+      <div class="marker" style="bottom:24%;right:7%;--d:.15s"></div>
+      <div class="note side-right" style="top:46%;--tilt:-2.2deg;--d:.2s">
+        <div class="note-label">Director's note — 05A</div>
+        <div class="note-text">The final frame is the first one we boarded. Sometimes you know.</div>
+      </div>
+    </figure>
+  </section>
+
+  <div class="next">
+    <a href="04-record-wall.html"><div class="nk">Return</div><div class="nt">← The record wall</div></a>
+    <a href="#"><div class="nk" style="text-align:right">Next record — REC.02</div><div class="nt">DOOM →</div></a>
+  </div>
+</div>
+
+<button class="commentary-toggle" id="toggle" aria-pressed="false">
+  <span class="dot"></span>
+  Director's commentary — <span class="state"></span>
+</button>
+
+<div class="mock-bar">
+  <div><span>Mockup 06 / 07</span> — Cyberpunk Dossier · Full System Integration</div>
+  <nav>
+    <a href="index.html">Hub</a>
+    <a href="04-record-wall.html">04 — The Wall</a>
+    <a href="05-pull-storyboard.html">05 — Storyboard</a>
+    <a href="07-mobile.html">07 — Mobile</a>
+  </nav>
+</div>
+
+<script>
+  /* commentary */
+  const toggle = document.getElementById("toggle");
+  toggle.addEventListener("click", () => {
+    const on = document.body.classList.toggle("commentary");
+    toggle.setAttribute("aria-pressed", on);
+  });
+  if (new URLSearchParams(location.search).get("commentary") === "on") toggle.click();
+
+  /* hero playback */
+  const hero = document.getElementById("hero");
+  hero.addEventListener("click", () => {
+    if (hero.classList.contains("playing")) return;
+    hero.classList.add("playing");
+    const f = document.createElement("iframe");
+    f.src = "https://www.youtube-nocookie.com/embed/Hc_t2eTorhI?autoplay=1&rel=0";
+    f.allow = "autoplay; encrypted-media; fullscreen";
+    hero.querySelector(".frame").appendChild(f);
+  }, { once: false });
+
+  /* chapter rail tracking */
+  const links = [...document.querySelectorAll(".rail a")];
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting){
+        links.forEach(l => l.classList.toggle("live", l.getAttribute("href") === "#" + en.target.id));
+      }
+    });
+  }, { rootMargin: "-30% 0px -55% 0px" });
+  document.querySelectorAll("section[id]").forEach(s => obs.observe(s));
+
+  /* comparison wipe */
+  const wipe = document.getElementById("wipe");
+  let wiping = false;
+  function setWipe(e){
+    const r = wipe.getBoundingClientRect();
+    const w = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+    wipe.style.setProperty("--w", w + "%");
+  }
+  wipe.addEventListener("pointerdown", e => { wiping = true; setWipe(e); wipe.setPointerCapture(e.pointerId); });
+  wipe.addEventListener("pointermove", e => { if (wiping) setWipe(e); });
+  addEventListener("pointerup", () => wiping = false);
+</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 03 — Director's Commentary / Cyberpunk 2077</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#080a0d; --bg-deep:#030406;
+    --ink:#f2eee7; --muted:rgba(242,238,231,.62); --faint:rgba(242,238,231,.34);
+    --line:rgba(242,238,231,.12); --glass:rgba(8,12,18,.62); --gold:#d6b77a;
+    /* Cyberpunk world grade */
+    --mood:#ff3d72; --mood-soft:rgba(255,61,114,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--ink);font-family:"Space Grotesk",sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+
+  /* ============ CYBERPUNK WORLD ENVIRONMENT ============ */
+  .env{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .env-grid{
+    position:absolute;inset:0;opacity:.4;
+    background-image:linear-gradient(var(--mood-soft) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--mood-soft) 1px,transparent 1px);
+    background-size:72px 72px;
+  }
+  .env-bleed{
+    position:absolute;inset:0;
+    background:radial-gradient(110rem 60rem at 76% -10%,var(--mood-soft),transparent 60%),
+               radial-gradient(80rem 44rem at 4% 108%,rgba(111,140,255,.07),transparent 60%);
+    animation:worldBreath 20s ease-in-out infinite;
+  }
+  @keyframes worldBreath{0%,100%{opacity:.78}50%{opacity:1}}
+  .env-vignette{position:absolute;inset:0;background:radial-gradient(circle at center,transparent 42%,rgba(0,0,0,.76))}
+  .env-scan{
+    position:absolute;inset:0;opacity:.05;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.6) 0 1px,transparent 1px 3px);
+  }
+  .grain{
+    position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grainShift .9s steps(4) infinite;
+  }
+  @keyframes grainShift{
+    0%{transform:translate(0,0)}25%{transform:translate(-34px,22px)}
+    50%{transform:translate(20px,-40px)}75%{transform:translate(-12px,-18px)}100%{transform:translate(0,0)}
+  }
+
+  /* ============ DOSSIER LAYOUT ============ */
+  .wrap{
+    position:relative;z-index:2;max-width:74rem;margin:0 auto;
+    /* generous side padding = the margins where commentary lives */
+    padding:4.5rem clamp(1.4rem,12vw,13rem) 9rem;
+  }
+  .kicker{
+    font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.32em;
+    color:var(--mood);text-transform:uppercase;
+  }
+  h1{
+    font-family:"Anton",sans-serif;font-size:clamp(3rem,7vw,5.6rem);
+    text-transform:uppercase;letter-spacing:.02em;line-height:1.04;margin-top:.8rem;
+  }
+  .meta{
+    display:flex;gap:2.6rem;margin-top:1.3rem;flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .meta b{color:var(--faint);font-weight:400;margin-right:.5rem}
+
+  .chapter{
+    margin-top:4.6rem;
+    font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.3em;
+    color:var(--mood);text-transform:uppercase;
+    display:flex;align-items:center;gap:1rem;
+  }
+  .chapter::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .prose{max-width:42rem;margin-top:1.6rem;font-size:1.05rem;line-height:1.78;color:var(--muted)}
+
+  figure{position:relative;margin-top:2.2rem}
+  figure .frame{
+    position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--bg-deep);
+  }
+  figure img{width:100%;display:block;opacity:.92}
+  figure .frame::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(3,4,6,.1),transparent 30%,transparent 70%,rgba(3,4,6,.55));
+    pointer-events:none;
+  }
+  figcaption{
+    margin-top:.65rem;font-family:"JetBrains Mono",monospace;font-size:.56rem;
+    letter-spacing:.22em;color:var(--faint);text-transform:uppercase;
+  }
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+  .grid-2 figure{margin-top:2.2rem}
+
+  /* ============ THE COMMENTARY TRACK ============ */
+  .note{
+    position:absolute;width:11rem;z-index:8;pointer-events:none;
+    opacity:0;transform:translateY(10px) rotate(var(--tilt,-2deg));
+    transition:opacity .5s ease var(--d,0s),transform .5s cubic-bezier(.2,.9,.3,1.2) var(--d,0s);
+  }
+  body.commentary .note{opacity:1;transform:translateY(0) rotate(var(--tilt,-2deg));pointer-events:auto}
+  .note-label{
+    font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:.26em;
+    color:var(--mood);text-transform:uppercase;margin-bottom:.35rem;
+  }
+  .note-text{
+    font-family:"Caveat",cursive;font-size:1.28rem;line-height:1.3;font-weight:500;
+    color:#ffd9e4;text-shadow:0 2px 18px rgba(255,61,114,.25);
+  }
+  /* connector line + anchor dot */
+  .note::before{
+    content:"";position:absolute;top:.9rem;width:2.6rem;height:1px;
+    background:linear-gradient(90deg,var(--mood),transparent);
+  }
+  .note.side-right{left:calc(100% + 1.6rem)}
+  .note.side-right::before{right:100%;background:linear-gradient(270deg,transparent,var(--mood))}
+  .note.side-left{right:calc(100% + 1.6rem);text-align:right}
+  .note.side-left::before{left:100%;background:linear-gradient(90deg,var(--mood),transparent)}
+
+  .marker{
+    position:absolute;width:.55rem;height:.55rem;border-radius:50%;
+    background:var(--mood);box-shadow:0 0 14px var(--mood);z-index:7;
+    opacity:0;transition:opacity .4s ease var(--d,0s);
+  }
+  body.commentary .marker{opacity:1;animation:markerPulse 2.6s ease-in-out infinite}
+  @keyframes markerPulse{0%,100%{box-shadow:0 0 8px var(--mood)}50%{box-shadow:0 0 20px var(--mood)}}
+
+  /* the toggle */
+  .commentary-toggle{
+    position:fixed;right:1.6rem;bottom:3.6rem;z-index:80;
+    display:flex;align-items:center;gap:.7rem;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--muted);background:var(--glass);border:1px solid var(--line);border-radius:99px;
+    padding:.7rem 1.2rem;cursor:pointer;backdrop-filter:blur(10px);
+    transition:border-color .3s,color .3s,box-shadow .3s;
+  }
+  .commentary-toggle:hover{border-color:var(--mood);color:var(--ink)}
+  .commentary-toggle .dot{
+    width:.5rem;height:.5rem;border-radius:50%;background:var(--faint);transition:all .3s;
+  }
+  body.commentary .commentary-toggle{
+    border-color:var(--mood);color:var(--ink);box-shadow:0 0 24px rgba(255,61,114,.18);
+  }
+  body.commentary .commentary-toggle .dot{background:var(--mood);box-shadow:0 0 10px var(--mood)}
+  .commentary-toggle .state::after{content:"OFF"}
+  body.commentary .commentary-toggle .state::after{content:"ON"}
+
+  /* first-visit nudge */
+  .nudge{
+    position:fixed;right:1.6rem;bottom:7.2rem;z-index:79;width:12rem;text-align:right;
+    font-family:"Caveat",cursive;font-size:1.2rem;color:var(--faint);
+    animation:nudgeFloat 3s ease-in-out infinite;pointer-events:none;
+    transition:opacity .4s;
+  }
+  body.commentary .nudge{opacity:0}
+  @keyframes nudgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+  /* mockup chrome */
+  .mock-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;justify-content:space-between;align-items:center;
+    padding:.55rem 1.4rem;border-top:1px solid var(--line);background:var(--glass);backdrop-filter:blur(8px);
+    font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .mock-bar span{color:var(--gold)}
+  .mock-bar nav{display:flex;gap:1.4rem}
+  .mock-bar a{color:var(--muted);text-decoration:none;transition:color .25s}
+  .mock-bar a:hover{color:var(--ink)}
+
+  @media (prefers-reduced-motion:reduce){
+    .grain,.env-bleed,.nudge{animation:none}
+    body.commentary .marker{animation:none}
+    .note{transition:opacity .2s}
+  }
+  /* narrow viewports: notes drop into flow beneath their figure */
+  @media (max-width:1280px){
+    .wrap{padding:3.5rem 1.4rem 9rem}
+    .note{position:static;width:auto;margin-top:.8rem;transform:rotate(0) !important;
+      display:none;border-left:2px solid var(--mood);padding-left:.9rem}
+    body.commentary .note{display:block}
+    .note::before{display:none}
+    .note.side-left{text-align:left}
+    .marker{display:none}
+    .grid-2{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="env">
+  <div class="env-grid"></div>
+  <div class="env-bleed"></div>
+  <div class="env-scan"></div>
+  <div class="env-vignette"></div>
+</div>
+<div class="grain"></div>
+
+<div class="wrap">
+  <div class="kicker">REC.01 — Production Dossier · CD Projekt Red</div>
+  <h1>Cyberpunk 2077</h1>
+  <div class="meta">
+    <div><b>Role</b> Creative Direction</div>
+    <div><b>Client</b> CD Projekt Red</div>
+    <div><b>Year</b> 2025</div>
+    <div><b>World</b> Night City / Digital Decay</div>
+  </div>
+
+  <!-- HERO -->
+  <figure>
+    <div class="frame">
+      <img src="https://img.youtube.com/vi/Hc_t2eTorhI/maxresdefault.jpg"
+           onerror="this.onerror=null;this.src='https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg'"
+           alt="Cyberpunk 2077 — hero frame">
+    </div>
+    <figcaption>A-CAM · Final grade · Night City exterior</figcaption>
+    <div class="marker" style="top:18%;right:6%;--d:.1s"></div>
+    <div class="note side-right" style="top:12%;--tilt:-2deg;--d:.15s">
+      <div class="note-label">Director's Note — 01A</div>
+      <div class="note-text">The brief said "show the city." But the city isn't the subject — the loneliness is. We framed Night City like a character who never blinks.</div>
+    </div>
+  </figure>
+
+  <!-- 01 APPROACH -->
+  <div class="chapter">01 — Approach</div>
+  <p class="prose">
+    Night City is the most photographed fictional city of the decade. The only way to make it feel new was to stop
+    photographing it and start surveilling it: hard angles, held frames, cuts timed to the electrical hum of the
+    signage rather than the music. The audience shouldn't feel like a tourist. They should feel watched.
+  </p>
+
+  <div class="grid-2">
+    <figure>
+      <div class="frame"><img src="../images/cyberpunk/process-01-references.jpg" alt="Reference wall"></div>
+      <figcaption>Process · Reference wall</figcaption>
+      <div class="marker" style="top:22%;left:8%;--d:.2s"></div>
+      <div class="note side-left" style="top:8%;--tilt:1.6deg;--d:.25s">
+        <div class="note-label">Director's Note — 02A</div>
+        <div class="note-text">Blade Runner was banned from the reference wall. Too easy. We pulled from CCTV footage and Tokyo street photography instead.</div>
+      </div>
+    </figure>
+    <figure>
+      <div class="frame"><img src="../images/cyberpunk/process-03-color.jpg" alt="Color study"></div>
+      <figcaption>Process · Color study</figcaption>
+      <div class="marker" style="bottom:18%;right:10%;--d:.3s"></div>
+      <div class="note side-right" style="top:40%;--tilt:-1.4deg;--d:.35s">
+        <div class="note-label">Director's Note — 02B</div>
+        <div class="note-text">Three palettes tested. We chose the one that hurt a little.</div>
+      </div>
+    </figure>
+  </div>
+
+  <!-- 03 ON SET -->
+  <div class="chapter">03 — On Set</div>
+  <p class="prose">
+    Practical neon wherever possible. Real light wraps around skin in a way comp never does — and the actors
+    play differently when the set glows back at them.
+  </p>
+
+  <figure>
+    <div class="frame"><img src="../images/cyberpunk/bts-01-night-city.jpg" alt="Night City set"></div>
+    <figcaption>B-CAM · Day 01 · Practical neon test</figcaption>
+    <div class="marker" style="top:30%;left:5%;--d:.1s"></div>
+    <div class="note side-left" style="top:22%;--tilt:2deg;--d:.15s">
+      <div class="note-label">Director's Note — 03A</div>
+      <div class="note-text">We killed every fill light on this setup. If the neon couldn't reach it, the audience didn't need to see it.</div>
+    </div>
+  </figure>
+
+  <div class="grid-2">
+    <figure>
+      <div class="frame"><img src="../images/cyberpunk/bts-02-directing.jpg" alt="Directing on set"></div>
+      <figcaption>BTS · Day 02 · Blocking</figcaption>
+      <div class="marker" style="top:40%;left:12%;--d:.2s"></div>
+      <div class="note side-left" style="top:34%;--tilt:1.2deg;--d:.25s">
+        <div class="note-label">Director's Note — 03B</div>
+        <div class="note-text">We held this take 18 frames longer than the client wanted. It needed to breathe.</div>
+      </div>
+    </figure>
+    <figure>
+      <div class="frame"><img src="../images/cyberpunk/bts-03-monitor.jpg" alt="Monitor check"></div>
+      <figcaption>BTS · Day 02 · Video village</figcaption>
+      <div class="marker" style="top:24%;right:8%;--d:.3s"></div>
+      <div class="note side-right" style="top:14%;--tilt:-1.8deg;--d:.35s">
+        <div class="note-label">Director's Note — 03C</div>
+        <div class="note-text">Graded the monitors hotter than reality, so the cut back to the streets feels colder than it is.</div>
+      </div>
+    </figure>
+  </div>
+
+  <figure>
+    <div class="frame"><img src="../images/cyberpunk/bts-04-final.jpg" alt="Final frame"></div>
+    <figcaption>A-CAM · Final frame as shipped</figcaption>
+    <div class="marker" style="bottom:24%;right:7%;--d:.15s"></div>
+    <div class="note side-right" style="top:48%;--tilt:-2.2deg;--d:.2s">
+      <div class="note-label">Director's Note — 03D</div>
+      <div class="note-text">The final frame is the first one we boarded. Sometimes you know.</div>
+    </div>
+  </figure>
+</div>
+
+<div class="nudge">try the commentary track ↓</div>
+
+<button class="commentary-toggle" id="toggle" aria-pressed="false">
+  <span class="dot"></span>
+  Director's Commentary — <span class="state"></span>
+</button>
+
+<div class="mock-bar">
+  <div><span>Mockup 03 / 03</span> — The Commentary Track · Cyberpunk Dossier Excerpt</div>
+  <nav>
+    <a href="index.html">Hub</a>
+    <a href="01-archive-home.html">01 — Archive Home</a>
+    <a href="02-pull-transition.html">02 — The Pull</a>
+  </nav>
+</div>
+
+<script>
+  const toggle = document.getElementById("toggle");
+  toggle.addEventListener("click", () => {
+    const on = document.body.classList.toggle("commentary");
+    toggle.setAttribute("aria-pressed", on);
+  });
+  if (new URLSearchParams(location.search).get("commentary") === "on") toggle.click();
+</script>
+</body>
+</html>

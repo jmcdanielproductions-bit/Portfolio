@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 07 — Mobile Adaptation / The Weighted Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#080a0d; --bg-deep:#030406;
+    --ink:#f2eee7; --muted:rgba(242,238,231,.62); --faint:rgba(242,238,231,.34);
+    --line:rgba(242,238,231,.12); --glass:rgba(8,12,18,.62);
+    --blue:#6f8cff; --gold:#d6b77a; --cp:#ff3d72;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--ink);font-family:"Space Grotesk",sans-serif;
+    -webkit-font-smoothing:antialiased;padding:3.4rem clamp(1.4rem,4vw,3.4rem) 7rem;
+  }
+  .grain{position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.32em;color:var(--gold);text-transform:uppercase}
+  h1{font-family:"Anton",sans-serif;font-size:clamp(2rem,4.4vw,3.2rem);text-transform:uppercase;margin-top:.7rem;line-height:1.05}
+  .lede{margin-top:.9rem;color:var(--muted);max-width:46rem;line-height:1.7;font-size:.95rem}
+
+  .phones{display:grid;grid-template-columns:repeat(4,1fr);gap:1.8rem;margin-top:3rem}
+  .ph-wrap{display:flex;flex-direction:column}
+  .phone{
+    position:relative;aspect-ratio:390/780;border-radius:26px;overflow:hidden;
+    border:1px solid rgba(242,238,231,.2);background:var(--bg-deep);
+    box-shadow:0 0 0 5px #0a0c10,0 30px 60px rgba(0,0,0,.7);
+  }
+  .notch{
+    position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:20;
+    width:32%;height:13px;border-radius:99px;background:#000;border:1px solid rgba(242,238,231,.08);
+  }
+  .screen{position:absolute;inset:0;overflow:hidden;font-size:9px}
+  .ph-note{padding:1rem .2rem 0;font-size:.85rem;line-height:1.6;color:var(--muted)}
+  .ph-note b{display:block;color:var(--ink);font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
+  .ph-spec{padding:.4rem .2rem 0;font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;line-height:1.9}
+  .ph-spec i{color:var(--blue);font-style:normal}
+
+  /* shared mobile UI bits */
+  .m-top{
+    position:absolute;top:0;left:0;right:0;z-index:10;padding:24px 12px 8px;
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:"JetBrains Mono",monospace;font-size:6.5px;letter-spacing:.22em;text-transform:uppercase;
+    background:linear-gradient(180deg,rgba(3,4,6,.9),transparent);
+  }
+  .m-top .nm{font-family:"Anton",sans-serif;font-size:10px;letter-spacing:.06em}
+  .m-top .st{color:var(--faint)}
+  .m-nav{
+    position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:10;
+    display:flex;gap:2px;background:var(--glass);border:1px solid var(--line);border-radius:99px;padding:3px;backdrop-filter:blur(6px);
+    font-family:"JetBrains Mono",monospace;font-size:6px;letter-spacing:.18em;text-transform:uppercase;
+  }
+  .m-nav span{padding:5px 9px;border-radius:99px;color:var(--muted)}
+  .m-nav span.on{background:var(--ink);color:var(--bg-deep)}
+
+  .m-card{
+    position:relative;border-radius:5px;overflow:hidden;border:1px solid rgba(242,238,231,.14);
+    background:var(--bg-deep);box-shadow:0 8px 20px rgba(0,0,0,.5);
+  }
+  .m-card img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;position:absolute;inset:0}
+  .m-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,4,6,.4),transparent 30%,transparent 55%,rgba(3,4,6,.9))}
+  .mc-top{position:absolute;top:5px;left:6px;right:6px;z-index:3;display:flex;justify-content:space-between;align-items:center}
+  .mc-logo{height:6px;filter:brightness(0) invert(1);opacity:.55}
+  .mc-code{font-family:"JetBrains Mono",monospace;font-size:5px;letter-spacing:.18em;color:var(--faint)}
+  .mc-bottom{position:absolute;left:6px;right:6px;bottom:5px;z-index:3}
+  .mc-title{font-family:"Anton",sans-serif;font-size:11px;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
+  .mc-role{font-family:"JetBrains Mono",monospace;font-size:4.6px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+  .mc-tags{display:flex;gap:2px;margin-top:3px}
+  .mc-tags span{font-family:"JetBrains Mono",monospace;font-size:4px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1.5px 4px}
+  .mc-live{position:absolute;top:5px;right:6px;z-index:4;display:flex;align-items:center;gap:2px;font-family:"JetBrains Mono",monospace;font-size:4.6px;letter-spacing:.16em;color:var(--gold)}
+  .mc-live::before{content:"";width:3px;height:3px;border-radius:50%;background:var(--gold)}
+  .mc-play{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center}
+  .mc-play i{width:16px;height:16px;border-radius:50%;border:1px solid rgba(242,238,231,.6);display:flex;align-items:center;justify-content:center;font-size:6px;font-style:normal;color:var(--ink);background:rgba(3,4,6,.5)}
+
+  /* SCREEN 1 — home */
+  .s1 .feed{position:absolute;inset:0;padding:52px 10px 44px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+  .s1 .statement{font-family:"JetBrains Mono",monospace;font-size:6px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;line-height:1.9;padding-bottom:2px}
+  .s1 .reel{aspect-ratio:16/9}
+  .s1 .reel .mc-title{font-size:13px}
+  .s1 .flag{aspect-ratio:16/10}
+
+  /* SCREEN 2 — archive scroll */
+  .s2 .pills{position:absolute;top:46px;left:0;right:0;z-index:9;display:flex;gap:3px;padding:0 10px;font-family:"JetBrains Mono",monospace;font-size:5px;letter-spacing:.14em;text-transform:uppercase}
+  .s2 .pills span{border:1px solid var(--line);border-radius:99px;padding:3px 7px;color:var(--muted);background:rgba(3,4,6,.7)}
+  .s2 .pills span.on{border-color:var(--blue);color:var(--ink)}
+  .s2 .feed{position:absolute;inset:0;padding:64px 10px 44px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+  .s2 .playing-tag{position:absolute;bottom:5px;right:6px;z-index:4;font-family:"JetBrains Mono",monospace;font-size:4.4px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+  .s2 .small{aspect-ratio:16/8}
+  .s2 .small .mc-title{font-size:9px}
+
+  /* SCREEN 3 — selection (mobile pull) */
+  .s3{background:radial-gradient(120% 70% at 70% 0%,rgba(255,61,114,.13),transparent 55%),var(--bg-deep)}
+  .s3 .sel{position:absolute;inset:0;padding:52px 10px;display:flex;flex-direction:column}
+  .s3 .m-card{aspect-ratio:16/9}
+  .s3 .m-card{border-color:rgba(255,61,114,.4);box-shadow:0 14px 30px rgba(0,0,0,.7),0 0 26px rgba(255,61,114,.2)}
+  .s3 .mc-title{font-size:15px}
+  .s3 .slate{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line)}
+  .s3 .sk{font-family:"JetBrains Mono",monospace;font-size:4.6px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
+  .s3 .sv{font-size:7px;font-weight:500;text-transform:uppercase;margin-top:2px}
+  .s3 .sv.m{color:var(--cp)}
+  .s3 .brief{margin-top:10px;font-size:7.4px;line-height:1.65;color:var(--muted)}
+  .s3 .open{margin-top:10px;align-self:flex-start;font-family:"JetBrains Mono",monospace;font-size:5.4px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);border:1px solid var(--cp);border-radius:99px;padding:5px 9px}
+  .s3 .dim-feed{position:absolute;left:10px;right:10px;bottom:0;height:90px;opacity:.18;display:flex;flex-direction:column;gap:6px}
+  .s3 .dim-feed .m-card{aspect-ratio:16/7}
+
+  /* SCREEN 4 — dossier */
+  .s4{background:radial-gradient(120% 60% at 76% 0%,rgba(255,61,114,.12),transparent 55%),var(--bg-deep)}
+  .s4 .doss{position:absolute;inset:0;padding:48px 10px 14px;overflow:hidden}
+  .s4 .kick{font-family:"JetBrains Mono",monospace;font-size:5px;letter-spacing:.24em;color:var(--cp);text-transform:uppercase}
+  .s4 h3{font-family:"Anton",sans-serif;font-size:19px;text-transform:uppercase;line-height:1.04;margin-top:3px}
+  .s4 .chips{display:flex;gap:3px;margin-top:6px;font-family:"JetBrains Mono",monospace;font-size:4.6px;letter-spacing:.14em;text-transform:uppercase}
+  .s4 .chips span{border:1px solid var(--line);border-radius:99px;padding:2.5px 6px;color:var(--muted)}
+  .s4 .chips span.on{border-color:var(--cp);color:var(--ink)}
+  .s4 .m-card{aspect-ratio:16/9;margin-top:8px}
+  .s4 .cap{margin-top:4px;font-family:"JetBrains Mono",monospace;font-size:4.4px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+  .s4 .note-inline{
+    margin-top:7px;border-left:2px solid var(--cp);padding-left:7px;
+  }
+  .s4 .nl{font-family:"JetBrains Mono",monospace;font-size:4.4px;letter-spacing:.2em;color:var(--cp);text-transform:uppercase}
+  .s4 .nt{font-family:"Caveat",cursive;font-size:11px;line-height:1.25;color:#ffd9e4;margin-top:2px}
+  .s4 .prose{margin-top:8px;font-size:7px;line-height:1.6;color:var(--muted)}
+  .s4 .ct{
+    position:absolute;right:8px;bottom:38px;z-index:10;display:flex;align-items:center;gap:4px;
+    font-family:"JetBrains Mono",monospace;font-size:5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink);background:var(--glass);border:1px solid var(--cp);border-radius:99px;padding:5px 8px;
+  }
+  .s4 .ct::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--cp);box-shadow:0 0 6px var(--cp)}
+
+  /* strategy table */
+  .strategy{margin-top:4.4rem}
+  .strategy h2{font-family:"Anton",sans-serif;font-size:1.5rem;text-transform:uppercase}
+  .strat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.6rem}
+  .strat{border:1px solid var(--line);border-radius:8px;padding:1.2rem;background:rgba(8,12,18,.5)}
+  .strat .k{font-family:"JetBrains Mono",monospace;font-size:.54rem;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+  .strat p{margin-top:.7rem;font-size:.82rem;line-height:1.65;color:var(--muted)}
+
+  .mock-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;justify-content:space-between;align-items:center;
+    padding:.55rem 1.4rem;border-top:1px solid var(--line);background:var(--glass);backdrop-filter:blur(8px);
+    font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .mock-bar span{color:var(--gold)}
+  .mock-bar nav{display:flex;gap:1.4rem}
+  .mock-bar a{color:var(--muted);text-decoration:none}
+  .mock-bar a:hover{color:var(--ink)}
+
+  @media (max-width:1200px){.phones{grid-template-columns:repeat(2,1fr)}.strat-grid{grid-template-columns:1fr}}
+  @media (max-width:640px){.phones{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="kicker">Mockup 07 — Mobile Adaptation</div>
+<h1>No wall. Same archive.</h1>
+<p class="lede">
+  Mobile doesn't get a degraded wall — it gets a different expression of the same identity: the
+  <b>weighted vertical index</b>. Same card anatomy, same metadata language, same grade system, same dossiers.
+  The 3D geometry is the only thing that stays on desktop.
+</p>
+
+<div class="phones">
+  <!-- SCREEN 1: HOME -->
+  <div class="ph-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen s1">
+      <div class="m-top"><span class="nm">Jared McDaniel</span><span class="st">Archive open · 18</span></div>
+      <div class="feed">
+        <div class="statement">Director's archive — trailers, commercials & worlds</div>
+        <div class="m-card reel">
+          <img src="https://img.youtube.com/vi/mFeMMMmdW24/hqdefault.jpg" alt="">
+          <div class="mc-top"><span class="mc-code" style="color:var(--gold)">REC.00</span></div>
+          <span class="mc-live">Now screening</span>
+          <div class="mc-bottom"><div class="mc-title">Director Reel</div><div class="mc-role">2026 cut · sound available</div></div>
+        </div>
+        <div class="m-card flag">
+          <img src="https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg" alt="">
+          <div class="mc-top"><img class="mc-logo" src="../images/logos/cdprojekt.svg" alt=""><span class="mc-code">REC.01</span></div>
+          <div class="mc-bottom"><div class="mc-title">Cyberpunk 2077</div><div class="mc-role">Creative Direction · 2025</div>
+            <div class="mc-tags"><span>Trailer</span><span>In-Engine</span></div></div>
+        </div>
+        <div class="m-card flag">
+          <img src="https://img.youtube.com/vi/0WUnGHJXeHc/hqdefault.jpg" alt="">
+          <div class="mc-top"><img class="mc-logo" src="../images/logos/bethesda.svg" alt=""><span class="mc-code">REC.02</span></div>
+          <div class="mc-bottom"><div class="mc-title">DOOM</div><div class="mc-role">Trailer Direction · 2025</div></div>
+        </div>
+      </div>
+      <div class="m-nav"><span class="on">Archive</span><span>Work</span><span>About</span><span>Contact</span></div>
+    </div></div>
+    <div class="ph-note"><b>01 — Home</b>
+      Identity strip, then the reel already screening. Flagships render tall and first — the hierarchy the wall expresses in 3D, the index expresses in order and size.</div>
+    <div class="ph-spec">No WebGL · no boot ident · LCP target <i>&lt; 2.5s</i></div>
+  </div>
+
+  <!-- SCREEN 2: ARCHIVE SCROLL -->
+  <div class="ph-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen s2">
+      <div class="m-top"><span class="nm">Archive</span><span class="st">REC.03 / 17</span></div>
+      <div class="pills"><span class="on">All</span><span>Trailer</span><span>Commercial</span><span>Experimental</span><span>Narrative</span></div>
+      <div class="feed">
+        <div class="m-card flag" style="aspect-ratio:16/10">
+          <img src="https://img.youtube.com/vi/VxTBnNhAD3Q/hqdefault.jpg" alt="">
+          <div class="mc-top"><img class="mc-logo" src="../images/logos/bethesda.svg" alt=""><span class="mc-code">REC.03</span></div>
+          <div class="mc-bottom"><div class="mc-title">Fallout / Nuka-Cola</div><div class="mc-role">Commercial Direction · 2025</div>
+            <div class="mc-tags"><span>Commercial</span><span>Broadcast</span></div></div>
+          <span class="playing-tag">▶ Loop playing</span>
+        </div>
+        <div class="m-card flag" style="aspect-ratio:16/10">
+          <img src="https://img.youtube.com/vi/tr1ajPqpuDs/hqdefault.jpg" alt="">
+          <div class="mc-top"><img class="mc-logo" src="../images/logos/cdprojekt.svg" alt=""><span class="mc-code">REC.04</span></div>
+          <div class="mc-bottom"><div class="mc-title">The Witcher</div><div class="mc-role">Cinematic Direction · 2025</div></div>
+        </div>
+        <div class="m-card small">
+          <img src="https://img.youtube.com/vi/stQ7DVL4PvE/hqdefault.jpg" alt="">
+          <div class="mc-top"><span class="mc-code">REC.08</span></div>
+          <div class="mc-bottom"><div class="mc-title">BMW Fanatec</div></div>
+        </div>
+        <div class="m-card small">
+          <img src="https://img.youtube.com/vi/OZZsRSgG70g/hqdefault.jpg" alt="">
+          <div class="mc-top"><img class="mc-logo" src="../images/logos/corsair.svg" alt=""><span class="mc-code">REC.05</span></div>
+          <div class="mc-bottom"><div class="mc-title">Product Experience</div></div>
+        </div>
+      </div>
+      <div class="m-nav"><span class="on">Archive</span><span>Work</span><span>About</span><span>Contact</span></div>
+    </div></div>
+    <div class="ph-note"><b>02 — The index in motion</b>
+      One record plays at a time — the card crossing viewport center gets the loop (IntersectionObserver). T3/T4 records are shorter rows. Filters ride above the feed.</div>
+    <div class="ph-spec">1 playing video max · loops <i>≤ 2MB</i> · scroll = native</div>
+  </div>
+
+  <!-- SCREEN 3: SELECTION -->
+  <div class="ph-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen s3">
+      <div class="m-top"><span class="nm">REC.01</span><span class="st" style="color:var(--cp)">Night City grade</span></div>
+      <div class="sel">
+        <div class="m-card">
+          <img src="https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg" alt="">
+          <div class="mc-top"><img class="mc-logo" src="../images/logos/cdprojekt.svg" alt=""><span class="mc-code" style="color:var(--cp)">REC.01</span></div>
+          <div class="mc-bottom"><div class="mc-title">Cyberpunk 2077</div></div>
+        </div>
+        <div class="slate">
+          <div><div class="sk">Role</div><div class="sv">Creative Direction</div></div>
+          <div><div class="sk">Client</div><div class="sv">CD Projekt Red</div></div>
+          <div><div class="sk">Year</div><div class="sv">2025</div></div>
+          <div><div class="sk">World</div><div class="sv m">Night City</div></div>
+        </div>
+        <div class="brief">The brief said "show the city." The city isn't the subject — the loneliness is. We framed Night City like a character who never blinks.</div>
+        <span class="open">Open full dossier →</span>
+        <div class="dim-feed">
+          <div class="m-card"><img src="https://img.youtube.com/vi/0WUnGHJXeHc/hqdefault.jpg" alt=""></div>
+          <div class="m-card"><img src="https://img.youtube.com/vi/VxTBnNhAD3Q/hqdefault.jpg" alt=""></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="ph-note"><b>03 — Selection (the mobile Pull)</b>
+      Tap a record: it expands in place, the feed dims behind it, and the grade fires — the same world shift as desktop, expressed through color instead of 3D travel.</div>
+    <div class="ph-spec">Expand <i>in place</i> · grade via CSS vars · View Transition fallback</div>
+  </div>
+
+  <!-- SCREEN 4: DOSSIER -->
+  <div class="ph-wrap">
+    <div class="phone"><div class="notch"></div><div class="screen s4">
+      <div class="m-top"><span class="nm">← Wall</span><span class="st" style="color:var(--cp)">Dossier</span></div>
+      <div class="doss">
+        <div class="kick">REC.01 — Production dossier</div>
+        <h3>Cyberpunk 2077</h3>
+        <div class="chips"><span class="on">00 Brief</span><span>01 Approach</span><span>03 On set</span><span>04 Cut</span><span>05 Out</span></div>
+        <div class="m-card">
+          <img src="https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg" alt="">
+          <div class="mc-play"><i>▶</i></div>
+        </div>
+        <div class="cap">A-CAM · Final grade · screen the cut 02:14</div>
+        <div class="note-inline">
+          <div class="nl">Director's note — 01A</div>
+          <div class="nt">The city isn't the subject — the loneliness is.</div>
+        </div>
+        <div class="prose">Night City is the most photographed fictional city of the decade. The only way to make it feel new was to stop photographing it and start surveilling it…</div>
+        <div class="m-card" style="aspect-ratio:16/8">
+          <img src="../images/cyberpunk/bts-01-night-city.jpg" alt="">
+        </div>
+        <div class="cap">B-CAM · Day 01 · Practical neon test</div>
+      </div>
+      <div class="ct">Commentary on</div>
+    </div></div>
+    <div class="ph-note"><b>04 — Dossier</b>
+      Chapters become chips; commentary notes drop inline under their media with the director's hand preserved. Toggle persists bottom-right. Everything else is the desktop dossier, reflowed.</div>
+    <div class="ph-spec">Notes <i>inline</i> · chips sticky · same content model</div>
+  </div>
+</div>
+
+<div class="strategy">
+  <h2>Mobile strategy in three rules</h2>
+  <div class="strat-grid">
+    <div class="strat"><div class="k">01 — Geometry is desktop-only</div>
+      <p>The wall's 3D is an enhancement layer, never the content. Mobile renders the same records from the same data as a weighted vertical index. Nothing exists only inside the 3D scene.</p></div>
+    <div class="strat"><div class="k">02 — Identity travels in color & type</div>
+      <p>The grade, the slate metadata, the card anatomy, the commentary hand — all CSS, all mobile-safe. A phone visitor experiences the same fiction at a fraction of the GPU cost.</p></div>
+    <div class="strat"><div class="k">03 — One motion budget</div>
+      <p>One playing loop, native scroll, no drag physics, no WebGL. Reduced-motion collapses loops to graded stills and the grade to a hard cut — still valid film grammar.</p></div>
+  </div>
+</div>
+
+<div class="mock-bar">
+  <div><span>Mockup 07 / 07</span> — Mobile · The Weighted Index</div>
+  <nav>
+    <a href="index.html">Hub</a>
+    <a href="04-record-wall.html">04 — The Wall</a>
+    <a href="05-pull-storyboard.html">05 — Storyboard</a>
+    <a href="06-dossier-cyberpunk.html">06 — Dossier</a>
+  </nav>
+</div>
+</body>
+</html>

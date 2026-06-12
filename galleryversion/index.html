@@ -7536,6 +7536,217 @@
     /* Quiet the light columns */
     .light-column { opacity: 0.06 !important; }
   </style>
+  <style id="recordWallCss">
+    /* ============================================================
+       RECORD WALL — production system (Director's Archive)
+       Desktop: curved monitor wall. Mobile/touch/reduced-motion:
+       vertical archive index. All cards are posters — no iframe
+       previews ever render inside wall cards.
+       ============================================================ */
+    :root{
+      --rw-mood:#6f8cff;
+      --rw-mood-soft:rgba(111,140,255,.13);
+    }
+
+    .rw-stage{
+      position:absolute;inset:0;z-index:2;
+      perspective:1250px;perspective-origin:50% 44%;
+      overflow:hidden;cursor:grab;
+    }
+    .rw-stage.dragging{cursor:grabbing}
+    .rw-world{position:absolute;inset:0;transform-style:preserve-3d}
+    .rw-wall{
+      position:absolute;top:47%;left:50%;
+      display:flex;align-items:center;gap:var(--rw-gap,24px);
+      transform-style:preserve-3d;
+    }
+    .rw-col{
+      display:flex;flex-direction:column;justify-content:center;
+      gap:var(--rw-gap,24px);width:var(--rw-colw,17rem);flex-shrink:0;
+      transform-style:preserve-3d;will-change:transform;
+    }
+    .rw-col.rw-flatten{transition:transform 250ms cubic-bezier(.2,.8,.2,1)}
+    .rw-cell{position:relative;aspect-ratio:16/9;transform-style:preserve-3d}
+    .rw-cell.rw-edge{transform:scale(.9) translateZ(-46px)}
+    .rw-cell.rw-mid{transform:translateZ(34px)}
+    .rw-cell.rw-reel{transform:scale(1.05) translateZ(56px)}
+
+    .rw-card{
+      position:absolute;inset:0;display:block;padding:0;margin:0;text-align:left;
+      border-radius:5px;overflow:hidden;cursor:pointer;
+      background:#020305;border:1px solid rgba(111,140,255,.2);
+      box-shadow:0 0 0 3px rgba(2,3,5,.92),0 20px 48px rgba(0,0,0,.55);
+      color:var(--ink);text-decoration:none;font:inherit;
+      transition:transform .42s cubic-bezier(.2,.8,.2,1),border-color .42s ease,
+                 box-shadow .42s ease,opacity .42s ease,filter .42s ease;
+    }
+    .rw-card .rw-thumb{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      opacity:.86;transition:opacity .45s ease,transform 5s ease-out;
+    }
+    .rw-card video.rw-loop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+    .rw-card::after{
+      content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+      background:linear-gradient(180deg,rgba(2,3,5,.42) 0%,transparent 27%,transparent 56%,rgba(2,3,5,.9) 100%);
+    }
+    .rw-shade{
+      position:absolute;inset:0;z-index:2;background:#02030a;
+      opacity:var(--shade,0);pointer-events:none;
+    }
+    .rw-top{
+      position:absolute;top:.62rem;left:.72rem;right:.72rem;z-index:3;
+      display:flex;justify-content:space-between;align-items:center;gap:.6rem;
+    }
+    .rw-logo{height:.8rem;filter:brightness(0) invert(1);opacity:.55}
+    .rw-logotext{
+      font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;
+      color:rgba(242,238,231,.6);text-transform:uppercase;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .rw-code{font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.18em;color:rgba(242,238,231,.4);text-transform:uppercase;flex-shrink:0}
+    .rw-tally{
+      position:absolute;top:.58rem;right:.72rem;z-index:4;display:none;align-items:center;gap:.35rem;
+      font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;color:#ff3b30;text-transform:uppercase;
+    }
+    .rw-tally::before{content:"";width:.42rem;height:.42rem;border-radius:50%;background:#ff3b30;box-shadow:0 0 10px #ff3b30;animation:rwTally 1.3s ease-in-out infinite}
+    @keyframes rwTally{0%,100%{opacity:1}50%{opacity:.3}}
+    .rw-bottom{position:absolute;left:.78rem;right:.78rem;bottom:.66rem;z-index:3}
+    .rw-title{
+      font-family:Anton,Impact,sans-serif;font-size:clamp(.95rem,1.05vw,1.2rem);
+      letter-spacing:.03em;text-transform:uppercase;line-height:1.05;display:block;
+    }
+    .rw-expand{
+      max-height:0;overflow:hidden;opacity:0;
+      transition:max-height .4s cubic-bezier(.2,.8,.2,1),opacity .32s ease;
+    }
+    .rw-role{font:700 .5rem/1.4 "JetBrains Mono",monospace;letter-spacing:.16em;color:rgba(242,238,231,.62);text-transform:uppercase;margin-top:.34rem}
+    .rw-tags{display:flex;gap:.3rem;margin-top:.42rem;flex-wrap:wrap}
+    .rw-tags span{
+      font:700 .46rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;
+      color:rgba(242,238,231,.6);border:1px solid rgba(242,238,231,.14);border-radius:999px;padding:.2rem .5rem;
+    }
+    .rw-play{
+      position:absolute;inset:0;z-index:3;display:grid;place-items:center;pointer-events:none;
+      opacity:0;transition:opacity .35s ease;
+    }
+    .rw-play span{
+      display:inline-flex;align-items:center;gap:.5rem;
+      font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--ink);background:rgba(2,3,5,.66);border:1px solid rgba(242,238,231,.22);
+      border-radius:999px;padding:.55rem .95rem;backdrop-filter:blur(6px);
+    }
+    .rw-play span::before{content:"▶";font-size:.62rem;color:var(--rw-mood);transition:color .5s}
+
+    /* focus: one monitor lights, the village dims */
+    .rw-wall.has-focus .rw-card:not(.is-focus){opacity:.45;filter:saturate(.65) brightness(.6)}
+    .rw-card.is-focus{
+      transform:scale(1.045);
+      border-color:rgba(242,238,231,.34);
+      box-shadow:0 0 0 3px rgba(2,3,5,.92),0 28px 64px rgba(0,0,0,.72),0 0 52px var(--rw-mood-soft);
+      opacity:1;
+    }
+    .rw-card.is-focus .rw-thumb{opacity:1;transform:scale(1.055)}
+    .rw-card.is-focus .rw-tally{display:flex}
+    .rw-card.is-focus .rw-expand{max-height:5rem;opacity:1}
+    .rw-card.is-focus .rw-play{opacity:1}
+    .rw-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+    /* the pull-out: record flattens, lifts, world grades, page travels */
+    .rw-card.rw-pulling{
+      transform:scale(1.07);
+      border-color:var(--rw-mood);
+      box-shadow:0 0 0 3px rgba(2,3,5,.92),0 34px 80px rgba(0,0,0,.8),0 0 72px var(--rw-mood-soft);
+    }
+    body.rw-pull .rw-wall .rw-card:not(.rw-pulling){opacity:.18;filter:brightness(.4)}
+    .rw-gradeveil{
+      position:fixed;inset:0;z-index:240;pointer-events:none;
+      background:radial-gradient(80% 70% at 50% 42%,var(--rw-mood),transparent 75%);
+      opacity:0;transition:opacity .3s ease;mix-blend-mode:screen;
+    }
+    body.rw-pull .rw-gradeveil{opacity:.16}
+
+    .rw-statusline{
+      position:absolute;left:0;right:0;bottom:1.25rem;z-index:6;
+      display:flex;justify-content:center;gap:2.2rem;pointer-events:none;
+      font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.26em;
+      color:rgba(242,238,231,.36);text-transform:uppercase;
+    }
+    .rw-statusline #rwFocusLine{color:rgba(242,238,231,.6);transition:color .5s}
+
+    /* compact "Selected Work With" under the wall */
+    .brand-partners{bottom:3.2rem !important;z-index:6}
+    .brand-partners-label{margin-bottom:1rem !important}
+
+    /* ---------- mobile / touch / reduced-motion: archive index ---------- */
+    .rw-mobile{display:none}
+    .rw-mcard,.rw-mrow{
+      position:relative;display:block;overflow:hidden;border-radius:6px;
+      border:1px solid rgba(111,140,255,.16);background:#020305;color:var(--ink);
+      text-decoration:none;text-align:left;font:inherit;padding:0;width:100%;cursor:pointer;
+    }
+    .rw-mcard{aspect-ratio:16/9}
+    .rw-mcard img,.rw-mrow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.88}
+    .rw-mcard::after{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(180deg,rgba(2,3,5,.4),transparent 30%,transparent 52%,rgba(2,3,5,.92));
+    }
+    .rw-mcard .rw-top{top:.7rem;left:.8rem;right:.8rem}
+    .rw-mcard .rw-bottom{left:.85rem;right:.85rem;bottom:.75rem}
+    .rw-mcard .rw-title{font-size:clamp(1.3rem,5.6vw,1.7rem)}
+    .rw-mcard .rw-role{margin-top:.4rem}
+    .rw-mcard .rw-mtags{display:flex;gap:.3rem;margin-top:.5rem;flex-wrap:wrap}
+    .rw-mcard .rw-mtags span{
+      font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;
+      color:rgba(242,238,231,.62);border:1px solid rgba(242,238,231,.15);border-radius:999px;padding:.24rem .55rem;
+    }
+    .rw-mlive{
+      position:absolute;top:.7rem;right:.8rem;z-index:3;display:inline-flex;align-items:center;gap:.4rem;
+      font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;
+    }
+    .rw-mlive::before{content:"▶";font-size:.6rem}
+    .rw-mrow{
+      position:relative;display:grid;grid-template-columns:8.6rem 1fr;
+      min-height:5rem;border-radius:5px;
+    }
+    .rw-mrow .rw-mthumb{position:relative;overflow:hidden}
+    .rw-mrow .rw-mthumb img{position:absolute;inset:0}
+    .rw-mrow .rw-mmeta{padding:.7rem .85rem;display:grid;align-content:center;gap:.3rem}
+    .rw-mrow .rw-mtitle{font-family:Anton,Impact,sans-serif;font-size:1.02rem;text-transform:uppercase;letter-spacing:.03em;line-height:1.04}
+    .rw-mrow .rw-mrole{font:700 .48rem/1.5 "JetBrains Mono",monospace;letter-spacing:.14em;color:rgba(242,238,231,.55);text-transform:uppercase}
+    .rw-mrow .rw-mcode{position:absolute;top:.45rem;right:.6rem;font:700 .46rem/1 "JetBrains Mono",monospace;letter-spacing:.16em;color:rgba(242,238,231,.34)}
+    .rw-msection{
+      margin:1.5rem 0 .35rem;display:flex;align-items:center;gap:.8rem;
+      font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.26em;
+      color:rgba(111,140,255,.7);text-transform:uppercase;
+    }
+    .rw-msection::after{content:"";flex:1;height:1px;background:rgba(242,238,231,.1)}
+
+    @media (max-width:899px),(pointer:coarse){
+      .rw-stage,.rw-statusline{display:none}
+      .archive .archive-stage{display:block;min-height:auto;padding-bottom:2rem}
+      .rw-mobile{
+        display:flex;flex-direction:column;gap:.85rem;
+        width:min(100vw - 32px,34rem);margin:0 auto;padding:.6rem 0 1rem;
+      }
+      .brand-partners{
+        position:static !important;transform:none !important;width:auto !important;
+        margin:2.6rem auto 5.5rem;left:auto !important;bottom:auto !important;
+      }
+    }
+    /* reduced motion on desktop: calm index instead of the physics wall */
+    @media (prefers-reduced-motion:reduce) and (min-width:900px){
+      .rw-stage,.rw-statusline{display:none}
+      .archive .archive-stage{display:block;min-height:auto;padding-bottom:2rem}
+      .rw-mobile{
+        display:flex;flex-direction:column;gap:.85rem;
+        width:min(100vw - 32px,40rem);margin:0 auto;padding:.6rem 0 1rem;
+      }
+      .brand-partners{
+        position:static !important;transform:none !important;width:auto !important;
+        margin:2.6rem auto 5.5rem;left:auto !important;bottom:auto !important;
+      }
+    }
+  </style>
 </head>
 <body class="archive-room-active">
   <a class="brand" href="#archive" data-route="archive">Jared McDaniel</a>
@@ -7574,27 +7785,21 @@
   <main>
     <section class="room archive active" id="archive" data-room="archive" aria-label="Archive home">
       <div class="archive-stage">
-        <div class="hero-statement" aria-label="Director statement">
-          <div class="hero-statement-eyebrow">Creative Video Director / Editor</div>
-          <p class="hero-statement-copy">I create cinematic campaigns, trailers, and branded films built around atmosphere, emotion, and worldbuilding.</p>
-        </div>
-        <div class="gallery-plane" aria-label="Drifting project archive">
-          <div class="gallery-track" id="galleryTrack"></div>
+        <!-- RECORD WALL — desktop archive (data-driven, built by the wall engine) -->
+        <div class="rw-stage" id="rwStage" aria-label="Record wall. Drag to look around, click a record to open it.">
+          <div class="rw-world" id="rwWorld">
+            <div class="rw-wall" id="rwWall"></div>
+          </div>
         </div>
 
-        <div class="archive-note">
-          <span>Featured Object</span>
-          <button class="jump-reel" type="button">Jump to Director Reel</button>
+        <!-- ARCHIVE INDEX — mobile / touch fallback (no physics, posters only) -->
+        <div class="rw-mobile" id="rwMobile" aria-label="Project archive"></div>
+
+        <div class="rw-statusline" aria-hidden="true">
+          <span id="rwFocusLine">Director's archive — open</span>
+          <span><span id="rwCount"></span> · drag to look · click to pull a record</span>
         </div>
-        <div class="archive-artifacts" aria-hidden="true">
-          <span>ARC-37.7749N / BAY AREA</span>
-          <span>INDEX / COMMERCIAL / GAMES / STORY</span>
-          <span>FRAME MEMORY / 17 OBJECTS</span>
-        </div>
-        <div class="edge-feedback" aria-hidden="true">
-          <span class="edge-feedback-left"></span>
-          <span class="edge-feedback-right"></span>
-        </div>
+
         <div class="brand-partners" aria-label="Selected work with">
           <p class="brand-partners-label">Selected Work With</p>
           <ul class="brand-logos">
@@ -7625,12 +7830,6 @@
 
           </ul>
         </div>
-        <aside class="focus-label" id="focusLabel" aria-hidden="true">
-          <span class="focus-label-title">Archive Object</span>
-          <span class="focus-label-role">Direction / Edit</span>
-          <span class="focus-label-client">Archive</span>
-          <span class="focus-label-year">2025</span>
-        </aside>
       </div>
     </section>
 
@@ -8071,9 +8270,6 @@
 
     skipButton.addEventListener("click", () => settleIntro(true));
 
-    const galleryTrack = document.querySelector("#galleryTrack");
-    const galleryPlane = document.querySelector(".gallery-plane");
-    const focusLabel = document.querySelector("#focusLabel");
     const reelArchiveItem = {
       slug: "director-reel",
       code: "REEL / 00",
@@ -8084,130 +8280,6 @@
       yt: REEL_ID,
       isReel: true
     };
-    const gallerySet = [reelArchiveItem, ...projects];
-    const galleryItems = [...gallerySet, ...gallerySet, ...gallerySet];
-    let previewTimer = null;
-    let focusedCard = null;
-    let focusTargetDrift = null;
-    let focusEase = 0.055;
-    let activePreviewCard = null;
-
-    function startHoverPreview(card, videoId) {
-      if (!videoId || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (window.matchMedia("(pointer: coarse)").matches) return; // no iframes on touch — kills mobile
-      stopHoverPreview();
-
-      const iframe = document.createElement("iframe");
-      iframe.className = "hover-video";
-      iframe.title = "Muted hover preview";
-      iframe.allow = "autoplay; encrypted-media; picture-in-picture";
-      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${videoId}&modestbranding=1&rel=0`;
-      card.insertBefore(iframe, card.firstChild);
-      card.classList.add("has-video-preview");
-      activePreviewCard = card;
-    }
-
-    function stopHoverPreview(card = activePreviewCard) {
-      if (!card) return;
-      card.classList.remove("has-video-preview");
-      card.querySelectorAll(".hover-video").forEach((iframe) => iframe.remove());
-      if (activePreviewCard === card) {
-        activePreviewCard = null;
-      }
-    }
-
-    galleryItems.forEach((project) => {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = `gallery-card ${project.isReel ? "reel-object" : ""}`;
-      card.dataset.slug = project.slug;
-      card.dataset.title = project.title;
-      card.dataset.role = project.role;
-      card.dataset.client = project.client;
-      card.dataset.year = project.year || "2025";
-      card.dataset.yt = project.yt;
-      card.style.setProperty("--thumb", thumb(project.yt));
-      card.innerHTML = `
-        ${project.isReel ? '<span class="reel-badge">Director Reel</span>' : ""}
-        <span class="preview-layer" aria-hidden="true"><span>Muted Preview</span></span>
-        <span class="card-meta">
-          <span class="card-code">${project.code}</span>
-          <span class="card-title">${project.title}</span>
-          <span class="card-role">${project.role}</span>
-        </span>
-      `;
-      card.addEventListener("click", () => project.isReel ? openVideo(project.yt) : openProject(project));
-      card.addEventListener("pointerenter", () => {
-        if (!isInInspectionZone(card)) {
-          updateEdgeMotion(lastPointerX);
-          return;
-        }
-        window.clearTimeout(previewTimer);
-        focusedCard?.classList.remove("is-hovered", "is-previewing", "is-viewing", "is-reel-target");
-        focusedCard = card;
-        body.classList.add("focus-mode");
-        body.classList.remove("viewing-mode");
-        galleryTrack.classList.add("has-focus");
-        galleryTrack.classList.remove("viewing-focus");
-        card.classList.add("is-hovered");
-        updateFocusLabel(project);
-        targetVelocity = 0;
-        body.classList.remove("edge-left", "edge-right");
-        focusEase = 0.074;
-        const rect = card.getBoundingClientRect();
-        const delta = rect.left + rect.width / 2 - window.innerWidth / 2;
-        body.style.setProperty("--focus-x", `${rect.left + rect.width / 2}px`);
-        body.style.setProperty("--focus-y", `${rect.top + rect.height / 2}px`);
-        focusTargetDrift = drift - delta * 0.68;
-        previewTimer = window.setTimeout(() => {
-          if (focusedCard === card && !reduced) {
-            card.classList.add("is-previewing", "is-viewing");
-            startHoverPreview(card, project.yt);
-            body.classList.add("viewing-mode");
-            galleryTrack.classList.add("viewing-focus");
-            targetVelocity = 0;
-            focusEase = 0;
-            focusTargetDrift = null;
-          }
-        }, 700);
-      });
-      card.addEventListener("pointermove", (event) => {
-        lastPointerX = event.clientX;
-        if (!focusedCard && !isInInspectionZone(card)) {
-          updateEdgeMotion(event.clientX);
-          return;
-        }
-        const rect = card.getBoundingClientRect();
-        const px = (event.clientX - rect.left) / rect.width - 0.5;
-        const py = (event.clientY - rect.top) / rect.height - 0.5;
-        body.style.setProperty("--focus-x", `${rect.left + rect.width / 2}px`);
-        body.style.setProperty("--focus-y", `${rect.top + rect.height / 2}px`);
-        card.style.setProperty("--parallax-x", `${(px * 1.4).toFixed(2)}deg`);
-        card.style.setProperty("--parallax-y", `${(-py * 1.1).toFixed(2)}deg`);
-        card.style.setProperty("--light-x", `${((px + 0.5) * 100).toFixed(2)}%`);
-        card.style.setProperty("--light-y", `${((py + 0.5) * 100).toFixed(2)}%`);
-      });
-      card.addEventListener("pointerleave", () => {
-        window.clearTimeout(previewTimer);
-        if (focusedCard === card) {
-          focusedCard = null;
-          focusTargetDrift = null;
-          focusEase = 0.055;
-          targetVelocity = idleVelocity;
-          body.classList.remove("focus-mode", "viewing-mode");
-          galleryTrack.classList.remove("has-focus");
-          galleryTrack.classList.remove("viewing-focus");
-          updateEdgeMotion(lastPointerX);
-        }
-        card.classList.remove("is-hovered", "is-previewing", "is-viewing");
-        stopHoverPreview(card);
-        card.style.setProperty("--parallax-x", "0deg");
-        card.style.setProperty("--parallax-y", "0deg");
-        card.style.setProperty("--light-x", "50%");
-        card.style.setProperty("--light-y", "42%");
-      });
-      galleryTrack.appendChild(card);
-    });
 
     const workFilters = document.querySelector("#workFilters");
     const archiveWall = document.querySelector("#archiveWall");
@@ -8239,7 +8311,7 @@
       sessionStorage.setItem("jm_archive_return", JSON.stringify({
         route,
         filter: activeFilter,
-        drift,
+        drift: 0,
         timestamp: Date.now()
       }));
     }
@@ -8309,17 +8381,10 @@
       });
 
       node.addEventListener("pointerleave", () => {
-        window.clearTimeout(previewTimer);
-        stopHoverPreview(node);
         node.style.setProperty("--rx", "0deg");
         node.style.setProperty("--ry", "0deg");
         node.style.setProperty("--light-x", "50%");
         node.style.setProperty("--light-y", "42%");
-      });
-
-      node.addEventListener("pointerenter", () => {
-        window.clearTimeout(previewTimer);
-        previewTimer = window.setTimeout(() => startHoverPreview(node, project.yt), 600);
       });
 
       return node;
@@ -8435,67 +8500,11 @@
       openVideo(project.yt);
     }
 
-    function updateFocusLabel(project) {
-      if (!focusLabel) return;
-      focusLabel.querySelector(".focus-label-title").textContent = project.title;
-      focusLabel.querySelector(".focus-label-role").textContent = project.role;
-      focusLabel.querySelector(".focus-label-client").textContent = project.client || "Archive";
-      focusLabel.querySelector(".focus-label-year").textContent = project.year || "2025";
-    }
-
-    function jumpToDirectorReel() {
-      const reelCards = [...document.querySelectorAll(".gallery-card.reel-object")];
-      if (!reelCards.length) return;
-
-      const viewportCenter = window.innerWidth / 2;
-      const target = reelCards
-        .map((card) => {
-          const rect = card.getBoundingClientRect();
-          return {
-            card,
-            delta: rect.left + rect.width / 2 - viewportCenter
-          };
-        })
-        .sort((a, b) => Math.abs(a.delta) - Math.abs(b.delta))[0];
-
-      window.clearTimeout(previewTimer);
-      focusedCard?.classList.remove("is-hovered", "is-previewing", "is-viewing", "is-reel-target");
-      focusedCard = target.card;
-      targetVelocity = 0.006;
-      focusEase = 0.12;
-      focusTargetDrift = drift - target.delta;
-      const rect = target.card.getBoundingClientRect();
-      body.style.setProperty("--focus-x", `${rect.left + rect.width / 2}px`);
-      body.style.setProperty("--focus-y", `${rect.top + rect.height / 2}px`);
-      body.classList.add("focus-mode", "viewing-mode");
-      galleryTrack.classList.add("has-focus");
-      galleryTrack.classList.add("viewing-focus");
-      target.card.classList.add("is-hovered", "is-viewing", "is-previewing", "is-reel-target");
-      updateFocusLabel(reelArchiveItem);
-
-      window.setTimeout(() => {
-        target.card.classList.remove("is-reel-target");
-      }, 1500);
-
-      window.setTimeout(() => {
-        if (focusedCard === target.card && !target.card.matches(":hover")) {
-          focusedCard = null;
-          focusTargetDrift = null;
-          focusEase = 0.055;
-          targetVelocity = idleVelocity;
-          body.classList.remove("focus-mode", "viewing-mode");
-          galleryTrack.classList.remove("has-focus");
-          galleryTrack.classList.remove("viewing-focus");
-          target.card.classList.remove("is-hovered", "is-viewing", "is-previewing");
-        }
-      }, 4200);
-    }
 
     document.querySelectorAll("[data-video]").forEach((button) => {
       button.addEventListener("click", () => openVideo(button.dataset.video || REEL_ID));
     });
 
-    document.querySelector(".jump-reel")?.addEventListener("click", jumpToDirectorReel);
 
     closeModal.addEventListener("click", closeVideo);
     modal.addEventListener("click", (event) => {
@@ -8544,343 +8553,16 @@
     window.addEventListener("resize", updateScrollFocus);
     window.addEventListener("resize", updateWorkScrollFocus);
 
-    let drift = typeof pendingReturn?.drift === "number" ? pendingReturn.drift : 0;
-    const canUseEdgeHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const idleVelocity = 0.018;
-    const edgeVelocity = 0.12;
-    let targetVelocity = idleVelocity;
-    let currentVelocity = idleVelocity;
-    let lastFrameTime = performance.now();
-    let dragging = false;
-    let lastX = 0;
-    let lastPointerX = window.innerWidth / 2;
-    let dragVelocity = 0;
-    let reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    function isInInspectionZone(card) {
-      const rect = card.getBoundingClientRect();
-      const center = rect.left + rect.width / 2;
-      return center > window.innerWidth * 0.28 && center < window.innerWidth * 0.72;
-    }
-
-    function updateEdgeMotion(clientX = lastPointerX) {
-      if (!canUseEdgeHover || focusedCard || dragging) return;
-      lastPointerX = clientX;
-      const leftZone = window.innerWidth * 0.16;
-      const rightZone = window.innerWidth * 0.84;
-      const maxSpeed = edgeVelocity;
-
-      body.classList.remove("edge-left", "edge-right");
-
-      if (clientX < leftZone) {
-        const pressure = Math.min((leftZone - clientX) / leftZone, 1);
-        targetVelocity = -idleVelocity - pressure * maxSpeed;
-        body.classList.add("edge-left");
-      } else if (clientX > rightZone) {
-        const pressure = Math.min((clientX - rightZone) / (window.innerWidth - rightZone), 1);
-        targetVelocity = idleVelocity + pressure * maxSpeed;
-        body.classList.add("edge-right");
-      } else {
-        targetVelocity = idleVelocity;
-      }
-    }
-
-    galleryTrack.addEventListener("pointerdown", (event) => {
-      if (window.__archiveCarouselStateController) return; // state controller owns drag
-      if (event.target.closest("a")) return;
-      if (event.target.closest("button") && !event.target.closest(".gallery-card")) return;
-      dragging = true;
-      lastX = event.clientX;
-      body.classList.remove("edge-left", "edge-right");
-      if (!event.target.closest(".gallery-card")) {
-        galleryTrack.setPointerCapture(event.pointerId);
-      }
-    });
-
-    galleryTrack.addEventListener("pointermove", (event) => {
-      if (window.__archiveCarouselStateController) return;
-      if (!dragging) return;
-      dragVelocity = event.clientX - lastX;
-      drift += dragVelocity;
-      lastX = event.clientX;
-    });
-
-    galleryTrack.addEventListener("pointerup", () => {
-      if (window.__archiveCarouselStateController) return;
-      dragging = false;
-      targetVelocity = idleVelocity;
-      dragVelocity = 0;
-      updateEdgeMotion(lastPointerX);
-    });
-
-    galleryTrack.addEventListener("pointerleave", () => {
-      if (window.__archiveCarouselStateController) return;
-      dragging = false;
-    });
-
-    galleryTrack.addEventListener("mouseenter", () => {
-      updateEdgeMotion(lastPointerX);
-    });
-
-    galleryTrack.addEventListener("mouseleave", () => {
-      targetVelocity = idleVelocity;
-      body.classList.remove("edge-left", "edge-right");
-    });
-
     window.addEventListener("pointermove", (event) => {
       const x = event.clientX - window.innerWidth / 2;
       const y = event.clientY - window.innerHeight / 2;
-      lastPointerX = event.clientX;
       body.style.setProperty("--mx", x.toFixed(2));
       body.style.setProperty("--my", y.toFixed(2));
       body.style.setProperty("--cursor-x", `${event.clientX}px`);
       body.style.setProperty("--cursor-y", `${event.clientY}px`);
-      const archiveActive = document.querySelector('[data-room="archive"]').classList.contains("active");
-      const planeRect = galleryPlane?.getBoundingClientRect();
-      const overPlane = planeRect && event.clientY >= planeRect.top && event.clientY <= planeRect.bottom;
-      if (archiveActive && overPlane && !focusedCard) {
-        updateEdgeMotion(event.clientX);
-      } else if (!archiveActive || !overPlane) {
-        body.classList.remove("edge-left", "edge-right");
-        if (!focusedCard && !dragging) {
-          targetVelocity = idleVelocity;
-        }
-      }
     });
-
-    function animateGallery(now = performance.now()) {
-      // Mobile: state controller manages the transform and velocity — skip entirely to avoid
-      // double-write conflicts and the 57-card per-frame style loop that crashes Safari.
-      if (window.__archiveCarouselStateController && window.matchMedia("(pointer: coarse)").matches) {
-        requestAnimationFrame(animateGallery);
-        return;
-      }
-      const width = galleryTrack.scrollWidth / 3 || 1;
-      const delta = Math.min(40, Math.max(8, now - lastFrameTime));
-      lastFrameTime = now;
-
-      if (!dragging && !reduced) {
-        currentVelocity += (targetVelocity - currentVelocity) * 0.045;
-        const naturalPulse = 1 + Math.sin(now * 0.00023) * 0.075 + Math.sin(now * 0.00061) * 0.035;
-        drift -= currentVelocity * naturalPulse * (delta / 16.67);
-      }
-
-      if (focusedCard?.classList.contains("is-viewing") && !dragging && !reduced) {
-        const rect = focusedCard.getBoundingClientRect();
-        const cardCenter = rect.left + rect.width / 2;
-        body.style.setProperty("--focus-x", `${cardCenter}px`);
-        body.style.setProperty("--focus-y", `${rect.top + rect.height / 2}px`);
-        focusTargetDrift = drift - (cardCenter - window.innerWidth / 2);
-      }
-
-      if (focusTargetDrift !== null && !dragging && !reduced) {
-        drift += (focusTargetDrift - drift) * focusEase;
-      }
-
-      if (drift < -width) drift += width;
-      if (drift > 0) drift -= width;
-
-      galleryTrack.style.transform = `translate3d(${drift}px, 0, 0)`;
-
-      const center = window.innerWidth / 2;
-      document.querySelectorAll(".gallery-card").forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const cardCenter = rect.left + rect.width / 2;
-        const distance = (cardCenter - center) / center;
-        const abs = Math.min(Math.abs(distance), 1.45);
-        const edgeProgress = Math.min(abs / 1.45, 1);
-        const edgeEase = edgeProgress * edgeProgress * (3 - 2 * edgeProgress);
-        const scale = Math.max(0.82, 1 - edgeEase * 0.14);
-        const opacity = Math.max(0.3, 1 - edgeEase * 0.58);
-        const brightness = Math.max(0.62, 1 - edgeEase * 0.28);
-        const focus = Math.max(0, 1 - edgeEase);
-        card.style.setProperty("--turn", `${(-distance * 18).toFixed(2)}deg`);
-        card.style.setProperty("--scale", scale.toFixed(3));
-        card.style.setProperty("--blur", `${(edgeEase * 4.2).toFixed(2)}px`);
-        card.style.setProperty("--brightness", brightness.toFixed(3));
-        card.style.setProperty("--opacity", opacity.toFixed(3));
-        card.style.setProperty("--focus", focus.toFixed(3));
-        card.style.setProperty("--frame-opacity", (0.34 + focus * 0.54).toFixed(3));
-        card.style.setProperty("--frame-glow", (0.02 + focus * 0.08).toFixed(3));
-        card.style.setProperty("--z", `${(focus * 96).toFixed(2)}px`);
-        card.style.setProperty("--depth", String(Math.round(100 - abs * 70)));
-      });
-
-      requestAnimationFrame(animateGallery);
-    }
-
-    requestAnimationFrame(animateGallery);
   </script>
-<div class="hover-preview-portal" id="hoverPreviewPortal" aria-hidden="true">
-  <div class="hover-preview-shell">
-    <div class="hover-preview-media"></div>
-    <div class="hover-preview-meta">
-      <span class="hover-preview-code"></span>
-      <strong class="hover-preview-title"></strong>
-      <span class="hover-preview-role"></span>
-    </div>
-  </div>
-</div>
-<script>
-  (() => {
-    const portal = document.getElementById('hoverPreviewPortal');
-    if (!portal) return;
 
-    const media = portal.querySelector('.hover-preview-media');
-    const codeEl = portal.querySelector('.hover-preview-code');
-    const titleEl = portal.querySelector('.hover-preview-title');
-    const roleEl = portal.querySelector('.hover-preview-role');
-    let activeCard = null;
-    let previewTimer = 0;
-    let closeTimer = 0;
-
-    function cardLabel(card, selectors, fallback = '') {
-      for (const selector of selectors) {
-        const node = card.querySelector(selector);
-        if (node && node.textContent.trim()) return node.textContent.trim();
-      }
-      return fallback;
-    }
-
-    function cardImage(card) {
-      const img = card.querySelector('img');
-      if (img && (img.currentSrc || img.src)) return img.currentSrc || img.src;
-
-      const mediaNode = card.querySelector('.card-media, .card-image, .gallery-media, .gallery-thumb, .archive-thumb');
-      const bg = mediaNode ? getComputedStyle(mediaNode).backgroundImage : getComputedStyle(card).backgroundImage;
-      if (bg && bg !== 'none') {
-        const match = bg.match(/url\(["']?(.+?)["']?\)/);
-        if (match) return match[1];
-      }
-
-      return '';
-    }
-
-    function videoIdFromCard(card, imageUrl) {
-      const direct = card.dataset.yt || card.dataset.videoId || card.dataset.video || card.dataset.youtube || card.getAttribute('data-yt');
-      if (direct) return direct;
-
-      const dataNode = card.querySelector('[data-yt], [data-video-id], [data-youtube], [data-video]');
-      if (dataNode) {
-        return dataNode.dataset.yt || dataNode.dataset.videoId || dataNode.dataset.youtube || dataNode.dataset.video || '';
-      }
-
-      const link = card.querySelector('a[href*="youtu"], iframe[src*="youtu"]');
-      const source = link ? (link.href || link.src || '') : imageUrl || '';
-      const match = source.match(/(?:vi\/|embed\/|watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
-      return match ? match[1] : '';
-    }
-
-    function lockCardBasis(card) {
-      const basis = getComputedStyle(card).flexBasis;
-      const width = card.getBoundingClientRect().width;
-      if (basis && basis !== 'auto') {
-        card.style.setProperty('--stable-card-basis', basis);
-      } else if (width) {
-        card.style.setProperty('--stable-card-basis', `${Math.round(width)}px`);
-      }
-    }
-
-    function removeCardPreviewMedia(root = document) {
-      root.querySelectorAll('.gallery-card iframe, .gallery-card video, .gallery-card .hover-preview, .gallery-card .preview-frame, .gallery-card .card-preview, .gallery-card .video-preview').forEach((node) => {
-        node.remove();
-      });
-    }
-
-    function closePreview() {
-      clearTimeout(previewTimer);
-      clearTimeout(closeTimer);
-      portal.classList.remove('active');
-      portal.setAttribute('aria-hidden', 'true');
-      media.innerHTML = '';
-      media.style.removeProperty('--preview-bg');
-    }
-
-    function openPreview(card) {
-      if (!card || card !== activeCard) return;
-
-      const image = cardImage(card);
-      const videoId = videoIdFromCard(card, image);
-      const title = card.dataset.title || cardLabel(card, ['.card-title', '.gallery-title', '.project-title', 'h3', 'strong'], 'Selected Work');
-      const role = card.dataset.role || cardLabel(card, ['.card-role', '.gallery-role', '.project-role', '.card-meta', '.gallery-meta'], 'Director / Editor');
-      const code = card.dataset.code || cardLabel(card, ['.card-code', '.gallery-code', '.project-code', '.card-index'], 'Archive Frame');
-
-      media.innerHTML = '';
-      if (image) {
-        media.style.setProperty('--preview-bg', `url("${image}")`);
-      }
-
-      if (videoId) {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${videoId}&modestbranding=1&rel=0`;
-        iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-        iframe.title = `${title} hover preview`;
-        media.appendChild(iframe);
-      } else if (image) {
-        const img = document.createElement('img');
-        img.src = image;
-        img.alt = '';
-        media.appendChild(img);
-      }
-
-      codeEl.textContent = code;
-      titleEl.textContent = title;
-      roleEl.textContent = role;
-      portal.setAttribute('aria-hidden', 'false');
-      portal.classList.add('active');
-    }
-
-    function focusCard(card) {
-      if (!card || card === activeCard) return;
-      closePreview();
-      removeCardPreviewMedia();
-      if (activeCard) {
-        activeCard.classList.remove('is-hovered');
-      }
-      activeCard = card;
-      lockCardBasis(card);
-      card.classList.add('is-hovered');
-      previewTimer = window.setTimeout(() => openPreview(card), 700);
-    }
-
-    function unfocusCard(card) {
-      if (!card || card !== activeCard) return;
-      clearTimeout(previewTimer);
-      closeTimer = window.setTimeout(closePreview, 90);
-      card.classList.remove('is-hovered', 'is-viewing');
-      activeCard = null;
-    }
-
-    document.addEventListener('pointerover', (event) => {
-      const card = event.target.closest && event.target.closest('.gallery-card');
-      if (!card) return;
-      focusCard(card);
-    }, true);
-
-    document.addEventListener('pointerout', (event) => {
-      const card = event.target.closest && event.target.closest('.gallery-card');
-      if (!card) return;
-      const related = event.relatedTarget;
-      if (related && card.contains(related)) return;
-      unfocusCard(card);
-    }, true);
-
-    document.addEventListener('pointerdown', closePreview, true);
-    window.addEventListener('blur', closePreview);
-
-    const cardMediaObserver = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        mutation.addedNodes.forEach((node) => {
-          if (!(node instanceof Element)) return;
-          if (node.closest && node.closest('.gallery-card')) {
-            removeCardPreviewMedia(node.closest('.gallery-card'));
-          }
-        });
-      }
-    });
-    cardMediaObserver.observe(document.body, { childList: true, subtree: true });
-  })();
-</script>
 <header class="site-archive-header" aria-label="Site header">
   <a class="header-identity" href="#archive" aria-label="Jared McDaniel archive home">
     <span class="header-identity-name">Jared McDaniel</span>
@@ -8984,270 +8666,7 @@
     setActiveHeaderLink();
   })();
 </script>
-<script>
-  (() => {
-    const DEBUG_CAROUSEL = false;
-    const track = document.getElementById('galleryTrack');
-    if (!track || window.__archiveCarouselStateController) return;
-    window.__archiveCarouselStateController = true;
 
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const BASE_VELOCITY = prefersReducedMotion ? 0 : -0.010;
-
-    const carouselState = {
-      drift: 0,
-      velocity: BASE_VELOCITY,
-      targetVelocity: BASE_VELOCITY,
-      isDragging: false,
-      isJumping: false,
-      isHoveringCard: false,
-      activeCard: null,
-      previewOpen: false,
-      jumpTarget: null,
-      lastTime: 0,
-      booting: true
-    };
-
-    window.__archiveCarouselState = carouselState;
-    let booted = false;
-    const log = (...args) => DEBUG_CAROUSEL && console.info('[archive-carousel]', ...args);
-
-    function galleryCards() {
-      return Array.from(document.querySelectorAll('.gallery-card'));
-    }
-
-    function reelCards() {
-      return galleryCards().filter((card) => card.classList.contains('reel-object'));
-    }
-
-    function parseOffset() {
-      const managed = track.style.getPropertyValue('--carousel-managed-offset');
-      const old = track.style.getPropertyValue('--reel-nav-offset');
-      const translate = track.style.translate;
-      const raw = managed || old || translate || '0';
-      const match = String(raw).match(/-?\d+(?:\.\d+)?/);
-      return match ? parseFloat(match[0]) : 0;
-    }
-
-    function applyOffset() {
-      const px = `${carouselState.drift.toFixed(3)}px`;
-      track.style.setProperty('--carousel-managed-offset', px);
-      track.style.setProperty('--reel-nav-offset', px);
-      track.style.transform = `translate3d(${px}, 0, 0)`;
-    }
-
-    function wrapManagedDrift() {
-      const span = Math.max(track.scrollWidth / 3, window.innerWidth * 2);
-      if (!Number.isFinite(span) || span <= 0) return;
-      if (carouselState.drift < -span) carouselState.drift += span;
-      if (carouselState.drift > span) carouselState.drift -= span;
-    }
-
-    function clearCardInteractionState({ keepStart = false } = {}) {
-      document.body.classList.remove('focus-mode', 'viewing-mode', 'preview-open', 'user-card-hovering');
-      const portal = document.getElementById('hoverPreviewPortal');
-      if (portal) {
-        portal.classList.remove('active');
-        portal.setAttribute('aria-hidden', 'true');
-        portal.querySelectorAll('iframe, video').forEach((node) => node.remove());
-      }
-
-      galleryCards().forEach((card) => {
-        card.classList.remove(
-          'is-hovered',
-          'is-viewing',
-          'is-previewing',
-          'has-video-preview',
-          'focus-locked',
-          'viewing-locked',
-          'reel-landing-focus',
-          'reel-jump-focus'
-        );
-        if (!keepStart) card.classList.remove('is-start-card');
-        card.querySelectorAll('iframe, video, .hover-preview, .preview-frame, .card-preview, .video-preview').forEach((node) => node.remove());
-      });
-
-      carouselState.isHoveringCard = false;
-      carouselState.activeCard = null;
-      carouselState.previewOpen = false;
-    }
-
-    function chooseLoopSafeReel() {
-      const reels = reelCards();
-      if (!reels.length) return null;
-
-      const centerIndex = (galleryCards().length - 1) / 2;
-      return reels
-        .map((card) => {
-          const cards = galleryCards();
-          const index = cards.indexOf(card);
-          const hasLeft = index > 0 && cards[index - 1]?.classList.contains('gallery-card');
-          const hasRight = index < cards.length - 1 && cards[index + 1]?.classList.contains('gallery-card');
-          const rect = card.getBoundingClientRect();
-          const centerDistance = Math.abs((rect.left + rect.width / 2) - window.innerWidth / 2);
-          const loopScore = (hasLeft ? 0 : 100000) + (hasRight ? 0 : 100000);
-          return {
-            card,
-            score: loopScore + Math.abs(index - centerIndex) * 12 + centerDistance * 0.08
-          };
-        })
-        .sort((a, b) => a.score - b.score)[0].card;
-    }
-
-    function centerCardOnce(card, { immediate = false } = {}) {
-      if (!card) return false;
-      const rect = card.getBoundingClientRect();
-      if (!rect.width) return false;
-      const delta = (window.innerWidth / 2) - (rect.left + rect.width / 2);
-      carouselState.drift += delta;
-      if (immediate) {
-        applyOffset();
-      } else {
-        carouselState.isJumping = true;
-        carouselState.jumpTarget = carouselState.drift;
-        carouselState.drift -= delta;
-        document.body.classList.add('carousel-jumping');
-      }
-      return true;
-    }
-
-    function initialReelLanding() {
-      clearCardInteractionState();
-      document.body.classList.add('carousel-state-managed', 'carousel-booting');
-      carouselState.drift = parseOffset();
-      carouselState.velocity = BASE_VELOCITY;
-      carouselState.targetVelocity = BASE_VELOCITY;
-      carouselState.isJumping = false;
-      carouselState.jumpTarget = null;
-
-      const reel = chooseLoopSafeReel();
-      if (centerCardOnce(reel, { immediate: true })) {
-        reel.classList.add('is-start-card');
-        log('initial drift set', carouselState.drift);
-        window.setTimeout(() => reel.classList.remove('is-start-card'), 2200);
-      }
-
-      window.setTimeout(() => {
-        clearCardInteractionState({ keepStart: true });
-        document.body.classList.remove('carousel-booting', 'focus-mode', 'viewing-mode');
-        carouselState.booting = false;
-        carouselState.targetVelocity = BASE_VELOCITY;
-      }, 450);
-    }
-
-    function startJumpToReel() {
-      const reel = chooseLoopSafeReel();
-      if (!reel) return;
-      clearCardInteractionState();
-      carouselState.isJumping = true;
-      carouselState.velocity = 0;
-      carouselState.targetVelocity = 0;
-      document.body.classList.add('carousel-state-managed', 'carousel-jumping');
-
-      const rect = reel.getBoundingClientRect();
-      const delta = (window.innerWidth / 2) - (rect.left + rect.width / 2);
-      carouselState.jumpTarget = carouselState.drift + delta;
-      reel.classList.add('is-start-card');
-      log('jump start', carouselState.jumpTarget);
-    }
-
-    function isJumpToReelControl(control) {
-      if (!control) return false;
-      const text = (control.textContent || '').trim().toLowerCase();
-      const action = `${control.dataset.action || ''} ${control.dataset.target || ''}`.toLowerCase();
-      return (
-        (text.includes('reel') && (text.includes('jump') || text.includes('locate'))) ||
-        action.includes('jump-reel') ||
-        action.includes('reel-jump') ||
-        control.classList.contains('jump-to-reel') ||
-        control.classList.contains('reel-jump')
-      );
-    }
-
-    window.addEventListener('click', (event) => {
-      const control = event.target.closest?.('a, button, [role="button"], [data-action]');
-      if (!isJumpToReelControl(control)) return;
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      startJumpToReel();
-    }, true);
-
-    document.addEventListener('pointerover', (event) => {
-      const card = event.target.closest?.('.gallery-card');
-      if (!card || carouselState.booting || carouselState.isJumping) return;
-      carouselState.isHoveringCard = true;
-      carouselState.activeCard = card;
-      carouselState.targetVelocity = prefersReducedMotion ? 0 : -0.002;
-      document.body.classList.add('user-card-hovering');
-      log('hover enter');
-    }, true);
-
-    document.addEventListener('pointerout', (event) => {
-      const card = event.target.closest?.('.gallery-card');
-      if (!card) return;
-      const related = event.relatedTarget;
-      if (related && card.contains(related)) return;
-      carouselState.isHoveringCard = false;
-      carouselState.activeCard = null;
-      carouselState.targetVelocity = BASE_VELOCITY;
-      document.body.classList.remove('user-card-hovering');
-      log('hover leave');
-    }, true);
-
-    function tick(time) {
-      const dt = Math.min(48, time - (carouselState.lastTime || time));
-      carouselState.lastTime = time;
-
-      if (carouselState.isJumping && carouselState.jumpTarget !== null) {
-        carouselState.drift += (carouselState.jumpTarget - carouselState.drift) * 0.085;
-        if (Math.abs(carouselState.jumpTarget - carouselState.drift) < 0.75) {
-          carouselState.drift = carouselState.jumpTarget;
-          carouselState.jumpTarget = null;
-          carouselState.isJumping = false;
-          carouselState.velocity = BASE_VELOCITY;
-          carouselState.targetVelocity = BASE_VELOCITY;
-          document.body.classList.remove('carousel-jumping', 'focus-mode', 'viewing-mode');
-          window.setTimeout(() => {
-            galleryCards().forEach((card) => card.classList.remove('is-start-card'));
-          }, 1200);
-          log('jump end');
-        }
-      } else {
-        carouselState.velocity += (carouselState.targetVelocity - carouselState.velocity) * 0.035;
-        carouselState.drift += carouselState.velocity * dt;
-        wrapManagedDrift();
-      }
-
-      applyOffset();
-      requestAnimationFrame(tick);
-    }
-
-    function boot() {
-      if (booted) return;
-      booted = true;
-      document.body.classList.add('carousel-state-managed');
-      let attempts = 0;
-      const waitForCards = () => {
-        attempts += 1;
-        if (reelCards().length && galleryCards().length > 2) {
-          initialReelLanding();
-          requestAnimationFrame(tick);
-          return;
-        }
-        if (attempts < 80) window.setTimeout(waitForCards, 100);
-      };
-      waitForCards();
-    }
-
-    if (document.readyState === 'complete') {
-      boot();
-    } else {
-      window.addEventListener('load', boot, { once: true });
-      window.setTimeout(boot, 800);
-    }
-  })();
-</script>
 <script>
   (() => {
     function improveMediaAccessibility() {
@@ -9347,126 +8766,7 @@
     window.setTimeout(runHeaderCleanup, 1600);
   })();
 </script>
-<script>
-  (() => {
-    const track = document.getElementById('galleryTrack');
-    const stage = document.querySelector('.archive-stage, .archive-viewport, .gallery-viewport');
-    const state = window.__archiveCarouselState;
-    if (!track || !stage || !state || window.__archiveDragRestored) return;
-    window.__archiveDragRestored = true;
 
-    let pointerId = null;
-    let startX = 0;
-    let startY = 0;
-    let lastX = 0;
-    let lastMoveTime = 0;
-    let startDrift = 0;
-    let dragged = false;
-    let suppressClick = false;
-    let dragVelocity = 0;
-
-    function isModalOpen() {
-      return Boolean(document.querySelector('[role="dialog"][aria-hidden="false"], .modal.active, .video-modal.active, .lightbox.active'));
-    }
-
-    function applyDrift() {
-      const px = `${state.drift.toFixed(3)}px`;
-      track.style.setProperty('--carousel-managed-offset', px);
-      track.style.setProperty('--reel-nav-offset', px);
-      track.style.transform = `translate3d(${px}, 0, 0)`;
-    }
-
-    function beginDrag(event) {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
-      if (isModalOpen()) return;
-      const isCard = !!event.target.closest('.gallery-card');
-      if (event.target.closest('.site-archive-header, .hover-preview-portal, a, input, textarea, select')) return;
-      if (event.target.closest('button') && !isCard) return;
-      if (isCard) { pointerId = event.pointerId; startX = event.clientX; startY = event.clientY; lastX = event.clientX; lastMoveTime = performance.now(); startDrift = state.drift || 0; dragged = false; dragVelocity = 0; state.isDragging = true; state.isJumping = false; state.jumpTarget = null; state.velocity = 0; state.targetVelocity = 0; document.body.classList.add('carousel-dragging'); return; }
-
-      pointerId = event.pointerId;
-      startX = event.clientX;
-      startY = event.clientY;
-      lastX = event.clientX;
-      lastMoveTime = performance.now();
-      startDrift = state.drift || 0;
-      dragged = false;
-      dragVelocity = 0;
-      state.isDragging = true;
-      state.isJumping = false;
-      state.jumpTarget = null;
-      state.velocity = 0;
-      state.targetVelocity = 0;
-      document.body.classList.add('carousel-dragging');
-      stage.setPointerCapture?.(pointerId);
-    }
-
-    function moveDrag(event) {
-      if (event.pointerId !== pointerId) return;
-      const dx = event.clientX - startX;
-      const dy = event.clientY - startY;
-      const now = performance.now();
-      const step = event.clientX - lastX;
-      const dt = Math.max(8, now - lastMoveTime);
-
-      // If user is clearly scrolling vertically, abandon the drag so native scroll takes over
-      if (!dragged && Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.4) {
-        pointerId = null;
-        state.isDragging = false;
-        document.body.classList.remove('carousel-dragging');
-        return;
-      }
-
-      if (Math.abs(dx) > 6) {
-        dragged = true;
-        suppressClick = true;
-      }
-
-      if (dragged) {
-        event.preventDefault();
-        state.drift = startDrift + dx;
-        dragVelocity = step / dt;
-        applyDrift();
-      }
-
-      lastX = event.clientX;
-      lastMoveTime = now;
-    }
-
-    function endDrag(event) {
-      if (event.pointerId !== pointerId) return;
-      stage.releasePointerCapture?.(pointerId);
-      pointerId = null;
-      state.isDragging = false;
-      document.body.classList.remove('carousel-dragging');
-
-      if (dragged) {
-        state.velocity = Math.max(-0.08, Math.min(0.08, dragVelocity * 10));
-        state.targetVelocity = -0.010;
-        window.setTimeout(() => {
-          suppressClick = false;
-        }, 220);
-      } else {
-        suppressClick = false;
-        state.targetVelocity = -0.010;
-      }
-    }
-
-    stage.addEventListener('pointerdown', beginDrag);
-    window.addEventListener('pointermove', moveDrag, { passive: false });
-    window.addEventListener('pointerup', endDrag);
-    window.addEventListener('pointercancel', endDrag);
-
-    document.addEventListener('click', (event) => {
-      if (!suppressClick) return;
-      // Never suppress navigation — header, menu toggle, or any nav/anchor
-      if (event.target.closest?.('.site-archive-header, .mobile-menu-toggle, .mobile-menu-overlay, .glass-nav, a[href], button:not(.gallery-card)')) return;
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-    }, true);
-  })();
-</script>
 <script>
   (() => {
     function cleanupWorkIntroOverlap() {
@@ -9551,6 +8851,409 @@
   })();
 </script>
 <script>
+  /* ============================================================
+     RECORD WALL ENGINE — Director's Archive (production)
+     Parametric layout: placement, density, card size and curvature
+     are computed from record count × viewport. Flagships always own
+     the center of the middle band. No placeholder cells. Posters
+     only — local loops can be added later via a record's `loop`
+     field; only near-center cards would play, offscreen unloads.
+     ============================================================ */
+  (() => {
+    "use strict";
+    const stageEl = document.getElementById("rwStage");
+    const wallEl = document.getElementById("rwWall");
+    const mobileEl = document.getElementById("rwMobile");
+    if (!stageEl || !wallEl || !mobileEl) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const wallMQ = window.matchMedia("(min-width: 900px) and (pointer: fine)");
+    const root = document.documentElement;
+
+    const MOODS = {
+      "cyberpunk-2077": { mood: "#ff3d72", soft: "rgba(255,61,114,.15)", line: "Night City grade" },
+      "doom": { mood: "#ff6b35", soft: "rgba(255,107,53,.15)", line: "Ember grade" },
+      "witcher": { mood: "#9fc7ff", soft: "rgba(159,199,255,.14)", line: "Candlelight grade" },
+      "fallout-nuka-cola": { mood: "#cc3333", soft: "rgba(204,51,51,.15)", line: "Nuka broadcast grade" },
+    };
+    const FLAG_ORDER = ["director-reel", "cyberpunk-2077", "doom", "witcher", "fallout-nuka-cola"];
+
+    function logoFor(client) {
+      const c = (client || "").toLowerCase();
+      if (c.includes("projekt")) return "images/logos/cdprojekt.svg";
+      if (c.includes("bethesda")) return "images/logos/bethesda.svg";
+      if (c.includes("corsair")) return "images/logos/corsair.svg";
+      return null;
+    }
+
+    /* Records come from the same `projects` data the rest of the site uses.
+       Adding a future project = adding one entry to that array. */
+    const RECORDS = (() => {
+      const all = [Object.assign({ tags: ["Reel", "2026 Cut"] }, reelArchiveItem), ...projects];
+      const bySlug = {};
+      all.forEach((r) => { bySlug[r.slug] = r; });
+      const head = FLAG_ORDER.map((s) => bySlug[s]).filter(Boolean);
+      const rest = all.filter((r) => !FLAG_ORDER.includes(r.slug));
+      return [...head, ...rest];
+    })();
+
+    const countEl = document.getElementById("rwCount");
+    if (countEl) countEl.textContent = `${RECORDS.length} records`;
+    const focusLine = document.getElementById("rwFocusLine");
+    const IDLE_LINE = "Director's archive — open";
+
+    /* ---------------- card builders ---------------- */
+    function wallCard(rec) {
+      const isLink = !!rec.page;
+      const el = document.createElement(isLink ? "a" : "button");
+      el.className = "rw-card";
+      if (isLink) { el.href = rec.page; el.draggable = false; }
+      else el.type = "button";
+      el.dataset.slug = rec.slug;
+      el.setAttribute("aria-label", `${rec.title} — ${rec.role}`);
+      const logo = logoFor(rec.client);
+      el.innerHTML = `
+        <img class="rw-thumb" src="${thumbSrc(rec.yt)}" alt="${rec.title} still" loading="lazy" decoding="async" draggable="false">
+        <span class="rw-shade" aria-hidden="true"></span>
+        <span class="rw-top">${logo
+          ? `<img class="rw-logo" src="${logo}" alt="" draggable="false">`
+          : `<span class="rw-logotext">${rec.client || "Archive"}</span>`}<span class="rw-code">${rec.code || ""}</span></span>
+        <span class="rw-tally" aria-hidden="true">Rec</span>
+        ${isLink ? "" : `<span class="rw-play" aria-hidden="true"><span>${rec.isReel ? "Screen the reel" : "Play film"}</span></span>`}
+        <span class="rw-bottom">
+          <span class="rw-title">${rec.title}</span>
+          <span class="rw-expand">
+            <span class="rw-role">${rec.role}${rec.client ? " · " + rec.client : ""}${rec.year ? " · " + rec.year : ""}</span>
+            <span class="rw-tags">${(rec.tags || []).map((t) => `<span>${t}</span>`).join("")}</span>
+          </span>
+        </span>`;
+      return el;
+    }
+
+    /* ---------------- wall layout engine ---------------- */
+    let cols = [], colCenters = [], wallW = 0, bound = 0, curveK = 0.03;
+
+    function computeLayout(n, vw, vh) {
+      const gap = 24;
+      const stageH = Math.max(340, vh - 300);
+      let rows = n <= 24 ? 3 : n <= 46 ? 4 : 5;
+      const spread = 1.5 + Math.min(n, 60) / 60 * 0.6;
+      let colsN, colW;
+      for (;;) {
+        colsN = Math.ceil(n / rows);
+        colW = (vw * spread - gap * (colsN - 1)) / colsN;
+        colW = Math.max(230, Math.min(430, colW));
+        const colH = rows * (colW * 9 / 16) + (rows - 1) * gap;
+        if (colH <= stageH || rows === 3) break;
+        rows--;
+      }
+      colW = Math.min(colW, ((stageH - (rows - 1) * gap) / rows) * 16 / 9);
+      return { rows, cols: colsN, colW, gap, spread };
+    }
+
+    function buildWall() {
+      const n = RECORDS.length;
+      const L = computeLayout(n, innerWidth, innerHeight);
+
+      const order = [...Array(L.cols).keys()]
+        .sort((a, b) => Math.abs(a - (L.cols - 1) / 2) - Math.abs(b - (L.cols - 1) / 2));
+
+      /* trim excess cells from outermost columns — never a hole, never a placeholder */
+      const counts = new Array(L.cols).fill(L.rows);
+      let excess = L.cols * L.rows - n, t = 0;
+      const trimOrder = [...order].reverse();
+      while (excess > 0) {
+        const c = trimOrder[t % trimOrder.length];
+        if (counts[c] > 1) { counts[c]--; excess--; }
+        t++;
+      }
+
+      const mid = Math.floor((L.rows - 1) / 2);
+      const slotRows = (count) => {
+        const seq = [mid];
+        for (let d = 1; seq.length < L.rows; d++) {
+          if (mid - d >= 0) seq.push(mid - d);
+          if (mid + d < L.rows) seq.push(mid + d);
+        }
+        return seq.slice(0, count);
+      };
+
+      /* ring assignment: middle band first, center-out — flagships own it */
+      const cells = Array.from({ length: L.cols }, () => ({}));
+      let idx = 0;
+      for (let ring = 0; ring < L.rows && idx < n; ring++) {
+        for (const c of order) {
+          const rowsHere = slotRows(counts[c]);
+          if (ring >= rowsHere.length) continue;
+          cells[c][rowsHere[ring]] = RECORDS[idx++];
+          if (idx >= n) break;
+        }
+      }
+
+      wallEl.innerHTML = "";
+      wallEl.style.setProperty("--rw-colw", L.colW.toFixed(1) + "px");
+      wallEl.style.setProperty("--rw-gap", L.gap + "px");
+      for (let c = 0; c < L.cols; c++) {
+        const col = document.createElement("div");
+        col.className = "rw-col";
+        Object.keys(cells[c]).map(Number).sort((a, b) => a - b).forEach((rIdx) => {
+          const rec = cells[c][rIdx];
+          const cell = document.createElement("div");
+          cell.className = `rw-cell ${rIdx === mid ? "rw-mid" : "rw-edge"}${rec.isReel ? " rw-reel" : ""}`;
+          cell.appendChild(wallCard(rec));
+          col.appendChild(cell);
+        });
+        wallEl.appendChild(col);
+      }
+      cols = [...wallEl.querySelectorAll(".rw-col")];
+
+      /* deeper curve as the wall outgrows the viewport */
+      curveK = (38 + (L.spread - 1.5) * 26) / (innerWidth * 0.60);
+      requestAnimationFrame(measure);
+    }
+
+    function measure() {
+      wallW = wallEl.scrollWidth;
+      bound = Math.max(0, (wallW - innerWidth) / 2 + 120);
+      colCenters = cols.map((c) => c.offsetLeft + c.offsetWidth / 2);
+      wallEl.style.marginTop = -(wallEl.offsetHeight / 2) + "px";
+    }
+
+    /* ---------------- physics: drag-to-look ---------------- */
+    let wallX = 0, wallXT = 0, vel = 0, dragging = false, lastX = 0, lastT = 0, dragDist = 0;
+    let pitch = 0, pitchT = 0, lastInput = performance.now();
+
+    function frame(now) {
+      if (!dragging && now - lastInput > 4000) wallXT += Math.sin(now * 0.00018) * 0.2;
+      wallXT = Math.max(-bound, Math.min(bound, wallXT));
+      wallX += (wallXT - wallX) * (dragging ? 0.32 : 0.075);
+      pitch += (pitchT - pitch) * 0.06;
+
+      /* pan via layout margin: the wall itself stays transform-free so
+         column rects project correctly for manual pointer picking */
+      wallEl.style.marginLeft = (-wallW / 2 + wallX) + "px";
+
+      const wallLeft = innerWidth / 2 - wallW / 2 + wallX;
+      for (let i = 0; i < cols.length; i++) {
+        const col = cols[i];
+        if (col.dataset.frozen) continue;
+        const screenX = wallLeft + colCenters[i];
+        let a = (screenX - innerWidth / 2) * curveK;
+        a = Math.max(-40, Math.min(40, a));
+        col.style.transform = `rotateX(${pitch}deg) rotateY(${-a}deg) translateZ(${-Math.abs(a) * 12}px)`;
+        col.style.setProperty("--shade", Math.min(0.55, Math.abs(a) / 40 * 0.55).toFixed(3));
+      }
+      requestAnimationFrame(frame);
+    }
+
+    /* ---------------- manual picking ----------------
+       Browser hit-testing is unreliable on perspective-projected cards;
+       getBoundingClientRect projects correctly, so we raycast ourselves. */
+    let focusCard = null;
+    function pick(x, y) {
+      let best = null, bestD = Infinity;
+      for (const card of wallEl.querySelectorAll(".rw-card")) {
+        const r = card.getBoundingClientRect();
+        if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
+        const d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
+        if (d < bestD) { bestD = d; best = card; }
+      }
+      return best;
+    }
+
+    function recOf(card) {
+      return RECORDS.find((r) => r.slug === card.dataset.slug);
+    }
+
+    function setFocus(card) {
+      if (card === focusCard) return;
+      if (focusCard) focusCard.classList.remove("is-focus");
+      focusCard = card;
+      wallEl.classList.toggle("has-focus", !!card);
+      stageEl.style.cursor = card ? "pointer" : "";
+      if (!card) {
+        root.style.setProperty("--rw-mood", "#6f8cff");
+        root.style.setProperty("--rw-mood-soft", "rgba(111,140,255,.13)");
+        if (focusLine) focusLine.textContent = IDLE_LINE;
+        return;
+      }
+      card.classList.add("is-focus");
+      const rec = recOf(card);
+      if (!rec) return;
+      const mood = MOODS[rec.slug];
+      if (mood) {
+        root.style.setProperty("--rw-mood", mood.mood);
+        root.style.setProperty("--rw-mood-soft", mood.soft);
+      }
+      if (focusLine) {
+        focusLine.textContent =
+          `${rec.code || ""} — ${rec.title} · ${rec.role}` + (mood ? ` · ${mood.line}` : "");
+      }
+    }
+
+    /* ---------------- interactions ---------------- */
+    function bind() {
+      stageEl.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        stageEl.classList.add("dragging");
+        lastX = e.clientX; lastT = performance.now(); vel = 0; dragDist = 0;
+        lastInput = lastT;
+        stageEl.setPointerCapture(e.pointerId);
+      });
+      stageEl.addEventListener("pointermove", (e) => {
+        lastInput = performance.now();
+        pitchT = ((e.clientY / innerHeight) - 0.5) * -3;
+        if (dragging) {
+          const dx = e.clientX - lastX, now = performance.now();
+          dragDist += Math.abs(dx);
+          wallXT += dx;
+          vel = dx / Math.max(now - lastT, 1) * 16;
+          lastX = e.clientX; lastT = now;
+          if (dragDist > 8) setFocus(null);
+        } else if (!document.body.classList.contains("rw-pull")) {
+          setFocus(pick(e.clientX, e.clientY));
+        }
+      });
+      window.addEventListener("pointerup", () => {
+        if (!dragging) return;
+        dragging = false;
+        stageEl.classList.remove("dragging");
+        wallXT += vel * 14;
+      });
+      stageEl.addEventListener("pointerleave", () => { if (!dragging) setFocus(null); });
+
+      stageEl.addEventListener("click", (e) => {
+        if (dragDist > 8) { e.preventDefault(); return; }
+        const card = focusCard || pick(e.clientX, e.clientY) ||
+          (e.target.closest && e.target.closest(".rw-card"));
+        if (!card) return;
+        e.preventDefault();
+        const rec = recOf(card);
+        if (rec) openRecord(card, rec);
+      });
+
+      /* keyboard: focusing a card steers the wall to center it */
+      wallEl.addEventListener("focusin", (e) => {
+        const card = e.target.closest(".rw-card");
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        wallXT += innerWidth / 2 - (r.left + r.width / 2);
+        setFocus(card);
+      });
+
+      let resizeT;
+      addEventListener("resize", () => {
+        clearTimeout(resizeT);
+        resizeT = setTimeout(() => {
+          if (!wallMQ.matches || document.body.classList.contains("rw-pull")) return;
+          wallX = wallXT = 0;
+          buildWall();
+        }, 220);
+      });
+    }
+
+    /* ---------------- the pull-out ----------------
+       Card flattens to camera and lifts while the room grades to the
+       project accent, then the cross-document transition carries the
+       blur into the dossier. Navigation always completes. */
+    let veil = null;
+    function openRecord(card, rec) {
+      if (!rec.page) { openVideo(rec.yt); return; }
+      rememberArchivePosition("archive");
+      if (reduced) { location.href = rec.page; return; }
+      if (document.body.classList.contains("rw-pull")) return;
+      if (!veil) {
+        veil = document.createElement("div");
+        veil.className = "rw-gradeveil";
+        veil.setAttribute("aria-hidden", "true");
+        document.body.appendChild(veil);
+      }
+      const mood = MOODS[rec.slug];
+      if (mood) {
+        root.style.setProperty("--rw-mood", mood.mood);
+        root.style.setProperty("--rw-mood-soft", mood.soft);
+      }
+      setFocus(null);
+      document.body.classList.add("rw-pull");
+      const col = card.closest(".rw-col");
+      if (col) {
+        col.dataset.frozen = "1";
+        col.classList.add("rw-flatten");
+        col.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(90px)";
+      }
+      card.classList.add("rw-pulling");
+      setTimeout(() => { location.href = rec.page; }, 330);
+    }
+
+    /* ---------------- mobile / reduced-motion archive index ---------------- */
+    function mobileNav(rec) {
+      if (rec.page) { rememberArchivePosition("archive"); location.href = rec.page; }
+      else openVideo(rec.yt);
+    }
+    function mobileCard(rec) {
+      const el = document.createElement(rec.page ? "a" : "button");
+      el.className = "rw-mcard";
+      if (rec.page) el.href = rec.page; else el.type = "button";
+      const logo = logoFor(rec.client);
+      el.innerHTML = `
+        <img src="${thumbSrc(rec.yt)}" alt="${rec.title} still" loading="lazy" decoding="async">
+        <span class="rw-top">${logo
+          ? `<img class="rw-logo" src="${logo}" alt="">`
+          : `<span class="rw-logotext">${rec.client || "Archive"}</span>`}<span class="rw-code">${rec.code || ""}</span></span>
+        ${rec.isReel ? `<span class="rw-mlive">Watch reel</span>` : ""}
+        <span class="rw-bottom">
+          <span class="rw-title">${rec.title}</span>
+          <span class="rw-role">${rec.role}${rec.year ? " · " + rec.year : ""}</span>
+          <span class="rw-mtags">${(rec.tags || []).slice(0, 3).map((t) => `<span>${t}</span>`).join("")}</span>
+        </span>`;
+      el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec); });
+      return el;
+    }
+    function mobileRow(rec) {
+      const el = document.createElement(rec.page ? "a" : "button");
+      el.className = "rw-mrow";
+      if (rec.page) el.href = rec.page; else el.type = "button";
+      el.innerHTML = `
+        <span class="rw-mthumb"><img src="${thumbSrc(rec.yt)}" alt="${rec.title} still" loading="lazy" decoding="async"></span>
+        <span class="rw-mmeta">
+          <span class="rw-mtitle">${rec.title}</span>
+          <span class="rw-mrole">${rec.role}${rec.year ? " · " + rec.year : ""}</span>
+        </span>
+        <span class="rw-mcode">${rec.code || ""}</span>`;
+      el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec); });
+      return el;
+    }
+    function buildMobile() {
+      mobileEl.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      const s1 = document.createElement("div");
+      s1.className = "rw-msection";
+      s1.textContent = "Flagship records";
+      frag.appendChild(s1);
+      RECORDS.filter((r) => FLAG_ORDER.includes(r.slug)).forEach((r) => frag.appendChild(mobileCard(r)));
+      const s2 = document.createElement("div");
+      s2.className = "rw-msection";
+      s2.textContent = "The archive";
+      frag.appendChild(s2);
+      RECORDS.filter((r) => !FLAG_ORDER.includes(r.slug)).forEach((r) => frag.appendChild(mobileRow(r)));
+      mobileEl.appendChild(frag);
+    }
+
+    /* ---------------- start ---------------- */
+    buildMobile();
+    let wallBuilt = false;
+    function startWall() {
+      if (wallBuilt || reduced || !wallMQ.matches) return;
+      wallBuilt = true;
+      buildWall();
+      bind();
+      requestAnimationFrame(frame);
+    }
+    startWall();
+    if (wallMQ.addEventListener) wallMQ.addEventListener("change", startWall);
+  })();
+</script>
+<script>
   /* Mobile navigation menu */
   (() => {
     const toggle = document.getElementById('mobileMenuToggle');
@@ -9601,128 +9304,6 @@
     });
   })();
 </script>
-<script>
-  (() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let autoCard = null;
-    let fadeTimer = null;
-    let lastCheck = 0;
-    let started = false;
-
-    function startAutoPlay(card) {
-      if (autoCard === card) return;
-      stopAutoPlay();
-      autoCard = card;
-
-      const yt = card.dataset.yt;
-      if (!yt) return;
-
-      card.querySelector('.auto-preview-iframe')?.remove();
-
-      const iframe = document.createElement('iframe');
-      iframe.className = 'auto-preview-iframe';
-      iframe.src = `https://www.youtube.com/embed/${yt}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${yt}&modestbranding=1&rel=0`;
-      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-      iframe.title = 'Center preview';
-      card.insertBefore(iframe, card.firstChild);
-      card.classList.add('has-auto-preview');
-
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (card.classList.contains('has-auto-preview')) {
-          iframe.style.opacity = '0.85';
-        }
-      }));
-    }
-
-    function stopAutoPlay(immediate = false) {
-      const card = autoCard;
-      if (!card) return;
-      autoCard = null;
-      clearTimeout(fadeTimer);
-
-      const iframe = card.querySelector('.auto-preview-iframe');
-      if (!iframe) {
-        card.classList.remove('has-auto-preview');
-        return;
-      }
-
-      iframe.style.opacity = '0';
-      fadeTimer = setTimeout(() => {
-        iframe.remove();
-        card.classList.remove('has-auto-preview');
-      }, immediate ? 0 : 600);
-    }
-
-    function checkCenter(now) {
-      if (now - lastCheck < 200) return;
-      lastCheck = now;
-
-      const state = window.__archiveCarouselState;
-      if (state?.isDragging || state?.isJumping) {
-        if (autoCard) stopAutoPlay(true);
-        return;
-      }
-
-      // Disable autoplay on mobile — too heavy for iOS Safari
-      if (window.innerWidth <= 768) {
-        if (autoCard) stopAutoPlay(true);
-        return;
-      }
-
-      const vpCenter = window.innerWidth / 2;
-      const playRadius = window.innerWidth * 0.30;
-      const stopRadius = window.innerWidth * 0.52;
-
-      const cards = Array.from(document.querySelectorAll('#galleryTrack .gallery-card'));
-      if (!cards.length) return;
-
-      let closest = null;
-      let closestDist = Infinity;
-      for (const card of cards) {
-        const rect = card.getBoundingClientRect();
-        const dist = Math.abs((rect.left + rect.width / 2) - vpCenter);
-        if (dist < closestDist) { closestDist = dist; closest = card; }
-      }
-
-      if (autoCard && autoCard !== closest) {
-        const rect = autoCard.getBoundingClientRect();
-        const dist = Math.abs((rect.left + rect.width / 2) - vpCenter);
-        if (dist > stopRadius) stopAutoPlay();
-      }
-
-      if (closest && closestDist < playRadius && closest !== autoCard) {
-        startAutoPlay(closest);
-      }
-
-      if (closestDist > stopRadius && autoCard) stopAutoPlay();
-    }
-
-    function loop(now) {
-      checkCenter(now);
-      requestAnimationFrame(loop);
-    }
-
-    function tryStart() {
-      if (started) return;
-      const track = document.getElementById('galleryTrack');
-      if (!track || track.children.length < 3) return;
-      started = true;
-      setTimeout(() => requestAnimationFrame(loop), 900);
-    }
-
-    if (document.readyState === 'complete') {
-      tryStart();
-    } else {
-      window.addEventListener('load', tryStart, { once: true });
-    }
-
-    // Fallback poll in case load fires before cards are rendered
-    const poll = setInterval(() => {
-      tryStart();
-      if (started) clearInterval(poll);
-    }, 200);
-  })();
-</script>
 </body>
 </html>

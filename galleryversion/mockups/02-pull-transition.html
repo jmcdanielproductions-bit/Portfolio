@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 02 — The Pull / Archive → Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#080a0d; --bg-deep:#030406;
+    --ink:#f2eee7; --muted:rgba(242,238,231,.62); --faint:rgba(242,238,231,.34);
+    --line:rgba(242,238,231,.12); --glass:rgba(8,12,18,.62);
+    --gold:#d6b77a;
+    /* THE GRADE — these two variables ARE the world. GSAP tweens them. */
+    --mood:#6f8cff;
+    --mood-soft:rgba(111,140,255,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--ink);font-family:"Space Grotesk",sans-serif;
+    min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ ENVIRONMENT (graded by --mood) ============ */
+  .env{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .env-grid{
+    position:absolute;inset:0;opacity:.42;
+    background-image:linear-gradient(var(--mood-soft) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--mood-soft) 1px,transparent 1px);
+    background-size:72px 72px;
+  }
+  .env-bleed{
+    position:absolute;inset:0;opacity:.9;
+    background:radial-gradient(110rem 60rem at 70% -12%,var(--mood-soft),transparent 62%);
+  }
+  .env-vignette{position:absolute;inset:0;background:radial-gradient(circle at center,transparent 42%,rgba(0,0,0,.76))}
+  .grain{
+    position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grainShift .9s steps(4) infinite;
+  }
+  @keyframes grainShift{
+    0%{transform:translate(0,0)}25%{transform:translate(-34px,22px)}
+    50%{transform:translate(20px,-40px)}75%{transform:translate(-12px,-18px)}100%{transform:translate(0,0)}
+  }
+
+  /* ============ HEADER ============ */
+  header{
+    position:relative;z-index:2;display:flex;justify-content:space-between;align-items:baseline;
+    padding:1.6rem clamp(1.4rem,4vw,3.2rem) 0;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;
+  }
+  header .h-left{color:var(--muted)}
+  header .h-left b{color:var(--gold);font-weight:500}
+  header .h-right{color:var(--faint)}
+
+  /* ============ ARCHIVE ROW ============ */
+  .stage{position:relative;z-index:2;padding:0 clamp(1.4rem,4vw,3.2rem) 6rem}
+  .archive{margin-top:3.4rem}
+  .archive-kicker{
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.3em;
+    color:var(--mood);text-transform:uppercase;margin-bottom:1rem;transition:color .8s;
+  }
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+  .slot{aspect-ratio:16/9;position:relative}
+
+  .card{
+    position:absolute;inset:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;
+    background:var(--bg-deep);cursor:pointer;
+    transition:border-color .35s,box-shadow .35s,filter .35s;
+  }
+  .card img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9}
+  .card::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(3,4,6,.15),transparent 40%,transparent 55%,rgba(3,4,6,.85));
+  }
+  .card .c-code{position:absolute;top:.8rem;left:.9rem;z-index:2;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.22em;color:var(--faint)}
+  .card .c-meta{position:absolute;left:.9rem;right:.9rem;bottom:.8rem;z-index:2}
+  .card .c-title{font-family:"Anton",sans-serif;font-size:1.15rem;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
+  .card .c-role{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:.32rem}
+  .slots .card:hover{border-color:var(--mood);box-shadow:0 16px 50px rgba(0,0,0,.65),0 0 36px var(--mood-soft)}
+  body.open .slots .card:not(.pulled){filter:brightness(.3);pointer-events:none}
+
+  /* ============ DOSSIER ============ */
+  .dossier{position:relative;margin-top:3.4rem;display:none}
+  body.open .dossier{display:block}
+  .hero-slot{
+    position:relative;width:100%;aspect-ratio:21/9;border-radius:8px;
+  }
+  .card.pulled{cursor:default}
+  .card.pulled::after{background:linear-gradient(180deg,rgba(3,4,6,.1),transparent 30%,transparent 50%,rgba(3,4,6,.92))}
+  .card.pulled .c-title{font-size:clamp(2.6rem,6vw,5.2rem)}
+  .card.pulled .c-code{font-size:.68rem;color:var(--mood)}
+  .card.pulled .c-meta{left:1.6rem;right:1.6rem;bottom:1.4rem}
+  .card.pulled .c-role{font-size:.6rem;margin-top:.5rem}
+
+  .sweep{
+    position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:8px;overflow:hidden;opacity:0;
+  }
+  .sweep::after{
+    content:"";position:absolute;top:-20%;bottom:-20%;left:-35%;width:30%;
+    background:linear-gradient(100deg,transparent,rgba(242,238,231,.16),transparent);
+    transform:skewX(-12deg);
+  }
+  .sweep.go{opacity:1}
+  .sweep.go::after{animation:sweepMove 1.1s ease-in-out .35s forwards}
+  @keyframes sweepMove{to{left:135%}}
+  .flash{position:fixed;inset:0;background:#fff;z-index:90;opacity:0;pointer-events:none}
+  .scan{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;border-radius:8px;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 2px,transparent 2px 4px)}
+
+  /* slate metadata — stamps in, no fades */
+  .slate{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;
+    margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  }
+  .slate-item{visibility:hidden}
+  .slate-k{font-family:"JetBrains Mono",monospace;font-size:.54rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
+  .slate-v{font-family:"Space Grotesk",sans-serif;font-size:.92rem;font-weight:500;margin-top:.4rem;text-transform:uppercase;letter-spacing:.04em}
+  .slate-v.mood{color:var(--mood);transition:color .8s}
+
+  .chapters{
+    display:flex;gap:1.8rem;margin-top:2.2rem;flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .chapters span{color:var(--faint);visibility:hidden}
+  .chapters span.live{color:var(--mood);transition:color .8s}
+
+  .brief{margin-top:2.6rem;max-width:46rem;opacity:0}
+  .brief-k{font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.3em;color:var(--mood);text-transform:uppercase;transition:color .8s}
+  .brief p{margin-top:1rem;font-size:1.06rem;line-height:1.75;color:var(--muted)}
+  .brief .world-line{
+    margin-top:1.4rem;font-family:"JetBrains Mono",monospace;font-size:.6rem;
+    letter-spacing:.26em;color:var(--faint);text-transform:uppercase;
+  }
+
+  .back{
+    position:fixed;top:1.4rem;right:clamp(1.4rem,4vw,3.2rem);z-index:80;
+    font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--ink);background:var(--glass);border:1px solid var(--line);border-radius:99px;
+    padding:.6rem 1.1rem;cursor:pointer;opacity:0;pointer-events:none;
+    transition:opacity .4s,border-color .3s;backdrop-filter:blur(8px);
+  }
+  body.open .back{opacity:1;pointer-events:auto}
+  .back:hover{border-color:var(--mood)}
+
+  .hint{
+    margin-top:1.2rem;font-family:"JetBrains Mono",monospace;font-size:.56rem;
+    letter-spacing:.22em;color:var(--faint);text-transform:uppercase;
+  }
+  body.open .hint{display:none}
+
+  /* mockup chrome */
+  .mock-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;justify-content:space-between;align-items:center;
+    padding:.55rem 1.4rem;border-top:1px solid var(--line);background:var(--glass);backdrop-filter:blur(8px);
+    font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .mock-bar span{color:var(--gold)}
+  .mock-bar nav{display:flex;gap:1.4rem}
+  .mock-bar a{color:var(--muted);text-decoration:none;transition:color .25s}
+  .mock-bar a:hover{color:var(--ink)}
+
+  @media (prefers-reduced-motion:reduce){.grain{animation:none}}
+  @media (max-width:900px){
+    .slots{grid-template-columns:repeat(2,1fr)}
+    .slate{grid-template-columns:repeat(2,1fr);row-gap:1.4rem}
+    .hero-slot{aspect-ratio:16/9}
+  }
+</style>
+</head>
+<body>
+
+<div class="env">
+  <div class="env-grid"></div>
+  <div class="env-bleed"></div>
+  <div class="env-vignette"></div>
+</div>
+<div class="grain"></div>
+<div class="flash" id="flash"></div>
+
+<header>
+  <div class="h-left"><b>Mockup 02 / 03</b> — The Pull · archive record → dossier, one continuous shot</div>
+  <div class="h-right">Click a record / ESC to return</div>
+</header>
+
+<div class="stage">
+  <section class="archive">
+    <div class="archive-kicker" id="kicker">Tier 1 — Flagship Records</div>
+    <div class="slots" id="slots"></div>
+    <div class="hint">The card you click becomes the dossier hero — no page load, no teleport. The whole environment re-grades to the project's world.</div>
+  </section>
+
+  <section class="dossier" id="dossier">
+    <div class="hero-slot" id="heroSlot">
+      <div class="sweep" id="sweep"></div>
+      <div class="scan" id="scanOverlay"></div>
+    </div>
+
+    <div class="slate" id="slate">
+      <div class="slate-item"><div class="slate-k">Record</div><div class="slate-v mood" id="sCode">—</div></div>
+      <div class="slate-item"><div class="slate-k">Role</div><div class="slate-v" id="sRole">—</div></div>
+      <div class="slate-item"><div class="slate-k">Client</div><div class="slate-v" id="sClient">—</div></div>
+      <div class="slate-item"><div class="slate-k">Year</div><div class="slate-v" id="sYear">—</div></div>
+    </div>
+
+    <div class="chapters" id="chapters">
+      <span class="live">00 Brief</span><span>01 Approach</span><span>02 Boards</span>
+      <span>03 On Set</span><span>04 The Cut</span><span>05 Outcome</span>
+    </div>
+
+    <div class="brief" id="brief">
+      <div class="brief-k">00 — Brief</div>
+      <p id="briefText"></p>
+      <div class="world-line" id="worldLine"></div>
+    </div>
+  </section>
+</div>
+
+<button class="back" id="back">← Back to Archive</button>
+
+<div class="mock-bar">
+  <div><span>Mockup 02 / 03</span> — The Pull · Match-Cut Transition + The Grade</div>
+  <nav>
+    <a href="index.html">Hub</a>
+    <a href="01-archive-home.html">01 — Archive Home</a>
+    <a href="03-commentary-cyberpunk.html">03 — Commentary</a>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+<script>
+  gsap.registerPlugin(Flip);
+
+  const BASE = { mood:"#6f8cff", soft:"rgba(111,140,255,.14)" };
+  const WORLDS = {
+    cyberpunk: {
+      code:"REC.01", title:"Cyberpunk 2077", role:"Creative Direction", client:"CD Projekt Red", year:"2025",
+      yt:"Hc_t2eTorhI", mood:"#ff3d72", soft:"rgba(255,61,114,.13)", flavor:"glitch",
+      world:"World grade — Night City / digital decay / corporate surveillance",
+      brief:"The brief said 'show the city.' But the city isn't the subject — the loneliness is. We framed Night City like a character who never blinks: hard neon key light, surveillance angles, cuts timed to the hum of the signage."
+    },
+    doom: {
+      code:"REC.02", title:"DOOM", role:"Trailer Direction", client:"Bethesda", year:"2025",
+      yt:"0WUnGHJXeHc", mood:"#ff6b35", soft:"rgba(255,107,53,.13)", flavor:"flash",
+      world:"World grade — heat / pressure / industrial brutality",
+      brief:"DOOM doesn't build tension — it applies pressure. Every cut lands like a hydraulic press. We shot practical effects wherever possible: real sparks, real smoke, real weight. The edit never apologizes."
+    },
+    fallout: {
+      code:"REC.03", title:"Fallout / Nuka-Cola", role:"Commercial Direction", client:"Bethesda", year:"2025",
+      yt:"VxTBnNhAD3Q", mood:"#cc3333", soft:"rgba(204,51,51,.13)", flavor:"roll",
+      world:"World grade — atomic Americana / analog broadcast / controlled absurdity",
+      brief:"A commercial from a world that ended. We directed it completely straight — 1950s broadcast grammar, earnest smiles, perfect product turns — and let the wrongness leak in through the grade and the hum of the transmission."
+    },
+    witcher: {
+      code:"REC.04", title:"The Witcher", role:"Cinematic Direction", client:"CD Projekt Red", year:"2025",
+      yt:"tr1ajPqpuDs", mood:"#9fc7ff", soft:"rgba(159,199,255,.12)", flavor:"dissolve",
+      world:"World grade — candlelight / ancient texture / organic movement",
+      brief:"The Continent is old, and the camera should feel it. Slow pushes, candle-warm pools of light, textures that look touched by centuries. Nothing in this world moves in straight lines — neither does the edit."
+    }
+  };
+
+  /* build archive row */
+  const slots = document.getElementById("slots");
+  Object.entries(WORLDS).forEach(([slug, w]) => {
+    const slot = document.createElement("div");
+    slot.className = "slot";
+    slot.innerHTML = `<div class="card" data-slug="${slug}">
+      <img src="https://img.youtube.com/vi/${w.yt}/hqdefault.jpg" alt="${w.title}">
+      <span class="c-code">${w.code}</span>
+      <div class="c-meta"><div class="c-title">${w.title}</div><div class="c-role">${w.role} · ${w.client}</div></div>
+    </div>`;
+    slot.querySelector(".card").addEventListener("click", () => pull(slug));
+    slots.appendChild(slot);
+  });
+
+  const heroSlot = document.getElementById("heroSlot");
+  const dossier  = document.getElementById("dossier");
+  const reduced  = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const filmEase = "power3.inOut"; // fast-out, long settle — camera-operator landing
+  let current = null, homeSlot = null, animating = false;
+
+  function grade(moodHex, softRgba, dur){
+    gsap.to("html", { "--mood": moodHex, "--mood-soft": softRgba, duration: dur, ease: "sine.inOut" });
+  }
+
+  function pull(slug){
+    if (animating || current) return;
+    animating = true;
+    const w = WORLDS[slug];
+    const card = document.querySelector(`.card[data-slug="${slug}"]`);
+    homeSlot = card.parentElement;
+    current = slug;
+
+    // fill dossier copy
+    sCode.textContent = w.code; sRole.textContent = w.role;
+    sClient.textContent = w.client; sYear.textContent = w.year;
+    briefText.textContent = w.brief; worldLine.textContent = w.world;
+    const img = card.querySelector("img");
+    const hi = new Image();
+    hi.onload = () => { if (current === slug) img.src = hi.src; };
+    hi.src = `https://img.youtube.com/vi/${w.yt}/maxresdefault.jpg`;
+
+    // THE PULL — record the card, move it into the hero slot, Flip from old state
+    const state = Flip.getState(card);
+    document.body.classList.add("open");
+    card.classList.add("pulled");
+    heroSlot.insertBefore(card, heroSlot.firstChild);
+
+    const dur = reduced ? 0 : 0.95;
+    Flip.from(state, { duration: dur, ease: filmEase, absolute: true });
+
+    // THE GRADE — environment re-colors like a colorist pulling a LUT
+    grade(w.mood, w.soft, reduced ? 0 : 0.85);
+
+    const tl = gsap.timeline({ delay: dur * 0.6, onComplete: () => animating = false });
+
+    // per-world flavor — each world cuts differently
+    if (!reduced){
+      if (w.flavor === "glitch"){
+        tl.to(card, { x: 5, skewX: 1.4, duration: .045, ease: "steps(1)" })
+          .to(card, { x: -7, skewX: -1.8, duration: .045, ease: "steps(1)" })
+          .to(card, { x: 0, skewX: 0, duration: .045, ease: "steps(1)" });
+        tl.fromTo("#scanOverlay", { opacity: .5 }, { opacity: 0, duration: .5 }, "<");
+      } else if (w.flavor === "flash"){
+        tl.fromTo("#flash", { opacity: .85 }, { opacity: 0, duration: .3, ease: "power2.out" });
+      } else if (w.flavor === "dissolve"){
+        tl.fromTo(card, { filter: "blur(10px) brightness(1.25)" }, { filter: "blur(0px) brightness(1)", duration: 1.15, ease: "sine.out" }, "<");
+      } else if (w.flavor === "roll"){
+        tl.fromTo(card.querySelector("img"), { yPercent: -6 }, { yPercent: 0, duration: .55, ease: "steps(5)" })
+          .fromTo("#scanOverlay", { opacity: .6 }, { opacity: 0, duration: .6 }, "<");
+      }
+    }
+
+    // light sweep — one key-light pass across the hero, like lighting a set
+    if (!reduced){
+      const sweepEl = document.getElementById("sweep");
+      sweepEl.classList.remove("go");
+      void sweepEl.offsetWidth; // restart the keyframe
+      sweepEl.classList.add("go");
+      sweepEl.addEventListener("animationend", () => sweepEl.classList.remove("go"), { once: true });
+    }
+
+    // SLATE — metadata stamps in (steps, not fades), then chapters, then brief
+    tl.set(".slate-item", { visibility: "visible", stagger: reduced ? 0 : 0.07 }, reduced ? 0 : ">-0.1")
+      .set(".chapters span", { visibility: "visible", stagger: reduced ? 0 : 0.05 }, ">")
+      .to("#brief", { opacity: 1, y: 0, duration: reduced ? 0 : .6, ease: "power2.out", startAt: { y: 14 } }, ">-0.1");
+  }
+
+  function release(){
+    if (animating || !current) return;
+    animating = true;
+    const card = document.querySelector(".card.pulled");
+
+    gsap.to("#brief", { opacity: 0, duration: .25 });
+    gsap.set(".slate-item, .chapters span", { visibility: "hidden" });
+
+    const state = Flip.getState(card);
+    card.classList.remove("pulled");
+    homeSlot.appendChild(card);
+    document.body.classList.remove("open");
+
+    Flip.from(state, {
+      duration: reduced ? 0 : 0.8, ease: filmEase, absolute: true,
+      onComplete: () => { current = null; animating = false; }
+    });
+    grade(BASE.mood, BASE.soft, reduced ? 0 : 0.7);
+  }
+
+  document.getElementById("back").addEventListener("click", release);
+  addEventListener("keydown", e => { if (e.key === "Escape") release(); });
+
+  /* hand-off from Mockup 01: ?open=cyberpunk pulls that record on arrival */
+  const want = new URLSearchParams(location.search).get("open");
+  if (want && WORLDS[want]) setTimeout(() => pull(want), reduced ? 50 : 650);
+</script>
+</body>
+</html>
