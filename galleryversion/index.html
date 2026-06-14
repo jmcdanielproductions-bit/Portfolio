@@ -3370,35 +3370,27 @@ thumbnails. */
     }
 .work-room .piece-meta {
       display: grid;
-      gap: 0.18rem;
+      gap: 0.16rem;
       align-items: start;
       margin-top: 0 !important;
       color: rgba(248, 242, 233, 0.64);
-      font: 700 clamp(0.48rem, 0.52vw, 0.55rem) / 1.3 "JetBrains Mono", monospace;
+      font: 700 clamp(0.48rem, 0.52vw, 0.55rem) / 1.24 "JetBrains Mono", monospace;
       letter-spacing: 0.095em;
       text-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
     }
-.work-room .piece-role-line,
-.work-room .piece-context-line,
-.work-room .piece-owned-line,
+.work-room .piece-type-line,
+.work-room .piece-client-line,
 .work-room .piece-record-state {
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-.work-room .piece-role-line {
+.work-room .piece-type-line {
       color: rgba(248, 242, 233, 0.66);
     }
-.work-room .piece-context-line {
+.work-room .piece-client-line {
       color: rgba(248, 242, 233, 0.54);
-    }
-.work-room .piece-owned-line {
-      color: rgba(248, 242, 233, 0.5);
-      font-size: 0.92em;
-    }
-.work-room .archive-piece:not(.featured-project):not(:hover):not(:focus-visible) .piece-owned-line {
-      display: none;
     }
 .work-room .piece-record-state {
       color: rgba(214, 183, 122, 0.74);
@@ -3480,9 +3472,6 @@ thumbnails. */
 .work-room .archive-piece[data-long-title="true"] .piece-title,
 .work-room .archive-piece[data-long-title="true"]:hover .piece-title {
         font-size: clamp(1.12rem, 5vw, 1.72rem) !important;
-      }
-.work-room .archive-piece:not(.featured-project) .piece-owned-line {
-        display: none;
       }
     }
 /* About Editorial Rebuild: fewer modules,
@@ -4043,76 +4032,10 @@ not dashboard modules. */
         font-size: 0.54rem;
       }
     }
-/* View count pill: blur-in on hover,
-blur-out on leave */
-    .piece-views {
-      position: absolute;
-      top: clamp(0.82rem, 1vw, 1.05rem);
-      left: clamp(0.82rem, 1vw, 1.05rem);
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.48rem;
-      padding: 0.48rem 0.82rem 0.48rem 0.68rem;
-      border: 1px solid rgba(111, 140, 255, 0.38);
-      background:
-        linear-gradient(135deg, rgba(111, 140, 255, 0.18), rgba(5, 8, 14, 0.72) 60%),
-        rgba(5, 8, 14, 0.68);
-      backdrop-filter: blur(16px) saturate(1.2);
-      box-shadow:
-        0 4px 18px rgba(0, 0, 0, 0.32),
-        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-        0 0 22px rgba(111, 140, 255, 0.12);
-      color: rgba(248, 242, 233, 0.92);
-      font: 700 clamp(0.6rem, 0.7vw, 0.74rem) / 1 "JetBrains Mono", monospace;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      filter: blur(6px);
-      transform: translateY(5px) scale(0.94);
-      transition:
-        opacity 420ms ease,
-        filter 440ms ease,
-        transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 420ms ease;
-      transition-delay: 100ms;
-    }
-.piece-views-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(111, 140, 255, 1);
-      flex: 0 0 auto;
-      box-shadow: 0 0 6px rgba(111, 140, 255, 0.8);
-    }
-.work-room .archive-piece:hover .piece-views {
-      opacity: 1;
-      filter: blur(0);
-      transform: translateY(0) scale(1);
-      box-shadow:
-        0 6px 24px rgba(0, 0, 0, 0.36),
-        0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-        0 0 32px rgba(111, 140, 255, 0.2);
-    }
-.work-room .archive-piece:not(:hover) .piece-views {
-      transition-delay: 0ms;
-      transition-duration: 220ms, 240ms, 220ms, 220ms;
-    }
 /* Mobile Optimization Pass */
 
-    /* 1. Show view count badges by default on touch devices */
     @media (hover: none),
 (pointer: coarse) {
-      .piece-views {
-        opacity: 1 !important;
-        filter: blur(0) !important;
-        transform: translateY(0) scale(1) !important;
-        transition: none !important;
-        transition-delay: 0ms !important;
-      }
-
       /* Active tap feedback for work grid pieces */
       .archive-piece:active {
         border-color: rgba(111, 140, 255, 0.42) !important;
@@ -5047,13 +4970,6 @@ keep only the subtle side lines + vignette */
       color:rgba(242,238,231,.6);text-transform:uppercase;
       white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     }
-.rw-code {font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.18em;color:rgba(242,238,231,.4);text-transform:uppercase;flex-shrink:0}
-.rw-tally {
-      position:absolute;top:.58rem;right:.72rem;z-index:4;display:none;align-items:center;gap:.35rem;
-      font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;color:#ff3b30;text-transform:uppercase;
-    }
-.rw-tally::before {content:"";width:.42rem;height:.42rem;border-radius:50%;background:#ff3b30;box-shadow:0 0 10px #ff3b30;animation:rwTally 1.3s ease-in-out infinite}
-    @keyframes rwTally{0%,100%{opacity:1}50%{opacity:.3}}
 .rw-bottom {
       position:absolute;left:clamp(.86rem,1.08vw,1.08rem);right:clamp(.86rem,1.08vw,1.08rem);bottom:clamp(.72rem,.96vw,.98rem);z-index:3;
       display:grid;gap:.24rem;max-width:min(84%,23rem);
@@ -5064,8 +4980,7 @@ keep only the subtle side lines + vignette */
       opacity:.62;
     }
 .rw-start-line,
-.rw-context-line,
-.rw-owned-line {
+.rw-context-line {
       display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
       font:800 clamp(.42rem,.43vw,.49rem)/1 "JetBrains Mono",monospace;
       letter-spacing:.14em;text-transform:uppercase;
@@ -5076,25 +4991,17 @@ keep only the subtle side lines + vignette */
       color:rgba(214,183,122,.86);
     }
 .rw-context-line {color:rgba(242,238,231,.56)}
-.rw-owned-line {color:rgba(242,238,231,.5)}
-.rw-card:not(.is-focus):not([data-reel="true"]) .rw-owned-line {display:none}
 .rw-card[data-reel="true"] .rw-start-line,
 .rw-card[data-reel="true"] .rw-record-state {color:rgba(214,183,122,.86)}
-.rw-card[data-reel="true"] .rw-context-line,
-.rw-card[data-reel="true"] .rw-owned-line {color:rgba(242,238,231,.64)}
-.rw-card[data-reel="true"] .rw-meta-line::before {
-      background:rgba(214,183,122,.86);
-      box-shadow:0 0 12px rgba(214,183,122,.3);
-    }
+.rw-card[data-reel="true"] .rw-context-line {color:rgba(242,238,231,.64)}
 .rw-meta-line {
-      display:flex;align-items:center;gap:.42rem;min-width:0;
-      font:800 clamp(.45rem,.47vw,.52rem)/1 "JetBrains Mono",monospace;
+      display:block;min-width:0;
+      font:800 clamp(.45rem,.47vw,.52rem)/1.16 "JetBrains Mono",monospace;
       letter-spacing:.135em;text-transform:uppercase;color:rgba(242,238,231,.64);
       text-shadow:0 8px 18px rgba(0,0,0,.56);
     }
 .rw-meta-line::before {
-      content:"";width:.32rem;height:.32rem;border-radius:50%;flex:0 0 auto;
-      background:rgba(214,183,122,.74);box-shadow:0 0 8px rgba(214,183,122,.24);
+      content:none;display:none;
     }
 .rw-meta-line span {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rw-record-state {
@@ -5153,7 +5060,6 @@ the village dims */
       opacity:1;
     }
 .rw-card.is-focus .rw-thumb {opacity:1;transform:scale(1.055)}
-.rw-card.is-focus .rw-tally {display:flex}
 .rw-card.is-focus .rw-expand {max-height:5rem;opacity:1}
 .rw-card.is-focus .rw-play {opacity:.72}
 .rw-card:focus-visible {outline:2px solid var(--blue);outline-offset:3px}
@@ -5173,7 +5079,7 @@ body.rw-pull .rw-wall .rw-card:not(.rw-pulling) {opacity:.18;filter:brightness(.
       opacity:0;transition:opacity .3s ease;mix-blend-mode:screen;
     }
 body.rw-pull .rw-gradeveil {opacity:.16}
-/* ---------- record selection / dossier preview ---------- */
+/* ---------- record selection / case study preview ---------- */
     .rw-preview {
       position:fixed;inset:0;z-index:245;display:none;overflow-y:auto;
       background:radial-gradient(90rem 52rem at 68% 0,var(--rw-mood-soft),transparent 62%),
@@ -5222,8 +5128,7 @@ body.rw-preview-open .rw-world {filter:brightness(.34) saturate(.62)}
       font-size:clamp(2rem,4.6vw,4rem);
     }
 .rw-preview-hero .rw-card .rw-expand,
-.rw-preview-hero .rw-card .rw-play,
-.rw-preview-hero .rw-card .rw-tally {
+.rw-preview-hero .rw-card .rw-play {
       max-height:8rem;opacity:1;display:flex;
     }
 .rw-preview-hero .rw-card .rw-play {display:none}
@@ -5321,11 +5226,6 @@ body.rw-preview-open .rw-world {filter:brightness(.34) saturate(.62)}
       font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;
       color:rgba(242,238,231,.62);border:1px solid rgba(242,238,231,.15);border-radius:999px;padding:.24rem .55rem;
     }
-.rw-mlive {
-      position:absolute;top:.7rem;right:.8rem;z-index:3;display:inline-flex;align-items:center;gap:.4rem;
-      font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;
-    }
-.rw-mlive::before {content:"▶";font-size:.6rem}
 .rw-mrow {
       position:relative;display:grid;grid-template-columns:8.6rem 1fr;
       min-height:5rem;border-radius:5px;
@@ -5335,7 +5235,6 @@ body.rw-preview-open .rw-world {filter:brightness(.34) saturate(.62)}
 .rw-mrow .rw-mmeta {padding:.7rem .85rem;display:grid;align-content:center;gap:.3rem}
 .rw-mrow .rw-mtitle {font-family:Anton,Impact,sans-serif;font-size:1.02rem;text-transform:uppercase;letter-spacing:.03em;line-height:1.04}
 .rw-mrow .rw-mrole {font:700 .48rem/1.5 "JetBrains Mono",monospace;letter-spacing:.14em;color:rgba(242,238,231,.55);text-transform:uppercase}
-.rw-mrow .rw-mcode {position:absolute;top:.45rem;right:.6rem;font:700 .46rem/1 "JetBrains Mono",monospace;letter-spacing:.16em;color:rgba(242,238,231,.34)}
 .rw-msection {
       margin:1.5rem 0 .35rem;display:flex;align-items:center;gap:.8rem;
       font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.26em;
@@ -5587,8 +5486,7 @@ body.menu-open .mobile-menu-overlay {
           linear-gradient(90deg, rgba(2, 3, 5, 0.52), transparent 52%);
       }
 .rw-mobile .rw-top,
-.rw-mobile .rw-bottom,
-.rw-mobile .rw-mlive {
+.rw-mobile .rw-bottom {
         z-index: 3;
       }
 .rw-mobile .rw-mcard .rw-top {
@@ -5611,18 +5509,6 @@ body.menu-open .mobile-menu-overlay {
 .rw-mobile .rw-mcard .rw-role {
         max-width: 26ch;
         line-height: 1.45;
-      }
-.rw-mobile .rw-mcard-reel .rw-code {
-        display: none;
-      }
-.rw-mobile .rw-mcard-reel .rw-mlive {
-        top: 0.78rem;
-        right: 0.82rem;
-        min-height: 34px;
-        padding: 0 0.62rem;
-        border: 1px solid rgba(214, 183, 122, 0.32);
-        border-radius: 999px;
-        background: rgba(8, 12, 18, 0.68);
       }
 .rw-mobile .rw-mrow {
         grid-template-columns: minmax(6.5rem, 34%) 1fr !important;
@@ -5730,8 +5616,7 @@ body.menu-open .mobile-menu-overlay {
       text-transform: uppercase;
     }
 .rw-mobile .rw-start-line,
-.rw-mobile .rw-context-line,
-.rw-mobile .rw-owned-line {
+.rw-mobile .rw-context-line {
       display: block;
       min-width: 0;
       overflow: hidden;
@@ -5746,12 +5631,6 @@ body.menu-open .mobile-menu-overlay {
     }
 .rw-mobile .rw-context-line {
       color: rgba(248, 242, 233, 0.58);
-    }
-.rw-mobile .rw-owned-line {
-      color: rgba(248, 242, 233, 0.52);
-    }
-.rw-mobile .rw-mrow .rw-owned-line {
-      display: none;
     }
 .rw-mobile .rw-mcard[data-reel="true"] {
       border-color: rgba(214, 183, 122, 0.34);
@@ -7309,14 +7188,376 @@ body.header-parallax-active .header-identity {
       animation: none !important;
       transform: scale(1.1) !important;
     }
-.rw-tally::before {
-      animation: none !important;
-      opacity: 0.74;
+  </style>
+  <style id="archiveCompositionPolishCss">/* Focused composition polish: archive annotations and recruiter path. */
+    .archive-stage {
+      --archive-annotation-x: clamp(4.8rem, 8vw, 8.9rem);
+      --archive-annotation-y: clamp(6.4rem, 13.5svh, 8.7rem);
+      --archive-review-x: clamp(1.8rem, 5vw, 6.5rem);
+      --archive-review-y: clamp(7rem, 18svh, 13.4rem);
     }
-.rw-card.is-focus .rw-tally::before,
-.rw-card:focus-visible .rw-tally::before,
-.rw-card.rw-pulling .rw-tally::before {
-      animation: rwTally 1800ms ease-in-out 1 both !important;
+    .leadership-thesis {
+      left: var(--archive-annotation-x) !important;
+      top: var(--archive-annotation-y) !important;
+      z-index: 9;
+      width: min(29rem, 33vw);
+      max-width: min(29rem, 33vw) !important;
+      padding: clamp(0.78rem, 1vw, 0.98rem) clamp(0.95rem, 1.25vw, 1.2rem);
+      border-left: 1px solid rgba(214, 183, 122, 0.42);
+      background:
+        linear-gradient(90deg, rgba(3, 5, 9, 0.82), rgba(3, 5, 9, 0.58) 70%, rgba(3, 5, 9, 0)),
+        radial-gradient(ellipse at 0% 50%, rgba(111, 140, 255, 0.12), transparent 68%);
+      box-shadow:
+        0 20px 70px rgba(0, 0, 0, 0.34),
+        -18px 0 46px rgba(3, 5, 9, 0.42);
+      backdrop-filter: blur(8px) saturate(1.08);
+      opacity: 0;
+      filter: blur(14px);
+      transform: translate3d(-0.45rem, 0.7rem, 0);
+      transition:
+        opacity 740ms ease,
+        filter 820ms ease,
+        transform 820ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: 0ms;
+    }
+    .leadership-thesis::before {
+      content: "";
+      position: absolute;
+      inset: -0.72rem -1.35rem -0.82rem -1.05rem;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(3, 5, 9, 0.64), rgba(3, 5, 9, 0.22) 64%, rgba(3, 5, 9, 0)),
+        radial-gradient(ellipse at 12% 52%, rgba(111, 140, 255, 0.1), transparent 72%);
+      mask-image: linear-gradient(90deg, #000 0 68%, transparent 100%);
+    }
+    .leadership-thesis::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: -0.45rem;
+      width: min(9rem, 72%);
+      height: 1px;
+      background: linear-gradient(90deg, rgba(214, 183, 122, 0.58), rgba(111, 140, 255, 0.2), transparent);
+      pointer-events: none;
+    }
+    body.intro-settled .leadership-thesis,
+    body.skip-intro .leadership-thesis {
+      opacity: 1 !important;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0) !important;
+    }
+    body.intro-settled .leadership-thesis {
+      transition-delay: 620ms;
+    }
+    body.skip-intro .leadership-thesis {
+      transition-delay: 120ms;
+    }
+    .leadership-thesis .hero-statement-eyebrow {
+      margin-bottom: 0.46rem;
+      color: rgba(214, 183, 122, 0.76);
+      font-size: clamp(0.5rem, 0.56vw, 0.58rem);
+      letter-spacing: 0.2em;
+    }
+    .leadership-thesis .hero-statement-copy {
+      max-width: 24rem;
+      color: rgba(248, 242, 233, 0.76);
+      font-size: clamp(0.88rem, 0.98vw, 1.02rem);
+      line-height: 1.52;
+      text-wrap: balance;
+    }
+    .review-path {
+      right: var(--archive-review-x) !important;
+      top: var(--archive-review-y) !important;
+      z-index: 10;
+      isolation: isolate;
+      width: min(21rem, 27vw) !important;
+      gap: 0;
+      padding: clamp(0.95rem, 1.25vw, 1.15rem);
+      border-color: rgba(111, 140, 255, 0.28);
+      background:
+        linear-gradient(180deg, rgba(248, 242, 233, 0.045), rgba(248, 242, 233, 0.008)),
+        radial-gradient(ellipse at 100% 0%, rgba(111, 140, 255, 0.15), transparent 58%),
+        rgba(4, 7, 13, 0.7);
+      box-shadow:
+        0 22px 72px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(248, 242, 233, 0.025) inset,
+        0 0 44px rgba(111, 140, 255, 0.1);
+      backdrop-filter: blur(12px) saturate(1.12);
+      opacity: 0;
+      filter: blur(12px);
+      transform: translate3d(0.45rem, 0.7rem, 0);
+      transition:
+        opacity 760ms ease,
+        filter 840ms ease,
+        transform 840ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 260ms ease,
+        box-shadow 260ms ease;
+      transition-delay: 0ms;
+    }
+    .review-path::before {
+      content: "MISSION PATH";
+      display: block;
+      margin: 0 0 0.62rem;
+      color: rgba(111, 140, 255, 0.6);
+      text-transform: uppercase;
+      font: 800 0.48rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.22em;
+    }
+    .review-path::after {
+      content: "";
+      position: absolute;
+      inset: 0.58rem;
+      pointer-events: none;
+      border: 1px solid rgba(111, 140, 255, 0.07);
+      background:
+        linear-gradient(90deg, rgba(111, 140, 255, 0.07), transparent 18%, transparent 82%, rgba(111, 140, 255, 0.045)),
+        linear-gradient(rgba(111, 140, 255, 0.028) 1px, transparent 1px);
+      background-size: auto, 100% 2.5rem;
+      opacity: 0.64;
+      z-index: -1;
+    }
+    body.intro-settled .review-path,
+    body.skip-intro .review-path {
+      opacity: 1 !important;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0) !important;
+      pointer-events: auto;
+    }
+    body.intro-settled .review-path {
+      transition-delay: 780ms;
+    }
+    body.skip-intro .review-path {
+      transition-delay: 160ms;
+    }
+    .review-path-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.9rem;
+      margin: 0 0 0.58rem;
+      color: rgba(214, 183, 122, 0.88);
+      font-size: clamp(0.62rem, 0.7vw, 0.74rem);
+      letter-spacing: 0.22em;
+    }
+    .review-path-label::after {
+      content: "";
+      flex: 1 1 auto;
+      height: 1px;
+      min-width: 2.4rem;
+      background: linear-gradient(90deg, rgba(214, 183, 122, 0.42), rgba(111, 140, 255, 0.16), transparent);
+    }
+    .review-path a,
+    .review-path button {
+      min-height: 42px;
+      padding: 0.05rem 0;
+      border-top-color: rgba(242, 238, 231, 0.105);
+      color: rgba(248, 242, 233, 0.72);
+      font-size: clamp(0.56rem, 0.64vw, 0.66rem);
+      letter-spacing: 0.11em;
+    }
+    .review-path a:first-of-type,
+    .review-path button:first-of-type {
+      border-top-color: rgba(214, 183, 122, 0.22);
+    }
+    .review-path:hover,
+    .review-path:focus-within {
+      border-color: rgba(111, 140, 255, 0.38);
+      box-shadow:
+        0 24px 78px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(248, 242, 233, 0.032) inset,
+        0 0 56px rgba(111, 140, 255, 0.15);
+    }
+    body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .hero-statement,
+    body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .review-path,
+    body:not(.skip-intro):not(.intro-settled) .hero-statement,
+    body:not(.skip-intro):not(.intro-settled) .review-path {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    @media (min-width: 901px) and (max-width: 1180px) {
+      .archive-stage {
+        --archive-annotation-x: clamp(2.2rem, 5vw, 4.6rem);
+        --archive-annotation-y: clamp(5.7rem, 12svh, 7.2rem);
+        --archive-review-x: clamp(1.2rem, 3vw, 2.4rem);
+        --archive-review-y: clamp(6.1rem, 15svh, 9.6rem);
+      }
+      .leadership-thesis {
+        width: min(25rem, 34vw);
+        max-width: min(25rem, 34vw) !important;
+      }
+      .leadership-thesis .hero-statement-copy {
+        font-size: clamp(0.82rem, 0.95vw, 0.96rem);
+      }
+      .review-path {
+        width: min(18.5rem, 28vw) !important;
+      }
+    }
+    @media (min-width: 901px) and (max-height: 760px) {
+      .archive-stage {
+        --archive-annotation-y: 5.25rem;
+        --archive-review-y: 5.45rem;
+      }
+      .leadership-thesis {
+        width: min(26rem, 31vw);
+        padding-block: 0.72rem;
+      }
+      .review-path {
+        padding-block: 0.82rem;
+      }
+      .review-path a,
+      .review-path button {
+        min-height: 38px;
+      }
+    }
+    @media (max-width: 899px), (pointer: coarse) {
+      .leadership-thesis {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: min(calc(100vw - 32px), 34rem) !important;
+        max-width: min(calc(100vw - 32px), 34rem) !important;
+        margin: calc(var(--header-rail-height, 3.75rem) + 1.15rem) auto 0.85rem !important;
+        padding: 0.9rem 1rem;
+        transform: translate3d(0, 0.5rem, 0);
+      }
+      .leadership-thesis .hero-statement-copy {
+        max-width: 30rem;
+        display: block;
+        font-size: 0.94rem;
+        line-height: 1.58;
+      }
+      .review-path {
+        position: relative !important;
+        right: auto !important;
+        top: auto !important;
+        width: min(calc(100vw - 32px), 34rem) !important;
+        margin: 0 auto 1rem !important;
+        padding: 0.82rem 0.9rem;
+        transform: translate3d(0, 0.5rem, 0);
+      }
+      .review-path a,
+      .review-path button {
+        min-height: 44px;
+        font-size: 0.54rem;
+      }
+      .rw-mobile {
+        margin-top: 0.85rem !important;
+      }
+    }
+    @media (max-width: 430px) {
+      .leadership-thesis,
+      .review-path {
+        width: min(calc(100vw - 28px), 34rem) !important;
+      }
+      .leadership-thesis {
+        margin-top: calc(var(--header-rail-height, 3.65rem) + 1.05rem) !important;
+      }
+      .review-path::before {
+        margin-bottom: 0.52rem;
+      }
+      .review-path-label {
+        font-size: 0.58rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .leadership-thesis,
+      .review-path {
+        transition: none !important;
+        filter: none !important;
+      }
+      body.intro-settled .leadership-thesis,
+      body.skip-intro .leadership-thesis,
+      body.intro-settled .review-path,
+      body.skip-intro .review-path {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+  <style id="recordWallHoverArtifactCleanupCss">/* Record Wall hover artifact cleanup: stable clipped layers, controlled focus, no animated outer seams. */
+    .rw-col {
+      will-change: transform, opacity;
+    }
+    .rw-card {
+      isolation: isolate;
+      contain: paint;
+      overflow: hidden;
+      outline: 0;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.52);
+      transform-style: flat;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transition:
+        transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 240ms ease;
+    }
+    .rw-card .rw-thumb,
+    .rw-card video.rw-loop {
+      inset: -1px;
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+      border-radius: inherit;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0) scale(1.002);
+    }
+    .rw-card::after,
+    .rw-shade {
+      inset: 0.5px;
+      border-radius: inherit;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+    .rw-top,
+    .rw-bottom,
+    .rw-play {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+    .rw-card[data-reel="true"] {
+      box-shadow:
+        0 22px 50px rgba(0, 0, 0, 0.58),
+        0 0 28px rgba(214, 183, 122, 0.08);
+    }
+    .rw-wall.has-focus .rw-card:not(.is-focus) {
+      opacity: 0.42;
+      filter: brightness(var(--rw-card-brightness, 1));
+    }
+    .rw-card.is-focus {
+      border-color: rgba(242, 238, 231, 0.26);
+      box-shadow:
+        0 24px 58px rgba(0, 0, 0, 0.66),
+        0 0 32px var(--rw-mood-soft);
+    }
+    .rw-card.is-focus .rw-thumb {
+      transform: translateZ(0) scale(1.04);
+    }
+    .rw-card.is-focus video.rw-loop.on {
+      transform: translateZ(0) scale(1.018);
+    }
+    .rw-card:focus:not(:focus-visible) {
+      outline: 0;
+    }
+    .rw-card:focus-visible {
+      outline: 0 !important;
+      border-color: rgba(248, 242, 233, 0.34);
+      box-shadow:
+        inset 0 0 0 1px rgba(248, 242, 233, 0.42),
+        inset 0 0 0 3px rgba(111, 140, 255, 0.18),
+        0 24px 58px rgba(0, 0, 0, 0.66),
+        0 0 30px var(--rw-mood-soft);
+    }
+    .rw-card.rw-pulling {
+      box-shadow:
+        0 28px 68px rgba(0, 0, 0, 0.74),
+        0 0 42px var(--rw-mood-soft);
+    }
+    body.rw-pull .rw-wall .rw-card:not(.rw-pulling) {
+      opacity: 0.18;
+      filter: brightness(var(--rw-card-brightness, 1));
     }
   </style>
 </head>
@@ -7371,8 +7612,8 @@ body.header-parallax-active .header-identity {
         <nav class="review-path" aria-label="Fast recruiter review path">
           <span class="review-path-label">Start Here</span>
           <button type="button" data-video="mFeMMMmdW24">01 Director Reel</button>
-          <a href="work/cyberpunk-2077.html">02 Cyberpunk Dossier</a>
-          <a href="work/doom.html">03 DOOM Dossier</a>
+          <a href="work/cyberpunk-2077.html">02 Cyberpunk Case Study</a>
+          <a href="work/doom.html">03 DOOM Case Study</a>
           <a href="#contact" data-route="contact">04 Contact</a>
         </nav>
 
@@ -7623,20 +7864,20 @@ body.header-parallax-active .header-identity {
     </section>
   </main>
 
-  <div class="rw-preview" id="rwPreview" aria-hidden="true" role="dialog" aria-label="Selected record dossier preview">
+  <div class="rw-preview" id="rwPreview" aria-hidden="true" role="dialog" aria-label="Selected record case study preview">
     <div class="rw-preview-inner">
       <button class="rw-preview-back" id="rwPreviewBack" type="button">Back to the wall</button>
       <div class="rw-preview-kicker" id="rwPreviewKicker">Record selected</div>
       <div class="rw-preview-hero" id="rwPreviewHero"></div>
       <div class="rw-preview-slate" aria-label="Selected record metadata">
-        <div><div class="rw-preview-sk">Record</div><div class="rw-preview-sv is-mood" id="rwPreviewCode">-</div></div>
+        <div><div class="rw-preview-sk">Status</div><div class="rw-preview-sv is-mood" id="rwPreviewStatus">-</div></div>
         <div><div class="rw-preview-sk">Role</div><div class="rw-preview-sv" id="rwPreviewRole">-</div></div>
         <div><div class="rw-preview-sk">Client</div><div class="rw-preview-sv" id="rwPreviewClient">-</div></div>
         <div><div class="rw-preview-sk">Year</div><div class="rw-preview-sv" id="rwPreviewYear">-</div></div>
       </div>
       <div class="rw-preview-brief">
         <p id="rwPreviewBrief"></p>
-        <a class="rw-preview-open" id="rwPreviewOpen" href="#">Open full dossier</a>
+        <a class="rw-preview-open" id="rwPreviewOpen" href="#">Open full case study</a>
       </div>
     </div>
   </div>
@@ -7964,17 +8205,16 @@ body.header-parallax-active .header-identity {
       return project.displayClient || project.client || "Archive";
     }
 
-    function projectMetaLine(project) {
-      return project.displayMeta || `${projectRole(project)} / ${projectClient(project)}`;
+    function projectTypeLine(project) {
+      if (project.isReel) {
+        return project.displayMeta || "Campaigns \u2022 Trailers \u2022 Brand Films";
+      }
+      return project.type || projectRole(project);
     }
 
-    function projectTypeLabel(project) {
-      return project.type ? `TYPE: ${project.type}` : "";
-    }
-
-    function projectOwnedLabel(project) {
-      const owned = Array.isArray(project.owned) ? project.owned.filter(Boolean) : [];
-      return owned.length ? `OWNED: ${owned.join(" / ")}` : "";
+    function projectClientLine(project) {
+      if (project.isReel) return "";
+      return projectClient(project);
     }
 
     function projectStartLabel(project) {
@@ -7986,13 +8226,13 @@ body.header-parallax-active .header-identity {
     }
 
     function projectStatusLabel(project) {
-      if (project.isReel) return project.statusLabel || "FASTEST OVERVIEW";
-      return projectHasDossier(project) ? "DOSSIER AVAILABLE" : "";
+      if (project.isReel) return project.statusLabel || "FASTEST OVERVIEW \u2192";
+      return projectHasDossier(project) ? "CASE STUDY AVAILABLE \u2192" : "";
     }
 
     function projectActionLabel(project) {
-      if (project.isReel) return "VIEW REEL →";
-      return projectHasDossier(project) ? "VIEW DOSSIER →" : "PLAY RECORD →";
+      if (project.isReel) return "FASTEST OVERVIEW \u2192";
+      return projectHasDossier(project) ? "VIEW CASE STUDY \u2192" : "";
     }
 
     function projectTitleSize(project) {
@@ -8046,11 +8286,11 @@ body.header-parallax-active .header-identity {
       startLabel: "START HERE",
       role: "Creative Video Director",
       displayRole: "Selected Works",
-      displayMeta: "Campaigns / Trailers / Brand Films",
+      displayMeta: "Campaigns \u2022 Trailers \u2022 Brand Films",
       client: "Jared McDaniel",
       type: "Overview Reel",
       owned: ["Direction", "Editing", "Campaign Rhythm"],
-      statusLabel: "FASTEST OVERVIEW",
+      statusLabel: "FASTEST OVERVIEW \u2192",
       year: "2026",
       yt: REEL_ID,
       loop: "videos/loops/reel-loop.mp4",
@@ -8240,6 +8480,10 @@ body.header-parallax-active .header-identity {
 
     function createArchivePiece(project) {
       const node = project.page ? document.createElement("a") : document.createElement("button");
+      const typeLine = projectTypeLine(project);
+      const clientLine = projectClientLine(project);
+      const statusLabel = projectStatusLabel(project);
+      const actionLabel = projectActionLabel(project);
       node.className = `archive-piece ${layoutBySlug[project.slug] || "compact"}`;
       node.style.setProperty("--thumb", thumb(project.yt));
       node.style.setProperty("--thumb-position", project.thumbPosition || "center center");
@@ -8247,11 +8491,10 @@ body.header-parallax-active .header-identity {
       node.dataset.dossier = projectHasDossier(project) ? "available" : "screening";
       node.setAttribute("aria-label", [
         projectTitle(project),
-        projectMetaLine(project),
-        projectTypeLabel(project),
-        projectOwnedLabel(project),
-        projectStatusLabel(project),
-        projectActionLabel(project)
+        typeLine,
+        clientLine,
+        statusLabel,
+        actionLabel
       ].filter(Boolean).join(" - "));
       if (projectTitle(project).length > 24) {
         node.dataset.longTitle = "true";
@@ -8273,16 +8516,14 @@ body.header-parallax-active .header-identity {
       node.innerHTML = `
         <img class="piece-thumb" src="${thumbSrc(project.yt)}" alt="" loading="lazy" decoding="async">
         <span class="piece-overlay" aria-hidden="true"></span>
-        ${project.views ? `<span class="piece-views" aria-label="${project.views}"><span class="piece-views-dot" aria-hidden="true"></span>${project.views}</span>` : ''}
         <span class="piece-info">
           <span class="piece-title">${projectTitle(project)}</span>
           <span class="piece-meta">
-            <span class="piece-role-line">${projectMetaLine(project)}</span>
-            ${projectTypeLabel(project) ? `<span class="piece-context-line">${projectTypeLabel(project)}</span>` : ''}
-            ${projectOwnedLabel(project) ? `<span class="piece-owned-line">${projectOwnedLabel(project)}</span>` : ''}
-            ${projectStatusLabel(project) ? `<span class="piece-record-state">${projectStatusLabel(project)}</span>` : ''}
+            ${typeLine ? `<span class="piece-type-line">${typeLine}</span>` : ''}
+            ${clientLine ? `<span class="piece-client-line">${clientLine}</span>` : ''}
+            ${statusLabel ? `<span class="piece-record-state">${statusLabel}</span>` : ''}
           </span>
-          <span class="piece-affordance">${projectActionLabel(project)}</span>
+          ${actionLabel ? `<span class="piece-affordance">${actionLabel}</span>` : ''}
         </span>
       `;
 
@@ -8733,7 +8974,6 @@ body.header-parallax-active .header-identity {
       const rest = all.filter((r) => !FLAG_ORDER.includes(r.slug));
       return [...head, ...rest];
     })();
-    const RECORD_CODE = new Map(RECORDS.map((r, i) => [r.slug, i === 0 ? "REC.00" : `REC.${String(i).padStart(2, "0")}`]));
     const RECORD_BRIEFS = {
       "director-reel": "The archive reel is the live screening room: a fast pass through the worlds, trailers, campaigns, and edits on file.",
       "cyberpunk-2077": "The brief said 'show the city.' The city is not the subject. The loneliness is. Night City had to feel like a character who never blinks.",
@@ -8741,9 +8981,6 @@ body.header-parallax-active .header-identity {
       "witcher": "The Continent is old, and the camera should feel it. Atmosphere, character, and scale move in the same rhythm.",
       "fallout-nuka-cola": "A commercial from a world that ended. The spot plays the product straight and lets the wrongness leak through the grade."
     };
-    function recordCode(rec) {
-      return RECORD_CODE.get(rec.slug) || rec.code || "";
-    }
     function recordBrief(rec) {
       return RECORD_BRIEFS[rec.slug] || rec.summary || "Selected record from the director's archive.";
     }
@@ -8751,7 +8988,7 @@ body.header-parallax-active .header-identity {
       return projectTitle(rec);
     }
     function recordMetaLine(rec) {
-      return projectMetaLine(rec);
+      return projectTypeLine(rec);
     }
     function recordTitleSize(rec) {
       return projectTitleSize(rec);
@@ -8765,7 +9002,7 @@ body.header-parallax-active .header-identity {
       back: document.getElementById("rwPreviewBack"),
       hero: document.getElementById("rwPreviewHero"),
       kicker: document.getElementById("rwPreviewKicker"),
-      code: document.getElementById("rwPreviewCode"),
+      status: document.getElementById("rwPreviewStatus"),
       role: document.getElementById("rwPreviewRole"),
       client: document.getElementById("rwPreviewClient"),
       year: document.getElementById("rwPreviewYear"),
@@ -8778,6 +9015,11 @@ body.header-parallax-active .header-identity {
     function wallCard(rec) {
       const isLink = !!rec.page;
       const el = document.createElement(isLink ? "a" : "button");
+      const typeLine = recordMetaLine(rec);
+      const clientLine = projectClientLine(rec);
+      const statusLabel = projectStatusLabel(rec);
+      const actionLabel = projectActionLabel(rec);
+      const showAffordance = actionLabel && actionLabel !== statusLabel;
       el.className = "rw-card";
       if (isLink) { el.href = rec.page; el.draggable = false; }
       else el.type = "button";
@@ -8788,11 +9030,10 @@ body.header-parallax-active .header-identity {
       el.setAttribute("aria-label", [
         recordTitle(rec),
         projectStartLabel(rec),
-        recordMetaLine(rec),
-        projectTypeLabel(rec),
-        projectOwnedLabel(rec),
-        projectStatusLabel(rec),
-        projectActionLabel(rec)
+        typeLine,
+        clientLine,
+        statusLabel,
+        actionLabel
       ].filter(Boolean).join(" - "));
       const logo = logoFor(rec.client);
       el.innerHTML = `
@@ -8800,19 +9041,14 @@ body.header-parallax-active .header-identity {
         <span class="rw-shade" aria-hidden="true"></span>
         <span class="rw-top">${logo
           ? `<img class="rw-logo" src="${logo}" alt="" draggable="false">`
-          : `<span class="rw-logotext">${projectClient(rec)}</span>`}<span class="rw-code">${recordCode(rec)}</span></span>
-        <span class="rw-tally" aria-hidden="true">Rec</span>
+          : `<span class="rw-logotext">${projectClient(rec)}</span>`}</span>
         <span class="rw-bottom">
           ${projectStartLabel(rec) ? `<span class="rw-start-line">${projectStartLabel(rec)}</span>` : ''}
           <span class="rw-title">${recordTitle(rec)}</span>
-          <span class="rw-meta-line"><span>${recordMetaLine(rec)}</span></span>
-          ${projectTypeLabel(rec) ? `<span class="rw-context-line">${projectTypeLabel(rec)}</span>` : ''}
-          ${projectOwnedLabel(rec) ? `<span class="rw-owned-line">${projectOwnedLabel(rec)}</span>` : ''}
-          ${projectStatusLabel(rec) ? `<span class="rw-record-state">${projectStatusLabel(rec)}</span>` : ''}
-          <span class="rw-expand">
-            <span class="rw-affordance">${projectActionLabel(rec)}</span>
-            <span class="rw-tags">${(rec.tags || []).map((t) => `<span>${t}</span>`).join("")}</span>
-          </span>
+          ${typeLine ? `<span class="rw-meta-line"><span>${typeLine}</span></span>` : ''}
+          ${clientLine ? `<span class="rw-context-line">${clientLine}</span>` : ''}
+          ${statusLabel ? `<span class="rw-record-state">${statusLabel}</span>` : ''}
+          ${showAffordance ? `<span class="rw-expand"><span class="rw-affordance">${actionLabel}</span></span>` : ''}
         </span>`;
       return el;
     }
@@ -9170,9 +9406,9 @@ body.header-parallax-active .header-identity {
       if (focusLine) {
         const focusMeta = rec.isReel
           ? `${projectStartLabel(rec)} / ${recordMetaLine(rec)}`
-          : [projectRole(rec), rec.type].filter(Boolean).join(" / ");
+          : [projectTypeLine(rec), projectClientLine(rec)].filter(Boolean).join(" / ");
         focusLine.textContent =
-          `${recordCode(rec)} - ${recordTitle(rec)} / ${focusMeta}` + (mood ? ` / ${mood.line}` : "");
+          `${recordTitle(rec)} / ${focusMeta}` + (mood ? ` / ${mood.line}` : "");
       }
     }
 
@@ -9251,7 +9487,7 @@ body.header-parallax-active .header-identity {
 
     /* ---------------- the pull-out / preview handoff ----------------
        Card flattens to camera, the room grades to the project's world,
-       then a dossier preview exposes slate, brief, and the full dossier
+       then a case study preview exposes slate, brief, and the full case study
        CTA. Mobile uses the same handoff without the desktop geometry. */
     let veil = null;
     let previewSource = null;
@@ -9330,8 +9566,8 @@ body.header-parallax-active .header-identity {
       }
       previewSource?.classList.add("rw-pulling");
 
-      preview.kicker.textContent = `${recordCode(rec)} / selected record` + (mood ? ` / ${mood.line}` : "");
-      preview.code.textContent = recordCode(rec);
+      preview.kicker.textContent = `Selected record` + (mood ? ` / ${mood.line}` : "");
+      preview.status.textContent = projectStatusLabel(rec) || projectActionLabel(rec) || "Selected";
       preview.role.textContent = projectRole(rec) || "-";
       preview.client.textContent = projectClient(rec) || "Archive";
       preview.year.textContent = rec.year || "-";
@@ -9372,6 +9608,11 @@ body.header-parallax-active .header-identity {
     }
     function mobileCard(rec) {
       const el = document.createElement(rec.page ? "a" : "button");
+      const typeLine = recordMetaLine(rec);
+      const clientLine = projectClientLine(rec);
+      const statusLabel = projectStatusLabel(rec);
+      const actionLabel = projectActionLabel(rec);
+      const showAction = actionLabel && !statusLabel;
       el.className = `rw-mcard${rec.isReel ? " rw-mcard-reel" : ""}`;
       if (rec.page) el.href = rec.page; else el.type = "button";
       el.dataset.slug = rec.slug;
@@ -9380,11 +9621,10 @@ body.header-parallax-active .header-identity {
       el.setAttribute("aria-label", [
         recordTitle(rec),
         projectStartLabel(rec),
-        recordMetaLine(rec),
-        projectTypeLabel(rec),
-        projectOwnedLabel(rec),
-        projectStatusLabel(rec),
-        projectActionLabel(rec)
+        typeLine,
+        clientLine,
+        statusLabel,
+        actionLabel
       ].filter(Boolean).join(" - "));
       el.style.setProperty("--rw-card-pos", rec.thumbPosition || "center center");
       const logo = logoFor(rec.client);
@@ -9392,23 +9632,25 @@ body.header-parallax-active .header-identity {
         <img src="${thumbSrc(rec.yt)}" alt="${recordTitle(rec)} still" loading="lazy" decoding="async">
         <span class="rw-top">${logo
           ? `<img class="rw-logo" src="${logo}" alt="">`
-          : `<span class="rw-logotext">${projectClient(rec)}</span>`}<span class="rw-code">${recordCode(rec)}</span></span>
-        ${rec.isReel ? `<span class="rw-mlive">Watch reel</span>` : ""}
+          : `<span class="rw-logotext">${projectClient(rec)}</span>`}</span>
         <span class="rw-bottom">
           ${projectStartLabel(rec) ? `<span class="rw-start-line">${projectStartLabel(rec)}</span>` : ''}
           <span class="rw-title">${recordTitle(rec)}</span>
-          <span class="rw-meta-line"><span>${recordMetaLine(rec)}</span></span>
-          ${projectTypeLabel(rec) ? `<span class="rw-context-line">${projectTypeLabel(rec)}</span>` : ''}
-          ${projectOwnedLabel(rec) ? `<span class="rw-owned-line">${projectOwnedLabel(rec)}</span>` : ''}
-          ${projectStatusLabel(rec) ? `<span class="rw-record-state">${projectStatusLabel(rec)}</span>` : ''}
-          <span class="rw-mtags">${(rec.tags || []).slice(0, 3).map((t) => `<span>${t}</span>`).join("")}</span>
-          <span class="rw-mobile-action">${projectActionLabel(rec)}</span>
+          ${typeLine ? `<span class="rw-meta-line"><span>${typeLine}</span></span>` : ''}
+          ${clientLine ? `<span class="rw-context-line">${clientLine}</span>` : ''}
+          ${statusLabel ? `<span class="rw-record-state">${statusLabel}</span>` : ''}
+          ${showAction ? `<span class="rw-mobile-action">${actionLabel}</span>` : ''}
         </span>`;
       el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec, el); });
       return el;
     }
     function mobileRow(rec) {
       const el = document.createElement(rec.page ? "a" : "button");
+      const typeLine = recordMetaLine(rec);
+      const clientLine = projectClientLine(rec);
+      const statusLabel = projectStatusLabel(rec);
+      const actionLabel = projectActionLabel(rec);
+      const showAction = actionLabel && !statusLabel;
       el.className = "rw-mrow";
       if (rec.page) el.href = rec.page; else el.type = "button";
       el.dataset.slug = rec.slug;
@@ -9417,11 +9659,10 @@ body.header-parallax-active .header-identity {
       el.setAttribute("aria-label", [
         recordTitle(rec),
         projectStartLabel(rec),
-        recordMetaLine(rec),
-        projectTypeLabel(rec),
-        projectOwnedLabel(rec),
-        projectStatusLabel(rec),
-        projectActionLabel(rec)
+        typeLine,
+        clientLine,
+        statusLabel,
+        actionLabel
       ].filter(Boolean).join(" - "));
       el.style.setProperty("--rw-card-pos", rec.thumbPosition || "center center");
       el.innerHTML = `
@@ -9429,13 +9670,11 @@ body.header-parallax-active .header-identity {
         <span class="rw-mmeta">
           ${projectStartLabel(rec) ? `<span class="rw-start-line">${projectStartLabel(rec)}</span>` : ''}
           <span class="rw-mtitle">${recordTitle(rec)}</span>
-          <span class="rw-mrole">${recordMetaLine(rec)}</span>
-          ${projectTypeLabel(rec) ? `<span class="rw-context-line">${projectTypeLabel(rec)}</span>` : ''}
-          ${projectOwnedLabel(rec) ? `<span class="rw-owned-line">${projectOwnedLabel(rec)}</span>` : ''}
-          ${projectStatusLabel(rec) ? `<span class="rw-record-state">${projectStatusLabel(rec)}</span>` : ''}
-          <span class="rw-mobile-action">${projectActionLabel(rec)}</span>
-        </span>
-        <span class="rw-mcode">${recordCode(rec)}</span>`;
+          ${typeLine ? `<span class="rw-mrole">${typeLine}</span>` : ''}
+          ${clientLine ? `<span class="rw-context-line">${clientLine}</span>` : ''}
+          ${statusLabel ? `<span class="rw-record-state">${statusLabel}</span>` : ''}
+          ${showAction ? `<span class="rw-mobile-action">${actionLabel}</span>` : ''}
+        </span>`;
       el.addEventListener("click", (e) => { e.preventDefault(); mobileNav(rec, el); });
       return el;
     }
@@ -9469,7 +9708,7 @@ body.header-parallax-active .header-identity {
       head.className = "rw-mobile-head";
       head.innerHTML = `
         <div class="rw-mobile-kicker">Director's archive / ${RECORDS.length} records</div>
-        <p class="rw-mobile-statement">A touch-first archive index. Flagship dossiers first. Filters refine the archive.</p>
+        <p class="rw-mobile-statement">A touch-first archive index. Flagship case studies first. Filters refine the archive.</p>
         <div class="rw-mobile-console" aria-label="Archive status">
           <span><b>Chapter</b><span id="rwMobileChapter">Flagships</span></span>
           <span><b>Records</b><span>${visibleCount} visible</span></span>
