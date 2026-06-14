@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 09 - Environment / Cyberpunk Bunker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="environment-record-wall.css" />
+<style>
+  body.cyber-bunker{--mood:#5d86ff;--mood-soft:rgba(93,134,255,.14)}
+  .cyber-bunker{
+    background:
+      radial-gradient(58rem 32rem at 48% 42%,rgba(93,134,255,.08),transparent 64%),
+      radial-gradient(34rem 24rem at 83% 66%,rgba(255,59,48,.055),transparent 72%),
+      linear-gradient(180deg,#04070c 0%,#030406 54%,#020204 100%);
+  }
+  .cyber-bunker .env-concrete{
+    opacity:.42;
+    background:
+      linear-gradient(90deg,rgba(0,0,0,.62),transparent 18%,transparent 82%,rgba(0,0,0,.62)),
+      repeating-linear-gradient(90deg,rgba(93,134,255,.045) 0 1px,transparent 1px 96px),
+      repeating-linear-gradient(0deg,rgba(242,238,231,.026) 0 1px,transparent 1px 88px);
+    mask-image:radial-gradient(ellipse at 50% 44%,black 0 64%,transparent 92%);
+  }
+  .cyber-bunker .env-cable-drop{
+    opacity:.44;
+    background:
+      linear-gradient(90deg,transparent 8%,rgba(0,0,0,.7) 8.1%,transparent 8.28%),
+      linear-gradient(90deg,transparent 12%,rgba(0,0,0,.5) 12.08%,transparent 12.22%),
+      linear-gradient(90deg,transparent 18%,rgba(0,0,0,.62) 18.08%,transparent 18.24%),
+      linear-gradient(90deg,transparent 72%,rgba(0,0,0,.58) 72.1%,transparent 72.24%),
+      linear-gradient(90deg,transparent 81%,rgba(0,0,0,.66) 81.08%,transparent 81.24%),
+      linear-gradient(90deg,transparent 90%,rgba(0,0,0,.48) 90.08%,transparent 90.2%);
+    clip-path:polygon(0 0,100% 0,100% 70%,86% 58%,75% 74%,62% 54%,50% 72%,36% 58%,25% 74%,12% 54%,0 68%);
+  }
+  .cyber-bunker .env-bundles{
+    opacity:.34;
+    background:
+      radial-gradient(80rem 16rem at 50% 100%,rgba(93,134,255,.13),transparent 68%),
+      repeating-linear-gradient(0deg,transparent 0 6.2rem,rgba(0,0,0,.5) 6.22rem,transparent 6.32rem),
+      linear-gradient(90deg,transparent 0 6%,rgba(0,0,0,.44) 6.2% 8%,transparent 8.2% 92%,rgba(0,0,0,.44) 92.2% 94%,transparent 94.2%);
+    mask-image:linear-gradient(180deg,transparent 0,black 20%,black 82%,transparent 100%);
+  }
+  .cyber-bunker .env-glow{
+    opacity:.85;
+    background:
+      radial-gradient(38rem 22rem at 50% 42%,rgba(93,134,255,.15),transparent 72%),
+      radial-gradient(18rem 12rem at 67% 36%,rgba(255,59,48,.09),transparent 78%),
+      radial-gradient(28rem 16rem at 28% 68%,rgba(93,134,255,.07),transparent 76%);
+    animation:bunkerHaze 18s ease-in-out infinite;
+  }
+  .cyber-bunker .env-scan{
+    opacity:.045;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.76) 0 1px,transparent 1px 4px);
+  }
+  .cyber-bunker .env-leds{
+    opacity:.78;
+    background:
+      radial-gradient(circle at 14% 38%,rgba(255,59,48,.95) 0 1px,transparent 2px),
+      radial-gradient(circle at 22% 62%,rgba(93,134,255,.9) 0 1px,transparent 2px),
+      radial-gradient(circle at 78% 35%,rgba(93,134,255,.85) 0 1px,transparent 2px),
+      radial-gradient(circle at 86% 58%,rgba(255,59,48,.88) 0 1px,transparent 2px),
+      radial-gradient(circle at 64% 72%,rgba(214,183,122,.8) 0 1px,transparent 2px);
+    animation:ledPulse 4.8s steps(2,end) infinite;
+  }
+  .cyber-bunker .spark{
+    position:absolute;width:2px;height:2px;border-radius:50%;
+    background:#ffd6b0;box-shadow:0 0 10px rgba(255,139,72,.65);
+    opacity:0;transform:translate3d(var(--p-near-x),var(--p-near-y),0);
+    animation:spark 13s steps(1,end) infinite;
+  }
+  .cyber-bunker .s1{left:17%;top:19%;animation-delay:2s}
+  .cyber-bunker .s2{left:81%;top:25%;animation-delay:7s}
+  .cyber-bunker .s3{left:73%;top:61%;animation-delay:11s}
+  .cyber-bunker .env-sweep{
+    opacity:.18;
+    background:linear-gradient(105deg,transparent 0 42%,rgba(93,134,255,.16) 48%,transparent 56% 100%);
+    transform:translate3d(-120%,0,0);
+    animation:slowSweep 28s ease-in-out infinite;
+  }
+  .cyber-bunker .env-mask{
+    background:
+      radial-gradient(ellipse at 50% 44%,transparent 0 34%,rgba(0,0,0,.28) 70%,rgba(0,0,0,.82) 100%),
+      linear-gradient(180deg,rgba(0,0,0,.32),transparent 24%,transparent 68%,rgba(0,0,0,.58));
+  }
+  @keyframes bunkerHaze{
+    0%,100%{transform:translate3d(var(--p-mid-x),var(--p-mid-y),0)}
+    50%{transform:translate3d(calc(var(--p-mid-x) - 10px),calc(var(--p-mid-y) + 7px),0)}
+  }
+  @keyframes ledPulse{
+    0%,100%{filter:brightness(.8)}
+    50%{filter:brightness(1.35)}
+  }
+  @keyframes spark{
+    0%,86%,100%{opacity:0}
+    87%{opacity:.9}
+    88%{opacity:.25}
+  }
+  @keyframes slowSweep{
+    0%,72%,100%{transform:translate3d(-120%,0,0)}
+    86%{transform:translate3d(120%,0,0)}
+  }
+  @media (max-width:899px),(pointer:coarse){
+    .cyber-bunker .env-cable-drop,.cyber-bunker .env-leds,.cyber-bunker .spark,.cyber-bunker .env-sweep,.cyber-bunker .env-scan{display:none}
+    .cyber-bunker .env-concrete{opacity:.22}
+    .cyber-bunker .env-glow{opacity:.5}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .cyber-bunker .spark,.cyber-bunker .env-sweep{display:none}
+  }
+</style>
+</head>
+<body class="cyber-bunker">
+<div class="env" aria-hidden="true">
+  <div class="env-layer env-far env-concrete"></div>
+  <div class="env-layer env-mid env-bundles"></div>
+  <div class="env-layer env-mid env-glow"></div>
+  <div class="env-layer env-near env-cable-drop"></div>
+  <div class="env-layer env-near env-leds"></div>
+  <div class="env-layer env-scan"></div>
+  <div class="env-layer env-sweep"></div>
+  <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span>
+  <div class="env-layer env-mask"></div>
+</div>
+<div class="grain"></div>
+
+<div class="stage" id="stage" aria-label="Record wall environment mockup">
+  <div class="world"><div class="wall" id="wall"></div></div>
+</div>
+<div class="mobile-index" id="mobileIndex"></div>
+
+<div class="status-line"><b id="focusLabel">Archive plane / environment study</b> / drag to look / hover records</div>
+<div class="chrome">
+  <div class="ch-name"><div class="n1">Jared McDaniel</div><div class="n2">Cyberpunk Bunker</div></div>
+  <div class="ch-statement">Dystopian video village / cable silhouettes / controlled electrical life</div>
+  <div class="ch-status"><div><b>Environment mockup 09</b></div><div>Expressive / higher atmosphere / watch motion budget</div></div>
+  <nav class="ch-nav">
+    <a href="08-environment-subtle-depth.html">08</a>
+    <a class="on" href="09-environment-cyberpunk-bunker.html">09</a>
+    <a href="10-environment-premium-minimal.html">10</a>
+    <a href="index.html">Hub</a>
+  </nav>
+</div>
+<div class="mock-tag">Mockup 09 - Cyberpunk Production Bunker</div>
+<script src="environment-record-wall.js"></script>
+</body>
+</html>

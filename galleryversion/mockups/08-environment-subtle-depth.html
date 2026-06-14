@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 08 - Environment / Subtle Depth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="environment-record-wall.css" />
+<style>
+  body.subtle-depth{--mood:#6f8cff;--mood-soft:rgba(111,140,255,.13)}
+  .subtle-depth{
+    background:
+      radial-gradient(72rem 40rem at 50% 38%,rgba(111,140,255,.045),transparent 64%),
+      linear-gradient(180deg,#05070a 0%,#030406 58%,#020305 100%);
+  }
+  .subtle-depth .env-panels{
+    opacity:.34;
+    background:
+      linear-gradient(90deg,transparent 0 9%,rgba(242,238,231,.045) 9.1%,transparent 9.4% 28%,rgba(111,140,255,.05) 28.1%,transparent 28.35% 52%,rgba(242,238,231,.04) 52.1%,transparent 52.35% 76%,rgba(111,140,255,.04) 76.1%,transparent 76.35%),
+      repeating-linear-gradient(90deg,rgba(242,238,231,.035) 0 1px,transparent 1px 120px),
+      linear-gradient(180deg,rgba(242,238,231,.035),transparent 20%,transparent 78%,rgba(0,0,0,.52));
+    mask-image:radial-gradient(ellipse at center,black 0 58%,transparent 88%);
+  }
+  .subtle-depth .env-racks{
+    opacity:.26;
+    background:
+      linear-gradient(90deg,transparent 0 12%,rgba(0,0,0,.34) 12.2% 13%,transparent 13.2% 87%,rgba(0,0,0,.34) 87.2% 88%,transparent 88.2%),
+      repeating-linear-gradient(0deg,transparent 0 4.8rem,rgba(111,140,255,.05) 4.85rem,transparent 4.95rem);
+    mask-image:linear-gradient(90deg,transparent,black 14%,black 86%,transparent);
+  }
+  .subtle-depth .env-cables{
+    opacity:.22;
+    background:
+      linear-gradient(90deg,transparent 15%,rgba(0,0,0,.46) 15.12%,transparent 15.24%),
+      linear-gradient(90deg,transparent 23%,rgba(0,0,0,.36) 23.08%,transparent 23.18%),
+      linear-gradient(90deg,transparent 77%,rgba(0,0,0,.38) 77.1%,transparent 77.22%),
+      linear-gradient(90deg,transparent 84%,rgba(0,0,0,.44) 84.08%,transparent 84.18%);
+  }
+  .subtle-depth .env-haze{
+    opacity:.72;
+    background:
+      radial-gradient(44rem 22rem at 50% 42%,rgba(111,140,255,.105),transparent 70%),
+      radial-gradient(26rem 15rem at 32% 68%,rgba(214,183,122,.045),transparent 72%),
+      radial-gradient(32rem 20rem at 75% 25%,rgba(111,140,255,.055),transparent 74%);
+    animation:subtleHaze 22s ease-in-out infinite;
+  }
+  .subtle-depth .env-floor{
+    inset:auto -8% -18% -8%;height:45%;
+    background:radial-gradient(64% 110% at 50% 100%,rgba(111,140,255,.13),transparent 68%);
+    filter:blur(16px);opacity:.42;
+  }
+  .subtle-depth .env-mask{
+    background:
+      radial-gradient(ellipse at 50% 44%,transparent 0 38%,rgba(0,0,0,.42) 74%,rgba(0,0,0,.78) 100%),
+      linear-gradient(90deg,rgba(0,0,0,.64),transparent 22%,transparent 78%,rgba(0,0,0,.64));
+  }
+  @keyframes subtleHaze{
+    0%,100%{transform:translate3d(var(--p-mid-x),var(--p-mid-y),0)}
+    50%{transform:translate3d(calc(var(--p-mid-x) + 8px),calc(var(--p-mid-y) - 5px),0)}
+  }
+  @media (max-width:899px),(pointer:coarse){
+    .subtle-depth .env-cables,.subtle-depth .env-racks{display:none}
+    .subtle-depth .env-panels{opacity:.18;transform:none}
+    .subtle-depth .env-haze{opacity:.46}
+  }
+</style>
+</head>
+<body class="subtle-depth">
+<div class="env" aria-hidden="true">
+  <div class="env-layer env-far env-panels"></div>
+  <div class="env-layer env-far env-racks"></div>
+  <div class="env-layer env-mid env-haze"></div>
+  <div class="env-layer env-near env-cables"></div>
+  <div class="env-layer env-floor"></div>
+  <div class="env-layer env-mask"></div>
+</div>
+<div class="grain"></div>
+
+<div class="stage" id="stage" aria-label="Record wall environment mockup">
+  <div class="world"><div class="wall" id="wall"></div></div>
+</div>
+<div class="mobile-index" id="mobileIndex"></div>
+
+<div class="status-line"><b id="focusLabel">Archive plane / environment study</b> / drag to look / hover records</div>
+<div class="chrome">
+  <div class="ch-name"><div class="n1">Jared McDaniel</div><div class="n2">Subtle Depth</div></div>
+  <div class="ch-statement">Dark video village / restrained room depth / cards remain hero</div>
+  <div class="ch-status"><div><b>Environment mockup 08</b></div><div>Low motion / low risk / production candidate</div></div>
+  <nav class="ch-nav">
+    <a class="on" href="08-environment-subtle-depth.html">08</a>
+    <a href="09-environment-cyberpunk-bunker.html">09</a>
+    <a href="10-environment-premium-minimal.html">10</a>
+    <a href="index.html">Hub</a>
+  </nav>
+</div>
+<div class="mock-tag">Mockup 08 - Subtle Depth / Video Village</div>
+<script src="environment-record-wall.js"></script>
+</body>
+</html>

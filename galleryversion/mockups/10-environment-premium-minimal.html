@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOCKUP 10 - Environment / Premium Minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="environment-record-wall.css" />
+<style>
+  body.premium-minimal{--mood:#d6b77a;--mood-soft:rgba(214,183,122,.12)}
+  .premium-minimal{
+    background:
+      radial-gradient(68rem 38rem at 50% 40%,rgba(214,183,122,.035),transparent 62%),
+      radial-gradient(90rem 54rem at 50% 120%,rgba(111,140,255,.045),transparent 70%),
+      linear-gradient(180deg,#050608 0%,#030406 52%,#020203 100%);
+  }
+  .premium-minimal .env-depth{
+    opacity:.32;
+    background:
+      radial-gradient(ellipse at 50% 44%,transparent 0 32%,rgba(242,238,231,.038) 33%,transparent 34%,transparent 50%,rgba(242,238,231,.028) 51%,transparent 52%),
+      linear-gradient(90deg,rgba(0,0,0,.66),transparent 22%,transparent 78%,rgba(0,0,0,.66)),
+      repeating-linear-gradient(90deg,rgba(242,238,231,.028) 0 1px,transparent 1px 140px);
+    mask-image:radial-gradient(ellipse at 50% 45%,black 0 66%,transparent 94%);
+  }
+  .premium-minimal .env-architecture{
+    opacity:.24;
+    background:
+      linear-gradient(90deg,transparent 0 18%,rgba(242,238,231,.05) 18.08%,transparent 18.18% 81.8%,rgba(242,238,231,.05) 81.9%,transparent 82%),
+      linear-gradient(0deg,transparent 0 19%,rgba(242,238,231,.038) 19.08%,transparent 19.2% 78%,rgba(242,238,231,.03) 78.08%,transparent 78.2%);
+    mask-image:linear-gradient(180deg,transparent,black 20%,black 86%,transparent);
+  }
+  .premium-minimal .env-halation{
+    opacity:.75;
+    background:
+      radial-gradient(38rem 20rem at 50% 42%,rgba(242,238,231,.075),transparent 74%),
+      radial-gradient(28rem 18rem at 52% 42%,rgba(214,183,122,.07),transparent 78%),
+      radial-gradient(44rem 24rem at 50% 80%,rgba(111,140,255,.045),transparent 80%);
+    animation:minimalBreath 26s ease-in-out infinite;
+  }
+  .premium-minimal .env-floor{
+    inset:auto -12% -22% -12%;height:50%;
+    background:
+      radial-gradient(60% 120% at 50% 100%,rgba(242,238,231,.09),transparent 68%),
+      linear-gradient(90deg,transparent,rgba(214,183,122,.035),transparent);
+    filter:blur(18px);opacity:.36;
+  }
+  .premium-minimal .env-sweep{
+    opacity:.16;
+    background:linear-gradient(100deg,transparent 0 46%,rgba(242,238,231,.13) 50%,transparent 54% 100%);
+    transform:translate3d(-130%,0,0);
+    animation:minimalSweep 32s ease-in-out infinite;
+  }
+  .premium-minimal .env-mask{
+    background:
+      radial-gradient(ellipse at 50% 44%,transparent 0 36%,rgba(0,0,0,.34) 72%,rgba(0,0,0,.84) 100%),
+      linear-gradient(180deg,rgba(0,0,0,.42),transparent 28%,transparent 72%,rgba(0,0,0,.62));
+  }
+  @keyframes minimalBreath{
+    0%,100%{transform:translate3d(var(--p-mid-x),var(--p-mid-y),0);opacity:.7}
+    50%{transform:translate3d(calc(var(--p-mid-x) + 5px),calc(var(--p-mid-y) + 3px),0);opacity:.86}
+  }
+  @keyframes minimalSweep{
+    0%,78%,100%{transform:translate3d(-130%,0,0)}
+    90%{transform:translate3d(130%,0,0)}
+  }
+  @media (max-width:899px),(pointer:coarse){
+    .premium-minimal .env-sweep{display:none}
+    .premium-minimal .env-depth{opacity:.22}
+    .premium-minimal .env-halation{opacity:.5}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .premium-minimal .env-sweep{display:none}
+  }
+</style>
+</head>
+<body class="premium-minimal">
+<div class="env" aria-hidden="true">
+  <div class="env-layer env-far env-depth"></div>
+  <div class="env-layer env-far env-architecture"></div>
+  <div class="env-layer env-mid env-halation"></div>
+  <div class="env-layer env-floor"></div>
+  <div class="env-layer env-sweep"></div>
+  <div class="env-layer env-mask"></div>
+</div>
+<div class="grain"></div>
+
+<div class="stage" id="stage" aria-label="Record wall environment mockup">
+  <div class="world"><div class="wall" id="wall"></div></div>
+</div>
+<div class="mobile-index" id="mobileIndex"></div>
+
+<div class="status-line"><b id="focusLabel">Archive plane / environment study</b> / drag to look / hover records</div>
+<div class="chrome">
+  <div class="ch-name"><div class="n1">Jared McDaniel</div><div class="n2">Premium Minimal</div></div>
+  <div class="ch-statement">Award-site restraint / quiet architectural depth / timeless polish</div>
+  <div class="ch-status"><div><b>Environment mockup 10</b></div><div>Lowest visual noise / minimal motion / safest read</div></div>
+  <nav class="ch-nav">
+    <a href="08-environment-subtle-depth.html">08</a>
+    <a href="09-environment-cyberpunk-bunker.html">09</a>
+    <a class="on" href="10-environment-premium-minimal.html">10</a>
+    <a href="index.html">Hub</a>
+  </nav>
+</div>
+<div class="mock-tag">Mockup 10 - Premium Minimal / Award Site</div>
+<script src="environment-record-wall.js"></script>
+</body>
+</html>

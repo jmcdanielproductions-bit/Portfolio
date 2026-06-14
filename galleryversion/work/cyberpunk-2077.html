@@ -27,13 +27,13 @@
     background-size:72px 72px}
   .env-bleed{position:absolute;inset:0;
     background:radial-gradient(110rem 60rem at 76% -10%,var(--mood-soft),transparent 60%);
-    animation:wb 20s ease-in-out infinite}
+    opacity:.72}
   @keyframes wb{0%,100%{opacity:.75}50%{opacity:1}}
   .env-vignette{position:absolute;inset:0;background:radial-gradient(circle at center,transparent 42%,rgba(0,0,0,.76))}
   .env-scan{position:absolute;inset:0;opacity:.045;background:repeating-linear-gradient(0deg,rgba(0,0,0,.6) 0 1px,transparent 1px 3px)}
-  .grain{position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.05;
+  .grain{position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.035;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation:gs .9s steps(4) infinite}
+    transform:translate3d(0,0,0)}
   @keyframes gs{0%{transform:translate(0,0)}25%{transform:translate(-34px,22px)}50%{transform:translate(20px,-40px)}75%{transform:translate(-12px,-18px)}100%{transform:translate(0,0)}}
 
   /* ============ CHAPTER RAIL ============ */
@@ -45,7 +45,7 @@
   .rail a{
     color:var(--faint);text-decoration:none;display:flex;align-items:center;gap:.6rem;transition:color .3s;
   }
-  .rail a::before{content:"";width:1.1rem;height:1px;background:var(--faint);transition:all .3s}
+  .rail a::before{content:"";width:1.1rem;height:1px;background:var(--faint);transition:width .3s ease,background-color .3s ease}
   .rail a.live{color:var(--mood)}
   .rail a.live::before{width:2rem;background:var(--mood)}
   .rail a:hover{color:var(--ink)}
@@ -73,6 +73,24 @@
   .sk{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
   .sv{font-size:.92rem;font-weight:500;margin-top:.4rem;text-transform:uppercase;letter-spacing:.04em}
   .sv.m{color:var(--mood)}
+  .authority-summary{position:relative;margin-top:clamp(1.4rem,3vw,2rem);padding:clamp(1.1rem,2.4vw,1.7rem);border:1px solid var(--line);background:linear-gradient(135deg,rgba(8,12,18,.72),rgba(8,12,18,.48));box-shadow:inset 0 1px 0 rgba(242,238,231,.035)}
+  .authority-summary:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,var(--mood),transparent 68%);opacity:.6}
+  .authority-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:clamp(.95rem,1.8vw,1.2rem);padding-bottom:.72rem;border-bottom:1px solid var(--line)}
+  .authority-kicker,.authority-record{font-family:"JetBrains Mono",monospace;font-size:.54rem;line-height:1;letter-spacing:.2em;text-transform:uppercase}
+  .authority-kicker{color:var(--gold)}
+  .authority-record{color:var(--faint);text-align:right}
+  .authority-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .authority-grid div{min-width:0;padding:.76rem;background:rgba(3,4,6,.72)}
+  .authority-grid dt{font-family:"JetBrains Mono",monospace;font-size:.48rem;line-height:1;letter-spacing:.15em;color:var(--gold);text-transform:uppercase}
+  .authority-grid dd{margin:.38rem 0 0;color:rgba(242,238,231,.84);font-size:.86rem;font-weight:500;line-height:1.35}
+  .authority-body{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.85rem,1.6vw,1.1rem);margin-top:clamp(.9rem,1.8vw,1.25rem)}
+  .authority-panel{border:1px solid var(--line);background:rgba(3,4,6,.5);padding:clamp(.95rem,1.6vw,1.18rem)}
+  .authority-panel span,.authority-responsibilities span{display:block;color:var(--mood);text-transform:uppercase;font-family:"JetBrains Mono",monospace;font-size:.52rem;line-height:1;letter-spacing:.18em}
+  .authority-panel p{margin:.58rem 0 0;color:var(--muted);font-size:clamp(.9rem,1vw,.98rem);line-height:1.68}
+  .authority-responsibilities{margin-top:clamp(.9rem,1.8vw,1.25rem);padding-top:.95rem;border-top:1px solid var(--line)}
+  .authority-list{list-style:none;margin:.7rem 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line)}
+  .authority-list li{min-width:0;display:flex;align-items:center;gap:.5rem;padding:.7rem .75rem;background:rgba(3,4,6,.62);color:rgba(242,238,231,.68);font-family:"JetBrains Mono",monospace;font-size:.54rem;font-weight:500;line-height:1.35;letter-spacing:.1em;text-transform:uppercase}
+  .authority-list li:before{content:"";width:.32rem;height:.32rem;border:1px solid var(--mood);flex:0 0 auto;opacity:.72}
 
   .chapter{margin-top:5rem;scroll-margin-top:5rem;
     font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.3em;color:var(--mood);text-transform:uppercase;
@@ -138,17 +156,17 @@
   .note.side-left{right:calc(100% + 1.5rem);text-align:right}
   .note.side-left::before{left:100%;background:linear-gradient(90deg,var(--mood),transparent)}
   .marker{position:absolute;width:.55rem;height:.55rem;border-radius:50%;background:var(--mood);box-shadow:0 0 14px var(--mood);z-index:7;opacity:0;transition:opacity .4s ease var(--d,0s)}
-  body.commentary .marker{opacity:1;animation:mp 2.6s ease-in-out infinite}
+  body.commentary .marker{opacity:1;animation:none;box-shadow:0 0 10px var(--mood)}
   @keyframes mp{0%,100%{box-shadow:0 0 8px var(--mood)}50%{box-shadow:0 0 20px var(--mood)}}
 
   .commentary-toggle{
     position:fixed;right:1.6rem;bottom:3.6rem;z-index:80;display:flex;align-items:center;gap:.7rem;
     font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
     color:var(--muted);background:var(--glass);border:1px solid var(--line);border-radius:99px;
-    padding:.7rem 1.2rem;cursor:pointer;backdrop-filter:blur(10px);transition:all .3s;
+    padding:.7rem 1.2rem;cursor:pointer;backdrop-filter:blur(10px);transition:color .3s ease,border-color .3s ease,background .3s ease,box-shadow .3s ease;
   }
   .commentary-toggle:hover{border-color:var(--mood);color:var(--ink)}
-  .commentary-toggle .dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--faint);transition:all .3s}
+  .commentary-toggle .dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--faint);transition:background-color .3s ease,box-shadow .3s ease}
   body.commentary .commentary-toggle{border-color:var(--mood);color:var(--ink);box-shadow:0 0 24px rgba(255,61,114,.18)}
   body.commentary .commentary-toggle .dot{background:var(--mood);box-shadow:0 0 10px var(--mood)}
   .commentary-toggle .state::after{content:"OFF"}
@@ -177,7 +195,9 @@
     .note::before{display:none}
     .note.side-left{text-align:left}
     .marker{display:none}
-    .grid-2,.metrics{grid-template-columns:1fr}
+    .grid-2,.metrics,.authority-body{grid-template-columns:1fr}
+    .authority-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .authority-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media (max-width:760px){
     .topbar{padding:.78rem 1rem;gap:.9rem;font-size:.52rem;letter-spacing:.15em}
@@ -186,10 +206,22 @@
     .topbar a[href="#outcome"]{font-size:0}
     .topbar a[href="#outcome"]::after{content:"Outcome";font-size:.52rem}
     .wrap{padding-top:5.8rem;padding-bottom:8rem}
+    .authority-head{align-items:flex-start;flex-direction:column;gap:.45rem}
+    .authority-record{text-align:left}
+    .authority-grid,.authority-list{grid-template-columns:1fr}
+    .authority-grid div,.authority-list li{padding:.68rem}
     .commentary-toggle{
       position:static;top:auto;bottom:auto;left:auto;right:auto;width:100%;justify-content:center;
       min-height:44px;margin:1.15rem 0 .2rem;padding:.78rem .9rem;font-size:.52rem;letter-spacing:.16em;
     }
+  }
+  @media (max-width:760px),(prefers-reduced-motion:reduce){
+    .grain,.env-bleed{animation:none}
+    .grain{opacity:.035}
+    .hero .play span,.commentary-toggle{backdrop-filter:none}
+    .frame{box-shadow:none}
+    .commentary-toggle{box-shadow:0 12px 30px rgba(0,0,0,.28)}
+    .marker{box-shadow:0 0 8px var(--mood)}
   }
   .wrap + .commentary-toggle{display:none !important}
 </style>
@@ -244,6 +276,38 @@
       <div><div class="sk">Client</div><div class="sv">CD Projekt Red</div></div>
       <div><div class="sk">Year</div><div class="sv">2025</div></div>
     </div>
+    <section class="authority-summary" aria-label="Project summary">
+      <div class="authority-head">
+        <span class="authority-kicker">Project Summary</span>
+        <span class="authority-record">REC.01 / Dossier Available</span>
+      </div>
+      <dl class="authority-grid">
+        <div><dt>Role</dt><dd>Creative Direction</dd></div>
+        <div><dt>Client</dt><dd>CD Projekt Red</dd></div>
+        <div><dt>Deliverable</dt><dd>Flagship Campaign Spot</dd></div>
+        <div><dt>Focus</dt><dd>Surveillance POV / Editorial Pressure / Campaign Cutdowns</dd></div>
+      </dl>
+      <div class="authority-body">
+        <div class="authority-panel">
+          <span>Challenge</span>
+          <p>Night City is already heavily photographed. The piece needed a point of view that made the city feel newly hostile, watched, and emotionally pressurized instead of simply showcasing the setting.</p>
+        </div>
+        <div class="authority-panel">
+          <span>Approach</span>
+          <p>The direction moved from tourism to surveillance: hard angles, held frames, practical neon, a painful magenta palette, and cut timing built around discomfort rather than visual polish.</p>
+        </div>
+      </div>
+      <div class="authority-responsibilities">
+        <span>Mission Responsibilities</span>
+        <ul class="authority-list">
+          <li>Creative Direction</li>
+          <li>Reference Direction</li>
+          <li>Color Palette</li>
+          <li>Editorial Structure</li>
+          <li>Master + Cutdown Delivery</li>
+        </ul>
+      </div>
+    </section>
     <button class="commentary-toggle" id="toggle" type="button" aria-pressed="false">
       <span class="dot"></span>
       Director's commentary - <span class="state"></span>
@@ -428,14 +492,15 @@
   /* comparison wipe */
   const wipe = document.getElementById("wipe");
   let wiping = false;
+  let wipeRect = null;
   function setWipe(e){
-    const r = wipe.getBoundingClientRect();
+    const r = wipeRect || wipe.getBoundingClientRect();
     const w = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
     wipe.style.setProperty("--w", w + "%");
   }
-  wipe.addEventListener("pointerdown", e => { wiping = true; setWipe(e); wipe.setPointerCapture(e.pointerId); });
+  wipe.addEventListener("pointerdown", e => { wiping = true; wipeRect = wipe.getBoundingClientRect(); setWipe(e); wipe.setPointerCapture(e.pointerId); });
   wipe.addEventListener("pointermove", e => { if (wiping) setWipe(e); });
-  addEventListener("pointerup", () => wiping = false);
+  addEventListener("pointerup", () => { wiping = false; wipeRect = null; });
 </script>
 </body>
 </html>
