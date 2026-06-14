@@ -7554,16 +7554,20 @@
       overflow:hidden;cursor:grab;
     }
     .rw-stage.dragging{cursor:grabbing}
-    .rw-world{position:absolute;inset:0;transform-style:preserve-3d}
+    .rw-world{
+      position:absolute;inset:0;
+      transform-style:preserve-3d;transform-origin:50% 47%;
+      will-change:transform;
+    }
     .rw-wall{
       position:absolute;top:47%;left:50%;
       display:flex;align-items:center;gap:var(--rw-gap,24px);
-      transform-style:preserve-3d;
+      transform-style:preserve-3d;transform-origin:center center;
     }
     .rw-col{
       display:flex;flex-direction:column;justify-content:center;
       gap:var(--rw-gap,24px);width:var(--rw-colw,17rem);flex-shrink:0;
-      transform-style:preserve-3d;will-change:transform;
+      transform-style:preserve-3d;will-change:transform,filter,opacity;
     }
     .rw-col.rw-flatten{transition:transform 250ms cubic-bezier(.2,.8,.2,1)}
     .rw-cell{position:relative;aspect-ratio:16/9;transform-style:preserve-3d}
@@ -7579,6 +7583,10 @@
       color:var(--ink);text-decoration:none;font:inherit;
       transition:transform .42s cubic-bezier(.2,.8,.2,1),border-color .42s ease,
                  box-shadow .42s ease,opacity .42s ease,filter .42s ease;
+    }
+    .rw-cell.rw-mid .rw-card{
+      transform:scale(var(--rw-mid-scale,1));
+      filter:brightness(var(--rw-mid-brightness,1));
     }
     .rw-card .rw-thumb{
       position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
@@ -8186,6 +8194,602 @@
       }
     }
   </style>
+  <style id="archiveRoomRedesignCss">
+    /* Director Record Room / Transmission Room */
+    .record-label {
+      display: grid;
+      align-content: start;
+      gap: 0.38rem;
+      color: rgba(242, 238, 231, 0.46);
+      text-transform: uppercase;
+      font: 700 0.58rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.18em;
+    }
+
+    .record-label span {
+      color: var(--gold);
+    }
+
+    .record-label strong {
+      color: rgba(242, 238, 231, 0.7);
+      font: inherit;
+      letter-spacing: 0.14em;
+    }
+
+    .record-label::after {
+      content: "";
+      width: min(4.2rem, 100%);
+      height: 1px;
+      margin-top: 0.18rem;
+      background: linear-gradient(90deg, rgba(111, 140, 255, 0.58), transparent);
+    }
+
+    .dossier-surface {
+      position: relative;
+      border: 1px solid rgba(111, 140, 255, 0.14);
+      background:
+        linear-gradient(180deg, rgba(242, 238, 231, 0.032), rgba(242, 238, 231, 0.006)),
+        rgba(3, 5, 9, 0.62);
+      box-shadow: inset 0 0 0 1px rgba(242, 238, 231, 0.018);
+    }
+
+    .dossier-surface::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(111, 140, 255, 0.08), transparent 28%, transparent 72%, rgba(111, 140, 255, 0.045)),
+        linear-gradient(rgba(111, 140, 255, 0.035) 1px, transparent 1px);
+      background-size: auto, 100% 3.15rem;
+      opacity: 0.42;
+    }
+
+    .metadata-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: rgba(242, 238, 231, 0.07);
+    }
+
+    .metadata-grid > div {
+      min-width: 0;
+      display: grid;
+      gap: 0.42rem;
+      padding: clamp(0.9rem, 1.5vw, 1.15rem);
+      background: rgba(3, 5, 9, 0.72);
+    }
+
+    .metadata-grid span,
+    .transmission-status .metadata-grid span {
+      color: rgba(242, 238, 231, 0.36);
+      text-transform: uppercase;
+      font: 700 0.52rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.2em;
+    }
+
+    .metadata-grid strong,
+    .transmission-status .metadata-grid strong {
+      min-width: 0;
+      color: rgba(248, 242, 233, 0.86);
+      font-size: clamp(0.86rem, 1vw, 0.98rem);
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    .about-record-room {
+      width: min(1180px, calc(100vw - 48px)) !important;
+      padding: clamp(6.5rem, 10svh, 8rem) 0 clamp(7rem, 11vw, 9rem) !important;
+    }
+
+    .about-record-room::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    .about-room {
+      background:
+        radial-gradient(ellipse at 32% 18%, rgba(214, 183, 122, 0.045), transparent 28rem),
+        radial-gradient(ellipse at 64% 30%, rgba(111, 140, 255, 0.075), transparent 34rem),
+        radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(111, 140, 255, 0.032), transparent 19rem);
+    }
+
+    .about-room::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0 16%, rgba(214, 183, 122, 0.035) 16.05% 16.12%, transparent 16.2% 83%, rgba(111, 140, 255, 0.034) 83.05% 83.12%, transparent 83.2%),
+        linear-gradient(180deg, transparent 0 18%, rgba(242, 238, 231, 0.035) 18.05% 18.1%, transparent 18.2%);
+      opacity: 0.54;
+    }
+
+    .about-record-hero,
+    .record-section {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(8.5rem, 0.26fr) minmax(0, 1fr);
+      gap: clamp(1.5rem, 4vw, 4.8rem);
+      border-bottom: 1px solid rgba(242, 238, 231, 0.09);
+    }
+
+    .about-record-hero {
+      grid-template-columns: minmax(8.5rem, 0.24fr) minmax(0, 0.88fr) minmax(18rem, 0.48fr);
+      align-items: end;
+      padding: 0 0 clamp(2.6rem, 5vw, 4.2rem);
+    }
+
+    .hero-record-copy {
+      max-width: 52rem;
+    }
+
+    .hero-record-kicker {
+      margin: 0 0 0.72rem;
+      color: rgba(111, 140, 255, 0.82);
+      text-transform: uppercase;
+      font: 700 0.64rem / 1 "JetBrains Mono", monospace;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-record-copy h2 {
+      max-width: 48rem;
+      margin: 0;
+      color: rgba(248, 242, 233, 0.94);
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-size: clamp(1.85rem, 3.5vw, 3.75rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+
+    .hero-record-copy p:not(.hero-record-kicker) {
+      max-width: 35rem;
+      margin: clamp(1rem, 2vw, 1.4rem) 0 0;
+      color: rgba(242, 238, 231, 0.68);
+      font-size: clamp(1rem, 1.16vw, 1.12rem);
+      line-height: 1.72;
+    }
+
+    .hero-record-dossier {
+      align-self: stretch;
+      min-width: 0;
+    }
+
+    .hero-record-dossier .metadata-grid {
+      height: 100%;
+      grid-template-columns: 1fr;
+    }
+
+    .record-section {
+      padding: clamp(2.35rem, 4.8vw, 4rem) 0;
+    }
+
+    .record-section.about-cta {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .director-statement-copy {
+      display: grid;
+      gap: clamp(1.4rem, 3vw, 2.3rem);
+    }
+
+    .statement-quote {
+      max-width: 48rem;
+    }
+
+    .statement-body {
+      display: grid;
+      gap: 1rem;
+      max-width: 42rem;
+    }
+
+    .statement-body p {
+      margin: 0;
+      color: rgba(242, 238, 231, 0.68);
+      font-size: clamp(1rem, 1.12vw, 1.1rem);
+      line-height: 1.72;
+    }
+
+    .signal-ledger-surface {
+      overflow: hidden;
+    }
+
+    .signal-row {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 5.8rem minmax(10rem, 1.15fr) minmax(8rem, 0.82fr) minmax(10rem, 1fr);
+      gap: clamp(0.8rem, 1.6vw, 1.4rem);
+      align-items: center;
+      min-height: 4.6rem;
+      padding: 0 clamp(0.9rem, 1.8vw, 1.35rem);
+      border-bottom: 1px solid rgba(242, 238, 231, 0.08);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background 260ms ease, border-color 260ms ease, opacity 260ms ease, transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .signal-row:last-child {
+      border-bottom: 0;
+    }
+
+    .signal-id,
+    .signal-meta,
+    .signal-discipline {
+      text-transform: uppercase;
+      font: 700 0.56rem / 1.35 "JetBrains Mono", monospace;
+      letter-spacing: 0.13em;
+    }
+
+    .signal-id {
+      color: var(--gold);
+    }
+
+    .signal-title {
+      color: rgba(248, 242, 233, 0.9);
+      text-transform: uppercase;
+      font-family: Anton, Impact, sans-serif;
+      font-size: clamp(1.05rem, 1.7vw, 1.65rem);
+      line-height: 0.96;
+      letter-spacing: 0.02em;
+    }
+
+    .signal-meta {
+      color: rgba(242, 238, 231, 0.56);
+    }
+
+    .signal-discipline {
+      color: rgba(111, 140, 255, 0.76);
+    }
+
+    .signal-ledger-surface:hover .signal-row:not(:hover),
+    .signal-ledger-surface:focus-within .signal-row:not(:focus-visible) {
+      opacity: 0.68;
+    }
+
+    .signal-row:hover,
+    .signal-row:focus-visible {
+      opacity: 1;
+      transform: translateX(4px);
+      background: rgba(111, 140, 255, 0.055);
+      border-color: rgba(111, 140, 255, 0.18);
+      outline: none;
+    }
+
+    .signal-row:focus-visible {
+      box-shadow: inset 0 0 0 1px rgba(111, 140, 255, 0.62);
+    }
+
+    .about-cta-surface {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: clamp(1.2rem, 3vw, 2.2rem);
+      align-items: center;
+      padding: clamp(1.2rem, 2.4vw, 1.8rem);
+    }
+
+    .about-cta-surface .cta-statement {
+      margin: 0;
+    }
+
+    .about-cta-button,
+    .contact-room .button {
+      min-height: 48px;
+    }
+
+    .contact-room {
+      background:
+        radial-gradient(ellipse at 70% 22%, rgba(111, 140, 255, 0.095), transparent 34rem),
+        radial-gradient(ellipse at 48% 68%, rgba(111, 140, 255, 0.052), transparent 42rem),
+        radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(111, 140, 255, 0.036), transparent 20rem);
+    }
+
+    .transmission-room {
+      width: min(1280px, calc(100vw - 48px)) !important;
+      min-height: 100svh;
+      padding: clamp(6.2rem, 11svh, 8rem) 0 clamp(8.5rem, 13svh, 10.5rem) !important;
+      display: grid;
+      align-content: center;
+      gap: clamp(2.2rem, 5vw, 4.8rem) !important;
+    }
+
+    .contact-room .transmission-room::before {
+      inset: 5.1rem -4vw 6.2rem;
+      border-color: rgba(111, 140, 255, 0.075);
+      background:
+        linear-gradient(rgba(111, 140, 255, 0.032) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(111, 140, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(180deg, transparent, rgba(111, 140, 255, 0.035) 48%, transparent 68%),
+        rgba(8, 12, 18, 0.08);
+      background-size: 72px 72px, 72px 72px, auto, auto;
+    }
+
+    .transmission-hero {
+      grid-template-columns: minmax(0, 0.76fr) minmax(19rem, 0.42fr) !important;
+      gap: clamp(2rem, 6vw, 6rem) !important;
+      align-items: end !important;
+      padding-bottom: clamp(1.5rem, 2.8vw, 2.35rem) !important;
+      border-bottom: 1px solid rgba(111, 140, 255, 0.12);
+    }
+
+    .transmission-hero > div:first-child {
+      min-width: 0;
+    }
+
+    .contact-room .transmission-hero p {
+      max-width: 32rem;
+      margin: clamp(1rem, 1.8vw, 1.35rem) 0 0 !important;
+      color: rgba(242, 238, 231, 0.68);
+      font-size: clamp(1rem, 1.24vw, 1.12rem) !important;
+      line-height: 1.68;
+    }
+
+    .transmission-status {
+      align-self: stretch;
+      display: grid;
+      align-content: start;
+      gap: 1px;
+      padding: clamp(1rem, 1.8vw, 1.3rem);
+    }
+
+    .transmission-status .record-label {
+      margin-bottom: 1rem;
+    }
+
+    .transmission-status .metadata-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .transmission-console {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(19rem, 0.38fr) !important;
+      gap: clamp(1.8rem, 4vw, 4.4rem) !important;
+      align-items: start !important;
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .primary-transmission {
+      min-width: 0;
+      display: grid;
+      gap: clamp(0.9rem, 1.7vw, 1.35rem);
+    }
+
+    .contact-room .primary-transmission .console-email {
+      display: inline-block;
+      min-height: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      color: var(--ink) !important;
+      font-family: "Space Grotesk", Arial, sans-serif !important;
+      font-size: clamp(1.45rem, 4.2vw, 4.85rem) !important;
+      font-weight: 700 !important;
+      line-height: 1.03 !important;
+      letter-spacing: -0.012em !important;
+      text-align: left !important;
+      text-transform: none !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      overflow-wrap: anywhere !important;
+      word-break: normal !important;
+      transition: color 260ms ease !important;
+    }
+
+    .contact-room .primary-transmission .console-email:hover,
+    .contact-room .primary-transmission .console-email:focus-visible {
+      color: var(--blue) !important;
+      background: transparent !important;
+      outline: none;
+    }
+
+    .contact-room .primary-transmission .console-email:focus-visible {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.22em;
+    }
+
+    .secondary-transmission,
+    .contact-room .secondary-transmission {
+      display: grid !important;
+      align-content: start !important;
+      gap: clamp(1.25rem, 2.4vw, 1.9rem) !important;
+      padding: clamp(1rem, 1.8vw, 1.25rem) !important;
+      border: 1px solid rgba(111, 140, 255, 0.13) !important;
+      background:
+        linear-gradient(180deg, rgba(242, 238, 231, 0.028), rgba(242, 238, 231, 0.004)),
+        rgba(3, 5, 9, 0.52) !important;
+      box-shadow: inset 0 0 0 1px rgba(242, 238, 231, 0.016) !important;
+      backdrop-filter: none !important;
+    }
+
+    .contact-room .console-social-link {
+      min-height: 44px;
+    }
+
+    .contact-room .scroll-focus {
+      --scroll-blur: 0px;
+      --scroll-opacity: 1;
+      --scroll-y: 0px;
+    }
+
+    @media (max-width: 980px) {
+      .about-record-room,
+      .transmission-room {
+        width: min(100vw - 40px, 48rem) !important;
+      }
+
+      .about-record-hero,
+      .record-section,
+      .transmission-hero,
+      .transmission-console {
+        grid-template-columns: 1fr !important;
+        gap: clamp(1rem, 3vw, 1.8rem) !important;
+      }
+
+      .about-record-hero {
+        align-items: start;
+      }
+
+      .record-label {
+        max-width: 18rem;
+      }
+
+      .hero-record-dossier .metadata-grid,
+      .transmission-status .metadata-grid,
+      .metadata-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .signal-row {
+        grid-template-columns: 5.2rem minmax(0, 1fr);
+        gap: 0.35rem 1rem;
+        padding-block: 0.9rem;
+      }
+
+      .signal-meta,
+      .signal-discipline {
+        grid-column: 2;
+      }
+
+      .about-cta-surface {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .about-record-room {
+        width: min(100vw - 32px, 34rem) !important;
+        padding-top: calc(5.8rem + env(safe-area-inset-top, 0px)) !important;
+        padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px)) !important;
+      }
+
+      .transmission-room {
+        width: min(100vw - 32px, 34rem) !important;
+        min-height: auto !important;
+        padding: calc(5.8rem + env(safe-area-inset-top, 0px)) 0 calc(8.8rem + env(safe-area-inset-bottom, 0px)) !important;
+        align-content: start !important;
+      }
+
+      .about-record-hero,
+      .record-section {
+        padding-top: 1.35rem !important;
+        padding-bottom: 1.35rem !important;
+      }
+
+      .about-record-hero {
+        padding-top: 0 !important;
+      }
+
+      .hero-record-copy h2 {
+        font-size: clamp(1.55rem, 7.8vw, 2.1rem) !important;
+        line-height: 1.08 !important;
+      }
+
+      .hero-record-copy p:not(.hero-record-kicker),
+      .statement-body p,
+      .cta-statement,
+      .contact-room .transmission-hero p {
+        color: rgba(242, 238, 231, 0.72) !important;
+        font-size: 1rem !important;
+        line-height: 1.62 !important;
+      }
+
+      .hero-record-dossier .metadata-grid,
+      .transmission-status .metadata-grid,
+      .metadata-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metadata-grid > div {
+        padding: 0.86rem 0.92rem;
+      }
+
+      .statement-quote {
+        font-size: clamp(1.25rem, 6vw, 1.72rem) !important;
+        line-height: 1.18 !important;
+      }
+
+      .signal-row {
+        min-height: 44px;
+        grid-template-columns: 4.9rem minmax(0, 1fr);
+      }
+
+      .signal-title {
+        font-size: clamp(1.08rem, 5.5vw, 1.45rem);
+      }
+
+      .contact-room .control-title {
+        max-width: 8ch !important;
+        margin-top: 0.55rem !important;
+        font-size: clamp(3rem, 15vw, 4.6rem) !important;
+        line-height: 0.9 !important;
+      }
+
+      .contact-room .primary-transmission .console-email {
+        width: 100% !important;
+        font-size: clamp(1.05rem, 5vw, 1.55rem) !important;
+        line-height: 1.18 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+      }
+
+      .console-socials {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      .console-social-link:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .contact-room .console-panel .button {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .contact-room .primary-transmission .console-email {
+        font-size: clamp(1rem, 4.7vw, 1.28rem) !important;
+      }
+
+      .console-socials {
+        grid-template-columns: 1fr !important;
+      }
+
+      .console-social-link:last-child {
+        grid-column: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .signal-row,
+      .dossier-surface,
+      .about-record-hero,
+      .record-section,
+      .transmission-hero,
+      .transmission-console {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+      }
+    }
+  </style>
 </head>
 <body class="archive-room-active">
   <a class="brand" href="#archive" data-route="archive">Jared McDaniel</a>
@@ -8299,93 +8903,94 @@
     </section>
 
     <section class="room about-room" id="about" data-room="about" aria-label="About Jared McDaniel">
-      <div class="director-room about-profile">
+      <div class="director-room about-profile about-record-room">
 
-        <header class="profile-hero scroll-focus">
-          <div class="profile-kicker">Creative Video Director</div>
-          <h2>I direct cinematic work for games, brands, and campaigns — then edit it myself.</h2>
-          <p>Based in the Bay Area. I develop, direct, and edit trailers, commercials, and brand films for publishers and studios that need creative leadership from brief to final frame.</p>
+        <header class="about-record-hero hero-record scroll-focus" aria-label="Hero record">
+          <div class="record-label">
+            <span>ARC-DIR-01</span>
+            <strong>Hero Record</strong>
+          </div>
+
+          <div class="hero-record-copy">
+            <p class="hero-record-kicker">Creative Video Director / Editor</p>
+            <h2>I direct cinematic work for games, brands, and campaigns &mdash; then edit it myself.</h2>
+            <p>Based in the Bay Area. I develop, direct, and edit trailers, commercials, and brand films for publishers and studios that need creative leadership from brief to final frame.</p>
+          </div>
+
+          <aside class="dossier-surface hero-record-dossier" aria-label="Director metadata">
+            <div class="metadata-grid">
+              <div><span>Record</span><strong>Director Profile</strong></div>
+              <div><span>Role</span><strong>Director + Editor</strong></div>
+              <div><span>Base</span><strong>Bay Area</strong></div>
+              <div><span>Focus</span><strong>Trailers / Commercials / Brand Films</strong></div>
+              <div><span>Clients</span><strong>CD Projekt Red / Bethesda / Xbox / Apple / Corsair</strong></div>
+            </div>
+          </aside>
         </header>
 
-        <section class="director-statement scroll-focus" aria-label="Director's statement">
-          <div class="profile-kicker">Director's Statement</div>
-          <blockquote class="statement-quote">"I look for the visual rhythm that already belongs to a piece. Then I build everything around it."</blockquote>
-        </section>
+        <section class="director-statement record-section scroll-focus" aria-label="Director's statement">
+          <div class="record-label">
+            <span>ARC-DIR-02</span>
+            <strong>Director Statement</strong>
+          </div>
 
-        <section class="what-i-do scroll-focus" aria-label="Focus areas">
-          <div class="profile-kicker">What I Do</div>
-          <ul class="services-list">
-            <li><span class="service-number">01</span><span class="service-name">Game Trailer Direction</span></li>
-            <li><span class="service-number">02</span><span class="service-name">Commercial Direction</span></li>
-            <li><span class="service-number">03</span><span class="service-name">Brand Storytelling</span></li>
-            <li><span class="service-number">04</span><span class="service-name">Creative Direction</span></li>
-            <li><span class="service-number">05</span><span class="service-name">Video Editorial</span></li>
-          </ul>
-        </section>
-
-        <section class="directors-note scroll-focus" aria-label="How I work">
-          <div class="profile-kicker">How I Work</div>
-          <p>I'm drawn to projects that create a feeling before they explain themselves. Whether it's a game trailer, product film, commercial, or narrative piece, I'm chasing the same thing: emotional clarity and a point of view that belongs to the work — not just to the brief.</p>
-          <p style="margin-top:1rem;">Direction and editing are not separate jobs for me. They're the same conversation at different stages. Directing shapes what happens. Editing shapes how it lands.</p>
-        </section>
-
-        <section class="profile-copy scroll-focus" aria-label="Creative profile">
-          <p class="profile-lede">Direction gives each project a world.<br>Editing gives it pulse.</p>
-          <div>
-            <p>Together, they turn a brief, a song, a launch, or a character into something people can feel quickly and remember clearly.</p>
-            <p>The goal is not to decorate a project with cinematic language. The goal is to find the visual rhythm that already belongs to it.</p>
+          <div class="director-statement-copy">
+            <blockquote class="statement-quote">"I look for the visual rhythm that already belongs to a piece. Then I build everything around it."</blockquote>
+            <div class="statement-body">
+              <p>I'm drawn to projects that create a feeling before they explain themselves. Whether it's a game trailer, product film, commercial, or narrative piece, I'm chasing the same thing: emotional clarity and a point of view that belongs to the work, not just to the brief.</p>
+              <p>Direction and editing are not separate jobs for me. They're the same conversation at different stages. Directing shapes what happens. Editing shapes how it lands.</p>
+            </div>
           </div>
         </section>
 
-        <section class="selected-clients scroll-focus" aria-label="Selected clients">
-          <div class="profile-kicker">Selected Clients</div>
-          <p>CD Projekt Red <span>/</span> Bethesda <span>/</span> Xbox <span>/</span> Apple <span>/</span> Corsair</p>
-        </section>
+        <section class="signal-ledger record-section scroll-focus" aria-label="Selected signals">
+          <div class="record-label">
+            <span>ARC-DIR-03</span>
+            <strong>Signal Ledger</strong>
+          </div>
 
-        <section class="profile-principles scroll-focus" aria-label="Creative philosophy">
-          <div class="profile-kicker">Creative Philosophy</div>
-          <div class="principle-stack">
-            <article>
-              <h3>Emotion Before Explanation</h3>
-              <p>The audience should feel the world before they analyze it. Every brief has an emotional center. Finding it is the director's first job.</p>
-            </article>
-            <article>
-              <h3>Pacing Is Story</h3>
-              <p>Momentum, silence, impact, and release shape how a film lands. The edit is not separate from the story — it is the story.</p>
-            </article>
-            <article>
-              <h3>Vision Over Volume</h3>
-              <p>One project with a clear point of view is worth more than ten that don't know what they are.</p>
-            </article>
+          <div class="dossier-surface signal-ledger-surface">
+            <a class="signal-row" href="work/cyberpunk-2077.html">
+              <span class="signal-id">SIG-01</span>
+              <span class="signal-title">Cyberpunk 2077</span>
+              <span class="signal-meta">CD Projekt Red</span>
+              <span class="signal-discipline">Trailer Direction</span>
+            </a>
+            <a class="signal-row" href="work/doom.html">
+              <span class="signal-id">SIG-02</span>
+              <span class="signal-title">DOOM</span>
+              <span class="signal-meta">Bethesda</span>
+              <span class="signal-discipline">Campaign Rhythm</span>
+            </a>
+            <a class="signal-row" href="work/the-witcher.html">
+              <span class="signal-id">SIG-03</span>
+              <span class="signal-title">The Witcher</span>
+              <span class="signal-meta">CD Projekt Red</span>
+              <span class="signal-discipline">World + Emotion</span>
+            </a>
+            <a class="signal-row" href="work/fallout-nuka-cola.html">
+              <span class="signal-id">SIG-04</span>
+              <span class="signal-title">Fallout Nuka-Cola</span>
+              <span class="signal-meta">Bethesda</span>
+              <span class="signal-discipline">Brand Story</span>
+            </a>
+            <a class="signal-row" href="#work">
+              <span class="signal-id">SIG-05</span>
+              <span class="signal-title">Corsair</span>
+              <span class="signal-meta">Commercial</span>
+              <span class="signal-discipline">Commercial Direction</span>
+            </a>
           </div>
         </section>
 
-        <section class="project-timeline scroll-focus" aria-label="Career highlights">
-          <div class="profile-kicker">Career Highlights</div>
-          <ol>
-            <li><span>2025</span> DOOM — Bethesda</li>
-            <li><span>2025</span> Cyberpunk 2077 — CD Projekt Red</li>
-            <li><span>2025</span> The Witcher — CD Projekt Red</li>
-            <li><span>2025</span> Fallout / Nuka-Cola — Bethesda</li>
-            <li><span>2024</span> CORSAIR Brand Campaign — Multiple Executions</li>
-          </ol>
-        </section>
-
-        <section class="currently-exploring scroll-focus" aria-label="Available for">
-          <div class="profile-kicker">Available For</div>
-          <div>
-            <span>Game Trailer Direction</span>
-            <span>Commercial Direction</span>
-            <span>Brand Films</span>
-            <span>Narrative Projects</span>
-            <span>Creative Direction</span>
+        <section class="about-cta record-section scroll-focus" aria-label="Start a project">
+          <div class="record-label">
+            <span>ARC-DIR-04</span>
+            <strong>Next Record</strong>
           </div>
-        </section>
 
-        <section class="about-cta scroll-focus" aria-label="Start a project">
-          <div class="profile-kicker">Next Project</div>
-          <div>
-            <p class="cta-statement">The right brief deserves the right director. If your project needs emotional clarity and a clear point of view — let's talk.</p>
+          <div class="dossier-surface about-cta-surface">
+            <p class="cta-statement">The right brief deserves the right director. If your project needs emotional clarity and a clear point of view, let's talk.</p>
             <a class="about-cta-button" href="#contact">Start a Conversation</a>
           </div>
         </section>
@@ -8394,23 +8999,41 @@
     </section>
 
     <section class="room contact-room" id="contact" data-room="contact" aria-label="Contact Jared McDaniel">
-      <div class="control-room">
-        <header class="control-hero">
+      <div class="control-room transmission-room">
+        <header class="control-hero transmission-hero scroll-focus">
           <div>
-            <div class="eyebrow">Control Room</div>
+            <div class="eyebrow">Transmission Room</div>
             <h2 class="control-title">Start<br>The Next<br>Project.</h2>
+            <p>The best projects usually begin with a simple conversation. If the idea excites you, send a note.</p>
           </div>
-          <p>The best projects usually begin with a simple conversation. If the idea excites you, send a note.</p>
+
+          <aside class="transmission-status dossier-surface" aria-label="Transmission status">
+            <div class="record-label">
+              <span>TRN-OPEN</span>
+              <strong>Transmission Status</strong>
+            </div>
+            <div class="metadata-grid">
+              <div><span>Signal</span><strong>Open</strong></div>
+              <div><span>Channel</span><strong>Direct Email</strong></div>
+              <div><span>Availability</span><strong>Select Projects</strong></div>
+              <div><span>Response</span><strong>Project Inquiries</strong></div>
+            </div>
+          </aside>
         </header>
 
-        <section class="contact-console" aria-label="Contact details">
-          <div class="console-email-wrap">
+        <section class="contact-console transmission-console scroll-focus" aria-label="Contact details">
+          <div class="console-email-wrap primary-transmission">
+            <div class="record-label">
+              <span>Primary Channel</span>
+              <strong>Email</strong>
+            </div>
             <a class="console-email" href="mailto:jmcdaniel.productions@gmail.com">jmcdaniel.productions@gmail.com</a>
             <p class="console-note">Direct line. No forms, no gatekeeping.</p>
           </div>
-          <div class="console-panel">
+
+          <div class="console-panel secondary-transmission">
             <div class="console-available">
-              <span>Available For</span>
+              <span>Project Scope</span>
               <p>Game Trailer Direction &middot; Commercial Direction &middot; Brand Films &middot; Narrative Projects</p>
             </div>
             <nav class="console-socials" aria-label="Social links">
@@ -9001,9 +9624,9 @@
         const rect = item.getBoundingClientRect();
         const itemCenter = rect.top + rect.height / 2;
         const distance = Math.min(Math.abs(itemCenter - viewportCenter) / viewportCenter, 1);
-        const blur = distance * 1.25;
-        const opacity = 1 - distance * 0.18;
-        const y = distance * 10;
+        const blur = distance * 0.42;
+        const opacity = 1 - distance * 0.08;
+        const y = distance * 4;
         item.style.setProperty("--scroll-blur", `${blur.toFixed(2)}px`);
         item.style.setProperty("--scroll-opacity", opacity.toFixed(3));
         item.style.setProperty("--scroll-y", `${y.toFixed(2)}px`);
@@ -9340,13 +9963,25 @@
   (() => {
     "use strict";
     const stageEl = document.getElementById("rwStage");
+    const worldEl = document.getElementById("rwWorld");
     const wallEl = document.getElementById("rwWall");
     const mobileEl = document.getElementById("rwMobile");
-    if (!stageEl || !wallEl || !mobileEl) return;
+    if (!stageEl || !worldEl || !wallEl || !mobileEl) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wallMQ = window.matchMedia("(min-width: 900px) and (pointer: fine)");
     const root = document.documentElement;
+    const WALL_MOTION = {
+      maxRotateY: 8,
+      maxTranslateZ: -80,
+      maxScaleReduction: 0.92,
+      mouseParallaxX: 20,
+      mouseParallaxY: 10,
+      idleFloatX: 8,
+      idleFloatY: 4,
+      lerpSpeed: 0.06
+    };
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
     const MOODS = {
       "cyberpunk-2077": { mood: "#ff3d72", soft: "rgba(255,61,114,.15)", line: "Night City grade" },
@@ -9435,7 +10070,7 @@
     }
 
     /* ---------------- wall layout engine ---------------- */
-    let cols = [], colCenters = [], wallW = 0, bound = 0, curveK = 0.03;
+    let cols = [], colCenters = [], wallW = 0, bound = 0;
 
     function computeLayout(n, vw, vh) {
       const gap = 24;
@@ -9510,9 +10145,6 @@
         wallEl.appendChild(col);
       }
       cols = [...wallEl.querySelectorAll(".rw-col")];
-
-      /* deeper curve as the wall outgrows the viewport */
-      curveK = (38 + (L.spread - 1.5) * 26) / (innerWidth * 0.60);
       requestAnimationFrame(measure);
     }
 
@@ -9523,29 +10155,71 @@
       wallEl.style.marginTop = -(wallEl.offsetHeight / 2) + "px";
     }
 
-    /* ---------------- physics: drag-to-look ---------------- */
+    /* ---------------- physics: drag-to-look + quiet depth ---------------- */
     let wallX = 0, wallXT = 0, vel = 0, dragging = false, lastX = 0, lastT = 0, dragDist = 0;
     let pitch = 0, pitchT = 0, lastInput = performance.now();
+    let pointerX = 0, pointerY = 0, pointerXT = 0, pointerYT = 0, idleBlend = 0;
 
     function frame(now) {
-      if (!dragging && now - lastInput > 4000) wallXT += Math.sin(now * 0.00018) * 0.2;
+      const pulling = document.body.classList.contains("rw-pull");
+      const inputIdle = now - lastInput;
+      if (!dragging && (inputIdle > 900 || pulling)) {
+        pointerXT += (0 - pointerXT) * 0.035;
+        pointerYT += (0 - pointerYT) * 0.035;
+        pitchT += (0 - pitchT) * 0.025;
+      }
+
       wallXT = Math.max(-bound, Math.min(bound, wallXT));
       wallX += (wallXT - wallX) * (dragging ? 0.32 : 0.075);
-      pitch += (pitchT - pitch) * 0.06;
+      pitch += (pitchT - pitch) * WALL_MOTION.lerpSpeed;
+      pointerX += (pointerXT - pointerX) * WALL_MOTION.lerpSpeed;
+      pointerY += (pointerYT - pointerY) * WALL_MOTION.lerpSpeed;
+
+      const idleTarget = !dragging && !pulling && inputIdle > 1400 ? 1 : 0;
+      idleBlend += (idleTarget - idleBlend) * 0.025;
+      const idleX = Math.sin(now * 0.00016) * WALL_MOTION.idleFloatX * idleBlend;
+      const idleY = Math.sin(now * 0.00023 + 1.1) * WALL_MOTION.idleFloatY * idleBlend;
+      const idleRoll = Math.sin(now * 0.00018 + 0.8) * 0.16 * idleBlend;
+      const idleYaw = Math.sin(now * 0.00014 + 2.2) * 0.32 * idleBlend;
+      const parallaxX = pointerX * WALL_MOTION.mouseParallaxX + idleX;
+      const parallaxY = pointerY * WALL_MOTION.mouseParallaxY + idleY;
+      const worldPitch = pointerY * -0.7 + Math.sin(now * 0.00017 + 1.6) * 0.22 * idleBlend;
+      const worldYaw = pointerX * 1.1 + idleYaw;
+
+      worldEl.style.transform =
+        `translate3d(${parallaxX.toFixed(2)}px, ${parallaxY.toFixed(2)}px, 0) ` +
+        `rotateX(${worldPitch.toFixed(3)}deg) rotateY(${worldYaw.toFixed(3)}deg) rotateZ(${idleRoll.toFixed(3)}deg)`;
 
       /* pan via layout margin: the wall itself stays transform-free so
          column rects project correctly for manual pointer picking */
       wallEl.style.marginLeft = (-wallW / 2 + wallX) + "px";
 
-      const wallLeft = innerWidth / 2 - wallW / 2 + wallX;
+      const viewportCenter = innerWidth / 2;
+      const wallLeft = viewportCenter - wallW / 2 + wallX + parallaxX;
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
         if (col.dataset.frozen) continue;
         const screenX = wallLeft + colCenters[i];
-        let a = (screenX - innerWidth / 2) * curveK;
-        a = Math.max(-40, Math.min(40, a));
-        col.style.transform = `rotateX(${pitch}deg) rotateY(${-a}deg) translateZ(${-Math.abs(a) * 12}px)`;
-        col.style.setProperty("--shade", Math.min(0.55, Math.abs(a) / 40 * 0.55).toFixed(3));
+        const offset = screenX - viewportCenter;
+        const norm = clamp(offset / (innerWidth * 0.5), -1, 1);
+        const edge = Math.abs(norm);
+        const center = clamp(1 - Math.abs(offset) / (innerWidth * 0.24), 0, 1);
+        const rotateY = -norm * WALL_MOTION.maxRotateY;
+        const z = edge * WALL_MOTION.maxTranslateZ;
+        const scale = 1 - edge * (1 - WALL_MOTION.maxScaleReduction);
+        const opacity = 1 - edge * 0.12;
+        const brightness = 1 - edge * 0.075 + center * 0.012;
+        const saturation = 1 - edge * 0.10;
+
+        col.style.transform =
+          `rotateX(${pitch.toFixed(3)}deg) rotateY(${rotateY.toFixed(3)}deg) ` +
+          `translateZ(${z.toFixed(2)}px) scale(${scale.toFixed(4)})`;
+        col.style.opacity = opacity.toFixed(3);
+        col.style.filter = `brightness(${brightness.toFixed(3)}) saturate(${saturation.toFixed(3)})`;
+        col.style.zIndex = String(Math.round((1 - edge) * 100));
+        col.style.setProperty("--shade", (edge * 0.24).toFixed(3));
+        col.style.setProperty("--rw-mid-scale", (1 + center * 0.018).toFixed(4));
+        col.style.setProperty("--rw-mid-brightness", (1 + center * 0.035).toFixed(3));
       }
       updateLoops(now);
       requestAnimationFrame(frame);
@@ -9664,10 +10338,14 @@
         stageEl.classList.add("dragging");
         lastX = e.clientX; lastT = performance.now(); vel = 0; dragDist = 0;
         lastInput = lastT;
+        pointerXT = clamp((e.clientX / innerWidth - 0.5) * 2, -1, 1);
+        pointerYT = clamp((e.clientY / innerHeight - 0.5) * 2, -1, 1);
         stageEl.setPointerCapture(e.pointerId);
       });
       stageEl.addEventListener("pointermove", (e) => {
         lastInput = performance.now();
+        pointerXT = clamp((e.clientX / innerWidth - 0.5) * 2, -1, 1);
+        pointerYT = clamp((e.clientY / innerHeight - 0.5) * 2, -1, 1);
         pitchT = ((e.clientY / innerHeight) - 0.5) * -3;
         if (dragging) {
           const dx = e.clientX - lastX, now = performance.now();
@@ -9684,9 +10362,15 @@
         if (!dragging) return;
         dragging = false;
         stageEl.classList.remove("dragging");
+        lastInput = performance.now();
         wallXT += vel * 14;
       });
-      stageEl.addEventListener("pointerleave", () => { if (!dragging) setFocus(null); });
+      stageEl.addEventListener("pointerleave", () => {
+        if (!dragging) setFocus(null);
+        pointerXT = 0;
+        pointerYT = 0;
+        pitchT = 0;
+      });
 
       stageEl.addEventListener("click", (e) => {
         if (dragDist > 8) { e.preventDefault(); return; }
@@ -9713,6 +10397,8 @@
         resizeT = setTimeout(() => {
           if (!wallMQ.matches || document.body.classList.contains("rw-pull")) return;
           wallX = wallXT = 0;
+          pointerX = pointerY = pointerXT = pointerYT = idleBlend = 0;
+          worldEl.style.transform = "";
           buildWall();
         }, 220);
       });
@@ -9790,6 +10476,10 @@
         previewFrozenCol.dataset.frozen = "1";
         previewFrozenCol.classList.add("rw-flatten");
         previewFrozenCol.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(90px)";
+        previewFrozenCol.style.opacity = "1";
+        previewFrozenCol.style.filter = "brightness(1.04) saturate(1)";
+        previewFrozenCol.style.zIndex = "120";
+        previewFrozenCol.style.setProperty("--shade", "0");
       }
       previewSource?.classList.add("rw-pulling");
 
