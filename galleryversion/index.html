@@ -7781,11 +7781,11 @@ body.header-parallax-active .header-identity {
               <span class="signal-meta">Bethesda</span>
               <span class="signal-discipline">Brand Story</span>
             </a>
-            <a class="signal-row" href="#work">
+            <a class="signal-row" href="work/kairi-pixel.html">
               <span class="signal-id">SIG-05</span>
-              <span class="signal-title">Corsair</span>
-              <span class="signal-meta">Commercial</span>
-              <span class="signal-discipline">Commercial Direction</span>
+              <span class="signal-title">Kairi &amp; Pixel</span>
+              <span class="signal-meta">CORSAIR / Pixune</span>
+              <span class="signal-discipline">Character Campaign</span>
             </a>
           </div>
         </section>
@@ -8142,18 +8142,19 @@ body.header-parallax-active .header-identity {
         slug: "kairi-animation-storyboard",
         loop: "videos/loops/kairi-loop.mp4",
         code: "T4 / 16",
-        title: "Kairi — Animation Direction",
-        summary: "Animation direction and storyboard developed for a character-driven action sequence.",
-        filters: ["Narrative"],
-        role: "Animation Direction",
-        client: "Independent",
-        type: "Animation Direction",
-        owned: ["Animation Direction", "Storyboard"],
+        title: "Kairi & Pixel",
+        summary: "CORSAIR Black Friday / Cyber Monday animation campaign built around new brand characters created with Pixune Studios.",
+        filters: ["Commercial", "Narrative"],
+        role: "Short-Form Video Producer",
+        client: "CORSAIR",
+        type: "Holiday Animation Campaign",
+        owned: ["Character Creation", "Story Concept", "Storyboard Direction", "Revision Feedback", "Final Edit + SFX"],
         year: "2025",
         yt: "mpTbAcvWflA",
         thumbPosition: "center 35%",
+        page: "work/kairi-pixel.html",
         views: "70K views",
-        tags: ["Storyboard", "Animation"]
+        tags: ["Animation", "Campaign"]
       },
       {
         slug: "shugo-samurai-trailer-ad",
@@ -8191,7 +8192,7 @@ body.header-parallax-active .header-identity {
 
     const thumb = (id) => `url("https://img.youtube.com/vi/${id}/hqdefault.jpg")`;
     const thumbSrc = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-    const DOSSIER_SLUGS = new Set(["cyberpunk-2077", "doom", "witcher", "fallout-nuka-cola"]);
+    const DOSSIER_SLUGS = new Set(["cyberpunk-2077", "doom", "witcher", "fallout-nuka-cola", "kairi-animation-storyboard"]);
 
     function projectTitle(project) {
       return project.displayTitle || project.title || "Untitled Record";
@@ -8336,7 +8337,7 @@ body.header-parallax-active .header-identity {
       "amv-iron-man-edit": "compact",
       "el-beeper-luffy-amv": "compact",
       "ashfall": "compact",
-      "kairi-animation-storyboard": "compact",
+      "kairi-animation-storyboard": "medium featured-project",
       "shugo-samurai-trailer-ad": "compact",
       "silent-collapse": "compact"
     };
@@ -8953,8 +8954,9 @@ body.header-parallax-active .header-identity {
       "doom": { mood: "#ff6b35", soft: "rgba(255,107,53,.15)", line: "Ember grade" },
       "witcher": { mood: "#9fc7ff", soft: "rgba(159,199,255,.14)", line: "Candlelight grade" },
       "fallout-nuka-cola": { mood: "#cc3333", soft: "rgba(204,51,51,.15)", line: "Nuka broadcast grade" },
+      "kairi-animation-storyboard": { mood: "#f3c74e", soft: "rgba(243,199,78,.15)", line: "Holiday animation grade" },
     };
-    const FLAG_ORDER = ["director-reel", "cyberpunk-2077", "doom", "witcher", "fallout-nuka-cola"];
+    const FLAG_ORDER = ["director-reel", "cyberpunk-2077", "doom", "witcher", "fallout-nuka-cola", "kairi-animation-storyboard"];
 
     function logoFor(client) {
       const c = (client || "").toLowerCase();
@@ -8979,7 +8981,8 @@ body.header-parallax-active .header-identity {
       "cyberpunk-2077": "The brief said 'show the city.' The city is not the subject. The loneliness is. Night City had to feel like a character who never blinks.",
       "doom": "DOOM does not build tension. It applies pressure. Every cut lands with weight, heat, and release energy.",
       "witcher": "The Continent is old, and the camera should feel it. Atmosphere, character, and scale move in the same rhythm.",
-      "fallout-nuka-cola": "A commercial from a world that ended. The spot plays the product straight and lets the wrongness leak through the grade."
+      "fallout-nuka-cola": "A commercial from a world that ended. The spot plays the product straight and lets the wrongness leak through the grade.",
+      "kairi-animation-storyboard": "A Black Friday / Cyber Monday campaign treated as a character origin: Kairi and Pixel built as a reusable CORSAIR story engine."
     };
     function recordBrief(rec) {
       return RECORD_BRIEFS[rec.slug] || rec.summary || "Selected record from the director's archive.";

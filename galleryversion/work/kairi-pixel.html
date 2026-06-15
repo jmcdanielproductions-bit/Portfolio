@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kairi &amp; Pixel | Jared McDaniel</title>
+  <meta name="description" content="Case study for the CORSAIR Black Friday / Cyber Monday Kairi &amp; Pixel animation campaign created with Pixune Studios.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#080a0d;--ink:#f2eee7;--blue:#6f8cff;--gold:#d6b77a;--mood:#f3c74e;--pixel:#8aa2ff;--signal:#e26dff}
+    @view-transition{navigation:auto}@keyframes blurPageOut{from{opacity:1;filter:blur(0)}to{opacity:0;filter:blur(10px)}}@keyframes blurPageIn{from{opacity:0;filter:blur(10px)}to{opacity:1;filter:blur(0)}}::view-transition-old(root){animation:blurPageOut 280ms cubic-bezier(.22,1,.36,1) both}::view-transition-new(root){animation:blurPageIn 480ms cubic-bezier(.22,1,.36,1) both}
+    *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
+    body{min-height:100svh;margin:0;background:linear-gradient(rgba(111,140,255,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.026) 1px,transparent 1px),radial-gradient(circle at 72% 26%,rgba(243,199,78,.12),transparent 34rem),radial-gradient(circle at 18% 20%,rgba(138,162,255,.15),transparent 36rem),radial-gradient(circle at 55% 74%,rgba(226,109,255,.055),transparent 36rem),var(--bg);background-size:72px 72px,72px 72px,auto,auto,auto,auto;color:var(--ink);font-family:"Space Grotesk",Arial,sans-serif}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at center,transparent 44%,rgba(0,0,0,.74));z-index:0}
+    :root{--cursor-x:50%;--cursor-y:50%}
+    body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at var(--cursor-x) var(--cursor-y),rgba(243,199,78,.055),transparent 20rem);mix-blend-mode:screen;opacity:.58}
+    .brand{position:fixed;top:calc(22px + env(safe-area-inset-top,0px));left:24px;z-index:5;color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .72rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
+    .world{position:relative;z-index:1;width:min(1280px,calc(100vw - 48px));margin:0 auto;padding:clamp(5rem,8svh,7rem) 0 clamp(7rem,12vw,10rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,.82fr);gap:clamp(2rem,4vw,3.5rem);align-items:start}
+    .world:before{content:"";position:absolute;inset:4rem -4vw 4rem;z-index:-1;border:1px solid rgba(111,140,255,.065);background:linear-gradient(rgba(111,140,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(111,140,255,.018) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+    .hero-frame{view-transition-name:project-kairi-animation-storyboard;aspect-ratio:16/9;width:100%;position:relative;overflow:hidden;border:1px solid rgba(243,199,78,.2);background:#030507;box-shadow:0 32px 120px rgba(0,0,0,.54),0 0 84px rgba(111,140,255,.1)}
+    .hero-frame:after{content:"";position:absolute;inset:12px;border:1px solid rgba(243,199,78,.14);pointer-events:none;z-index:2}
+    .hero-frame:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,10,13,.04),rgba(8,10,13,.8)),radial-gradient(circle at 64% 32%,rgba(243,199,78,.14),transparent 19rem);pointer-events:none}
+    .hero-img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 48%;filter:brightness(.94) contrast(1.04) saturate(.96)}
+    .hero-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:transparent;border:0;cursor:pointer;z-index:3;transition:background 280ms ease}
+    .hero-play:hover{background:rgba(0,0,0,.16)}
+    .hero-play-ring{width:clamp(3.8rem,7vw,5.4rem);aspect-ratio:1;display:grid;place-items:center;border:1px solid rgba(248,242,233,.52);border-radius:999px;background:rgba(8,10,13,.44);backdrop-filter:blur(16px);transition:transform 280ms ease,background 280ms ease,border-color 280ms ease;box-shadow:0 0 40px rgba(0,0,0,.38)}
+    .hero-play:hover .hero-play-ring{transform:scale(1.06);background:rgba(8,10,13,.62);border-color:rgba(248,242,233,.82)}
+    .hero-play-icon{margin-left:.14em;font-size:clamp(1.1rem,2.2vw,1.6rem);color:rgba(248,242,233,.9);line-height:1}
+    .hero-frame.is-playing .hero-play,.hero-frame.is-playing:before,.hero-frame.is-playing:after{display:none}
+    .hero-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
+    .project-header{display:flex;flex-direction:column;gap:clamp(1rem,1.8vw,1.5rem)}
+    .kicker{color:var(--gold);text-transform:uppercase;font:700 .66rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
+    .title{margin:0;text-transform:uppercase;font-family:Anton,Impact,sans-serif;font-size:clamp(3rem,4.8vw,5.6rem);line-height:.88;letter-spacing:.04em}
+    .project-subtitle{margin:0;color:rgba(248,242,233,.8);font-size:clamp(1rem,1.25vw,1.18rem);line-height:1.55;font-weight:700}
+    .tone-tags{display:flex;flex-wrap:wrap;gap:.36rem}
+    .tone-tag{padding:.28rem .6rem;border:1px solid rgba(111,140,255,.16);background:rgba(111,140,255,.06);color:rgba(248,242,233,.58);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+    .meta-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(111,140,255,.14);border:1px solid rgba(111,140,255,.14)}
+    .meta-item{display:grid;gap:.35rem;padding:.75rem;background:rgba(5,7,12,.82)}
+    .meta-item dt{color:var(--gold);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
+    .meta-item dd{margin:0;color:rgba(248,242,233,.82);font-size:.88rem;font-weight:500;line-height:1.35}
+    .project-summary{margin:0;color:rgba(248,242,233,.74);font-size:clamp(.94rem,1.1vw,1.05rem);line-height:1.66}
+    .authority-summary{grid-column:1/-1;position:relative;margin-top:clamp(.25rem,1.2vw,.9rem);padding:clamp(1.1rem,2.4vw,1.7rem);border:1px solid rgba(111,140,255,.14);background:linear-gradient(135deg,rgba(5,7,12,.74),rgba(5,7,12,.5));box-shadow:inset 0 1px 0 rgba(248,242,233,.035)}
+    .authority-summary:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,var(--mood),transparent 68%);opacity:.62}
+    .authority-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:clamp(.95rem,1.8vw,1.2rem);padding-bottom:.72rem;border-bottom:1px solid rgba(111,140,255,.1)}
+    .authority-kicker,.authority-record{font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+    .authority-kicker{color:var(--gold)}
+    .authority-record{color:rgba(248,242,233,.36);text-align:right}
+    .authority-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(111,140,255,.12);border:1px solid rgba(111,140,255,.1)}
+    .authority-grid div{min-width:0;padding:.76rem;background:rgba(3,5,9,.72)}
+    .authority-grid dt{color:rgba(214,183,122,.76);text-transform:uppercase;font:700 .48rem/1 "JetBrains Mono",monospace;letter-spacing:.15em}
+    .authority-grid dd{margin:.38rem 0 0;color:rgba(248,242,233,.84);font-size:.86rem;font-weight:500;line-height:1.35}
+    .authority-body{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.85rem,1.6vw,1.1rem);margin-top:clamp(.9rem,1.8vw,1.25rem)}
+    .authority-panel{border:1px solid rgba(111,140,255,.1);background:rgba(3,5,9,.48);padding:clamp(.95rem,1.6vw,1.18rem)}
+    .authority-panel span,.authority-responsibilities span{display:block;color:rgba(138,162,255,.78);text-transform:uppercase;font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
+    .authority-panel p{margin:.58rem 0 0;color:rgba(248,242,233,.72);font-size:clamp(.9rem,1vw,.98rem);line-height:1.68}
+    .authority-responsibilities{margin-top:clamp(.9rem,1.8vw,1.25rem);padding-top:.95rem;border-top:1px solid rgba(111,140,255,.1)}
+    .authority-list{list-style:none;margin:.7rem 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:rgba(111,140,255,.1)}
+    .authority-list li{min-width:0;display:flex;align-items:center;gap:.5rem;padding:.7rem .75rem;background:rgba(3,5,9,.62);color:rgba(248,242,233,.68);font:700 .54rem/1.35 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+    .authority-list li:before{content:"";width:.32rem;height:.32rem;border:1px solid var(--mood);flex:0 0 auto;opacity:.72}
+    .cta-row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .btn-primary,.btn-secondary{min-height:44px;display:inline-flex;align-items:center;font:700 .64rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;padding:0 1.1rem;cursor:pointer;text-decoration:none;transition:background 240ms ease,border-color 240ms ease,color 240ms ease}
+    .btn-primary{background:var(--ink);color:var(--bg);border:1px solid transparent}
+    .btn-secondary{background:rgba(5,7,12,.62);color:rgba(248,242,233,.82);border:1px solid rgba(111,140,255,.22)}
+    .btn-primary:hover{background:rgba(248,242,233,.88)}
+    .btn-secondary:hover{border-color:rgba(111,140,255,.44);background:rgba(111,140,255,.08);color:var(--ink)}
+    .case-study{grid-column:1/-1;margin-top:clamp(2.4rem,4vw,3.8rem)}
+    .cs-section{margin-bottom:clamp(2.4rem,4.5vw,4rem)}
+    .cs-section-head{display:flex;align-items:center;gap:1rem;margin-bottom:clamp(1rem,2vw,1.6rem);padding-bottom:.75rem;border-bottom:1px solid rgba(111,140,255,.1)}
+    .cs-section-label{color:var(--gold);text-transform:uppercase;font:700 .6rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;white-space:nowrap}
+    .cs-section-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(111,140,255,.1),transparent)}
+    .overview-panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.7rem,1.4vw,1rem)}
+    .overview-panel{padding:clamp(1.1rem,1.8vw,1.5rem);border:1px solid rgba(111,140,255,.1);background:rgba(5,7,12,.56);display:flex;flex-direction:column;gap:.75rem}
+    .overview-panel-featured{border-color:rgba(243,199,78,.22);background:rgba(5,7,12,.72)}
+    .panel-label{color:rgba(138,162,255,.78);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.16em}
+    .panel-text{margin:0;color:rgba(242,238,231,.7);font-size:clamp(.92rem,1.02vw,1rem);line-height:1.72}
+    .panel-text-lead{color:rgba(248,242,233,.86);font-size:clamp(.96rem,1.08vw,1.05rem);font-weight:500}
+    .editorial{margin-bottom:clamp(2.4rem,4.5vw,4rem)}
+    .editorial-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3.5vw,3rem);align-items:center}
+    .editorial-inner.img-left .editorial-img-group{order:-1}
+    .editorial-img-group{display:flex;flex-direction:column}
+    .editorial-media{overflow:hidden;border:1px solid rgba(111,140,255,.14);background:rgba(4,6,11,.78)}
+    .editorial-media img{width:100%;height:100%;display:block;object-fit:cover;filter:brightness(.96) contrast(1.03) saturate(.98)}
+    .media-tall{height:clamp(24rem,38vw,34rem)}
+    .media-wide{height:clamp(18rem,28vw,27rem)}
+    .editorial-caption{padding:.5rem .75rem;border:1px solid rgba(111,140,255,.08);border-top:none;background:rgba(4,6,11,.62);color:rgba(248,242,233,.38);font:700 .52rem/1.35 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+    .editorial-text-wrap{display:flex;flex-direction:column;gap:.9rem}
+    .editorial-eyebrow{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.2em}
+    .editorial-head{margin:0;font-family:Anton,Impact,sans-serif;font-size:clamp(1.8rem,3vw,3.2rem);line-height:.9;letter-spacing:.03em;text-transform:uppercase}
+    .editorial-body{margin:0;color:rgba(248,242,233,.7);font-size:clamp(.92rem,1.05vw,1.02rem);line-height:1.72}
+    .feature-block{margin-bottom:clamp(2.4rem,4.5vw,4rem);position:relative;border:1px solid rgba(111,140,255,.14);overflow:hidden;background:#030507}
+    .feature-block img{width:100%;display:block;max-height:64vh;min-height:22rem;object-fit:cover;object-position:center 50%;filter:brightness(.94) contrast(1.04) saturate(.96)}
+    .feature-overlay{position:absolute;bottom:0;left:0;right:0;padding:clamp(1.2rem,3vw,2.4rem);background:linear-gradient(transparent,rgba(8,10,13,.94))}
+    .feature-eyebrow{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;display:block;margin-bottom:.55rem}
+    .feature-head{margin:0 0 .6rem;font-family:Anton,Impact,sans-serif;font-size:clamp(1.6rem,3vw,3rem);line-height:.9;letter-spacing:.03em;text-transform:uppercase}
+    .feature-body{margin:0;color:rgba(248,242,233,.72);font-size:clamp(.88rem,1.02vw,.98rem);line-height:1.66;max-width:62ch}
+    .exec-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.7rem,1.4vw,1rem)}
+    .exec-card{padding:clamp(1.1rem,1.8vw,1.6rem);border:1px solid rgba(111,140,255,.1);background:rgba(5,7,12,.52);display:grid;gap:.65rem}
+    .exec-card-num{color:rgba(243,199,78,.66);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.12em}
+    .exec-card-title{margin:0;color:rgba(248,242,233,.9);font-family:"Space Grotesk",Arial,sans-serif;font-size:clamp(.98rem,1.3vw,1.18rem);font-weight:700;line-height:1.2}
+    .exec-card-text{margin:0;color:rgba(242,238,231,.66);font-size:clamp(.9rem,1vw,.98rem);line-height:1.72}
+    .handoff-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.7rem,1.4vw,1rem)}
+    .handoff-card{padding:clamp(1.1rem,1.8vw,1.5rem);border:1px solid rgba(111,140,255,.12);background:linear-gradient(135deg,rgba(5,7,12,.74),rgba(5,7,12,.5))}
+    .handoff-card strong{display:block;color:rgba(248,242,233,.9);font-size:clamp(1rem,1.3vw,1.18rem);line-height:1.25}
+    .handoff-card span{display:block;margin-bottom:.58rem;color:var(--gold);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.16em}
+    .handoff-card p{margin:.7rem 0 0;color:rgba(242,238,231,.68);font-size:clamp(.9rem,1vw,.98rem);line-height:1.7}
+    .outcome-block{padding:clamp(1.3rem,2.2vw,2rem);border:1px solid rgba(111,140,255,.14);background:rgba(5,7,12,.62);border-left:2px solid rgba(243,199,78,.54)}
+    .outcome-text{margin:0;color:rgba(248,242,233,.8);font-size:clamp(.96rem,1.12vw,1.08rem);line-height:1.68}
+    .strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.6rem,1.2vw,.9rem)}
+    .strip-card{display:flex;flex-direction:column}
+    .strip-card-media{overflow:hidden;background:rgba(4,6,11,.78);display:grid;place-items:center;border:1px solid rgba(111,140,255,.1);border-bottom:0;aspect-ratio:16/10}
+    .strip-card-media img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.96) contrast(1.03) saturate(.96)}
+    .strip-card figcaption{padding:.5rem .62rem;border:1px solid rgba(111,140,255,.08);background:rgba(4,6,11,.62);color:rgba(248,242,233,.44);font:700 .52rem/1.35 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+    .director-note{display:none;margin-top:.85rem;padding:.88rem 1rem .95rem;border:1px solid rgba(243,199,78,.2);border-left:2px solid var(--mood);background:linear-gradient(135deg,rgba(243,199,78,.09),rgba(5,7,12,.72));box-shadow:0 18px 44px rgba(0,0,0,.18)}
+    body.commentary .director-note{display:block;animation:noteIn 360ms cubic-bezier(.22,1,.36,1) both}
+    .director-note-label{display:block;margin-bottom:.42rem;color:var(--mood);text-transform:uppercase;font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
+    .director-note p{margin:0;color:rgba(248,242,233,.78);font-size:clamp(.86rem,.95vw,.94rem);line-height:1.62}
+    @keyframes noteIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .commentary-toggle{position:fixed;right:1.35rem;bottom:calc(6rem + env(safe-area-inset-bottom,0px));z-index:12;min-height:44px;display:inline-flex;align-items:center;gap:.65rem;padding:0 1rem;border:1px solid rgba(243,199,78,.26);border-radius:999px;background:rgba(8,12,18,.78);color:rgba(248,242,233,.7);backdrop-filter:blur(18px);box-shadow:0 18px 52px rgba(0,0,0,.38);font:700 .55rem/1 "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+    .commentary-toggle:hover{color:var(--ink);border-color:rgba(243,199,78,.52)}
+    .commentary-dot{width:.5rem;height:.5rem;border-radius:50%;background:rgba(248,242,233,.34)}
+    body.commentary .commentary-toggle{color:var(--ink);border-color:rgba(243,199,78,.62);box-shadow:0 18px 52px rgba(0,0,0,.42),0 0 38px rgba(243,199,78,.12)}
+    body.commentary .commentary-dot{background:var(--mood);box-shadow:0 0 14px var(--mood)}
+    .nav{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:10;transform:translateX(-50%);padding:.42rem;border:1px solid rgba(111,140,255,.18);border-radius:999px;background:rgba(8,12,18,.68);backdrop-filter:blur(28px);box-shadow:0 18px 58px rgba(0,0,0,.44),0 0 46px rgba(111,140,255,.11);display:flex;gap:.28rem}
+    .nav a,.nav button{min-height:40px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--ink);text-decoration:none;text-transform:uppercase;font:700 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;padding:0 .9rem;display:inline-flex;align-items:center;cursor:pointer}
+    .modal{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:24px;background:rgba(2,3,5,.84);backdrop-filter:blur(18px)}
+    .modal.active{display:grid}
+    .modal-inner{width:min(1040px,100%);aspect-ratio:16/9;border:1px solid rgba(111,140,255,.34);background:#000;position:relative}
+    .modal iframe{width:100%;height:100%;border:0}
+    .close{position:absolute;right:0;top:-52px;min-height:40px;padding:0 1rem;border:1px solid rgba(248,242,233,.2);border-radius:999px;background:rgba(8,10,13,.76);color:var(--ink);text-transform:uppercase;font:700 .64rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;cursor:pointer}
+    @media(max-width:1000px){.world{grid-template-columns:1fr;padding-top:5rem}.hero-frame{order:-1}.overview-panels,.exec-grid,.authority-body,.handoff-grid{grid-template-columns:1fr}.authority-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.authority-list{grid-template-columns:repeat(2,minmax(0,1fr))}.editorial-inner{grid-template-columns:1fr}.editorial-img-group,.editorial-inner.img-left .editorial-img-group{order:-1}.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.brand{top:calc(18px + env(safe-area-inset-top,0px));left:20px;font-size:.68rem}.world{display:flex;flex-direction:column;width:min(calc(100vw - 32px),42rem);padding-top:5.8rem;padding-bottom:12rem;gap:1.15rem}.world:before{inset:4.7rem -.6rem 7rem;background-size:44px 44px}.project-header{order:1;gap:.82rem}.hero-frame{order:2;min-height:10.5rem;max-height:32svh;box-shadow:0 22px 72px rgba(0,0,0,.46),0 0 42px rgba(111,140,255,.08)}.authority-summary{order:3;margin-top:.2rem;padding:1rem}.case-study{order:4;margin-top:1.4rem}.kicker{font-size:.56rem;letter-spacing:.15em;line-height:1.45}.title{font-size:clamp(2.65rem,14vw,4.2rem);line-height:.9}.project-subtitle{font-size:.98rem;line-height:1.48}.tone-tags{gap:.3rem}.tone-tag{min-height:28px;display:inline-flex;align-items:center;font-size:.47rem;letter-spacing:.08em;padding:.25rem .5rem}.meta-row{grid-template-columns:repeat(3,minmax(0,1fr))}.meta-item{min-width:0;padding:.66rem .55rem}.meta-item dt{font-size:.45rem;letter-spacing:.1em}.meta-item dd{font-size:.76rem;line-height:1.25}.project-summary{font-size:.94rem;line-height:1.54}.authority-head{align-items:flex-start;flex-direction:column;gap:.45rem}.authority-record{text-align:left}.authority-grid,.authority-list{grid-template-columns:1fr}.authority-grid div,.authority-list li{padding:.68rem}.cta-row{display:grid;grid-template-columns:1fr 1fr}.btn-primary,.btn-secondary{justify-content:center;min-height:44px;padding:0 .58rem;font-size:.52rem;letter-spacing:.08em;text-align:center}.media-tall,.media-wide{height:auto;aspect-ratio:4/3}.feature-block img{min-height:18rem;max-height:48vh}.feature-overlay{position:relative;background:rgba(5,7,12,.86)}.strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:.4rem}.strip::-webkit-scrollbar{display:none}.strip-card{flex:0 0 clamp(190px,72vw,270px);scroll-snap-align:start}.nav{width:calc(100vw - 24px);bottom:calc(14px + env(safe-area-inset-bottom,0px));padding:.34rem;gap:.18rem}.nav a,.nav button{min-height:44px;font-size:.52rem;letter-spacing:.08em;padding:0 .48rem}.commentary-toggle{left:16px;right:16px;bottom:calc(5.65rem + env(safe-area-inset-bottom,0px));min-height:44px;justify-content:center;font-size:.52rem;letter-spacing:.12em}.modal{padding:16px}.close{min-height:44px}}
+    @media(max-width:430px){.title{font-size:clamp(2.35rem,13vw,3.5rem)}.meta-row,.cta-row{grid-template-columns:1fr}.nav a,.nav button{font-size:.48rem;padding:0 .36rem}.commentary-toggle span:nth-child(2){display:none}}
+    @media(max-width:760px),(prefers-reduced-motion:reduce){body:after{animation:none;mix-blend-mode:normal;opacity:.62}.hero-play-ring,.commentary-toggle,.nav,.modal{backdrop-filter:none}.hero-frame{box-shadow:0 22px 70px rgba(0,0,0,.48),0 0 36px rgba(111,140,255,.07)}.commentary-toggle,.nav{box-shadow:0 12px 34px rgba(0,0,0,.34)}.director-note{box-shadow:none}}
+  </style>
+</head>
+<body>
+  <a class="brand" href="../index.html#archive">Jared McDaniel</a>
+  <main class="world">
+    <div class="hero-frame">
+      <img class="hero-img" src="../images/kairi/hero-campaign-universe.jpg" alt="Kairi and Pixel campaign concept showing a gamer surrounded by animated CORSAIR product energy." loading="eager" decoding="async">
+      <button class="hero-play" type="button" aria-label="Watch published campaign cut" data-hero-video="mpTbAcvWflA">
+        <span class="hero-play-ring"><span class="hero-play-icon" aria-hidden="true">&#9654;</span></span>
+      </button>
+    </div>
+
+    <section class="project-header">
+      <div class="kicker">CORSAIR / Pixune Studios / Holiday Animation Campaign</div>
+      <h1 class="title">Kairi &amp; Pixel</h1>
+      <p class="project-subtitle">Creating a new character-driven campaign universe for Corsair.</p>
+      <div class="tone-tags">
+        <span class="tone-tag">Character Origin</span>
+        <span class="tone-tag">Animation Direction</span>
+        <span class="tone-tag">Black Friday / Cyber Monday</span>
+      </div>
+      <dl class="meta-row">
+        <div class="meta-item"><dt>Official Role</dt><dd>Short-Form Video Producer</dd></div>
+        <div class="meta-item"><dt>Client</dt><dd>CORSAIR</dd></div>
+        <div class="meta-item"><dt>Studio</dt><dd>Pixune Studios</dd></div>
+      </dl>
+      <p class="project-summary">A three-month animated campaign built for Black Friday and Cyber Monday awareness. Corsair hired Pixune Studios as the animation studio and vendor. My role expanded across the creative foundation: characters, story, script direction, visual references, shot lists, storyboard beats, revision feedback, edit, and sound effects.</p>
+      <div class="cta-row">
+        <button class="btn-primary" data-video="mpTbAcvWflA">Watch Published Cut</button>
+        <a class="btn-secondary" href="../index.html#work" data-back>Back to Archive</a>
+      </div>
+    </section>
+
+    <section class="authority-summary" aria-label="Project summary">
+      <div class="authority-head">
+        <span class="authority-kicker">Project Summary</span>
+        <span class="authority-record">REC.16 / CASE STUDY AVAILABLE &rarr;</span>
+      </div>
+      <dl class="authority-grid">
+        <div><dt>Role</dt><dd>Short-Form Video Producer</dd></div>
+        <div><dt>Timeline</dt><dd>Approx. 3 Months</dd></div>
+        <div><dt>Deliverable</dt><dd>Black Friday + Cyber Monday Animation Campaign</dd></div>
+        <div><dt>Focus</dt><dd>Character Creation / Story / Campaign Delivery</dd></div>
+      </dl>
+      <div class="authority-body">
+        <div class="authority-panel">
+          <span>Challenge</span>
+          <p>The campaign needed to drive holiday awareness without feeling like a generic promo card. It needed a character-led idea that could carry two near-identical versions: one for Black Friday and one for Cyber Monday.</p>
+        </div>
+        <div class="authority-panel">
+          <span>Approach</span>
+          <p>The project was framed as the first appearance of Kairi and Pixel, not just a seasonal ad. The characters gave the sale message a story engine and created a foundation Corsair could revisit beyond the holiday window.</p>
+        </div>
+      </div>
+      <div class="authority-responsibilities">
+        <span>Expanded Creative Responsibilities</span>
+        <ul class="authority-list">
+          <li>Character Creation</li>
+          <li>Story Concept</li>
+          <li>Script Direction</li>
+          <li>Shot Lists</li>
+          <li>Final Edit + SFX</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="case-study" aria-label="Case study">
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Overview</span><div class="cs-section-line"></div></div>
+        <div class="overview-panels">
+          <div class="overview-panel">
+            <span class="panel-label">Campaign</span>
+            <p class="panel-text">The final campaign existed in two close variants: a Black Friday version and a Cyber Monday version. The core animation stayed nearly identical while the screen and promotional messaging shifted for each retail moment.</p>
+            <aside class="director-note"><span class="director-note-label">Creative note 01</span><p>The story had to survive the offer swap. If the character idea only worked for one sale message, it was too small.</p></aside>
+          </div>
+          <div class="overview-panel">
+            <span class="panel-label">Challenge</span>
+            <p class="panel-text">Holiday retail content can collapse into pure urgency: discount, date, logo, repeat. The stronger opportunity was to make the sale feel like an event inside a small animated universe.</p>
+            <aside class="director-note"><span class="director-note-label">Creative note 02</span><p>The campaign needed awareness, but the portfolio value is the character foundation underneath the promo.</p></aside>
+          </div>
+          <div class="overview-panel overview-panel-featured">
+            <span class="panel-label">Creative Solution</span>
+            <p class="panel-text panel-text-lead">Kairi and Pixel gave the campaign a point of view. Kairi carried personality and emotional entry. Pixel added sidekick energy, digital magic, and motion potential. Together, they turned a sale beat into a character launch.</p>
+            <aside class="director-note"><span class="director-note-label">Creative note 03</span><p>The larger move was giving Corsair a pair of recurring characters that could outlive the holiday placement.</p></aside>
+          </div>
+        </div>
+      </div>
+
+      <div class="editorial">
+        <div class="editorial-inner">
+          <div class="editorial-text-wrap">
+            <span class="editorial-eyebrow">Character Development</span>
+            <h3 class="editorial-head">Building Kairi From A Blank Page</h3>
+            <p class="editorial-body">Kairi started with no inherited template. I developed the name, personality, character direction, and visual concept so the campaign had a lead with warmth, curiosity, and enough specificity to feel ownable for Corsair.</p>
+            <p class="editorial-body">The design reference pass was not about locking final animation production. It was about giving Pixune a clear character target: youthful, expressive, brand-safe, and flexible enough to lead future stories.</p>
+            <aside class="director-note"><span class="director-note-label">Creative note 04</span><p>Kairi needed to feel like a character first and a campaign device second. That changes every design choice.</p></aside>
+          </div>
+          <div class="editorial-img-group">
+            <div class="editorial-media media-tall"><img src="../images/kairi/kairi-character-design.jpg" alt="Early visual design reference for Kairi as a youthful animated character." loading="lazy" decoding="async" style="object-position:center center"></div>
+            <div class="editorial-caption">Kairi Design Reference / Lead Character Direction</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="editorial">
+        <div class="editorial-inner img-left">
+          <div class="editorial-text-wrap">
+            <span class="editorial-eyebrow">Pixel Development</span>
+            <h3 class="editorial-head">A Sidekick Built For Motion</h3>
+            <p class="editorial-body">Pixel was developed as the digital companion: a small character with spark, timing, and screen-world logic. The sidekick role helped connect the human side of the story to the animated effects and product energy.</p>
+            <p class="editorial-body">That relationship gave the animation team a practical foundation for action: touch points, screen transitions, reveal beats, and effects that could feel motivated instead of decorative.</p>
+            <aside class="director-note"><span class="director-note-label">Creative note 05</span><p>Pixel had to be useful in motion. The best sidekick can point, react, cause problems, solve problems, and make the frame move.</p></aside>
+          </div>
+          <div class="editorial-img-group">
+            <div class="editorial-media media-wide"><img src="../images/kairi/pixel-contact.jpg" alt="Storyboard reference of Pixel reaching through a glowing monitor toward a human hand." loading="lazy" decoding="async" style="object-position:center 48%"></div>
+            <div class="editorial-caption">Pixel / Screen Contact Beat</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-block">
+        <img src="../images/kairi/action-burst.jpg" alt="Action storyboard reference with Kairi and Pixel launching CORSAIR products through a bright energy burst." loading="lazy" decoding="async">
+        <div class="feature-overlay">
+          <span class="feature-eyebrow">Storyboarding &amp; Animation Direction</span>
+          <h3 class="feature-head">Turning Promo Energy Into Action Beats</h3>
+          <p class="feature-body">I built shot lists, storyboarded key beats, generated AI visual references, and provided motion, action, and effects ideas so Pixune had a clear sense of energy, staging, and campaign rhythm before animation production moved forward.</p>
+          <aside class="director-note"><span class="director-note-label">Creative note 06</span><p>The brief was awareness, but the board needed impact: a retail message arriving through character action instead of a static sale card.</p></aside>
+        </div>
+      </div>
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Creative Direction</span><div class="cs-section-line"></div></div>
+        <div class="exec-grid">
+          <div class="exec-card">
+            <span class="exec-card-num">01</span>
+            <h3 class="exec-card-title">Story Concept</h3>
+            <p class="exec-card-text">Developed the campaign premise around Kairi and Pixel entering the sale moment as characters, not mascots pasted onto a promotion. The story gave the retail message a reason to unfold.</p>
+          </div>
+          <div class="exec-card">
+            <span class="exec-card-num">02</span>
+            <h3 class="exec-card-title">Script / Text Direction</h3>
+            <p class="exec-card-text">Wrote and shaped the text direction so the Black Friday and Cyber Monday versions could share the same structure while swapping the core promotional message cleanly.</p>
+          </div>
+          <div class="exec-card">
+            <span class="exec-card-num">03</span>
+            <h3 class="exec-card-title">Visual References</h3>
+            <p class="exec-card-text">Generated AI references to communicate character tone, shot intent, effects language, and promotional staging before Pixune translated the direction into animation production.</p>
+          </div>
+          <div class="exec-card">
+            <span class="exec-card-num">04</span>
+            <h3 class="exec-card-title">Edit + Sound Effects</h3>
+            <p class="exec-card-text">Edited the final video and added sound effects, shaping the pace, impact, and polish of the final campaign pieces after animation delivery.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Studio Collaboration</span><div class="cs-section-line"></div></div>
+        <div class="handoff-grid">
+          <div class="handoff-card">
+            <span>Pixune Studios</span>
+            <strong>Animation production partner</strong>
+            <p>Pixune Studios handled animation production as Corsair's hired animation studio/vendor. They translated the campaign direction, boards, and revision feedback into the animated deliverables.</p>
+          </div>
+          <div class="handoff-card">
+            <span>My Contribution</span>
+            <strong>Concept, character, story, direction, revision, edit</strong>
+            <p>My work covered the creative foundation and delivery pass: Kairi, Pixel, story concept, script/text direction, shot lists, AI visual references, action and effects ideas, storyboard beats, feedback rounds, final edit, and sound effects.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-section strip-section">
+        <div class="cs-section-head"><span class="cs-section-label">Final Campaign Visuals</span><div class="cs-section-line"></div></div>
+        <div class="strip">
+          <figure class="strip-card"><div class="strip-card-media"><img src="../images/kairi/black-friday-monitor.jpg" alt="Black Friday campaign visual with Kairi and Pixel displayed on a CORSAIR gaming monitor." loading="lazy" decoding="async" style="object-position:center 38%"></div><figcaption>Black Friday Screen Version</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><img src="../images/kairi/screen-leap.jpg" alt="Kairi and Pixel leaping from a monitor over a keyboard in the animated campaign reference." loading="lazy" decoding="async" style="object-position:center 45%"></div><figcaption>Character Action Beat</figcaption></figure>
+          <figure class="strip-card"><div class="strip-card-media"><img src="../images/kairi/hero-campaign-universe.jpg" alt="Campaign universe visual with CORSAIR products orbiting around Kairi and Pixel." loading="lazy" decoding="async" style="object-position:center 48%"></div><figcaption>Product Energy / Campaign Universe</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Final Campaign Delivery</span><div class="cs-section-line"></div></div>
+        <div class="outcome-block">
+          <p class="outcome-text">The campaign shipped as two near-identical animated videos: one branded for Black Friday and one branded for Cyber Monday. The main difference was the screen and promotional messaging, which let the same character-led sequence serve both retail beats. Final videos were published across YouTube, Instagram, Facebook, and Corsair's website.</p>
+          <aside class="director-note"><span class="director-note-label">Creative note 07</span><p>The two-version structure worked because the campaign engine was not the text. It was the characters moving the viewer toward the offer.</p></aside>
+        </div>
+      </div>
+
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-label">Outcome</span><div class="cs-section-line"></div></div>
+        <div class="outcome-block">
+          <p class="outcome-text">The most important result was not only a holiday animation campaign. It was the first use of Kairi and Pixel as potential recurring Corsair brand characters: a small campaign universe with names, personalities, visual direction, story logic, and animation language that could be extended into future brand moments.</p>
+          <aside class="director-note"><span class="director-note-label">Creative note 08</span><p>The campaign did its retail job, but the more durable value was creating characters Corsair could bring back.</p></aside>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <button class="commentary-toggle" id="commentaryToggle" type="button" aria-pressed="false"><span class="commentary-dot"></span><span>Creative notes</span><span class="commentary-state">Off</span></button>
+  <nav class="nav"><a href="../index.html#work">Work</a><a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a><button data-video="mFeMMMmdW24">Reel</button></nav>
+  <div class="modal" id="modal"><div class="modal-inner"><button class="close" type="button">Close</button><iframe id="frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video player"></iframe></div></div>
+
+  <script>
+    (()=>{const toggle=document.getElementById("commentaryToggle"),state=toggle?.querySelector(".commentary-state");if(!toggle)return;function setCommentary(on){document.body.classList.toggle("commentary",on);toggle.setAttribute("aria-pressed",on?"true":"false");if(state)state.textContent=on?"On":"Off"}toggle.addEventListener("click",()=>setCommentary(!document.body.classList.contains("commentary")));if(new URLSearchParams(location.search).get("commentary")==="on")setCommentary(true);})();
+  </script>
+  <script>
+    const modal=document.querySelector("#modal"),frame=document.querySelector("#frame");
+    document.querySelectorAll("[data-back]").forEach((back)=>{try{const saved=JSON.parse(sessionStorage.getItem("jm_archive_return")||"null");if(saved?.route)back.href=`../index.html#${saved.route}`}catch(e){}});
+    document.querySelectorAll("[data-video]").forEach((button)=>button.addEventListener("click",()=>{frame.src=`https://www.youtube.com/embed/${button.dataset.video}?autoplay=1&rel=0`;modal.classList.add("active")}));
+    document.querySelector(".close").addEventListener("click",()=>{modal.classList.remove("active");frame.src=""});
+    modal.addEventListener("click",(event)=>{if(event.target===modal)document.querySelector(".close").click()});
+    document.querySelector(".hero-play")?.addEventListener("click",function(){const video=this.dataset.heroVideo;if(!video)return;const iframe=document.createElement("iframe");iframe.className="hero-iframe";iframe.src=`https://www.youtube.com/embed/${video}?autoplay=1&rel=0`;iframe.allow="autoplay;encrypted-media;picture-in-picture";iframe.setAttribute("allowfullscreen","");iframe.title="Campaign video player";const hero=this.closest(".hero-frame");hero.appendChild(iframe);hero.classList.add("is-playing")});
+  </script>
+  <script>
+    (()=>{const fine=matchMedia("(hover:hover) and (pointer:fine)"),reduced=matchMedia("(prefers-reduced-motion: reduce)");let x=innerWidth/2,y=innerHeight/2,raf=0;function write(){raf=0;if(!fine.matches||reduced.matches||document.hidden)return;document.documentElement.style.setProperty("--cursor-x",`${x}px`);document.documentElement.style.setProperty("--cursor-y",`${y}px`)}window.addEventListener("pointermove",event=>{x=event.clientX;y=event.clientY;if(!raf)raf=requestAnimationFrame(write)},{passive:true})})();
+  </script>
+</body>
+</html>
