@@ -7,6 +7,10 @@ old design/
 *.avi
 *.mkv
 
+# Local agent/browser/tooling state
+.codex/
+.claude/settings.local.json
+
 # Web-optimized record wall loops ARE deployed (exception to the video ignores above)
 !galleryversion/videos/
 !galleryversion/videos/**

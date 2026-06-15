@@ -7560,6 +7560,201 @@ body.header-parallax-active .header-identity {
       filter: brightness(var(--rw-card-brightness, 1));
     }
   </style>
+  <style id="recordWallResponsiveFitCss">/* Record Wall responsive fit: keep laptop windows readable instead of compressed. */
+    .rw-title,
+    .rw-start-line,
+    .rw-context-line,
+    .rw-meta-line,
+    .rw-record-state,
+    .rw-affordance,
+    .rw-logotext {
+      overflow-wrap: normal;
+      word-break: normal;
+      hyphens: manual;
+    }
+
+    @media (min-width: 900px) and (max-height: 820px) and (pointer: fine) {
+      .rw-wall {
+        top: 46.5%;
+      }
+
+      .rw-bottom {
+        left: clamp(0.7rem, 0.82vw, 0.94rem);
+        right: clamp(0.7rem, 0.82vw, 0.94rem);
+        bottom: clamp(0.62rem, 0.76vw, 0.86rem);
+        max-width: min(91%, 24rem);
+        gap: 0.18rem;
+      }
+
+      .rw-bottom::before {
+        width: 2.25rem;
+        margin-bottom: 0;
+      }
+
+      .rw-title {
+        font-size: clamp(1.12rem, 1.34vw, 1.58rem);
+        line-height: 0.99;
+        -webkit-line-clamp: 2;
+      }
+
+      .rw-card[data-title-size="compact"] .rw-title {
+        font-size: clamp(1rem, 1.16vw, 1.36rem);
+        line-height: 1.03;
+      }
+
+      .rw-start-line,
+      .rw-meta-line,
+      .rw-record-state {
+        font-size: clamp(0.42rem, 0.5vw, 0.5rem);
+        letter-spacing: 0.115em;
+      }
+
+      .rw-context-line {
+        display: none;
+      }
+
+      .rw-top {
+        top: 0.54rem;
+        left: 0.62rem;
+        right: 0.62rem;
+      }
+
+      .rw-logo {
+        height: 0.72rem;
+      }
+
+      .rw-logotext {
+        max-width: 62%;
+        font-size: 0.46rem;
+        letter-spacing: 0.16em;
+      }
+
+      .rw-card.is-focus .rw-expand,
+      .rw-card:focus-visible .rw-expand {
+        max-height: 0;
+        opacity: 0;
+      }
+
+      .rw-card.is-focus .rw-play {
+        opacity: 0.5;
+      }
+
+      .rw-statusline {
+        bottom: 0.82rem;
+      }
+
+      .brand-partners {
+        bottom: 2.45rem !important;
+      }
+
+      .brand-partners-label {
+        margin-bottom: 0.72rem !important;
+      }
+
+      .brand-logos {
+        row-gap: 0.82rem;
+      }
+
+      .brand-item {
+        font-size: clamp(0.78rem, 1vw, 1.1rem);
+      }
+    }
+
+    @media (min-width: 900px) and (max-height: 679px) and (pointer: fine) {
+      .rw-stage,
+      .rw-statusline {
+        display: none;
+      }
+
+      .archive .archive-stage {
+        display: block;
+        min-height: auto;
+        padding-bottom: 2rem;
+      }
+
+      .rw-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        width: min(calc(100vw - 32px), 40rem);
+        margin: 0 auto;
+        padding: 0.6rem 0 1rem;
+      }
+
+      .brand-partners {
+        position: static !important;
+        left: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: auto !important;
+        margin: 2.6rem auto 5.5rem;
+      }
+    }
+  </style>
+  <style id="chromePerformancePatchCss">/* Chrome compositor pass: keep the room feel, but reduce large repaints during wall motion. */
+    html.chrome-performance .environment-light::before,
+    html.chrome-performance .environment-light::after {
+      filter: blur(18px) saturate(1.02) !important;
+      opacity: 0.34 !important;
+    }
+
+    html.chrome-performance body.rw-motion-active .environment-light::before,
+    html.chrome-performance body.rw-motion-active .environment-light::after {
+      filter: blur(12px) saturate(1) !important;
+      opacity: 0.24 !important;
+    }
+
+    html.chrome-performance .light-column {
+      filter: blur(14px) !important;
+      opacity: 0.035 !important;
+    }
+
+    html.chrome-performance .chamber-architecture,
+    html.chrome-performance body.focus-mode .chamber-architecture,
+    html.chrome-performance body.viewing-mode .chamber-architecture {
+      filter: none !important;
+    }
+
+    html.chrome-performance .rw-col {
+      will-change: transform, opacity;
+      filter: none !important;
+    }
+
+    html.chrome-performance .rw-card {
+      filter: none !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.46) !important;
+      transition:
+        transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        border-color 180ms ease,
+        opacity 180ms ease !important;
+    }
+
+    html.chrome-performance .rw-card.is-focus {
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.58),
+        0 0 22px var(--rw-mood-soft) !important;
+    }
+
+    html.chrome-performance .rw-card.rw-pulling {
+      box-shadow:
+        0 22px 54px rgba(0, 0, 0, 0.66),
+        0 0 28px var(--rw-mood-soft) !important;
+    }
+
+    html.chrome-performance .rw-wall.has-focus .rw-card:not(.is-focus),
+    html.chrome-performance body.rw-pull .rw-wall .rw-card:not(.rw-pulling) {
+      filter: none !important;
+    }
+
+    html.chrome-performance .rw-preview {
+      backdrop-filter: blur(8px) !important;
+    }
+
+    html.chrome-performance body.rw-motion-active .rw-preview,
+    html.chrome-performance body.rw-motion-active .site-archive-header {
+      backdrop-filter: none !important;
+    }
+  </style>
 </head>
 <body class="archive-room-active">
   <a class="brand" href="#archive" data-route="archive">Jared McDaniel</a>
@@ -8241,6 +8436,10 @@ body.header-parallax-active .header-identity {
     }
 
     const body = document.body;
+    const rootElement = document.documentElement;
+    const chromePerformanceMode = /\b(Chrome|Chromium|Edg)\//.test(navigator.userAgent) &&
+      !/\b(Firefox|OPR)\//.test(navigator.userAgent);
+    rootElement.classList.toggle("chrome-performance", chromePerformanceMode);
     let introSeen = false;
     try {
       introSeen = sessionStorage.getItem("jm_archive_intro") === "true";
@@ -8344,6 +8543,7 @@ body.header-parallax-active .header-identity {
 
     let activeFilter = pendingReturn?.filter || "Featured";
     const workLoopPointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    let activeWorkLoopPreview = null;
 
     function rememberArchivePosition(route = window.location.hash.replace("#", "") || "archive") {
       sessionStorage.setItem("jm_archive_return", JSON.stringify({
@@ -8416,6 +8616,10 @@ body.header-parallax-active .header-identity {
     function startWorkLoopPreview(node, project) {
       if (!project.loop || !canRunWorkLoopPreview() || !isElementMostlyVisible(node)) return;
 
+      if (activeWorkLoopPreview && activeWorkLoopPreview !== node) {
+        stopWorkLoopPreview(activeWorkLoopPreview, true);
+      }
+      activeWorkLoopPreview = node;
       window.clearTimeout(node._workLoopStopTimer);
       node._workLoopActive = true;
 
@@ -8443,7 +8647,13 @@ body.header-parallax-active .header-identity {
       node.classList.remove("is-video-previewing");
 
       const video = node.querySelector("video.piece-loop");
-      if (!video) return;
+      const clearActivePreview = () => {
+        if (activeWorkLoopPreview === node) activeWorkLoopPreview = null;
+      };
+      if (!video) {
+        clearActivePreview();
+        return;
+      }
 
       video.classList.remove("on");
       const unload = () => {
@@ -8452,6 +8662,7 @@ body.header-parallax-active .header-identity {
           video.currentTime = 0;
         } catch (error) {}
         video.remove();
+        clearActivePreview();
       };
 
       if (immediate) {
@@ -8465,6 +8676,7 @@ body.header-parallax-active .header-identity {
       archiveWall.querySelectorAll(".archive-piece.has-work-loop, .archive-piece.is-video-previewing").forEach((piece) => {
         stopWorkLoopPreview(piece, true);
       });
+      activeWorkLoopPreview = null;
     }
 
     function bindWorkLoopPreview(node, project) {
@@ -8676,9 +8888,13 @@ body.header-parallax-active .header-identity {
     let pointerFrame = 0;
     let pointerClientX = window.innerWidth / 2;
     let pointerClientY = window.innerHeight / 2;
-    function writePointerVars() {
+    let lastPointerWriteAt = 0;
+    const pointerWriteInterval = rootElement.classList.contains("chrome-performance") ? 48 : 0;
+    function writePointerVars(timestamp = performance.now()) {
       pointerFrame = 0;
       if (!finePointerQuery.matches || introReducedMotionQuery.matches || document.hidden) return;
+      if (pointerWriteInterval && timestamp - lastPointerWriteAt < pointerWriteInterval) return;
+      lastPointerWriteAt = timestamp;
       const x = pointerClientX - window.innerWidth / 2;
       const y = pointerClientY - window.innerHeight / 2;
       body.style.setProperty("--mx", x.toFixed(2));
@@ -8935,19 +9151,40 @@ body.header-parallax-active .header-identity {
     if (!stageEl || !worldEl || !wallEl || !mobileEl) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const wallMQ = window.matchMedia("(min-width: 900px) and (pointer: fine)");
+    const wallMQ = window.matchMedia("(min-width: 900px) and (min-height: 680px) and (pointer: fine)");
     const root = document.documentElement;
+    const chromePerf = root.classList.contains("chrome-performance");
     const WALL_MOTION = {
-      maxRotateY: 8,
-      maxTranslateZ: -80,
-      maxScaleReduction: 0.92,
-      mouseParallaxX: 20,
-      mouseParallaxY: 10,
-      idleFloatX: 2.2,
-      idleFloatY: 1.1,
-      lerpSpeed: 0.06
+      maxRotateY: chromePerf ? 7 : 8,
+      maxTranslateZ: chromePerf ? -62 : -80,
+      maxScaleReduction: chromePerf ? 0.94 : 0.92,
+      mouseParallaxX: chromePerf ? 14 : 20,
+      mouseParallaxY: chromePerf ? 7 : 10,
+      idleFloatX: chromePerf ? 0 : 2.2,
+      idleFloatY: chromePerf ? 0 : 1.1,
+      lerpSpeed: chromePerf ? 0.075 : 0.06
+    };
+    const WALL_PERF = {
+      columnToneInterval: chromePerf ? 420 : 180,
+      loopTickInterval: chromePerf ? 650 : 350,
+      loopBudget: chromePerf ? 1 : 3,
+      pickInterval: chromePerf ? 72 : 0,
+      settleEpsilon: chromePerf ? 0.18 : 0.04,
+      idleStart: chromePerf ? Infinity : 7200
     };
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    function setStyleIfChanged(el, property, value) {
+      const key = `_rwStyle_${property}`;
+      if (el[key] === value) return;
+      el[key] = value;
+      el.style[property] = value;
+    }
+    function setVarIfChanged(el, property, value) {
+      const key = `_rwVar_${property}`;
+      if (el[key] === value) return;
+      el[key] = value;
+      el.style.setProperty(property, value);
+    }
 
     const MOODS = {
       "cyberpunk-2077": { mood: "#ff3d72", soft: "rgba(255,61,114,.15)", line: "Night City grade" },
@@ -9057,20 +9294,24 @@ body.header-parallax-active .header-identity {
     }
 
     /* ---------------- wall layout engine ---------------- */
-    let cols = [], colCenters = [], wallW = 0, wallH = 0, bound = 0;
+    let cols = [], wallCards = [], colCenters = [], wallW = 0, wallH = 0, bound = 0;
 
     function computeLayout(n, vw, vh) {
-      const gap = 24;
-      const stageH = Math.max(340, vh - 300);
-      let rows = n <= 24 ? 3 : n <= 46 ? 4 : 5;
-      const spread = 1.5 + Math.min(n, 60) / 60 * 0.6;
+      const laptopFit = vw >= 900 && vh <= 820;
+      const gap = laptopFit ? 20 : 24;
+      const stageH = Math.max(laptopFit ? 420 : 340, vh - (laptopFit ? 260 : 300));
+      let rows = n <= 24 ? (laptopFit ? 2 : 3) : n <= 46 ? 4 : 5;
+      const spread = laptopFit ? 2.28 : 1.5 + Math.min(n, 60) / 60 * 0.6;
+      const minColW = laptopFit ? 300 : 230;
+      const maxColW = laptopFit ? 380 : 430;
+      const minRows = laptopFit ? 2 : 3;
       let colsN, colW;
       for (;;) {
         colsN = Math.ceil(n / rows);
         colW = (vw * spread - gap * (colsN - 1)) / colsN;
-        colW = Math.max(230, Math.min(430, colW));
+        colW = Math.max(minColW, Math.min(maxColW, colW));
         const colH = rows * (colW * 9 / 16) + (rows - 1) * gap;
-        if (colH <= stageH || rows === 3) break;
+        if (colH <= stageH || rows === minRows) break;
         rows--;
       }
       colW = Math.min(colW, ((stageH - (rows - 1) * gap) / rows) * 16 / 9);
@@ -9125,13 +9366,15 @@ body.header-parallax-active .header-identity {
         Object.keys(cells[c]).map(Number).sort((a, b) => a - b).forEach((rIdx) => {
           const rec = cells[c][rIdx];
           const cell = document.createElement("div");
-          cell.className = `rw-cell ${rIdx === mid ? "rw-mid" : "rw-edge"}${rec.isReel ? " rw-reel" : ""}`;
+          const midCell = L.rows <= 2 || rIdx === mid;
+          cell.className = `rw-cell ${midCell ? "rw-mid" : "rw-edge"}${rec.isReel ? " rw-reel" : ""}`;
           cell.appendChild(wallCard(rec));
           col.appendChild(cell);
         });
         wallEl.appendChild(col);
       }
       cols = [...wallEl.querySelectorAll(".rw-col")];
+      wallCards = [...wallEl.querySelectorAll(".rw-card")];
       requestAnimationFrame(() => {
         measure();
         stageIntroWallCards();
@@ -9164,7 +9407,7 @@ body.header-parallax-active .header-identity {
 
     function stageIntroWallCards() {
       if (!introIsRunning() || !wallMQ.matches) return;
-      const cards = [...wallEl.querySelectorAll(".rw-card")];
+      const cards = wallCards.length ? wallCards : [...wallEl.querySelectorAll(".rw-card")];
       if (!cards.length) return;
       const originX = innerWidth / 2;
       const originY = innerHeight * 0.47;
@@ -9213,15 +9456,26 @@ body.header-parallax-active .header-identity {
     function startFrameLoop() {
       if (wallFrameId || !canRunWallFrame()) return;
       lastInput = performance.now();
+      document.body.classList.add("rw-motion-active");
       wallFrameId = requestAnimationFrame(frame);
+    }
+
+    function stopFrameLoop({ stopLoops = true } = {}) {
+      if (wallFrameId) cancelAnimationFrame(wallFrameId);
+      wallFrameId = 0;
+      document.body.classList.remove("rw-motion-active");
+      cancelPick();
+      if (stopLoops) stopRecordWallLoops();
     }
 
     function frame(now) {
       wallFrameId = 0;
       if (!canRunWallFrame()) {
+        document.body.classList.remove("rw-motion-active");
         stopRecordWallLoops();
         return;
       }
+      document.body.classList.add("rw-motion-active");
       const introActive = introIsRunning();
       const pulling = document.body.classList.contains("rw-pull");
       const inputIdle = now - lastInput;
@@ -9243,7 +9497,7 @@ body.header-parallax-active .header-identity {
       pointerX += (pointerXT - pointerX) * WALL_MOTION.lerpSpeed;
       pointerY += (pointerYT - pointerY) * WALL_MOTION.lerpSpeed;
 
-      const idleTarget = !introActive && !dragging && !pulling && inputIdle > 7200 ? 1 : 0;
+      const idleTarget = !introActive && !dragging && !pulling && inputIdle > WALL_PERF.idleStart ? 1 : 0;
       idleBlend += (idleTarget - idleBlend) * 0.012;
       const idleX = Math.sin(now * 0.00016) * WALL_MOTION.idleFloatX * idleBlend;
       const idleY = Math.sin(now * 0.00023 + 1.1) * WALL_MOTION.idleFloatY * idleBlend;
@@ -9254,16 +9508,16 @@ body.header-parallax-active .header-identity {
       const worldPitch = pointerY * -0.7 + Math.sin(now * 0.00017 + 1.6) * 0.04 * idleBlend;
       const worldYaw = pointerX * 1.1 + idleYaw;
 
-      worldEl.style.transform =
+      setStyleIfChanged(worldEl, "transform",
         `translate3d(${parallaxX.toFixed(2)}px, ${parallaxY.toFixed(2)}px, 0) ` +
-        `rotateX(${worldPitch.toFixed(3)}deg) rotateY(${worldYaw.toFixed(3)}deg) rotateZ(${idleRoll.toFixed(3)}deg)`;
+        `rotateX(${worldPitch.toFixed(3)}deg) rotateY(${worldYaw.toFixed(3)}deg) rotateZ(${idleRoll.toFixed(3)}deg)`);
 
       // Chrome: pan the wall with transform instead of margin to avoid layout work per frame.
-      wallEl.style.transform = `translate3d(${(-wallW / 2 + wallX).toFixed(2)}px, ${(-wallH / 2).toFixed(2)}px, 0)`;
+      setStyleIfChanged(wallEl, "transform", `translate3d(${(-wallW / 2 + wallX).toFixed(2)}px, ${(-wallH / 2).toFixed(2)}px, 0)`);
 
       const viewportCenter = innerWidth / 2;
       const wallLeft = viewportCenter - wallW / 2 + wallX + parallaxX;
-      const writeColumnTone = now - lastColumnToneAt > 180;
+      const writeColumnTone = now - lastColumnToneAt > WALL_PERF.columnToneInterval;
       if (writeColumnTone) lastColumnToneAt = now;
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
@@ -9280,20 +9534,45 @@ body.header-parallax-active .header-identity {
         const brightness = 1 - edge * 0.075 + center * 0.012;
         const saturation = 1 - edge * 0.10;
 
-        col.style.transform =
+        setStyleIfChanged(col, "transform",
           `rotateX(${pitch.toFixed(3)}deg) rotateY(${rotateY.toFixed(3)}deg) ` +
-          `translateZ(${z.toFixed(2)}px) scale(${scale.toFixed(4)})`;
-        col.style.opacity = opacity.toFixed(3);
+          `translateZ(${z.toFixed(2)}px) scale(${scale.toFixed(4)})`);
+        setStyleIfChanged(col, "opacity", opacity.toFixed(3));
         if (writeColumnTone) {
-          col.style.filter = `brightness(${brightness.toFixed(3)}) saturate(${saturation.toFixed(3)})`;
-          col.style.zIndex = String(Math.round((1 - edge) * 100));
+          if (chromePerf) {
+            setStyleIfChanged(col, "filter", "");
+          } else {
+            setStyleIfChanged(col, "filter", `brightness(${brightness.toFixed(3)}) saturate(${saturation.toFixed(3)})`);
+          }
+          setStyleIfChanged(col, "zIndex", String(Math.round((1 - edge) * 100)));
         }
-        col.style.setProperty("--shade", (edge * 0.24).toFixed(3));
-        col.style.setProperty("--rw-mid-scale", (1 + center * 0.018).toFixed(4));
-        col.style.setProperty("--rw-mid-brightness", (1 + center * 0.035).toFixed(3));
+        setVarIfChanged(col, "--shade", (edge * 0.24).toFixed(3));
+        setVarIfChanged(col, "--rw-mid-scale", (1 + center * 0.018).toFixed(4));
+        if (!chromePerf) {
+          setVarIfChanged(col, "--rw-mid-brightness", (1 + center * 0.035).toFixed(3));
+        }
       }
       updateLoops(now);
-      wallFrameId = requestAnimationFrame(frame);
+      const motionDelta =
+        Math.abs(wallXT - wallX) +
+        Math.abs(pointerXT - pointerX) * 20 +
+        Math.abs(pointerYT - pointerY) * 20 +
+        Math.abs(pitchT - pitch) +
+        Math.abs(vel) * 0.04;
+      const activityWindow = focusCard ? 2800 : 1400;
+      const shouldContinue = !chromePerf ||
+        introActive ||
+        dragging ||
+        pulling ||
+        inputIdle < activityWindow ||
+        idleBlend > 0.002 ||
+        motionDelta > WALL_PERF.settleEpsilon;
+
+      if (shouldContinue) {
+        wallFrameId = requestAnimationFrame(frame);
+      } else {
+        stopFrameLoop();
+      }
     }
 
     /* ---------------- loop budget ----------------
@@ -9302,7 +9581,7 @@ body.header-parallax-active .header-identity {
        nearest center-zone cards. Everything else shows its poster;
        loops fully unload (element removed) when they leave the zone.
        Desktop wall only — mobile and reduced-motion never run this. */
-    const LOOP_BUDGET = 3;
+    const LOOP_BUDGET = WALL_PERF.loopBudget;
     const LOOP_ZONE = 0.36; // fraction of viewport width from center
     let loopTickAt = 0;
 
@@ -9312,6 +9591,7 @@ body.header-parallax-active .header-identity {
       v.muted = true;
       v.loop = true;
       v.playsInline = true;
+      v.preload = "none";
       v.setAttribute("muted", "");
       v.setAttribute("playsinline", "");
       v.src = rec.loop;
@@ -9331,7 +9611,7 @@ body.header-parallax-active .header-identity {
     }
 
     function updateLoops(now) {
-      if (now - loopTickAt < 350) return;
+      if (now - loopTickAt < WALL_PERF.loopTickInterval) return;
       loopTickAt = now;
       if (!canRunWallFrame() || document.body.classList.contains("rw-pull") || introIsRunning()) {
         stopRecordWallLoops();
@@ -9340,7 +9620,7 @@ body.header-parallax-active .header-identity {
       const zone = innerWidth * LOOP_ZONE;
       const center = innerWidth / 2;
       const candidates = [];
-      for (const card of wallEl.querySelectorAll(".rw-card")) {
+      for (const card of wallCards) {
         const rec = recOf(card);
         if (!rec || !rec.loop) continue;
         const r = card.getBoundingClientRect();
@@ -9371,15 +9651,38 @@ body.header-parallax-active .header-identity {
        Browser hit-testing is unreliable on perspective-projected cards;
        getBoundingClientRect projects correctly, so we raycast ourselves. */
     let focusCard = null;
+    let pickFrameId = 0;
+    let pendingPickX = 0;
+    let pendingPickY = 0;
+    let lastPickAt = 0;
     function pick(x, y) {
       let best = null, bestD = Infinity;
-      for (const card of wallEl.querySelectorAll(".rw-card")) {
+      for (const card of wallCards) {
         const r = card.getBoundingClientRect();
         if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
         const d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
         if (d < bestD) { bestD = d; best = card; }
       }
       return best;
+    }
+
+    function cancelPick() {
+      if (!pickFrameId) return;
+      cancelAnimationFrame(pickFrameId);
+      pickFrameId = 0;
+    }
+
+    function schedulePick(x, y) {
+      pendingPickX = x;
+      pendingPickY = y;
+      if (pickFrameId) return;
+      pickFrameId = requestAnimationFrame((now) => {
+        pickFrameId = 0;
+        if (dragging || document.body.classList.contains("rw-pull") || !canRunWallFrame()) return;
+        if (WALL_PERF.pickInterval && now - lastPickAt < WALL_PERF.pickInterval) return;
+        lastPickAt = now;
+        setFocus(pick(pendingPickX, pendingPickY));
+      });
     }
 
     function recOf(card) {
@@ -9418,6 +9721,7 @@ body.header-parallax-active .header-identity {
     /* ---------------- interactions ---------------- */
     function bind() {
       stageEl.addEventListener("pointerdown", (e) => {
+        cancelPick();
         dragging = true;
         stageEl.classList.add("dragging");
         lastX = e.clientX; lastT = performance.now(); vel = 0; dragDist = 0;
@@ -9425,12 +9729,14 @@ body.header-parallax-active .header-identity {
         pointerXT = clamp((e.clientX / innerWidth - 0.5) * 2, -1, 1);
         pointerYT = clamp((e.clientY / innerHeight - 0.5) * 2, -1, 1);
         stageEl.setPointerCapture(e.pointerId);
+        startFrameLoop();
       });
       stageEl.addEventListener("pointermove", (e) => {
         lastInput = performance.now();
         pointerXT = clamp((e.clientX / innerWidth - 0.5) * 2, -1, 1);
         pointerYT = clamp((e.clientY / innerHeight - 0.5) * 2, -1, 1);
         pitchT = ((e.clientY / innerHeight) - 0.5) * -3;
+        startFrameLoop();
         if (dragging) {
           const dx = e.clientX - lastX, now = performance.now();
           dragDist += Math.abs(dx);
@@ -9439,7 +9745,7 @@ body.header-parallax-active .header-identity {
           lastX = e.clientX; lastT = now;
           if (dragDist > 8) setFocus(null);
         } else if (!document.body.classList.contains("rw-pull")) {
-          setFocus(pick(e.clientX, e.clientY));
+          schedulePick(e.clientX, e.clientY);
         }
       });
       window.addEventListener("pointerup", () => {
@@ -9448,12 +9754,15 @@ body.header-parallax-active .header-identity {
         stageEl.classList.remove("dragging");
         lastInput = performance.now();
         wallXT += vel * 14;
+        startFrameLoop();
       });
       stageEl.addEventListener("pointerleave", () => {
+        cancelPick();
         if (!dragging) setFocus(null);
         pointerXT = 0;
         pointerYT = 0;
         pitchT = 0;
+        startFrameLoop();
       });
 
       stageEl.addEventListener("click", (e) => {
@@ -9473,6 +9782,7 @@ body.header-parallax-active .header-identity {
         const r = card.getBoundingClientRect();
         wallXT += innerWidth / 2 - (r.left + r.width / 2);
         setFocus(card);
+        startFrameLoop();
       });
 
       let resizeT;
@@ -9563,7 +9873,7 @@ body.header-parallax-active .header-identity {
         previewFrozenCol.classList.add("rw-flatten");
         previewFrozenCol.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(90px)";
         previewFrozenCol.style.opacity = "1";
-        previewFrozenCol.style.filter = "brightness(1.04) saturate(1)";
+        previewFrozenCol.style.filter = chromePerf ? "" : "brightness(1.04) saturate(1)";
         previewFrozenCol.style.zIndex = "120";
         previewFrozenCol.style.setProperty("--shade", "0");
       }
@@ -9794,13 +10104,13 @@ body.header-parallax-active .header-identity {
     if (wallMQ.addEventListener) wallMQ.addEventListener("change", startWall);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
-        stopRecordWallLoops();
+        stopFrameLoop();
         return;
       }
       startFrameLoop();
     });
     window.addEventListener("jm:roomchange", () => {
-      stopRecordWallLoops();
+      stopFrameLoop();
       startFrameLoop();
     });
   })();
