@@ -81,6 +81,29 @@
     .exec-card-text{margin:0;color:rgba(242,238,231,.66);font-size:clamp(.9rem,1vw,.98rem);line-height:1.72}
     .outcome-block{padding:clamp(1.3rem,2.2vw,2rem);border:1px solid rgba(111,140,255,.14);background:rgba(5,7,12,.62);border-left:2px solid rgba(111,140,255,.44)}
     .outcome-text{margin:0;color:rgba(248,242,233,.8);font-size:clamp(.96rem,1.12vw,1.08rem);line-height:1.68}
+    .xbox-moment-card{position:relative;display:grid;grid-template-columns:minmax(0,.82fr) minmax(20rem,1fr);gap:clamp(1rem,2vw,1.6rem);padding:clamp(1.05rem,2.4vw,1.7rem);border:1px solid rgba(255,107,53,.18);background:linear-gradient(135deg,rgba(255,107,53,.09),rgba(5,7,12,.74) 42%,rgba(5,7,12,.56));box-shadow:inset 0 1px 0 rgba(248,242,233,.04),0 28px 90px rgba(0,0,0,.28);overflow:hidden}
+    .xbox-moment-card:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,107,53,.24),transparent 30%),radial-gradient(circle at 88% 10%,rgba(255,107,53,.16),transparent 18rem);opacity:.46;pointer-events:none}
+    .xbox-moment-copy,.x-post-frame{position:relative;z-index:1}
+    .xbox-moment-copy{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(1rem,2vw,1.35rem);min-width:0}
+    .xbox-kicker{color:var(--gold);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.2em}
+    .xbox-moment-title{margin:0;font-family:Anton,Impact,sans-serif;font-size:clamp(2rem,4vw,4rem);line-height:.88;letter-spacing:.035em;text-transform:uppercase;color:rgba(248,242,233,.94)}
+    .xbox-moment-text{margin:.72rem 0 0;color:rgba(248,242,233,.7);font-size:clamp(.92rem,1.02vw,1rem);line-height:1.7;max-width:54ch}
+    .xbox-impact-tags{display:flex;flex-wrap:wrap;gap:.42rem}
+    .xbox-impact-tag{min-height:30px;display:inline-flex;align-items:center;border:1px solid rgba(255,107,53,.24);background:rgba(3,5,9,.54);color:rgba(248,242,233,.72);font:700 .5rem/1 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;padding:0 .62rem}
+    .xbox-impact-tag.is-primary{border-color:rgba(255,107,53,.42);color:rgba(248,242,233,.9);background:rgba(255,107,53,.12)}
+    .x-post-frame{height:clamp(28rem,42vw,35rem);display:grid;place-items:center;border:1px solid rgba(111,140,255,.12);background:repeating-linear-gradient(90deg,rgba(111,140,255,.034) 0,rgba(111,140,255,.034) 1px,transparent 1px,transparent 28px),linear-gradient(180deg,rgba(3,5,9,.58),rgba(3,5,9,.84));overflow:hidden}
+    .x-post-frame:before{content:"";position:absolute;inset:12px;border:1px solid rgba(255,107,53,.1);pointer-events:none;z-index:2}
+    .x-post-frame .twitter-tweet{position:relative;z-index:3;width:100%!important;max-width:550px!important;margin:0 auto!important;opacity:0;transition:opacity 260ms ease}
+    .x-post-frame iframe[id^="twitter-widget"],.x-post-frame iframe.twitter-tweet{position:relative!important;z-index:4;width:100%!important;max-width:550px!important;margin:0 auto!important;opacity:0;pointer-events:none;transition:opacity 260ms ease}
+    .x-post-frame.is-embedded iframe[id^="twitter-widget"],.x-post-frame.is-embedded iframe.twitter-tweet{opacity:1;pointer-events:auto}
+    .x-post-frame.is-embedded .twitter-tweet{opacity:1}
+    .x-post-fallback{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;gap:.72rem;padding:clamp(1.05rem,2vw,1.45rem);background:linear-gradient(180deg,rgba(8,10,13,.14),rgba(8,10,13,.9)),radial-gradient(circle at 22% 18%,rgba(255,107,53,.18),transparent 14rem);transition:opacity 220ms ease,visibility 220ms ease}
+    .x-post-frame.is-embedded .x-post-fallback{opacity:0;visibility:hidden;pointer-events:none}
+    .x-post-fallback-label{color:var(--gold);text-transform:uppercase;font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.18em}
+    .x-post-fallback strong{color:var(--ink);font-family:Anton,Impact,sans-serif;font-size:clamp(2.7rem,5.5vw,5.4rem);line-height:.86;letter-spacing:.035em;text-transform:uppercase}
+    .x-post-fallback p{margin:0;color:rgba(248,242,233,.64);font:700 .62rem/1.45 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+    .x-post-link{width:max-content;min-height:44px;display:inline-flex;align-items:center;border:1px solid rgba(248,242,233,.22);background:rgba(248,242,233,.9);color:var(--bg);text-decoration:none;text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;padding:0 .95rem;transition:background 220ms ease,border-color 220ms ease,color 220ms ease}
+    .x-post-link:hover{background:var(--ink);border-color:rgba(255,107,53,.44)}
     .strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.6rem,1.2vw,.9rem)}
     .strip-card{display:flex;flex-direction:column}
     .strip-card-media{overflow:hidden;background:repeating-linear-gradient(90deg,rgba(111,140,255,.04) 0,rgba(111,140,255,.04) 1px,transparent 1px,transparent 22px),repeating-linear-gradient(rgba(111,140,255,.032) 0,rgba(111,140,255,.032) 1px,transparent 1px,transparent 22px),rgba(4,6,11,.78);display:grid;place-items:center;border:1px solid rgba(111,140,255,.1);border-bottom:0;aspect-ratio:4/3}
@@ -133,7 +156,13 @@
       .nav{width:calc(100vw - 24px);bottom:calc(14px + env(safe-area-inset-bottom,0px));padding:.34rem;gap:.18rem}
       .nav a,.nav button{min-height:44px;font-size:.52rem;letter-spacing:.08em;padding:0 .48rem}
       .commentary-toggle{left:16px;right:16px;bottom:calc(5.65rem + env(safe-area-inset-bottom,0px));min-height:44px;font-size:.52rem;letter-spacing:.12em}
-      .case-study,.cs-section,.overview-panels,.exec-grid,.editorial,.editorial-inner,.feature-block,.outcome-block,.strip{min-width:0;width:100%;max-width:100%}
+      .case-study,.cs-section,.overview-panels,.exec-grid,.editorial,.editorial-inner,.feature-block,.outcome-block,.xbox-moment-card,.xbox-moment-copy,.x-post-frame,.strip{min-width:0;width:100%;max-width:100%}
+      .xbox-moment-card{grid-template-columns:1fr;padding:1rem;gap:1rem}
+      .xbox-moment-title{font-size:clamp(2.2rem,12vw,3.4rem)}
+      .xbox-impact-tag{min-height:32px;font-size:.46rem;letter-spacing:.08em;padding:0 .5rem}
+      .x-post-frame{height:26rem}
+      .x-post-fallback{padding:1rem}
+      .x-post-link{width:100%;justify-content:center}
       .modal{padding:16px}.close{min-height:44px}
     }
     .editorial{margin-bottom:clamp(2.4rem,4.5vw,4rem)}.editorial-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3.5vw,3rem);align-items:center}.editorial-img-group{display:flex;flex-direction:column}.editorial-inner.img-left .editorial-img-group{order:-1}.editorial-media{overflow:hidden;border:1px solid rgba(111,140,255,.14);background:rgba(4,6,11,.78)}.editorial-media img{width:100%;height:auto;display:block}.editorial-caption{padding:.5rem .75rem;border:1px solid rgba(111,140,255,.08);border-top:none;background:rgba(4,6,11,.62);color:rgba(248,242,233,.38);font:700 .52rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}.editorial-text-wrap{display:flex;flex-direction:column;gap:.9rem}.editorial-eyebrow{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.2em}.editorial-head{margin:0;font-family:Anton,Impact,sans-serif;font-size:clamp(1.8rem,3vw,3.2rem);line-height:.9;letter-spacing:.03em;text-transform:uppercase}.editorial-body{margin:0;color:rgba(248,242,233,.7);font-size:clamp(.92rem,1.05vw,1.02rem);line-height:1.72}.feature-block{margin-bottom:clamp(2.4rem,4.5vw,4rem);position:relative;border:1px solid rgba(111,140,255,.14);overflow:hidden}.feature-block img{width:100%;display:block;max-height:58vh;object-fit:cover;object-position:center}.feature-overlay{position:absolute;bottom:0;left:0;right:0;padding:clamp(1.2rem,3vw,2.4rem);background:linear-gradient(transparent,rgba(8,10,13,.92))}.feature-eyebrow{color:var(--gold);text-transform:uppercase;font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.2em;display:block;margin-bottom:.55rem}.feature-head{margin:0 0 .6rem;font-family:Anton,Impact,sans-serif;font-size:clamp(1.6rem,3vw,3rem);line-height:.9;letter-spacing:.03em;text-transform:uppercase}.feature-body{margin:0;color:rgba(248,242,233,.72);font-size:clamp(.88rem,1.02vw,.98rem);line-height:1.66;max-width:58ch}.strip-card-media img{width:100%;height:100%;object-fit:cover;display:block}
@@ -309,6 +338,35 @@
         </div>
       </div>
 
+      <div class="cs-section xbox-moment" aria-labelledby="xbox-moment-title">
+        <div class="cs-section-head"><span class="cs-section-label">Distribution</span><div class="cs-section-line"></div></div>
+        <div class="xbox-moment-card">
+          <div class="xbox-moment-copy">
+            <div>
+              <span class="xbox-kicker">Xbox Distribution Moment</span>
+              <h2 class="xbox-moment-title" id="xbox-moment-title">Posted by Xbox</h2>
+              <p class="xbox-moment-text">The DOOM: The Dark Ages x CORSAIR film reached Xbox's audience directly on X, where the post cleared 200,000 views while keeping the piece rooted in the campaign's cinematic world.</p>
+            </div>
+            <div class="xbox-impact-tags" aria-label="Xbox post impact">
+              <span class="xbox-impact-tag is-primary">Posted by Xbox</span>
+              <span class="xbox-impact-tag">200K+ views</span>
+              <span class="xbox-impact-tag">DOOM: The Dark Ages x CORSAIR</span>
+            </div>
+          </div>
+          <div class="x-post-frame" data-x-post>
+            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+              <a href="https://x.com/Xbox/status/1935397101770260742"></a>
+            </blockquote>
+            <div class="x-post-fallback" data-x-fallback>
+              <span class="x-post-fallback-label">Posted by Xbox</span>
+              <strong>200K+ views</strong>
+              <p>DOOM: The Dark Ages x CORSAIR</p>
+              <a class="x-post-link" href="https://x.com/Xbox/status/1935397101770260742" target="_blank" rel="noopener noreferrer">View post on X</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="cs-section strip-section">
         <div class="cs-section-head"><span class="cs-section-label">Process</span><div class="cs-section-line"></div></div>
         <div class="strip">
@@ -335,6 +393,7 @@
   <button class="commentary-toggle" id="commentaryToggle" type="button" aria-pressed="false"><span class="commentary-dot"></span><span>Director's commentary</span><span class="commentary-state">Off</span></button>
   <nav class="nav"><a href="../index.html#work">Work</a><a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a><button data-video="mFeMMMmdW24">▶ Reel</button></nav>
   <div class="modal" id="modal"><div class="modal-inner"><button class="close" type="button">Close</button><iframe id="frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video player"></iframe></div></div>
+  <script>(()=>{const post=document.querySelector("[data-x-post]");if(!post)return;function markEmbedded(event){if(!event?.target||post.contains(event.target))post.classList.add("is-embedded")}function bindRenderedEvent(){window.twttr?.events?.bind?.("rendered",markEmbedded)}function loadWidgets(){bindRenderedEvent();const widgets=window.twttr?.widgets;if(!widgets?.load)return;widgets.load(post)}const existing=document.querySelector('script[src*="platform.twitter.com/widgets"]');if(window.twttr?.widgets?.load)loadWidgets();else if(existing)existing.addEventListener("load",loadWidgets,{once:true});else{const script=document.createElement("script");script.async=true;script.src="https://platform.twitter.com/widgets.js";script.charset="utf-8";script.id="twitter-widgets-script";script.onload=loadWidgets;document.head.appendChild(script)}})();</script>
   <script>(()=>{const toggle=document.getElementById("commentaryToggle"),state=toggle?.querySelector(".commentary-state");if(!toggle)return;function setCommentary(on){document.body.classList.toggle("commentary",on);toggle.setAttribute("aria-pressed",on?"true":"false");if(state)state.textContent=on?"On":"Off"}toggle.addEventListener("click",()=>setCommentary(!document.body.classList.contains("commentary")));if(new URLSearchParams(location.search).get("commentary")==="on")setCommentary(true);})();</script>
   <script>const modal=document.querySelector("#modal"),frame=document.querySelector("#frame"),back=document.querySelector("[data-back]");try{const saved=JSON.parse(sessionStorage.getItem("jm_archive_return")||"null");if(saved?.route)back.href=`../index.html#${saved.route}`}catch(e){}document.querySelectorAll("[data-video]").forEach(b=>b.addEventListener("click",()=>{frame.src=`https://www.youtube.com/embed/${b.dataset.video}?autoplay=1&rel=0`;modal.classList.add("active")}));document.querySelector(".close").addEventListener("click",()=>{modal.classList.remove("active");frame.src=""});modal.addEventListener("click",e=>{if(e.target===modal)document.querySelector(".close").click()});document.querySelector('.hero-play')?.addEventListener('click',function(){const v=this.dataset.heroVideo;if(!v)return;const f=document.createElement('iframe');f.className='hero-iframe';f.src=`https://www.youtube.com/embed/${v}?autoplay=1&rel=0`;f.allow='autoplay;encrypted-media;picture-in-picture';f.setAttribute('allowfullscreen','');f.title='Film player';const h=this.closest('.hero-frame');h.appendChild(f);h.classList.add('is-playing');});</script>
   <script>(()=>{const fine=matchMedia("(hover:hover) and (pointer:fine)"),reduced=matchMedia("(prefers-reduced-motion: reduce)");let x=innerWidth/2,y=innerHeight/2,raf=0;function write(){raf=0;if(!fine.matches||reduced.matches||document.hidden)return;document.documentElement.style.setProperty("--cursor-x",`${x}px`);document.documentElement.style.setProperty("--cursor-y",`${y}px`)}window.addEventListener("pointermove",e=>{x=e.clientX;y=e.clientY;if(!raf)raf=requestAnimationFrame(write)},{passive:true});})();</script>
