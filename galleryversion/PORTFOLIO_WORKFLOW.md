@@ -7,6 +7,7 @@ This document makes it easy for Jared to message Hermes, request portfolio chang
 - Local working folder: `E:/Portfolio/galleryversion`
 - Git repository root: `E:/Portfolio`
 - Public GitHub repo: `https://github.com/jmcdanielproductions-bit/Portfolio`
+- Git push remote: `git@github.com:jmcdanielproductions-bit/Portfolio.git` via SSH, so Hermes can push without GitHub Desktop/Git Credential Manager popups.
 - Current public Vercel URL: `https://portfolio-steel-one-45x10q8lkk.vercel.app/`
 - Main site entry: `index.html`
 

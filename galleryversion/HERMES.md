@@ -5,7 +5,7 @@ This folder is the current live portfolio build for Jared McDaniel’s cinematic
 ## Project location
 
 - Local folder: `E:/Portfolio/galleryversion`
-- Git remote: `https://github.com/jmcdanielproductions-bit/Portfolio.git`
+- Git remote: `git@github.com:jmcdanielproductions-bit/Portfolio.git` (SSH, avoids GitHub Desktop/Git Credential Manager popups during unattended pushes)
 - Public repo: `https://github.com/jmcdanielproductions-bit/Portfolio`
 - Vercel public link found in GitHub About: `https://portfolio-steel-one-45x10q8lkk.vercel.app/`
 - Static site: no package manager/build step is currently required for this folder. Serve locally with:
