@@ -59,7 +59,7 @@ Safe default flow:
 ```bash
 git -C /e/Portfolio status --short --branch
 git -C /e/Portfolio diff --stat
-git -C /e/Portfolio add galleryversion/<changed-files>
+git -C /e/Portfolio add galleryversion/path-to-file.html
 git -C /e/Portfolio commit -m "type: short description"
 git -C /e/Portfolio push origin main
 ```
