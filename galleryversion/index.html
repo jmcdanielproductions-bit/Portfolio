@@ -4707,7 +4707,7 @@ body.intro-settled .review-path {
     }
 body.skip-intro .brand-partners,
 body.intro-settled .brand-partners {
-      opacity: 1;
+      opacity: 0.58;
     }
 .brand-partners-label {
       margin: 0 0 1.6rem;
@@ -5102,7 +5102,7 @@ body.rw-preview-open .rw-world {filter:brightness(.34) saturate(.62)}
     }
 .rw-preview-back {
       position:fixed;top:1.35rem;right:1.6rem;z-index:2;
-      min-height:40px;border:1px solid rgba(242,238,231,.16);border-radius:999px;
+      min-height:44px;border:1px solid rgba(242,238,231,.16);border-radius:999px;
       background:rgba(8,12,18,.72);color:var(--ink);backdrop-filter:blur(10px);
       font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.22em;text-transform:uppercase;
       padding:0 1rem;cursor:pointer;
@@ -5153,7 +5153,7 @@ body.rw-preview-open .rw-world {filter:brightness(.34) saturate(.62)}
       margin:0;color:rgba(242,238,231,.68);font-size:1.02rem;line-height:1.75;
     }
 .rw-preview-open {
-      display:inline-flex;align-items:center;min-height:42px;margin-top:1.4rem;
+      display:inline-flex;align-items:center;min-height:44px;margin-top:1.4rem;
       border:1px solid var(--rw-mood);border-radius:999px;color:var(--ink);
       text-decoration:none;background:rgba(8,12,18,.52);padding:0 1.2rem;
       font:700 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.24em;text-transform:uppercase;
@@ -5164,9 +5164,9 @@ body.rw-preview-open .rw-world {filter:brightness(.34) saturate(.62)}
       position:absolute;left:0;right:0;bottom:1.25rem;z-index:6;
       display:flex;justify-content:center;gap:2.2rem;pointer-events:none;
       font:700 .54rem/1 "JetBrains Mono",monospace;letter-spacing:.26em;
-      color:rgba(242,238,231,.36);text-transform:uppercase;
+      color:rgba(242,238,231,.22);text-transform:uppercase;
     }
-.rw-statusline #rwFocusLine {color:rgba(242,238,231,.6);transition:color .5s}
+.rw-statusline #rwFocusLine {color:rgba(242,238,231,.38);transition:color .5s}
 /* compact "Selected Work With" under the wall */
     .brand-partners {bottom:3.2rem !important;z-index:6}
 .brand-partners-label {margin-bottom:1rem !important}
@@ -5579,7 +5579,7 @@ body.menu-open .mobile-menu-overlay {
       margin: 0.45rem 0 0.15rem;
     }
 .rw-mobile-jumpbar button {
-      min-height: 42px;
+      min-height: 44px;
       border: 1px solid rgba(111, 140, 255, 0.18);
       background: rgba(8, 12, 18, 0.58);
       color: rgba(248, 242, 233, 0.72);
@@ -6307,7 +6307,7 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-mobile .rw-mrow {
         radial-gradient(ellipse at 50% 50%, rgba(214, 183, 122, 0.07), transparent 24rem),
         linear-gradient(180deg, rgba(1, 2, 4, 0.94), rgba(3, 5, 9, 0.44) 48%, rgba(1, 2, 4, 0.8));
       opacity: 0;
-      animation: introVaultBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introVaultBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 .intro-bloom-axis {
       background:
@@ -6315,7 +6315,7 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-mobile .rw-mrow {
         linear-gradient(180deg, transparent 0 22%, rgba(214, 183, 122, 0.035) 22.04% 22.09%, transparent 22.15% 78%, rgba(111, 140, 255, 0.03) 78.04% 78.09%, transparent 78.15%);
       opacity: 0;
       transform: scale(1.18);
-      animation: introAxisBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introAxisBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body.skip-intro .intro-bloom,
 body.intro-settled .intro-bloom {
@@ -6327,7 +6327,7 @@ body:not(.skip-intro):not(.intro-settled) .intro-scrim {
       background:
         radial-gradient(ellipse at 50% 46%, rgba(111, 140, 255, 0.08), transparent 28rem),
         linear-gradient(180deg, #010203 0%, rgba(1, 2, 4, 0.94) 48%, rgba(1, 2, 4, 0.74) 100%);
-      animation: introScrimBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introScrimBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body:not(.skip-intro):not(.intro-settled) .intro-scrim::after {
       content: none;
@@ -6335,11 +6335,11 @@ body:not(.skip-intro):not(.intro-settled) .intro-scrim::after {
       animation: none;
     }
 body:not(.skip-intro):not(.intro-settled) .archive-identity {
-      animation: introIdentityBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introIdentityBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body:not(.skip-intro):not(.intro-settled) .identity-name {
       position: relative;
-      animation: introNameTracking 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introNameTracking 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body:not(.skip-intro):not(.intro-settled) .identity-name::before,
 body:not(.skip-intro):not(.intro-settled) .identity-name::after {
@@ -6367,20 +6367,20 @@ body:not(.skip-intro):not(.intro-settled) .identity-name::after {
       animation: introSignalGold 1.05s steps(2, end) 0.34s both;
     }
 body:not(.skip-intro):not(.intro-settled) .identity-role {
-      animation: introRoleResolve 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introRoleResolve 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body:not(.skip-intro):not(.intro-settled) .archive-stage {
       opacity: 1;
       transform-origin: 50% 48%;
-      animation: archiveStageBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: archiveStageBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
       will-change: transform, opacity, filter;
     }
 body:not(.skip-intro):not(.intro-settled) .rw-world {
-      animation: realWallBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: realWallBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body:not(.skip-intro):not(.intro-settled) .rw-statusline,
 body:not(.skip-intro):not(.intro-settled) .brand-partners {
-      animation: introSupportingBloom 4.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introSupportingBloom 1.55s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     @keyframes introVaultBloom {
@@ -6547,7 +6547,7 @@ body:not(.skip-intro):not(.intro-settled) .brand-partners {
         radial-gradient(ellipse at 50% 46%, rgba(111, 140, 255, 0.045), transparent 25rem),
         radial-gradient(ellipse at 50% 54%, rgba(214, 183, 122, 0.028), transparent 21rem),
         linear-gradient(180deg, rgba(1, 2, 4, 0.98), rgba(1, 2, 4, 0.93) 56%, rgba(1, 2, 4, 0.78));
-      animation: introScrimWallResolve 5s linear both;
+      animation: introScrimWallResolve 1.65s linear both;
     }
 body:not(.skip-intro):not(.intro-settled) .intro-scrim::after {
       content: none !important;
@@ -6559,11 +6559,11 @@ body:not(.skip-intro):not(.intro-settled) .intro-bloom-vault {
         radial-gradient(ellipse at 50% 47%, rgba(111, 140, 255, 0.13), transparent 28rem),
         radial-gradient(ellipse at 50% 52%, rgba(214, 183, 122, 0.045), transparent 22rem),
         linear-gradient(180deg, rgba(1, 2, 4, 0.6), rgba(3, 5, 9, 0.3) 52%, rgba(1, 2, 4, 0.72));
-      animation: introVaultWallResolve 5s linear both;
+      animation: introVaultWallResolve 1.65s linear both;
     }
 body:not(.skip-intro):not(.intro-settled) .intro-bloom-axis {
       opacity: 0;
-      animation: introAxisWallResolve 5s linear both;
+      animation: introAxisWallResolve 1.65s linear both;
     }
 body.intro-bloom-live.archive-room-active:not(.skip-intro):not(.intro-settled) .archive-identity {
       display: block !important;
@@ -6574,20 +6574,20 @@ body.intro-bloom-live.archive-room-active:not(.skip-intro):not(.intro-settled) .
       pointer-events: none;
     }
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .archive-identity {
-      animation: introIdentityWallResolve 5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introIdentityWallResolve 1.65s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .identity-name {
-      animation: introNameWallTracking 5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introNameWallTracking 1.65s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .identity-role {
-      animation: introRoleWallResolve 5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: introRoleWallResolve 1.65s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 body.intro-bloom-live.intro-wall-ready:not(.skip-intro):not(.intro-settled) .archive-stage {
       z-index: 62;
       opacity: 1;
       transform: translateY(0);
       transform-origin: 50% 47%;
-      animation: archiveStageWallResolve 4.65s cubic-bezier(0.19, 1, 0.22, 1) both;
+      animation: archiveStageWallResolve 1.45s cubic-bezier(0.19, 1, 0.22, 1) both;
       pointer-events: none;
     }
 body.intro-bloom-live:not(.intro-wall-ready):not(.skip-intro):not(.intro-settled) .archive-stage {
@@ -6610,14 +6610,14 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-card {
       filter: blur(20px) brightness(0.18) saturate(0.52);
       pointer-events: none;
       animation:
-        rwIntroCardResolve 4.65s cubic-bezier(0.19, 1, 0.22, 1) var(--rw-intro-delay, 0s) both,
-        rwIntroCardFade 4.65s linear var(--rw-intro-delay, 0s) both;
+        rwIntroCardResolve 1.45s cubic-bezier(0.19, 1, 0.22, 1) var(--rw-intro-delay, 0s) both,
+        rwIntroCardFade 1.45s linear var(--rw-intro-delay, 0s) both;
       will-change: transform, opacity, filter;
     }
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-card[data-reel="true"] {
       animation:
-        rwIntroReelResolve 4.65s cubic-bezier(0.19, 1, 0.22, 1) var(--rw-intro-delay, .08s) both,
-        rwIntroCardFade 4.65s linear var(--rw-intro-delay, .08s) both;
+        rwIntroReelResolve 1.45s cubic-bezier(0.19, 1, 0.22, 1) var(--rw-intro-delay, .08s) both,
+        rwIntroCardFade 1.45s linear var(--rw-intro-delay, .08s) both;
     }
 body.intro-bloom-live:not(.intro-wall-ready):not(.skip-intro):not(.intro-settled) .rw-card {
       animation: none;
@@ -6627,7 +6627,7 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-card .rw-thumb {
     }
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-statusline,
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .brand-partners {
-      animation: introSupportingWallResolve 5s linear both;
+      animation: introSupportingWallResolve 1.65s linear both;
     }
 body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-mobile {
       position: relative;
@@ -6642,8 +6642,8 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-mobile .rw-mrow {
       filter: blur(14px) brightness(0.28) saturate(0.62);
       pointer-events: none;
       animation:
-        mobileIntroIndexResolve 4.35s cubic-bezier(0.19, 1, 0.22, 1) var(--rw-intro-delay, 0s) both,
-        mobileIntroIndexFade 4.35s linear var(--rw-intro-delay, 0s) both;
+        mobileIntroIndexResolve 1.35s cubic-bezier(0.19, 1, 0.22, 1) var(--rw-intro-delay, 0s) both,
+        mobileIntroIndexFade 1.35s linear var(--rw-intro-delay, 0s) both;
       will-change: transform, opacity, filter;
     }
 body.intro-bloom-live:not(.intro-wall-ready):not(.skip-intro):not(.intro-settled) .rw-mobile .rw-mcard,
@@ -7191,18 +7191,18 @@ body.header-parallax-active .header-identity {
   </style>
   <style id="archiveCompositionPolishCss">/* Focused composition polish: archive annotations and recruiter path. */
     .archive-stage {
-      --archive-annotation-x: clamp(4.8rem, 8vw, 8.9rem);
-      --archive-annotation-y: clamp(6.4rem, 13.5svh, 8.7rem);
-      --archive-review-x: clamp(1.8rem, 5vw, 6.5rem);
-      --archive-review-y: clamp(7rem, 18svh, 13.4rem);
+      --archive-annotation-x: clamp(4.2rem, 6.2vw, 7.25rem);
+      --archive-annotation-y: clamp(5.25rem, 9svh, 6.7rem);
+      --archive-review-x: clamp(1.35rem, 2.6vw, 3.3rem);
+      --archive-review-y: clamp(5.65rem, 9.6svh, 7.3rem);
     }
     .leadership-thesis {
       left: var(--archive-annotation-x) !important;
       top: var(--archive-annotation-y) !important;
       z-index: 9;
-      width: min(29rem, 33vw);
-      max-width: min(29rem, 33vw) !important;
-      padding: clamp(0.78rem, 1vw, 0.98rem) clamp(0.95rem, 1.25vw, 1.2rem);
+      width: min(25.5rem, 29vw);
+      max-width: min(25.5rem, 29vw) !important;
+      padding: clamp(0.72rem, 0.9vw, 0.9rem) clamp(0.9rem, 1.1vw, 1.08rem);
       border-left: 1px solid rgba(214, 183, 122, 0.42);
       background:
         linear-gradient(90deg, rgba(3, 5, 9, 0.82), rgba(3, 5, 9, 0.58) 70%, rgba(3, 5, 9, 0)),
@@ -7243,7 +7243,7 @@ body.header-parallax-active .header-identity {
     }
     body.intro-settled .leadership-thesis,
     body.skip-intro .leadership-thesis {
-      opacity: 1 !important;
+      opacity: 0.72 !important;
       filter: blur(0);
       transform: translate3d(0, 0, 0) !important;
     }
@@ -7255,14 +7255,14 @@ body.header-parallax-active .header-identity {
     }
     .leadership-thesis .hero-statement-eyebrow {
       margin-bottom: 0.46rem;
-      color: rgba(214, 183, 122, 0.76);
+      color: rgba(214, 183, 122, 0.54);
       font-size: clamp(0.5rem, 0.56vw, 0.58rem);
       letter-spacing: 0.2em;
     }
     .leadership-thesis .hero-statement-copy {
-      max-width: 24rem;
-      color: rgba(248, 242, 233, 0.76);
-      font-size: clamp(0.88rem, 0.98vw, 1.02rem);
+      max-width: 22rem;
+      color: rgba(248, 242, 233, 0.54);
+      font-size: clamp(0.82rem, 0.9vw, 0.96rem);
       line-height: 1.52;
       text-wrap: balance;
     }
@@ -7271,18 +7271,18 @@ body.header-parallax-active .header-identity {
       top: var(--archive-review-y) !important;
       z-index: 10;
       isolation: isolate;
-      width: min(21rem, 27vw) !important;
+      width: min(19.5rem, 23vw) !important;
       gap: 0;
-      padding: clamp(0.95rem, 1.25vw, 1.15rem);
-      border-color: rgba(111, 140, 255, 0.28);
+      padding: clamp(0.84rem, 1vw, 1rem);
+      border-color: rgba(214, 183, 122, 0.34);
       background:
-        linear-gradient(180deg, rgba(248, 242, 233, 0.045), rgba(248, 242, 233, 0.008)),
-        radial-gradient(ellipse at 100% 0%, rgba(111, 140, 255, 0.15), transparent 58%),
-        rgba(4, 7, 13, 0.7);
+        linear-gradient(180deg, rgba(248, 242, 233, 0.05), rgba(248, 242, 233, 0.01)),
+        radial-gradient(ellipse at 100% 0%, rgba(214, 183, 122, 0.14), transparent 58%),
+        rgba(4, 7, 13, 0.76);
       box-shadow:
-        0 22px 72px rgba(0, 0, 0, 0.4),
+        0 20px 58px rgba(0, 0, 0, 0.38),
         0 0 0 1px rgba(248, 242, 233, 0.025) inset,
-        0 0 44px rgba(111, 140, 255, 0.1);
+        0 0 32px rgba(214, 183, 122, 0.08);
       backdrop-filter: blur(12px) saturate(1.12);
       opacity: 0;
       filter: blur(12px);
@@ -7296,10 +7296,10 @@ body.header-parallax-active .header-identity {
       transition-delay: 0ms;
     }
     .review-path::before {
-      content: "MISSION PATH";
+      content: "FAST PATH";
       display: block;
-      margin: 0 0 0.62rem;
-      color: rgba(111, 140, 255, 0.6);
+      margin: 0 0 0.52rem;
+      color: rgba(214, 183, 122, 0.66);
       text-transform: uppercase;
       font: 800 0.48rem / 1 "JetBrains Mono", monospace;
       letter-spacing: 0.22em;
@@ -7337,7 +7337,7 @@ body.header-parallax-active .header-identity {
       gap: 0.9rem;
       margin: 0 0 0.58rem;
       color: rgba(214, 183, 122, 0.88);
-      font-size: clamp(0.62rem, 0.7vw, 0.74rem);
+      font-size: clamp(0.58rem, 0.64vw, 0.68rem);
       letter-spacing: 0.22em;
     }
     .review-path-label::after {
@@ -7349,16 +7349,24 @@ body.header-parallax-active .header-identity {
     }
     .review-path a,
     .review-path button {
-      min-height: 42px;
+      min-height: 38px;
       padding: 0.05rem 0;
       border-top-color: rgba(242, 238, 231, 0.105);
       color: rgba(248, 242, 233, 0.72);
       font-size: clamp(0.56rem, 0.64vw, 0.66rem);
       letter-spacing: 0.11em;
     }
+    .review-path button:first-of-type,
+    .review-path a[href="#contact"] {
+      color: rgba(248, 242, 233, 0.92);
+    }
     .review-path a:first-of-type,
     .review-path button:first-of-type {
-      border-top-color: rgba(214, 183, 122, 0.22);
+      border-top-color: rgba(214, 183, 122, 0.36);
+    }
+    .review-path button:first-of-type::after,
+    .review-path a[href="#contact"]::after {
+      color: rgba(214, 183, 122, 0.86);
     }
     .review-path:hover,
     .review-path:focus-within {
@@ -7377,20 +7385,20 @@ body.header-parallax-active .header-identity {
     }
     @media (min-width: 901px) and (max-width: 1180px) {
       .archive-stage {
-        --archive-annotation-x: clamp(2.2rem, 5vw, 4.6rem);
-        --archive-annotation-y: clamp(5.7rem, 12svh, 7.2rem);
-        --archive-review-x: clamp(1.2rem, 3vw, 2.4rem);
-        --archive-review-y: clamp(6.1rem, 15svh, 9.6rem);
+        --archive-annotation-x: clamp(2rem, 4vw, 3.8rem);
+        --archive-annotation-y: clamp(5.1rem, 9svh, 6.35rem);
+        --archive-review-x: clamp(1rem, 2.2vw, 1.9rem);
+        --archive-review-y: clamp(5.45rem, 9.8svh, 6.9rem);
       }
       .leadership-thesis {
-        width: min(25rem, 34vw);
-        max-width: min(25rem, 34vw) !important;
+        width: min(22rem, 32vw);
+        max-width: min(22rem, 32vw) !important;
       }
       .leadership-thesis .hero-statement-copy {
         font-size: clamp(0.82rem, 0.95vw, 0.96rem);
       }
       .review-path {
-        width: min(18.5rem, 28vw) !important;
+        width: min(17.2rem, 27vw) !important;
       }
     }
     @media (min-width: 901px) and (max-height: 760px) {
@@ -7757,7 +7765,71 @@ body.header-parallax-active .header-identity {
   </style>
 </head>
 <body class="archive-room-active">
-  <a class="brand" href="#archive" data-route="archive">Jared McDaniel</a>
+  <header class="site-archive-header" aria-label="Site header">
+    <a class="header-identity" href="#archive" aria-label="Jared McDaniel archive home">
+      <span class="header-identity-name">Jared McDaniel</span>
+      <span class="header-identity-role">Creative Video Director / Editor</span>
+    </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" href="#work">Work</a>
+      <a class="header-nav-link" href="#about">About</a>
+      <a class="header-nav-link" href="#contact">Contact</a>
+      <button class="header-nav-link header-reel-button" type="button" data-action="open-reel">Reel</button>
+    </nav>
+    <nav class="header-social-links" aria-label="Social and contact links">
+      <a class="header-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect>
+          <circle cx="12" cy="12" r="4.2"></circle>
+          <circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none"></circle>
+        </svg>
+      </a>
+      <a class="header-social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14.2 3.8v9.9a4.2 4.2 0 1 1-4.2-4.2"></path>
+          <path d="M14.2 3.8c.5 3 2.2 4.9 5.1 5.4"></path>
+          <path d="M10 9.5v3.8"></path>
+        </svg>
+      </a>
+      <a class="header-social-link" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3.5" y="5.5" width="17" height="13" rx="2.2"></rect>
+          <path d="m4.6 7.1 7.4 5.7 7.4-5.7"></path>
+        </svg>
+      </a>
+    </nav>
+    <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu-overlay" id="mobileMenu" aria-hidden="true" aria-modal="true" role="dialog" aria-label="Navigation menu" tabindex="-1">
+    <div class="mobile-menu-inner">
+      <div class="mobile-menu-eyebrow">Navigation</div>
+      <nav class="mobile-menu-nav-links" aria-label="Mobile navigation">
+        <a class="mobile-menu-link" href="#work">Work</a>
+        <button class="mobile-menu-link" type="button" id="mobileReelBtn">Reel</button>
+        <a class="mobile-menu-link" href="#about">About</a>
+        <a class="mobile-menu-link" href="#contact">Contact</a>
+      </nav>
+      <div class="mobile-menu-footer">
+        <div class="mobile-menu-socials">
+          <a class="mobile-menu-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none"></circle></svg>
+          </a>
+          <a class="mobile-menu-social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 3.8v9.9a4.2 4.2 0 1 1-4.2-4.2"></path><path d="M14.2 3.8c.5 3 2.2 4.9 5.1 5.4"></path></svg>
+          </a>
+          <a class="mobile-menu-social-link" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2"></rect><path d="m4.6 7.1 7.4 5.7 7.4-5.7"></path></svg>
+          </a>
+        </div>
+        <span class="mobile-menu-copyright">&copy; 2025 Jared McDaniel</span>
+      </div>
+    </div>
+  </div>
 
   <div class="intro-scrim" aria-hidden="true"></div>
   <div class="intro-bloom" id="introBloom" aria-hidden="true">
@@ -8059,7 +8131,7 @@ body.header-parallax-active .header-identity {
     </section>
   </main>
 
-  <div class="rw-preview" id="rwPreview" aria-hidden="true" role="dialog" aria-label="Selected record case study preview">
+  <div class="rw-preview" id="rwPreview" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Selected record case study preview" tabindex="-1">
     <div class="rw-preview-inner">
       <button class="rw-preview-back" id="rwPreviewBack" type="button">Back to the wall</button>
       <div class="rw-preview-kicker" id="rwPreviewKicker">Record selected</div>
@@ -8077,7 +8149,7 @@ body.header-parallax-active .header-identity {
     </div>
   </div>
 
-  <div class="modal" id="videoModal" aria-hidden="true">
+  <div class="modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Director reel video" tabindex="-1">
     <div class="modal-inner">
       <button class="modal-close" type="button">Close</button>
       <iframe id="videoFrame" title="Video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
@@ -8437,6 +8509,124 @@ body.header-parallax-active .header-identity {
 
     const body = document.body;
     const rootElement = document.documentElement;
+    const FOCUSABLE_SELECTOR = [
+      'a[href]',
+      'area[href]',
+      'button:not([disabled])',
+      'input:not([disabled]):not([type="hidden"])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      'iframe',
+      '[tabindex]:not([tabindex="-1"])',
+      '[contenteditable="true"]'
+    ].join(',');
+    let activeDialog = null;
+    let dialogReturnFocus = null;
+    let inertedDialogSiblings = [];
+
+    function getFocusableWithin(node) {
+      if (!node) return [];
+      return Array.from(node.querySelectorAll(FOCUSABLE_SELECTOR)).filter((el) => {
+        if (el.hasAttribute("disabled") || el.getAttribute("aria-hidden") === "true") return false;
+        const style = window.getComputedStyle(el);
+        return style.display !== "none" && style.visibility !== "hidden";
+      });
+    }
+
+    function setDialogBackgroundInert(dialog, enabled) {
+      if (!("inert" in HTMLElement.prototype)) return;
+      if (!enabled) {
+        inertedDialogSiblings.forEach((node) => { node.inert = false; });
+        inertedDialogSiblings = [];
+        return;
+      }
+      setDialogBackgroundInert(dialog, false);
+      Array.from(document.body.children).forEach((node) => {
+        if (node === dialog || node.contains(dialog)) return;
+        if (!node.inert) {
+          node.inert = true;
+          inertedDialogSiblings.push(node);
+        }
+      });
+    }
+
+    function activateDialogFocus(dialog, preferredFocus, returnFocusTarget) {
+      if (!dialog) return;
+      dialogReturnFocus = returnFocusTarget instanceof HTMLElement
+        ? returnFocusTarget
+        : document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      activeDialog = dialog;
+      setDialogBackgroundInert(dialog, true);
+      window.requestAnimationFrame(() => {
+        const target = preferredFocus || getFocusableWithin(dialog)[0] || dialog;
+        target?.focus?.({ preventScroll: true });
+      });
+    }
+
+    function releaseDialogFocus(dialog) {
+      if (!dialog || activeDialog !== dialog) return;
+      setDialogBackgroundInert(dialog, false);
+      const returnTarget = dialogReturnFocus;
+      activeDialog = null;
+      dialogReturnFocus = null;
+      if (returnTarget?.isConnected) {
+        window.requestAnimationFrame(() => returnTarget.focus({ preventScroll: true }));
+      }
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab" || !activeDialog) return;
+      const focusable = getFocusableWithin(activeDialog);
+      if (!focusable.length) {
+        event.preventDefault();
+        activeDialog.focus({ preventScroll: true });
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    });
+
+    document.addEventListener("focusin", (event) => {
+      if (!activeDialog || activeDialog.contains(event.target)) return;
+      const focusable = getFocusableWithin(activeDialog);
+      (focusable[0] || activeDialog).focus({ preventScroll: true });
+    });
+
+    function scrollTargetIntoView(target, options = {}) {
+      if (!target) return;
+      const {
+        behavior = introReducedMotionQuery?.matches ? "auto" : "smooth",
+        block = "start",
+        offset = 0
+      } = options;
+      const rect = target.getBoundingClientRect();
+      const nextTop = block === "center"
+        ? window.scrollY + rect.top - ((window.innerHeight - rect.height) / 2)
+        : window.scrollY + rect.top - offset;
+      window.scrollTo({
+        top: Math.max(0, nextTop),
+        behavior
+      });
+
+      const horizontalScroller = target.closest(".archive-wall, .filter-strip, .rw-mobile-filters");
+      if (horizontalScroller && horizontalScroller.scrollWidth > horizontalScroller.clientWidth) {
+        const scrollerRect = horizontalScroller.getBoundingClientRect();
+        horizontalScroller.scrollTo({
+          left: horizontalScroller.scrollLeft + rect.left - scrollerRect.left - ((scrollerRect.width - rect.width) / 2),
+          behavior
+        });
+      }
+    }
+
     const chromePerformanceMode = /\b(Chrome|Chromium|Edg)\//.test(navigator.userAgent) &&
       !/\b(Firefox|OPR)\//.test(navigator.userAgent);
     rootElement.classList.toggle("chrome-performance", chromePerformanceMode);
@@ -8499,11 +8689,11 @@ body.header-parallax-active .header-identity {
 
     function startIntroBloom() {
       body.classList.add("intro-bloom-live");
-      queueIntroStep(() => body.classList.add("intro-bloom-aligning"), 1200);
-      queueIntroStep(() => body.classList.add("intro-bloom-revealing"), 2600);
-      queueIntroStep(() => body.classList.add("intro-title-release"), 3300);
-      queueIntroStep(() => body.classList.add("intro-header-arming"), 4100);
-      queueIntroStep(() => settleIntro(false), 5000);
+      queueIntroStep(() => body.classList.add("intro-bloom-aligning"), 260);
+      queueIntroStep(() => body.classList.add("intro-bloom-revealing"), 620);
+      queueIntroStep(() => body.classList.add("intro-title-release"), 920);
+      queueIntroStep(() => body.classList.add("intro-header-arming"), 1180);
+      queueIntroStep(() => settleIntro(false), 1650);
     }
 
     const initialRoute = window.location.hash.replace("#", "") || "archive";
@@ -8789,7 +8979,7 @@ body.header-parallax-active .header-identity {
       archiveWall.classList.add("is-guiding");
       archiveWall.querySelectorAll(".archive-piece").forEach((piece) => piece.classList.remove("is-discovered"));
 
-      target.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+      scrollTargetIntoView(target, { behavior: "smooth", block: "center" });
       window.setTimeout(() => {
         target.classList.add("is-discovered");
       }, 360);
@@ -8853,12 +9043,14 @@ body.header-parallax-active .header-identity {
       frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
       modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
+      activateDialogFocus(modal, closeModal);
     }
 
     function closeVideo() {
       modal.classList.remove("active");
       modal.setAttribute("aria-hidden", "true");
       frame.src = "";
+      releaseDialogFocus(modal);
     }
 
     function openProject(project) {
@@ -8911,71 +9103,6 @@ body.header-parallax-active .header-identity {
     }, { passive: true });
   </script>
 
-<header class="site-archive-header" aria-label="Site header">
-  <a class="header-identity" href="#archive" aria-label="Jared McDaniel archive home">
-    <span class="header-identity-name">Jared McDaniel</span>
-    <span class="header-identity-role">Creative Video Director / Editor</span>
-  </a>
-  <nav class="header-nav" aria-label="Primary navigation">
-    <a class="header-nav-link" href="#work">Work</a>
-    <a class="header-nav-link" href="#about">About</a>
-    <a class="header-nav-link" href="#contact">Contact</a>
-    <button class="header-nav-link header-reel-button" type="button" data-action="open-reel">Reel</button>
-  </nav>
-  <nav class="header-social-links" aria-label="Social and contact links">
-    <a class="header-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect>
-        <circle cx="12" cy="12" r="4.2"></circle>
-        <circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none"></circle>
-      </svg>
-    </a>
-    <a class="header-social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M14.2 3.8v9.9a4.2 4.2 0 1 1-4.2-4.2"></path>
-        <path d="M14.2 3.8c.5 3 2.2 4.9 5.1 5.4"></path>
-        <path d="M10 9.5v3.8"></path>
-      </svg>
-    </a>
-    <a class="header-social-link" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3.5" y="5.5" width="17" height="13" rx="2.2"></rect>
-        <path d="m4.6 7.1 7.4 5.7 7.4-5.7"></path>
-      </svg>
-    </a>
-  </nav>
-  <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-label="Open navigation" aria-expanded="false">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-</header>
-
-<div class="mobile-menu-overlay" id="mobileMenu" aria-hidden="true" role="dialog" aria-label="Navigation menu">
-  <div class="mobile-menu-inner">
-    <div class="mobile-menu-eyebrow">Navigation</div>
-    <nav class="mobile-menu-nav-links" aria-label="Mobile navigation">
-      <a class="mobile-menu-link" href="#work">Work</a>
-      <button class="mobile-menu-link" type="button" id="mobileReelBtn">Reel</button>
-      <a class="mobile-menu-link" href="#about">About</a>
-      <a class="mobile-menu-link" href="#contact">Contact</a>
-    </nav>
-    <div class="mobile-menu-footer">
-      <div class="mobile-menu-socials">
-        <a class="mobile-menu-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none"></circle></svg>
-        </a>
-        <a class="mobile-menu-social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 3.8v9.9a4.2 4.2 0 1 1-4.2-4.2"></path><path d="M14.2 3.8c.5 3 2.2 4.9 5.1 5.4"></path></svg>
-        </a>
-        <a class="mobile-menu-social-link" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2"></rect><path d="m4.6 7.1 7.4 5.7 7.4-5.7"></path></svg>
-        </a>
-      </div>
-      <span class="mobile-menu-copyright">© 2025 Jared McDaniel</span>
-    </div>
-  </div>
-</div>
 <script>
   (() => {
     const headerLinks = Array.from(document.querySelectorAll('.header-nav-link[href^="#"]'));
@@ -9122,6 +9249,7 @@ body.header-parallax-active .header-identity {
 
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
+      if (document.body.classList.contains('menu-open')) return;
       closeOpenModal();
     });
 
@@ -9854,6 +9982,7 @@ body.header-parallax-active .header-identity {
       root.style.setProperty("--rw-mood-soft", "rgba(111,140,255,.13)");
       if (focusLine) focusLine.textContent = IDLE_LINE;
       startFrameLoop();
+      releaseDialogFocus(preview.el);
     }
 
     function showPreview(source, rec) {
@@ -9892,6 +10021,7 @@ body.header-parallax-active .header-identity {
 
       document.body.classList.add("rw-pull", "rw-preview-open");
       preview.el.setAttribute("aria-hidden", "false");
+      activateDialogFocus(preview.el, preview.back, source);
     }
 
     function openRecord(card, rec) {
@@ -10036,9 +10166,10 @@ body.header-parallax-active .header-identity {
         button.addEventListener("click", () => {
           const chapter = mobileEl.querySelector(`[data-mobile-chapter="${button.dataset.mobileJump}"]`);
           if (!chapter) return;
-          chapter.scrollIntoView({
+          scrollTargetIntoView(chapter, {
             behavior: introReducedMotionQuery.matches ? "auto" : "smooth",
-            block: "start"
+            block: "start",
+            offset: document.querySelector(".site-archive-header")?.getBoundingClientRect().height || 72
           });
         });
       });
@@ -10122,18 +10253,46 @@ body.header-parallax-active .header-identity {
     const menu = document.getElementById('mobileMenu');
     const reelBtn = document.getElementById('mobileReelBtn');
     if (!toggle || !menu) return;
+    let returnFocus = null;
+
+    const focusableSelector = [
+      'a[href]',
+      'button:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ].join(',');
+
+    function menuFocusables() {
+      return [toggle, ...Array.from(menu.querySelectorAll(focusableSelector))]
+        .filter((node) => node.offsetParent !== null || node === toggle);
+    }
 
     function openMenu() {
+      returnFocus = toggle;
       document.body.classList.add('menu-open');
       toggle.setAttribute('aria-expanded', 'true');
       menu.setAttribute('aria-hidden', 'false');
+      menu.inert = false;
+      requestAnimationFrame(() => {
+        (menu.querySelector('.mobile-menu-link') || toggle).focus({ preventScroll: true });
+      });
     }
 
-    function closeMenu() {
+    function closeMenu({ restoreFocus = true } = {}) {
+      const target = returnFocus || toggle;
       document.body.classList.remove('menu-open');
       toggle.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
+      menu.inert = true;
+      requestAnimationFrame(() => {
+        if (restoreFocus) target?.focus?.({ preventScroll: true });
+        requestAnimationFrame(() => {
+          menu.setAttribute('aria-hidden', 'true');
+          if (restoreFocus) target?.focus?.({ preventScroll: true });
+        });
+      });
+      returnFocus = null;
     }
+
+    menu.inert = true;
 
     toggle.addEventListener('click', () => {
       document.body.classList.contains('menu-open') ? closeMenu() : openMenu();
@@ -10146,12 +10305,12 @@ body.header-parallax-active .header-identity {
 
     // Close on anchor nav link tap
     menu.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', () => setTimeout(closeMenu, 80));
+      link.addEventListener('click', () => setTimeout(() => closeMenu({ restoreFocus: false }), 80));
     });
 
     // Reel button in menu
     reelBtn?.addEventListener('click', () => {
-      closeMenu();
+      closeMenu({ restoreFocus: false });
       setTimeout(() => {
         const btn = document.querySelector('.header-reel-button');
         if (btn) btn.click();
@@ -10160,7 +10319,31 @@ body.header-parallax-active .header-identity {
 
     // Escape key
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) closeMenu();
+      if (!document.body.classList.contains('menu-open')) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusable = menuFocusables();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    });
+
+    document.addEventListener('focusin', e => {
+      if (!document.body.classList.contains('menu-open')) return;
+      if (menu.contains(e.target) || e.target === toggle) return;
+      (menu.querySelector('.mobile-menu-link') || toggle).focus({ preventScroll: true });
     });
   })();
 </script>

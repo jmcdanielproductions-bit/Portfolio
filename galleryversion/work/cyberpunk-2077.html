@@ -50,15 +50,10 @@
   .rail a.live::before{width:2rem;background:var(--mood)}
   .rail a:hover{color:var(--ink)}
 
-  .topbar{
-    position:fixed;top:0;left:0;right:0;z-index:55;display:flex;justify-content:space-between;align-items:center;
-    padding:1.1rem 1.6rem;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
-    background:linear-gradient(180deg,rgba(3,4,6,.85),transparent);
-  }
-  .topbar a{color:var(--muted);text-decoration:none}
-  .topbar a:hover{color:var(--ink)}
-  .topbar .tc{color:var(--faint)}
-  .topbar .tc b{color:var(--mood);font-weight:400}
+  .brand{position:fixed;top:calc(22px + env(safe-area-inset-top,0px));left:24px;z-index:56;min-width:44px;min-height:44px;display:inline-flex;align-items:center;color:var(--ink);text-decoration:none;text-transform:uppercase;font:500 .72rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
+  .nav{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:56;transform:translateX(-50%);padding:.42rem;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(18px);box-shadow:0 18px 58px rgba(0,0,0,.44),0 0 46px rgba(255,61,114,.08);display:flex;gap:.28rem}
+  .nav a,.nav button{min-height:44px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--ink);text-decoration:none;text-transform:uppercase;font:500 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;padding:0 .9rem;display:inline-flex;align-items:center;cursor:pointer}
+  .nav a:hover,.nav button:hover{border-color:rgba(255,61,114,.34);background:rgba(255,61,114,.08)}
 
   /* ============ CONTENT ============ */
   .wrap{
@@ -73,6 +68,12 @@
   .sk{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:.26em;color:var(--faint);text-transform:uppercase}
   .sv{font-size:.92rem;font-weight:500;margin-top:.4rem;text-transform:uppercase;letter-spacing:.04em}
   .sv.m{color:var(--mood)}
+  .cta-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.1rem}
+  .btn-primary,.btn-secondary{min-height:44px;display:inline-flex;align-items:center;font:500 .64rem/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;padding:0 1.1rem;cursor:pointer;text-decoration:none;transition:background 240ms ease,border-color 240ms ease,color 240ms ease}
+  .btn-primary{background:var(--ink);color:var(--bg);border:1px solid transparent}
+  .btn-secondary{background:rgba(8,12,18,.62);color:rgba(242,238,231,.82);border:1px solid var(--line)}
+  .btn-primary:hover{background:rgba(242,238,231,.88)}
+  .btn-secondary:hover{border-color:rgba(255,61,114,.44);background:rgba(255,61,114,.08);color:var(--ink)}
   .authority-summary{position:relative;margin-top:clamp(1.4rem,3vw,2rem);padding:clamp(1.1rem,2.4vw,1.7rem);border:1px solid var(--line);background:linear-gradient(135deg,rgba(8,12,18,.72),rgba(8,12,18,.48));box-shadow:inset 0 1px 0 rgba(242,238,231,.035)}
   .authority-summary:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,var(--mood),transparent 68%);opacity:.6}
   .authority-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:clamp(.95rem,1.8vw,1.2rem);padding-bottom:.72rem;border-bottom:1px solid var(--line)}
@@ -92,7 +93,7 @@
   .authority-list li{min-width:0;display:flex;align-items:center;gap:.5rem;padding:.7rem .75rem;background:rgba(3,4,6,.62);color:rgba(242,238,231,.68);font-family:"JetBrains Mono",monospace;font-size:.54rem;font-weight:500;line-height:1.35;letter-spacing:.1em;text-transform:uppercase}
   .authority-list li:before{content:"";width:.32rem;height:.32rem;border:1px solid var(--mood);flex:0 0 auto;opacity:.72}
 
-  .chapter{margin-top:5rem;scroll-margin-top:5rem;
+  .chapter{margin:5rem 0 0;scroll-margin-top:5rem;
     font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.3em;color:var(--mood);text-transform:uppercase;
     display:flex;align-items:center;gap:1rem}
   .chapter::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -113,7 +114,7 @@
   .hero iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .hero .play{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;
-    transition:opacity .4s;
+    width:100%;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;transition:opacity .4s;
   }
   .hero .play span{
     display:flex;align-items:center;gap:.8rem;font-family:"JetBrains Mono",monospace;
@@ -160,7 +161,7 @@
   @keyframes mp{0%,100%{box-shadow:0 0 8px var(--mood)}50%{box-shadow:0 0 20px var(--mood)}}
 
   .commentary-toggle{
-    position:fixed;right:1.6rem;bottom:3.6rem;z-index:80;display:flex;align-items:center;gap:.7rem;
+    position:fixed;right:1.6rem;bottom:calc(6rem + env(safe-area-inset-bottom,0px));z-index:80;min-height:44px;display:flex;align-items:center;gap:.7rem;
     font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
     color:var(--muted);background:var(--glass);border:1px solid var(--line);border-radius:99px;
     padding:.7rem 1.2rem;cursor:pointer;backdrop-filter:blur(10px);transition:color .3s ease,border-color .3s ease,background .3s ease,box-shadow .3s ease;
@@ -199,20 +200,32 @@
     .authority-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .authority-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
+  @media (max-width:900px){
+    #brief{display:flex;flex-direction:column}
+    #brief .kicker{order:1}
+    #brief h1{order:2}
+    #brief .tone{order:3}
+    #brief .slate{order:4}
+    #brief .cta-row{order:5}
+    #brief .hero{order:6;margin-top:1.1rem}
+    #brief .authority-summary{order:7}
+    #brief > .commentary-toggle{order:8}
+  }
   @media (max-width:760px){
-    .topbar{padding:.78rem 1rem;gap:.9rem;font-size:.52rem;letter-spacing:.15em}
-    .topbar .tc{display:none}
-    .topbar a{min-height:44px;display:inline-flex;align-items:center}
-    .topbar a[href="#outcome"]{font-size:0}
-    .topbar a[href="#outcome"]::after{content:"Outcome";font-size:.52rem}
+    .brand{top:calc(10px + env(safe-area-inset-top,0px));left:16px;font-size:.68rem}
+    .nav{width:calc(100vw - 32px);bottom:calc(10px + env(safe-area-inset-bottom,0px));justify-content:space-between;padding:.28rem;gap:.12rem}
+    .nav a,.nav button{flex:1;justify-content:center;min-width:0;min-height:44px;font-size:.5rem;letter-spacing:.07em;padding:0 .34rem}
     .wrap{padding-top:5.8rem;padding-bottom:8rem}
+    .slate{grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+    .cta-row{display:grid;grid-template-columns:1fr 1fr}
+    .btn-primary,.btn-secondary{justify-content:center;min-height:44px;padding:0 .58rem;font-size:.52rem;letter-spacing:.08em;text-align:center}
     .authority-head{align-items:flex-start;flex-direction:column;gap:.45rem}
     .authority-record{text-align:left}
     .authority-grid,.authority-list{grid-template-columns:1fr}
     .authority-grid div,.authority-list li{padding:.68rem}
     .commentary-toggle{
-      position:static;top:auto;bottom:auto;left:auto;right:auto;width:100%;justify-content:center;
-      min-height:44px;margin:1.15rem 0 .2rem;padding:.78rem .9rem;font-size:.52rem;letter-spacing:.16em;
+      position:static;top:auto;bottom:auto;left:auto;right:auto;width:max-content;max-width:100%;justify-content:center;
+      min-height:44px;margin:.9rem 0 .2rem;padding:.72rem .84rem;font-size:.5rem;letter-spacing:.1em;opacity:.86;background:rgba(8,12,18,.58);
     }
   }
   @media (max-width:760px),(prefers-reduced-motion:reduce){
@@ -228,14 +241,17 @@
 </head>
 <body>
 
-<div class="env"><div class="env-grid"></div><div class="env-bleed"></div><div class="env-scan"></div><div class="env-vignette"></div></div>
-<div class="grain"></div>
+<a class="brand" href="../index.html#archive" data-back aria-label="Jared McDaniel archive home">Jared McDaniel</a>
 
-<div class="topbar">
-  <a href="../index.html#archive" data-back>← The wall</a>
-  <span class="tc">REC.01 · <b>Night City grade active</b> · production case study</span>
-  <a href="#outcome">Skip to outcome</a>
-</div>
+<nav class="nav" aria-label="Dossier navigation">
+  <a href="../index.html#work">Work</a>
+  <a href="../index.html#about">About</a>
+  <a href="../index.html#contact">Contact</a>
+  <button type="button" data-hero-trigger>Watch Film</button>
+</nav>
+
+<div class="env" aria-hidden="true"><div class="env-grid"></div><div class="env-bleed"></div><div class="env-scan"></div><div class="env-vignette"></div></div>
+<div class="grain" aria-hidden="true"></div>
 
 <nav class="rail" id="rail">
   <a href="#brief" class="live">00 Brief</a>
@@ -257,7 +273,7 @@
         <img src="https://img.youtube.com/vi/Hc_t2eTorhI/maxresdefault.jpg"
              onerror="this.onerror=null;this.src='https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg'" alt="Cyberpunk 2077 trailer">
       </div>
-      <div class="play"><span>Screen the cut — 02:14</span></div>
+      <button class="play" type="button" data-hero-trigger aria-label="Watch Cyberpunk 2077 campaign film"><span>Screen the cut — 02:14</span></button>
       <div class="marker" style="top:16%;right:6%;--d:.1s"></div>
       <div class="note side-right" style="top:10%;--tilt:-2deg;--d:.15s">
         <div class="note-label">Director's note — 01A</div>
@@ -276,9 +292,13 @@
       <div><div class="sk">Client</div><div class="sv">CD Projekt Red</div></div>
       <div><div class="sk">Year</div><div class="sv">2025</div></div>
     </div>
-    <section class="authority-summary" aria-label="Project summary">
+    <div class="cta-row">
+      <button class="btn-primary" type="button" data-hero-trigger>Watch Film</button>
+      <a class="btn-secondary" href="../index.html#work" data-back>Back to Archive</a>
+    </div>
+    <section class="authority-summary" aria-label="Project proof summary">
       <div class="authority-head">
-        <span class="authority-kicker">Project Summary</span>
+        <span class="authority-kicker">Proof of Direction</span>
         <span class="authority-record">REC.01 / CASE STUDY AVAILABLE &rarr;</span>
       </div>
       <dl class="authority-grid">
@@ -298,7 +318,7 @@
         </div>
       </div>
       <div class="authority-responsibilities">
-        <span>Mission Responsibilities</span>
+        <span>Creative Responsibilities</span>
         <ul class="authority-list">
           <li>Creative Direction</li>
           <li>Reference Direction</li>
@@ -316,7 +336,7 @@
 
   <!-- 01 APPROACH -->
   <section id="approach">
-    <div class="chapter">01 — Approach</div>
+    <h2 class="chapter">01 — Approach</h2>
     <p class="prose">
       Night City is the most photographed fictional city of the decade. The only way to make it feel new was to
       stop photographing it and start surveilling it: hard angles, held frames, cuts timed to the electrical hum
@@ -350,7 +370,7 @@
 
   <!-- 03 ON SET -->
   <section id="onset">
-    <div class="chapter">03 — On set</div>
+    <h2 class="chapter">03 — On set</h2>
     <p class="prose">
       Practical neon wherever possible. Real light wraps around skin in a way comp never does — and the actors
       play differently when the set glows back at them.
@@ -388,7 +408,7 @@
 
   <!-- 04 THE CUT -->
   <section id="cut">
-    <div class="chapter">04 — The cut</div>
+    <h2 class="chapter">04 — The cut</h2>
     <p class="prose">
       The most contested fourteen frames of the edit. Drag the wipe: the alternate assembly held the wide;
       the shipped cut punches in on the turn — colder, closer, more surveilled.
@@ -415,7 +435,7 @@
 
   <!-- 05 OUTCOME -->
   <section id="outcome">
-    <div class="chapter">05 — Outcome</div>
+    <h2 class="chapter">05 — Outcome</h2>
     <p class="prose">
       Delivered as the flagship spot of the campaign window — broadcast, pre-roll, and in-store wall loops,
       with the cutdown family derived from this master.
@@ -469,14 +489,27 @@
 
   /* hero playback */
   const hero = document.getElementById("hero");
-  hero.addEventListener("click", () => {
+  function playHeroFilm() {
     if (hero.classList.contains("playing")) return;
     hero.classList.add("playing");
     const f = document.createElement("iframe");
     f.src = "https://www.youtube-nocookie.com/embed/Hc_t2eTorhI?autoplay=1&rel=0";
     f.allow = "autoplay; encrypted-media; fullscreen";
+    f.title = "Cyberpunk 2077 campaign film";
     hero.querySelector(".frame").appendChild(f);
-  }, { once: false });
+  }
+  hero.addEventListener("click", playHeroFilm, { once: false });
+  hero.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    playHeroFilm();
+  });
+  document.querySelectorAll("[data-hero-trigger]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      playHeroFilm();
+    });
+  });
 
   /* chapter rail tracking */
   const links = [...document.querySelectorAll(".rail a")];
