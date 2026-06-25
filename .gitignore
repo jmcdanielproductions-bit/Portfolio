@@ -10,6 +10,12 @@ old design/
 # Local agent/browser/tooling state
 .codex/
 .claude/settings.local.json
+**/.od-skills/
+**/*.artifact.json
+
+# Generated screenshots / one-off design exports
+# Keep intentional assets under galleryversion/images/ instead.
+galleryversion/*-image.png
 
 # Web-optimized record wall loops ARE deployed (exception to the video ignores above)
 !galleryversion/videos/
