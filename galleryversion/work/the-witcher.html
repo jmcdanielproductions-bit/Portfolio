@@ -293,7 +293,7 @@
   </main>
   <button class="commentary-toggle" id="commentaryToggle" type="button" aria-pressed="false"><span class="commentary-dot"></span><span>Director's commentary</span><span class="commentary-state">Off</span></button>
   <nav class="nav" aria-label="Dossier navigation"><a href="../index.html#work">Work</a><a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a><button type="button" data-video="mFeMMMmdW24">▶ Reel</button></nav>
-  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Video player" tabindex="-1"><div class="modal-inner"><button class="close" type="button">Close</button><iframe id="frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video player" tabindex="-1"></iframe></div></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Video player" tabindex="-1"><div class="modal-inner"><button class="close" type="button">Close</button><iframe id="frame" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video player" tabindex="-1"></iframe></div></div>
   <script>(()=>{const toggle=document.getElementById("commentaryToggle"),state=toggle?.querySelector(".commentary-state");if(!toggle)return;function setCommentary(on){document.body.classList.toggle("commentary",on);toggle.setAttribute("aria-pressed",on?"true":"false");if(state)state.textContent=on?"On":"Off"}toggle.addEventListener("click",()=>setCommentary(!document.body.classList.contains("commentary")));if(new URLSearchParams(location.search).get("commentary")==="on")setCommentary(true);})();</script>
   <script>
     (() => {

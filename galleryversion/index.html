@@ -8152,7 +8152,11 @@ body.header-parallax-active .header-identity {
   <div class="modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Director reel video" tabindex="-1">
     <div class="modal-inner">
       <button class="modal-close" type="button">Close</button>
-      <iframe id="videoFrame" title="Video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      <iframe id="videoFrame" title="Video player" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      <div class="modal-fallback" id="videoFallback" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;background:rgba(2,3,5,0.9);color:#f2eee7;gap:1rem;padding:2rem;text-align:center;z-index:2;border-radius:inherit;">
+        <p style="font:700 .75rem/1 'JetBrains Mono',monospace;letter-spacing:.22em;text-transform:uppercase;color:rgba(242,238,231,.48);">Video unavailable</p>
+        <p style="font-size:1rem;line-height:1.6;max-width:480px;margin:0;">The YouTube embed couldn't load. You can <a id="fallbackLink" href="#" target="_blank" rel="noopener" style="color:#e8d4a3;text-decoration:underline;">open it on YouTube</a> instead.</p>
+      </div>
     </div>
   </div>
 
@@ -9040,10 +9044,22 @@ body.header-parallax-active .header-identity {
     const closeModal = document.querySelector(".modal-close");
 
     function openVideo(id = REEL_ID) {
-      frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+      const url = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+      const fallback = document.querySelector("#videoFallback");
+      const fallbackLink = document.querySelector("#fallbackLink");
+      let loaded = false;
+      frame.onload = () => { loaded = true; };
+      frame.src = url;
+      fallbackLink.href = `https://youtu.be/${id}`;
+      fallback.style.display = "none";
       modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
       activateDialogFocus(modal, closeModal);
+      setTimeout(() => {
+        if (modal.classList.contains("active") && !loaded) {
+          fallback.style.display = "flex";
+        }
+      }, 10000);
     }
 
     function closeVideo() {
