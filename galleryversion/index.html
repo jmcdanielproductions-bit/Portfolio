@@ -7720,22 +7720,27 @@ body.header-parallax-active .header-identity {
     }
   </style>
   <style id="chromePerformancePatchCss">/* Chrome compositor pass: keep the room feel, but reduce large repaints during wall motion. */
-    html.chrome-performance .environment-light::before,
-    html.chrome-performance .environment-light::after {
-      filter: blur(18px) saturate(1.02) !important;
-      opacity: 0.34 !important;
-    }
+    html.chrome-performance body::before {
+          background: radial-gradient(circle at center, transparent 44%, rgba(0, 0, 0, 0.76)) !important;
+        }
 
-    html.chrome-performance body.rw-motion-active .environment-light::before,
-    html.chrome-performance body.rw-motion-active .environment-light::after {
-      filter: blur(12px) saturate(1) !important;
-      opacity: 0.24 !important;
-    }
+        html.chrome-performance .environment-light::before,
+        html.chrome-performance .environment-light::after {
+          filter: none !important;
+          opacity: 0.18 !important;
+        }
 
-    html.chrome-performance .light-column {
-      filter: blur(14px) !important;
-      opacity: 0.035 !important;
-    }
+        html.chrome-performance body.rw-motion-active .environment-light::before,
+        html.chrome-performance body.rw-motion-active .environment-light::after,
+        html.chrome-performance body.rw-motion-active .light-column {
+          filter: none !important;
+          opacity: 0.12 !important;
+        }
+
+        html.chrome-performance .light-column {
+          filter: none !important;
+          opacity: 0.03 !important;
+        }
 
     html.chrome-performance .chamber-architecture,
     html.chrome-performance body.focus-mode .chamber-architecture,
@@ -7744,9 +7749,9 @@ body.header-parallax-active .header-identity {
     }
 
     html.chrome-performance .rw-col {
-      will-change: transform, opacity;
-      filter: none !important;
-    }
+          will-change: auto !important;
+          filter: none !important;
+        }
 
     html.chrome-performance .rw-card {
       filter: none !important;
@@ -9614,6 +9619,7 @@ body.header-parallax-active .header-identity {
     let pointerX = 0, pointerY = 0, pointerXT = 0, pointerYT = 0, idleBlend = 0;
     let wallFrameId = 0;
     let lastColumnToneAt = 0;
+    let wallFrameCount = 0;
 
     function canRunWallFrame() {
       return wallBuilt &&
@@ -9687,11 +9693,14 @@ body.header-parallax-active .header-identity {
       // Chrome: pan the wall with transform instead of margin to avoid layout work per frame.
       setStyleIfChanged(wallEl, "transform", `translate3d(${(-wallW / 2 + wallX).toFixed(2)}px, ${(-wallH / 2).toFixed(2)}px, 0)`);
 
-      const viewportCenter = innerWidth / 2;
-      const wallLeft = viewportCenter - wallW / 2 + wallX + parallaxX;
-      const writeColumnTone = now - lastColumnToneAt > WALL_PERF.columnToneInterval;
-      if (writeColumnTone) lastColumnToneAt = now;
-      for (let i = 0; i < cols.length; i++) {
+      wallFrameCount++;
+            const viewportCenter = innerWidth / 2;
+            const wallLeft = viewportCenter - wallW / 2 + wallX + parallaxX;
+            const writeColumnTone = now - lastColumnToneAt > WALL_PERF.columnToneInterval;
+            if (writeColumnTone) lastColumnToneAt = now;
+            // Chrome: update column styles every other frame (~30fps) — imperceptible for wall curvature
+            if (!chromePerf || (wallFrameCount & 1)) {
+              for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
         if (col.dataset.frozen) continue;
         const screenX = wallLeft + colCenters[i];
@@ -9724,7 +9733,8 @@ body.header-parallax-active .header-identity {
           setVarIfChanged(col, "--rw-mid-brightness", (1 + center * 0.035).toFixed(3));
         }
       }
-      updateLoops(now);
+            }
+            updateLoops(now);
       const motionDelta =
         Math.abs(wallXT - wallX) +
         Math.abs(pointerXT - pointerX) * 20 +
