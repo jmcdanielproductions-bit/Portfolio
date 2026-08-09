@@ -7787,8 +7787,282 @@ body.header-parallax-active .header-identity {
     html.chrome-performance body.rw-motion-active .site-archive-header {
       backdrop-filter: none !important;
     }
+
+    /* --- Round 3: guaranteed-smoothness pass for Chrome (Firefox unaffected) --- */
+
+    /* 1. Remove the decorative ambient depth layers entirely on Chrome. Each is a
+       full-viewport, pointer-events:none, z-index:0 compositing layer that either runs
+       an infinite animation (archiveBreath / columnBreath / frameworkDrift) or
+       recomposites on every pointer move via translate3d(var(--mx/--my)); .environment-light
+       also blends the whole viewport with mix-blend-mode:screen. Previous rounds only dimmed
+       these to near-invisibility (opacity 0.03-0.22) but left the continuous compositing work
+       running, which is the primary source of the fullscreen jank. Hiding them is a tiny
+       visual change here for a large compositor win. */
+    html.chrome-performance body::after,
+    html.chrome-performance .environment-light,
+    html.chrome-performance .environment-geometry,
+    html.chrome-performance .chamber-architecture,
+    html.chrome-performance .light-column {
+      display: none !important;
+    }
+
+    /* 2. Drop every backdrop-filter on Chrome. backdrop-filter re-blurs everything behind
+       the element each frame; the always-visible header and the content panels that use it
+       already have semi-opaque backgrounds, so legibility is preserved. */
+    html.chrome-performance *,
+    html.chrome-performance *::before,
+    html.chrome-performance *::after {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
   </style>
-</head>
+
+    /* ════════════════════════════════════════════════
+       PHASE 1 — Scroll-triggered animations + hero reel
+       ════════════════════════════════════════════════ */
+
+    /* --- Scroll animation keyframes --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(38px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-32px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* --- .scroll-focus base (hidden until triggered) --- */
+    .scroll-focus {
+      opacity: 0;
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .scroll-focus.fade-in-up {
+      opacity: 1;
+      animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .scroll-focus.fade-in-left {
+      opacity: 1;
+      animation: fadeInLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .scroll-focus.scale-in {
+      opacity: 1;
+      animation: scaleIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-focus { opacity: 1; transition: none; animation: none; transform: none !important; }
+    }
+
+    /* --- Hero Reel Section --- */
+    .hero-reel-section {
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      min-height: 480px;
+      max-height: 100vh;
+      overflow: hidden;
+      background: #0a0a0c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-reel-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+    .hero-reel-section.reel-paused .hero-reel-video {
+      opacity: 0.3;
+    }
+    .hero-reel-overlay {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+      max-width: 720px;
+      padding: 2rem;
+    }
+    .hero-reel-title {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.5rem;
+      text-transform: uppercase;
+    }
+    .hero-reel-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+      font-weight: 300;
+      opacity: 0.65;
+      letter-spacing: 0.03em;
+      margin: 0 0 1.5rem;
+    }
+    .hero-reel-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 0.65rem 1.5rem;
+      color: #fff;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .hero-reel-toggle:hover {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.3);
+    }
+    .hero-reel-toggle .icon-play,
+    .hero-reel-toggle .icon-pause {
+      font-size: 1.1em;
+      line-height: 1;
+    }
+
+    /* ════════════════════════════════════════════════
+       PHASE 2 — Liquid glass hover + featured project views
+       ════════════════════════════════════════════════ */
+
+    .archive-piece.featured-project {
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.4s cubic-bezier(0.22,1,0.36,1);
+      will-change: transform;
+    }
+    .archive-piece.featured-project:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(255,255,255,0.06),
+                  0 0 0 1px rgba(255,255,255,0.08);
+      z-index: 10;
+    }
+    .archive-piece.featured-project .piece-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.25) 50%,
+        rgba(0,0,0,0.05) 100%
+      );
+      transition: background 0.3s ease;
+    }
+    .archive-piece.featured-project:hover .piece-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.88) 0%,
+        rgba(0,0,0,0.40) 50%,
+        rgba(0,0,0,0.15) 100%
+      );
+    }
+    .piece-views {
+      display: inline-block;
+      font-size: 0.7rem;
+      opacity: 0.55;
+      letter-spacing: 0.02em;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+    .archive-piece.featured-project .piece-views {
+      opacity: 0.7;
+    }
+
+    /* ════════════════════════════════════════════════
+       PHASE 3 — Social proof, film grain, timeline scroll
+       ════════════════════════════════════════════════ */
+
+    /* --- Animated film grain overlay --- */
+    @keyframes filmGrain {
+      0%   { transform: translate(0, 0); }
+      10%  { transform: translate(-5%, -10%); }
+      20%  { transform: translate(-15%, 5%); }
+      30%  { transform: translate(7%, -25%); }
+      40%  { transform: translate(-5%, 25%); }
+      50%  { transform: translate(-15%, 10%); }
+      60%  { transform: translate(15%, 0); }
+      70%  { transform: translate(0, 15%); }
+      80%  { transform: translate(3%, 35%); }
+      90%  { transform: translate(-10%, 10%); }
+      100% { transform: translate(0, 0); }
+    }
+    .film-grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.025;
+      mix-blend-mode: overlay;
+    }
+    .film-grain-overlay::after {
+      content: '';
+      position: absolute;
+      inset: -100%;
+      width: 300%;
+      height: 300%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      animation: filmGrain 0.5s steps(4) infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .film-grain-overlay::after { animation: none; }
+    }
+
+    /* --- Social proof badge on flagship cards --- */
+    .social-proof-vignette {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .social-proof-vignette .proof-icon {
+      opacity: 0.5;
+    }
+
+    /* --- Signal ledger horizontal scroll (timeline) --- */
+    .signal-ledger-surface {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.15) transparent;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .signal-ledger-surface::-webkit-scrollbar {
+      height: 4px;
+    }
+    .signal-ledger-surface::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .signal-ledger-surface::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+    }
+    .signal-ledger-surface .signal-row {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      min-width: 200px;
+    }
+  </head>
 <body class="archive-room-active">
   <div id="cursor-glow"></div>
   <header class="site-archive-header"
@@ -7887,7 +8161,26 @@ body.header-parallax-active .header-identity {
   </section>
 
   <main>
-    <section class="room archive active" id="archive" data-room="archive" aria-label="Archive home">
+
+      <!-- ═══ HERO REEL SECTION (Phase 1) ═══ -->
+      <section class="hero-reel-section" id="heroReel" aria-label="Director reel">
+        <video class="hero-reel-video" autoplay muted loop playsinline preload="metadata"
+          src="videos/loops/reel-loop.mp4"
+          poster="https://img.youtube.com/vi/mFeMMMmdW24/maxresdefault.jpg"
+          aria-hidden="true"></video>
+        <div class="hero-reel-overlay">
+          <h1 class="hero-reel-title">Director Reel</h1>
+          <p class="hero-reel-sub">Creative Video Direction &amp; Editing</p>
+          <button class="hero-reel-toggle" type="button" id="heroReelToggle" aria-label="Toggle reel playback">
+            <span class="icon-play" aria-hidden="true">&#9654;</span>
+            <span class="icon-pause" aria-hidden="true" style="display:none">&#10074;&#10074;</span>
+            <span class="toggle-label">Watch Reel</span>
+          </button>
+        </div>
+      </section>
+      <!-- ═══ END HERO REEL ═══ -->
+
+      <section class="room archive active" id="archive" data-room="archive" aria-label="Archive home">
       <div class="archive-stage">
         <!-- RECORD WALL — desktop archive (data-driven, built by the wall engine) -->
         <div class="rw-stage" id="rwStage" aria-label="Record wall. Drag to look around, click a record to open it.">
@@ -8917,7 +9210,7 @@ body.header-parallax-active .header-identity {
       const clientLine = projectClientLine(project);
       const statusLabel = projectStatusLabel(project);
       const actionLabel = projectActionLabel(project);
-      node.className = `archive-piece ${layoutBySlug[project.slug] || "compact"}`;
+      node.className = `archive-piece ${layoutBySlug[project.slug] || "compact"}${project.views ? " featured-project" : ""}`;
       node.style.setProperty("--thumb", thumb(project.yt));
       node.style.setProperty("--thumb-position", project.thumbPosition || "center center");
       node.dataset.yt = project.yt;
@@ -8950,7 +9243,7 @@ body.header-parallax-active .header-identity {
         <img class="piece-thumb" src="${thumbSrc(project.yt)}" alt="" loading="lazy" decoding="async">
         <span class="piece-overlay" aria-hidden="true"></span>
         <span class="piece-info">
-          <span class="piece-title">${projectTitle(project)}</span>
+          <span class="piece-title">${projectTitle(project)}${project.views ? `<span class="piece-views">${project.views}</span>` : ''}</span>
           <span class="piece-meta">
             ${typeLine ? `<span class="piece-type-line">${typeLine}</span>` : ''}
             ${clientLine ? `<span class="piece-client-line">${clientLine}</span>` : ''}
@@ -9686,6 +9979,13 @@ body.header-parallax-active .header-identity {
       const worldPitch = pointerY * -0.7 + Math.sin(now * 0.00017 + 1.6) * 0.04 * idleBlend;
       const worldYaw = pointerX * 1.1 + idleYaw;
 
+      // Run the loop-manager geometry scan BEFORE this frame's transform writes.
+      // updateLoops reads getBoundingClientRect on every card; doing it here means it
+      // reads last frame's already-committed layout (cheap) instead of forcing a
+      // synchronous reflow after we invalidate layout with the transform writes below.
+      // One-frame-stale positions are imperceptible for video-loop mount decisions.
+      updateLoops(now);
+
       setStyleIfChanged(worldEl, "transform",
         `translate3d(${parallaxX.toFixed(2)}px, ${parallaxY.toFixed(2)}px, 0) ` +
         `rotateX(${worldPitch.toFixed(3)}deg) rotateY(${worldYaw.toFixed(3)}deg) rotateZ(${idleRoll.toFixed(3)}deg)`);
@@ -9727,14 +10027,19 @@ body.header-parallax-active .header-identity {
           }
           setStyleIfChanged(col, "zIndex", String(Math.round((1 - edge) * 100)));
         }
-        setVarIfChanged(col, "--shade", (edge * 0.24).toFixed(3));
-        setVarIfChanged(col, "--rw-mid-scale", (1 + center * 0.018).toFixed(4));
+        // Chrome: skip ALL per-frame custom-property writes. Custom properties are
+        // inherited, so each write forces a full style recalc of the column's
+        // preserve-3d descendant subtree (cells/cards/overlays) AND re-triggers the
+        // .rw-card transform transition every frame — the sustained per-frame cost on
+        // Chrome. Visual loss is tiny: no edge-shade overlay, no ~1.8% center-card
+        // scale, no center brightness pop. Firefox keeps the full effect.
         if (!chromePerf) {
+          setVarIfChanged(col, "--shade", (edge * 0.24).toFixed(3));
+          setVarIfChanged(col, "--rw-mid-scale", (1 + center * 0.018).toFixed(4));
           setVarIfChanged(col, "--rw-mid-brightness", (1 + center * 0.035).toFixed(3));
         }
       }
             }
-            updateLoops(now);
       const motionDelta =
         Math.abs(wallXT - wallX) +
         Math.abs(pointerXT - pointerX) * 20 +
@@ -10410,6 +10715,69 @@ body.header-parallax-active .header-identity {
         event.preventDefault();
       }
     });
+  })();
+</script>
+
+<div class="film-grain-overlay" aria-hidden="true"></div>
+
+<script>
+  /* ════════════════════════════════════════════════
+     PHASE 1 — Scroll Observer + Hero Reel Toggle
+     ════════════════════════════════════════════════ */
+
+  (function() {
+    /* --- Scroll-triggered animations via IntersectionObserver --- */
+    const scrollFocusElements = document.querySelectorAll(".scroll-focus");
+    if (scrollFocusElements.length && "IntersectionObserver" in window) {
+      const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const anim = el.dataset.scrollAnim || "fade-in-up";
+            el.classList.add(anim);
+            scrollObserver.unobserve(el);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+      scrollFocusElements.forEach((el) => scrollObserver.observe(el));
+    } else {
+      scrollFocusElements.forEach((el) => { el.style.opacity = "1"; });
+    }
+
+    /* --- Hero Reel Toggle --- */
+    const heroReel = document.getElementById("heroReel");
+    const heroToggle = document.getElementById("heroReelToggle");
+    const heroVideo = heroReel && heroReel.querySelector(".hero-reel-video");
+    if (heroToggle && heroVideo) {
+      heroToggle.addEventListener("click", () => {
+        const paused = heroVideo.paused;
+        if (paused) {
+          heroVideo.play().catch(() => {});
+          heroToggle.querySelector(".icon-play").style.display = "";
+          heroToggle.querySelector(".icon-pause").style.display = "none";
+          heroToggle.querySelector(".toggle-label").textContent = "Watch Reel";
+          heroReel.classList.remove("reel-paused");
+        } else {
+          heroVideo.pause();
+          heroToggle.querySelector(".icon-play").style.display = "none";
+          heroToggle.querySelector(".icon-pause").style.display = "";
+          heroToggle.querySelector(".toggle-label").textContent = "Playing";
+          heroReel.classList.add("reel-paused");
+        }
+      });
+    }
+
+    /* --- Hero reel auto-play check on visibility --- */
+    if (heroVideo) {
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && heroVideo.paused) {
+            heroVideo.play().catch(() => {});
+          }
+        });
+      }, { threshold: 0.3 });
+      heroObserver.observe(heroReel);
+    }
   })();
 </script>
 
