@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Wall + Carousels — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080B12;--bg-2:#0C1019;--ink:#EAF0F6;--muted:rgba(234,240,246,.64);--faint:rgba(234,240,246,.36);
+    --line:rgba(234,240,246,.10);--blue:#5C86AD;--blue-soft:rgba(92,134,173,.18);--blue-line:rgba(92,134,173,.5);--gold:#D6B77A;
+    --ease-settle:cubic-bezier(0.16,1,0.3,1);--ease-enter:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+    padding:1rem clamp(1.2rem,3vw,2.6rem);transition:background .4s var(--ease-settle),backdrop-filter .4s}
+  .nav.scrolled{background:rgba(8,11,18,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .brand{font-family:"Anton",sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:1.15rem}
+  .brand span{color:var(--blue)}
+  .navlinks{display:flex;gap:1.5rem;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .navlinks a{color:inherit;text-decoration:none;transition:color .3s var(--ease-settle)}
+  .navlinks a:hover,.navlinks a.on{color:var(--ink)}
+  /* ── 3D WALL HERO ── */
+  .wall-hero{position:relative;height:92vh;min-height:600px;overflow:hidden;cursor:grab}
+  .wall-hero.dragging{cursor:grabbing}
+  .wall-stage{position:absolute;inset:0;perspective:1500px;perspective-origin:50% 42%}
+  .wall-plane{position:absolute;left:50%;top:46%;transform-style:preserve-3d;will-change:transform;
+    display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,1fr);gap:16px}
+  .wcard{width:230px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;position:relative;background:var(--bg-2);
+    border:1px solid var(--line);cursor:pointer;transition:transform .5s var(--ease-settle),border-color .4s,box-shadow .4s}
+  .wcard img{width:100%;height:100%;object-fit:cover;display:block}
+  .wcard .wc-cap{position:absolute;inset:auto 0 0 0;padding:.5rem .6rem;background:linear-gradient(0deg,rgba(6,9,15,.9),transparent);
+    opacity:0;transition:opacity .4s var(--ease-settle)}
+  .wcard:hover .wc-cap{opacity:1}
+  .wcard .wc-c{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.14em;color:var(--blue)}
+  .wcard .wc-t{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:.9rem;line-height:1;letter-spacing:.02em;word-spacing:.06em;margin-top:.1rem}
+  .wcard.flag{outline:1px solid var(--blue-line)}
+  .wcard:hover{transform:translateZ(60px);border-color:var(--blue-line);box-shadow:0 20px 50px rgba(0,0,0,.6);z-index:5}
+  .wall-vignette{position:absolute;inset:0;z-index:6;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 42%,transparent 30%,rgba(8,11,18,.55) 78%,var(--bg) 100%),
+      linear-gradient(0deg,var(--bg) 1%,transparent 26%)}
+  .wall-lead{position:absolute;z-index:8;left:clamp(1.2rem,3vw,2.6rem);top:22%;max-width:440px;pointer-events:none}
+  .wall-lead .k{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--blue)}
+  .wall-lead h1{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:clamp(3rem,6.5vw,5.6rem);line-height:.9;letter-spacing:.03em;word-spacing:.1em;margin:.4rem 0}
+  .wall-lead p{color:var(--muted);font-weight:300;font-size:clamp(.95rem,1.5vw,1.15rem);line-height:1.6;max-width:38ch}
+  .wall-hint{position:absolute;z-index:8;left:50%;bottom:5.2vh;transform:translateX(-50%);pointer-events:none;
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+  /* ── CAROUSELS ── */
+  .rows{position:relative;z-index:10;padding:1rem 0 4rem;background:var(--bg)}
+  .row{margin:2.4rem 0}
+  .row h2{font-weight:500;font-size:1.05rem;letter-spacing:.02em;margin:0 clamp(1.2rem,3vw,2.6rem) .3rem;display:flex;align-items:center;gap:.6rem}
+  .row h2 .ct{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+  .row .sub{color:var(--faint);font-size:12px;margin:0 clamp(1.2rem,3vw,2.6rem) .8rem}
+  .trackwrap{position:relative}
+  .track{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:.9rem clamp(1.2rem,3vw,2.6rem) 1.4rem;scroll-snap-type:x proximity;
+    scrollbar-width:none;-ms-overflow-style:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 32px,#000 calc(100% - 72px),transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 32px,#000 calc(100% - 72px),transparent 100%)}
+  .track::-webkit-scrollbar{display:none;width:0;height:0}
+  .card{flex:none;width:266px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;position:relative;cursor:pointer;
+    background:var(--bg-2);border:1px solid var(--line);scroll-snap-align:start;
+    transition:transform .4s var(--ease-settle),border-color .4s,box-shadow .4s}
+  .card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease-settle)}
+  .card:hover{transform:translateY(-6px) scale(1.03);border-color:var(--blue-line);box-shadow:0 14px 34px rgba(0,0,0,.5);z-index:2}
+  .card:hover img{transform:scale(1.06)}
+  .card .cover{position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,9,15,.92),transparent 62%);opacity:0;
+    transition:opacity .4s var(--ease-settle);display:flex;flex-direction:column;justify-content:flex-end;padding:.7rem .8rem}
+  .card:hover .cover{opacity:1}
+  .card .cc{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--blue)}
+  .card .ctt{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:1.05rem;line-height:1;letter-spacing:.02em;word-spacing:.08em;margin-top:.15rem}
+  .card .cm{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+  .rownav{position:absolute;top:0;bottom:1.4rem;width:64px;display:grid;place-items:center;border:none;cursor:pointer;z-index:8;
+    color:var(--ink);font-size:22px;opacity:0;transition:opacity .3s var(--ease-settle);padding:0}
+  .trackwrap:hover .rownav{opacity:.9}.rownav:hover{opacity:1!important}.rownav:disabled{opacity:0!important;pointer-events:none}
+  .rownav.prev{left:0;background:linear-gradient(90deg,rgba(8,11,18,.9),rgba(8,11,18,0))}
+  .rownav.next{right:0;background:linear-gradient(270deg,rgba(8,11,18,.9),rgba(8,11,18,0))}
+  .rownav span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:rgba(20,26,38,.7);border:1px solid var(--line)}
+  /* ── PARALLAX-FOLD COVERFLOW ROW ── */
+  .fold{position:relative;height:340px;perspective:1600px;margin:.5rem 0 .5rem;overflow:hidden}
+  .fold-track{position:absolute;inset:0;transform-style:preserve-3d}
+  .fcard{position:absolute;top:50%;left:50%;width:min(46vw,540px);aspect-ratio:16/9;margin:0;border-radius:14px;overflow:hidden;
+    background:var(--bg-2);border:1px solid var(--line);cursor:pointer;will-change:transform,opacity;
+    transition:transform .6s var(--ease-settle),opacity .6s var(--ease-settle),border-color .4s;
+    box-shadow:0 30px 70px rgba(0,0,0,.5)}
+  .fcard img{width:100%;height:100%;object-fit:cover;display:block}
+  .fcard .fcap{position:absolute;left:0;right:0;bottom:0;padding:.8rem 1rem;background:linear-gradient(0deg,rgba(6,9,15,.92),transparent);
+    opacity:0;transition:opacity .5s var(--ease-settle)}
+  .fcard.center{border-color:var(--blue-line)}
+  .fcard.center .fcap{opacity:1}
+  .fcap .fc-c{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--blue)}
+  .fcap .fc-t{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:1.4rem;line-height:1;letter-spacing:.02em;word-spacing:.08em;margin-top:.15rem}
+  .fold-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:44px;height:44px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(20,26,38,.75);color:var(--ink);cursor:pointer;font-size:18px;display:grid;place-items:center}
+  .fold-nav.prev{left:clamp(.6rem,3vw,2rem)}.fold-nav.next{right:clamp(.6rem,3vw,2rem)}
+  /* ── glide-to-center detail ── */
+  .scrim{position:fixed;inset:0;z-index:60;background:rgba(6,9,15,.55);opacity:0;pointer-events:none;
+    transition:opacity .45s var(--ease-settle);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}
+  .scrim.on{opacity:1;pointer-events:auto;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .detail{position:fixed;z-index:61;top:50%;left:50%;width:min(60vw,760px);transform:translate(-50%,-50%);transform-origin:center;
+    background:var(--bg-2);border:1px solid var(--blue-line);border-radius:16px;overflow:hidden;opacity:0;pointer-events:none;box-shadow:0 40px 120px rgba(0,0,0,.7)}
+  .detail.on{opacity:1;pointer-events:auto}
+  .detail .dimg{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+  .detail .dbody{padding:1.3rem clamp(1.2rem,2.5vw,1.8rem) 1.5rem}
+  .detail .dcode{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--blue)}
+  .detail .dtitle{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:clamp(1.8rem,4vw,3rem);line-height:.98;letter-spacing:.02em;word-spacing:.1em;margin:.15rem 0 .5rem}
+  .detail .dmeta{display:flex;gap:1.5rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+  .detail .dmeta .k{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+  .detail .dmeta div{font-size:13px}
+  .btn{display:inline-flex;align-items:center;gap:.55rem;padding:.75rem 1.4rem;border-radius:40px;cursor:pointer;font:inherit;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;border:1px solid transparent;transition:all .35s var(--ease-settle)}
+  .btn.play{background:var(--ink);color:#0a0d14}.btn.play:hover{transform:translateY(-2px)}
+  .btn.info{background:rgba(234,240,246,.08);color:var(--ink);border-color:var(--line)}.btn.info:hover{background:rgba(234,240,246,.16);transform:translateY(-2px)}
+  .dbtns{display:flex;gap:.7rem;flex-wrap:wrap}
+  .dclose{position:absolute;top:.7rem;right:.7rem;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(8,11,18,.65);color:var(--ink);cursor:pointer;font-size:15px;display:grid;place-items:center}
+  .foot{border-top:1px solid var(--line);padding:1.4rem clamp(1.2rem,3vw,2.6rem);color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;line-height:1.7}
+  .foot b{color:var(--blue);font-weight:500}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.scrim.on{backdrop-filter:none}}
+  @media(max-width:820px){.wall-hero{height:auto;min-height:0;padding:6rem 0 2rem;cursor:default}
+    .wall-stage{position:relative;height:auto;perspective:none}
+    .wall-plane{position:static;transform:none!important;grid-auto-flow:row;grid-template-rows:none;
+      grid-template-columns:repeat(2,1fr);gap:10px;padding:0 1rem}
+    .wcard{width:auto}.wall-vignette,.wall-hint{display:none}.wall-lead{position:static;padding:0 1rem 1rem;max-width:none}
+    .fcard{width:76vw}.detail{width:92vw}}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="brand">JARED<span>.</span>MCDANIEL</div>
+  <div class="navlinks"><a class="on">Wall</a><a>Films</a><a>About</a><a>Contact</a></div>
+</nav>
+
+<section class="wall-hero" id="wallHero">
+  <div class="wall-stage"><div class="wall-plane" id="wallPlane"></div></div>
+  <div class="wall-vignette"></div>
+  <div class="wall-lead">
+    <div class="k">The archive</div>
+    <h1>Selected<br>Works</h1>
+    <p>Drag to move through the wall. Click any record to bring it forward — or scroll down to browse by category.</p>
+  </div>
+  <div class="wall-hint" id="wallHint">◄ drag to explore ►</div>
+</section>
+
+<div class="rows" id="rows"></div>
+<div class="foot" id="foot"></div>
+
+<div class="scrim" id="scrim"></div>
+<div class="detail" id="detail">
+  <button class="dclose" id="dclose" aria-label="Close">✕</button>
+  <img class="dimg" id="dimg" alt="">
+  <div class="dbody">
+    <div class="dcode" id="dcode"></div>
+    <div class="dtitle" id="dtitle"></div>
+    <div class="dmeta" id="dmeta"></div>
+    <div class="dbtns"><button class="btn play" id="dplay">▶ Play video</button><button class="btn info" id="dcase">Open case study</button></div>
+  </div>
+</div>
+
+<script>
+const P=[
+ {c:"—",t:"Director Reel",yt:"mFeMMMmdW24",client:"Jared McDaniel",type:"Overview Reel",year:"2026",f:["Featured"],flag:1,lede:"The fastest overview — campaigns, trailers, and brand films in one cut.",dossier:1},
+ {c:"T1/01",t:"Cyberpunk 2077",yt:"Hc_t2eTorhI",client:"CD Projekt Red",type:"Campaign Trailer",year:"2025",f:["Featured","Gaming","Trailer"],flag:1,dossier:1},
+ {c:"T1/02",t:"DOOM",yt:"0WUnGHJXeHc",client:"Bethesda",type:"Game Trailer",year:"2025",f:["Featured","Gaming","Trailer"],flag:1,dossier:1},
+ {c:"T1/03",t:"Fallout / Nuka-Cola",yt:"VxTBnNhAD3Q",client:"Bethesda",type:"Commercial Spot",year:"2025",f:["Featured","Commercial"],flag:1,dossier:1},
+ {c:"T1/04",t:"The Witcher",yt:"tr1ajPqpuDs",client:"CD Projekt Red",type:"Cinematic Trailer",year:"2025",f:["Featured","Gaming","Trailer","Narrative"],flag:1,dossier:1},
+ {c:"T2/05",t:"Product Experience",yt:"OZZsRSgG70g",client:"Corsair",type:"Product Film",year:"2024",f:["Commercial"]},
+ {c:"T2/06",t:"Invincible Novablade Pro",yt:"WcOLQd3IycM",client:"CORSAIR",type:"Product Campaign",year:"2025",f:["Commercial","Gaming"]},
+ {c:"T2/08",t:"Prime Gaming Week",yt:"x5VkzsCT6eA",client:"CORSAIR",type:"Retail Campaign",year:"2025",f:["Commercial","Gaming"]},
+ {c:"T2/10",t:"BMW Fanatec AD",yt:"stQ7DVL4PvE",client:"BMW / Fanatec",type:"Commercial Spot",year:"2025",f:["Commercial","Gaming"]},
+ {c:"T2/11",t:"Experience Store",yt:"1MzUb4VSi1s",client:"CORSAIR",type:"Brand Film",year:"2025",f:["Commercial"],views:"134K"},
+ {c:"T3/11",t:"Frame Cut",yt:"nAIy3q5myjY",client:"Personal",type:"Editorial Feature",year:"2024",f:["Editorial"]},
+ {c:"T3/12",t:"Flow Edit — Lil Baby",yt:"DvQ-cIp07Mg",client:"Personal",type:"Editorial Feature",year:"2025",f:["Editorial"]},
+ {c:"T3/13",t:"Iron Man — Edit",yt:"oB9go7Dd1d0",client:"Personal",type:"Editorial Feature",year:"2025",f:["Editorial"]},
+ {c:"T3/14",t:"Luffy — Edit",yt:"KAl31zPic9Y",client:"Personal",type:"Editorial Feature",year:"2025",f:["Editorial"]},
+ {c:"T4/15",t:"Ashfall",yt:"Nf_lDTJCl2w",client:"Independent",type:"Narrative Short",year:"2024",f:["Narrative"]},
+ {c:"T4/16",t:"Kairi & Pixel",yt:"mpTbAcvWflA",client:"CORSAIR",type:"Holiday Animation",year:"2025",f:["Featured","Commercial","Narrative"],flag:1,views:"70K",dossier:1},
+ {c:"T4/17",t:"Shugo Samurai",yt:"Lpeyg7lq_DY",client:"Shugo Samurai",type:"Trailer",year:"2025",f:["Commercial","Gaming","Trailer","Narrative"],views:"100K"},
+ {c:"T4/18",t:"Silent Collapse",yt:"Yj2ncYs0vGU",client:"Independent",type:"Experimental Short",year:"2024",f:["Narrative"]}
+];
+const maxres=id=>`https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+const hq=id=>`https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+const has=(p,t)=>p.f.includes(t);
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const coarse=matchMedia('(hover:none),(pointer:coarse)').matches;
+function imgEl(p,cls){const i=new Image();i.className=cls||'';i.alt=p.t;i.loading='lazy';i.src=maxres(p.yt);i.onerror=function(){this.onerror=null;this.src=hq(p.yt);};return i;}
+
+/* ===== 3D WALL ===== */
+const plane=document.getElementById('wallPlane');
+/* 15 records: flagships toward the middle column */
+const WALL=[...P];
+const wallOrder=(()=>{const flags=WALL.filter(p=>p.flag),rest=WALL.filter(p=>!p.flag);const out=[];
+  /* interleave so flagships sit centrally */let fi=0,ri=0;const seq=[rest,flags,rest,flags,rest];
+  return WALL.slice(0,15);})();
+WALL.slice(0,15).forEach(p=>{
+  const c=document.createElement('button');c.className='wcard'+(p.flag?' flag':'');
+  c.appendChild(imgEl(p));
+  c.insertAdjacentHTML('beforeend',`<div class="wc-cap"><div class="wc-c">${p.c}</div><div class="wc-t">${p.t}</div></div>`);
+  c.addEventListener('click',e=>{if(dragMoved)return;openDetail(c,p);});
+  plane.appendChild(c);
+});
+/* interaction: drag pan + pointer parallax + idle drift, one rAF, gated */
+const hero=document.getElementById('wallHero');
+let panX=0,panY=0,tPanX=0,tPanY=0,parX=0,parY=0,tParX=0,tParY=0,idle=0;
+let dragging=false,dragMoved=false,sx=0,sy=0,running=false;
+const PANX_MAX=520,PANY_MAX=90;
+function clamp(v,m){return Math.max(-m,Math.min(m,v));}
+hero.addEventListener('pointerdown',e=>{dragging=true;dragMoved=false;sx=e.clientX;sy=e.clientY;hero.classList.add('dragging');hero.setPointerCapture(e.pointerId);});
+hero.addEventListener('pointermove',e=>{
+  if(dragging){const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>4)dragMoved=true;
+    tPanX=clamp(tPanX+dx,PANX_MAX);tPanY=clamp(tPanY+dy*0.5,PANY_MAX);sx=e.clientX;sy=e.clientY;kick();}
+  else if(!coarse){const r=hero.getBoundingClientRect();tParX=((e.clientX-r.left)/r.width-0.5)*10;tParY=-((e.clientY-r.top)/r.height-0.5)*6;kick();}
+});
+addEventListener('pointerup',()=>{dragging=false;hero.classList.remove('dragging');});
+function applyPlane(){
+  plane.style.transform=`translate(-50%,-50%) rotateX(${(12+parY).toFixed(2)}deg) rotateY(${parX.toFixed(2)}deg) translate3d(${panX.toFixed(1)}px,${panY.toFixed(1)}px,-40px)`;
+}
+function frame(){
+  panX+=(tPanX-panX)*0.08; panY+=(tPanY-panY)*0.08;
+  parX+=(tParX+Math.sin(idle)*1.4-parX)*0.05; parY+=(tParY-parY)*0.05;
+  idle+=0.006;
+  applyPlane();
+  const moving=Math.abs(tPanX-panX)>0.3||Math.abs(tPanY-panY)>0.3||Math.abs(tParX+Math.sin(idle)*1.4-parX)>0.3||dragging||!reduced;
+  if(moving && !document.hidden && !detailOpen){requestAnimationFrame(frame);} else {running=false;}
+}
+function kick(){if(!running&&!document.hidden){running=true;requestAnimationFrame(frame);}}
+applyPlane();
+if(!(reduced||coarse)){kick();}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)kick();});
+
+/* ===== CAROUSELS ===== */
+const rowsEl=document.getElementById('rows');
+const ROWS=[
+ {label:"Campaigns & trailers",code:"Gaming · Trailer",items:P.filter(p=>has(p,"Trailer")||has(p,"Gaming"))},
+ {label:"Commercial & brand",code:"Commercial",items:P.filter(p=>has(p,"Commercial"))},
+ {label:"Editorial & edits",code:"Personal",items:P.filter(p=>has(p,"Editorial"))}
+];
+function buildRow(r){
+  const sec=document.createElement('div');sec.className='row';
+  const track=document.createElement('div');track.className='track';
+  r.items.forEach(p=>{
+    const card=document.createElement('button');card.className='card';
+    card.appendChild(imgEl(p));
+    card.insertAdjacentHTML('beforeend',
+      `<span class="cover"><span class="cc">${p.c}</span><span class="ctt">${p.t}</span><span class="cm">${p.client} · ${p.type}</span></span>`);
+    card.addEventListener('click',()=>openDetail(card,p));
+    track.appendChild(card);
+  });
+  sec.innerHTML=`<h2>${r.label} <span class="ct">${r.items.length} titles</span></h2>`;
+  const wrap=document.createElement('div');wrap.className='trackwrap';
+  const prev=document.createElement('button');prev.className='rownav prev';prev.setAttribute('aria-label','Scroll left');prev.innerHTML='<span>❮</span>';
+  const next=document.createElement('button');next.className='rownav next';next.setAttribute('aria-label','Scroll right');next.innerHTML='<span>❯</span>';
+  const amt=()=>Math.max(track.clientWidth*0.85,300);
+  prev.onclick=()=>track.scrollBy({left:-amt(),behavior:reduced?'auto':'smooth'});
+  next.onclick=()=>track.scrollBy({left:amt(),behavior:reduced?'auto':'smooth'});
+  const upd=()=>{prev.disabled=track.scrollLeft<8;next.disabled=track.scrollLeft>=track.scrollWidth-track.clientWidth-8;};
+  track.addEventListener('scroll',upd,{passive:true});
+  wrap.appendChild(track);wrap.appendChild(prev);wrap.appendChild(next);
+  sec.appendChild(wrap);rowsEl.appendChild(sec);requestAnimationFrame(upd);
+}
+buildRow(ROWS[0]);
+
+/* ── parallax-fold coverflow row (Narrative & short films) ── */
+(function(){
+  const items=P.filter(p=>has(p,"Narrative"));
+  const sec=document.createElement('div');sec.className='row';
+  sec.innerHTML=`<h2>Narrative &amp; short films <span class="ct">${items.length} titles</span></h2><div class="sub">Parallax-fold — side panels fold back, the middle stays sharp. Drag or use the arrows.</div>`;
+  const fold=document.createElement('div');fold.className='fold';
+  const ftrack=document.createElement('div');ftrack.className='fold-track';
+  const cards=items.map((p,i)=>{
+    const c=document.createElement('button');c.className='fcard';
+    c.appendChild(imgEl(p));
+    c.insertAdjacentHTML('beforeend',`<div class="fcap"><div class="fc-c">${p.c}</div><div class="fc-t">${p.t}</div></div>`);
+    c.addEventListener('click',()=>{if(i===active){openDetail(c,p);}else{active=i;layout();}});
+    ftrack.appendChild(c);return c;
+  });
+  const prev=document.createElement('button');prev.className='fold-nav prev';prev.setAttribute('aria-label','Previous');prev.textContent='❮';
+  const next=document.createElement('button');next.className='fold-nav next';next.setAttribute('aria-label','Next');next.textContent='❯';
+  let active=Math.min(1,items.length-1);
+  function layout(){
+    cards.forEach((c,i)=>{
+      const o=i-active;const a=Math.abs(o);
+      const tx=o*(a>0?58:0)+o*2; /* percent */
+      const rot=-o*38; const sc=Math.max(0.62,1-a*0.16); const z=200-a*60;
+      c.style.transform=`translate(-50%,-50%) translateX(${o*54}%) translateZ(${z-260}px) rotateY(${rot}deg) scale(${sc})`;
+      c.style.opacity=a>2?0:(1-a*0.22);
+      c.style.zIndex=100-a;
+      c.classList.toggle('center',o===0);
+      c.style.pointerEvents=a>2?'none':'auto';
+    });
+  }
+  prev.onclick=()=>{active=Math.max(0,active-1);layout();};
+  next.onclick=()=>{active=Math.min(items.length-1,active+1);layout();};
+  /* drag */
+  let ds=0,drag=false,moved=false;
+  fold.addEventListener('pointerdown',e=>{drag=true;moved=false;ds=e.clientX;fold.setPointerCapture(e.pointerId);});
+  fold.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-ds;if(Math.abs(dx)>60){moved=true;if(dx<0)next.onclick();else prev.onclick();ds=e.clientX;}});
+  addEventListener('pointerup',()=>{drag=false;});
+  fold.appendChild(ftrack);fold.appendChild(prev);fold.appendChild(next);
+  sec.appendChild(fold);rowsEl.appendChild(sec);
+  layout();
+})();
+
+buildRow(ROWS[1]);buildRow(ROWS[2]);
+document.getElementById('foot').innerHTML='PROTOTYPE · <b>3D wall</b> hero (drag to pan, pointer parallax, idle drift — one rAF, pauses off-screen & respects reduced-motion) · Disney+ carousels below · one <b>parallax-fold</b> row · all transform/opacity (Firefox-safe); focus-blur is the one gated effect';
+
+/* nav scroll */
+const nav=document.getElementById('nav');addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60),{passive:true});
+
+/* ===== glide-to-center detail ===== */
+const scrim=document.getElementById('scrim'),detail=document.getElementById('detail');let detailOpen=false;
+function openDetail(card,p){
+  document.getElementById('dimg').src=maxres(p.yt);
+  document.getElementById('dimg').onerror=function(){this.onerror=null;this.src=hq(p.yt);};
+  document.getElementById('dcode').textContent=p.c==="—"?"DIRECTOR REEL":p.c;
+  document.getElementById('dtitle').textContent=p.t;
+  document.getElementById('dmeta').innerHTML=`<div><div class="k">Client</div>${p.client}</div><div><div class="k">Type</div>${p.type}</div><div><div class="k">Year</div>${p.year}</div>`+(p.views?`<div><div class="k">Views</div>${p.views}</div>`:'');
+  document.getElementById('dcase').style.display=p.dossier?'':'none';
+  detailOpen=true;scrim.classList.add('on');detail.classList.add('on');
+  if(reduced||!card){detail.style.transform='translate(-50%,-50%)';return;}
+  detail.style.transition='none';detail.style.transform='translate(-50%,-50%)';
+  const dr=detail.getBoundingClientRect(),cr=card.getBoundingClientRect();
+  const sx2=cr.width/dr.width,sy2=cr.height/dr.height;
+  const tx=(cr.left+cr.width/2)-(dr.left+dr.width/2),ty=(cr.top+cr.height/2)-(dr.top+dr.height/2);
+  detail.style.transform=`translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${sx2},${sy2})`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{detail.style.transition='transform .55s var(--ease-enter),opacity .3s';detail.style.transform='translate(-50%,-50%)';}));
+}
+function closeDetail(){detailOpen=false;scrim.classList.remove('on');detail.classList.remove('on');
+  detail.style.transition='transform .4s var(--ease-settle),opacity .35s';detail.style.transform='translate(-50%,-50%) scale(.9)';kick();}
+document.getElementById('dclose').onclick=closeDetail;document.getElementById('dplay').onclick=closeDetail;document.getElementById('dcase').onclick=closeDetail;
+scrim.onclick=closeDetail;addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail();});
+</script>
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jared McDaniel — Director & Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:opsz,wght@9..40,200;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0a0a0f;
+    color: #e8e6e3;
+    overflow-x: hidden;
+  }
+
+  /* ─── GHOST CURSOR HERO ─── */
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #ghost-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: screen;
+  }
+
+  /* ─── GLASS VIDEO BOARD ─── */
+  .video-board {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 1200px;
+    padding: 2rem;
+  }
+
+  .board-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .board-header .label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(239, 68, 68, 0.6);
+    margin-bottom: 0.75rem;
+  }
+
+  .board-header h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #fff;
+    position: relative;
+  }
+
+  .board-header h1 .highlight {
+    color: rgba(239, 68, 68, 0.9);
+    font-weight: 400;
+  }
+
+  .board-header .sub {
+    font-size: 0.85rem;
+    color: rgba(232, 230, 227, 0.5);
+    margin-top: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── GLASS GRID ─── */
+  .glass-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    perspective: 1200px;
+  }
+
+  .glass-card {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    
+    /* Glass surface */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    
+    /* Chromatic edge */
+    box-shadow: 
+      0 0 0 1px rgba(239, 68, 68, 0.02),
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  /* Pseudo-element for RGB channel offset glass edge */
+  .glass-card::before,
+  .glass-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 17px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glass-card::before {
+    border: 1px solid rgba(255, 60, 60, 0.08);
+    transform: translate(1px, 0);
+  }
+
+  .glass-card::after {
+    border: 1px solid rgba(60, 120, 255, 0.06);
+    transform: translate(-1px, 0);
+  }
+
+  .glass-card:hover {
+    transform: scale(1.02) translateY(-4px);
+    border-color: rgba(239, 68, 68, 0.12);
+    box-shadow: 
+      0 0 0 1px rgba(239, 68, 68, 0.06),
+      0 12px 48px rgba(239, 68, 68, 0.06),
+      0 0 60px rgba(239, 68, 68, 0.03),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-card .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 50%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    z-index: 1;
+  }
+
+  .glass-card .info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    z-index: 2;
+  }
+
+  .glass-card .info .tag {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(239, 68, 68, 0.7);
+    margin-bottom: 0.3rem;
+  }
+
+  .glass-card .info h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  .glass-card .info p {
+    font-size: 0.7rem;
+    color: rgba(232, 230, 227, 0.5);
+    margin-top: 0.15rem;
+  }
+
+  /* Featured card (large hero card) */
+  .glass-card.featured {
+    grid-column: span 2;
+    grid-row: span 1;
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+
+  /* ─── PARALLAX DISPLAY WINDOW ─── */
+  .parallax-window {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    margin: 3rem auto 0;
+    padding: 0 2rem;
+  }
+
+  .parallax-window .display-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+      0 0 0 1px rgba(239, 68, 68, 0.03),
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(239, 68, 68, 0.02);
+  }
+
+  .parallax-window .display-frame .grid-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: transform 0.5s ease;
+  }
+
+  .parallax-window .display-frame .grid-overlay .cell {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 0.7rem;
+    transition: all 0.3s;
+  }
+
+  .parallax-window .display-frame .grid-overlay .cell:hover {
+    background: rgba(239, 68, 68, 0.03);
+    border-color: rgba(239, 68, 68, 0.08);
+  }
+
+  .parallax-window .display-frame .glass-label {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1.25rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(232, 230, 227, 0.4);
+  }
+
+  /* ─── WORK SECTION ─── */
+  .work-section {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 0 2rem;
+  }
+
+  .work-section h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+  }
+
+  .work-section .sub {
+    color: rgba(232, 230, 227, 0.4);
+    font-size: 0.85rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .work-item {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .work-item:hover {
+    border-color: rgba(239, 68, 68, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-2px);
+  }
+
+  .work-item .label {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(232, 230, 227, 0.6);
+  }
+
+  .work-item .label .client {
+    color: rgba(232, 230, 227, 0.3);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 3rem 2rem;
+    color: rgba(232, 230, 227, 0.2);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .glass-grid { grid-template-columns: 1fr; }
+    .glass-card.featured { grid-column: span 1; min-height: auto; aspect-ratio: 16/9; }
+    .work-grid { grid-column: 1fr; }
+    .board-header h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <canvas id="ghost-canvas"></canvas>
+
+  <div class="video-board">
+    <div class="board-header">
+      <div class="label">Featured Work</div>
+      <h1>Moving Pictures<br>for <span class="highlight">Moving</span> Stories</h1>
+      <div class="sub">Cinematic direction &bull; Performance campaigns &bull; AAA brand films</div>
+    </div>
+
+    <div class="glass-grid">
+      <div class="glass-card featured">
+        <div class="overlay"></div>
+        <div class="info">
+          <div class="tag">CORSAIR</div>
+          <h3>iCUE LINK — Performance Campaign</h3>
+          <p>Director &bull; Editor</p>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="overlay"></div>
+        <div class="info">
+          <div class="tag">Bethesda / Xbox</div>
+          <h3>Starfield Launch</h3>
+          <p>Editor</p>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="overlay"></div>
+        <div class="info">
+          <div class="tag">CD PROJEKT RED</div>
+          <h3>Cyberpunk 2077</h3>
+          <p>Editor</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallax-window">
+    <div class="display-frame" id="parallax-frame">
+      <div class="grid-overlay" id="grid-overlay">
+        <div class="cell">01</div><div class="cell">02</div><div class="cell">03</div><div class="cell">04</div>
+        <div class="cell">05</div><div class="cell">06</div><div class="cell">07</div><div class="cell">08</div>
+        <div class="cell">09</div><div class="cell">10</div><div class="cell">11</div><div class="cell">12</div>
+      </div>
+      <div class="glass-label">Parallax Display &mdash; 12 Window Grid</div>
+    </div>
+  </div>
+</div>
+
+<div class="work-section">
+  <h2>Selected Work</h2>
+  <div class="sub">AAA brands &middot; Cinematic campaigns &middot; First-pass approvals</div>
+  <div class="work-grid">
+    <div class="work-item"><span class="label"><span class="client">CORSAIR</span>iCUE LINK Launch</span></div>
+    <div class="work-item"><span class="label"><span class="client">Bethesda</span>Starfield</span></div>
+    <div class="work-item"><span class="label"><span class="client">CDPR</span>Cyberpunk 2077</span></div>
+    <div class="work-item"><span class="label"><span class="client">RAZER</span>Hammerhead Pro</span></div>
+    <div class="work-item"><span class="label"><span class="client">ASUS ROG</span>Zephyrus G14</span></div>
+    <div class="work-item"><span class="label"><span class="client">NVIDIA</span>GeForce RTX</span></div>
+  </div>
+</div>
+
+<footer>
+  Jared McDaniel — Director &amp; Editor
+</footer>
+
+<script>
+/* ─── GHOST CURSOR — Canvas 2D implementation ─── */
+(function() {
+  const canvas = document.getElementById('ghost-canvas');
+  const hero = document.querySelector('.hero');
+  const ctx = canvas.getContext('2d');
+
+  let W, H;
+  const trail = [];
+  const TRAIL_LENGTH = 50;
+  const MOUSE = { x: W / 2, y: H / 2, vx: 0, vy: 0, active: false };
+  const INERTIA = 0.5;
+  const FADE_DELAY = 1000;
+  const FADE_DURATION = 1500;
+  let lastMoveTime = 0;
+  let fadeOpacity = 1;
+  let animId = null;
+
+  const COLOR = { r: 239/255, g: 68/255, b: 68/255 };
+  const BRIGHTNESS = 0.8;
+
+  function resize() {
+    const rect = hero.getBoundingClientRect();
+    W = canvas.width = Math.floor(rect.width);
+    H = canvas.height = Math.floor(rect.height);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+
+  /* Noise texture for grain */
+  let grainCanvas = null;
+  function ensureGrain() {
+    if (!grainCanvas || grainCanvas.width !== W || grainCanvas.height !== H) {
+      grainCanvas = document.createElement('canvas');
+      grainCanvas.width = Math.floor(W / 4);
+      grainCanvas.height = Math.floor(H / 4);
+    }
+    const gc = grainCanvas.getContext('2d');
+    const w = grainCanvas.width, h = grainCanvas.height;
+    const imageData = gc.createImageData(w, h);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const v = (Math.random() * 2 - 1) * 30;
+      data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 255;
+    }
+    gc.putImageData(imageData, 0, 0);
+  }
+
+  function draw(timestamp) {
+    const now = performance.now();
+    
+    if (!MOUSE.active) {
+      MOUSE.vx *= INERTIA;
+      MOUSE.vy *= INERTIA;
+      MOUSE.x += MOUSE.vx;
+      MOUSE.y += MOUSE.vy;
+      
+      const dt = now - lastMoveTime;
+      if (dt > FADE_DELAY) {
+        fadeOpacity = Math.max(0, 1 - (dt - FADE_DELAY) / FADE_DURATION);
+      }
+    }
+
+    trail.push({ x: MOUSE.x, y: MOUSE.y });
+    if (trail.length > TRAIL_LENGTH) trail.shift();
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'screen';
+
+    if (trail.length > 1) {
+      for (let i = 0; i < trail.length; i++) {
+        const p = trail[i];
+        const t = i / trail.length;
+        const alpha = t * t * fadeOpacity * 0.35;
+        const radius = 60 + (1 - t) * 80;
+
+        if (alpha < 0.005) continue;
+
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
+        grad.addColorStop(0, `rgba(${COLOR.r * 255|0}, ${COLOR.g * 255|0}, ${COLOR.b * 255|0}, ${alpha * BRIGHTNESS * 0.8})`);
+        grad.addColorStop(0.2, `rgba(${COLOR.r * 255|0}, ${COLOR.g * 255|0}, ${COLOR.b * 255|0}, ${alpha * BRIGHTNESS * 0.4})`);
+        grad.addColorStop(0.5, `rgba(${COLOR.r * 255|0}, ${COLOR.g * 255|0}, ${COLOR.b * 255|0}, ${alpha * BRIGHTNESS * 0.15})`);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.globalCompositeOperation = 'overlay';
+    ensureGrain();
+    ctx.drawImage(grainCanvas, 0, 0, W, H);
+    ctx.globalCompositeOperation = 'screen';
+    ctx.globalCompositeOperation = 'source-over';
+
+    if (MOUSE.active || fadeOpacity > 0.01) {
+      animId = requestAnimationFrame(draw);
+    } else {
+      animId = null;
+    }
+  }
+
+  function ensureLoop() {
+    if (!animId) {
+      animId = requestAnimationFrame(draw);
+    }
+  }
+
+  function onMove(e) {
+    const rect = hero.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    MOUSE.vx = (x - MOUSE.x) * 0.15;
+    MOUSE.vy = (y - MOUSE.y) * 0.15;
+    MOUSE.x = x;
+    MOUSE.y = y;
+    MOUSE.active = true;
+    lastMoveTime = performance.now();
+    ensureLoop();
+  }
+
+  function onLeave() {
+    MOUSE.active = false;
+    lastMoveTime = performance.now();
+    ensureLoop();
+  }
+
+  function onEnter() {
+    MOUSE.active = true;
+    ensureLoop();
+  }
+
+  hero.addEventListener('pointermove', onMove, { passive: true });
+  hero.addEventListener('pointerleave', onLeave, { passive: true });
+  hero.addEventListener('pointerenter', onEnter, { passive: true });
+
+  resize();
+  window.addEventListener('resize', resize);
+  MOUSE.x = W / 2;
+  MOUSE.y = H / 2;
+  ensureLoop();
+
+  /* ─── PARALLAX GRID MOUSE TRACKING ─── */
+  const frame = document.getElementById('parallax-frame');
+  const grid = document.getElementById('grid-overlay');
+  
+  frame.addEventListener('mousemove', (e) => {
+    const rect = frame.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    
+    const px = (x - 0.5) * 20;
+    const py = (y - 0.5) * 20;
+    
+    grid.style.transform = `translate(${px}px, ${py}px)`;
+    grid.style.transition = 'transform 0.15s ease-out';
+  });
+
+  frame.addEventListener('mouseleave', () => {
+    grid.style.transform = 'translate(0, 0)';
+    grid.style.transition = 'transform 0.5s ease';
+  });
+})();
+</script>
+
+</body>
+</html>

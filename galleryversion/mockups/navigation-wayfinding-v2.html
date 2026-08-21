@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation & Wayfinding — Interactive Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E131F;--bg-deep:#080B12;--bg-panel:#131A28;--ink:#E8EDF2;--muted:rgba(232,237,242,.62);
+    --faint:rgba(232,237,242,.34);--line:rgba(232,237,242,.10);
+    --blue:#5C86AD;--blue-soft:rgba(92,134,173,.16);--blue-line:rgba(92,134,173,.42);--gold:#D6B77A;
+    --ease-settle:cubic-bezier(0.16,1,0.3,1);--ease-enter:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .stage{position:relative;height:660px;overflow:hidden;display:flex;flex-direction:column;
+    background:radial-gradient(1000px 520px at 68% -8%,var(--blue-soft),transparent 60%),var(--bg)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:1rem clamp(1.2rem,3vw,2.2rem);border-bottom:1px solid var(--line);z-index:6}
+  .brand{font-family:"Anton",sans-serif;text-transform:uppercase;letter-spacing:.04em;font-size:1.05rem}
+  .brand span{color:var(--blue)}
+  .crumb{display:flex;align-items:center;gap:.55rem;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .crumb .home{cursor:pointer;transition:color .3s var(--ease-settle)}.crumb .home:hover{color:var(--ink)}
+  .crumb b{color:var(--ink);font-weight:500}.crumb .sep{color:var(--blue)}
+  .nav{display:flex;gap:1.2rem;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .nav button{background:none;border:none;color:inherit;cursor:pointer;font:inherit;letter-spacing:inherit;
+    text-transform:inherit;position:relative;padding:0 0 4px;transition:color .3s var(--ease-settle)}
+  .nav button::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--blue);
+    transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-enter)}
+  .nav button:hover{color:var(--ink)}.nav button.on{color:var(--ink)}
+  .nav button:hover::after,.nav button.on::after{transform:scaleX(1)}
+  .main{position:relative;flex:1;min-height:0;display:flex}
+  .hero{flex:1;padding:clamp(1.6rem,4vw,3rem) clamp(1.2rem,3vw,2.2rem);display:flex;flex-direction:column;justify-content:center}
+  .kick{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--blue)}
+  .htitle{font-family:"Anton",sans-serif;text-transform:uppercase;line-height:.9;font-size:clamp(2.6rem,8vw,6rem);margin:.35rem 0}
+  .hlede{color:var(--muted);font-weight:300;font-size:clamp(.95rem,2vw,1.25rem);max-width:42ch}
+  .hmeta{margin-top:1rem;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase}
+  .cta{align-self:flex-start;display:inline-flex;align-items:center;gap:.5rem;margin-top:1.4rem;padding:.6rem 1.1rem;
+    border:1px solid var(--blue-line);border-radius:40px;color:var(--ink);cursor:pointer;background:none;font:inherit;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:all .4s var(--ease-settle)}
+  .cta:hover{background:var(--blue-soft);transform:translateY(-2px)}
+  /* minimap */
+  .minimap{width:132px;flex:none;padding:1rem .9rem 1rem 0;display:flex;flex-direction:column;gap:7px;
+    align-items:flex-end;justify-content:center;overflow:auto}
+  .mm-h{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.24em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:2px;align-self:flex-end}
+  .dotrow{display:flex;align-items:center;gap:9px;cursor:pointer;background:none;border:none;padding:2px 0;width:100%;justify-content:flex-end}
+  .dotrow .lab{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em;color:var(--faint);
+    opacity:0;transform:translateX(5px);transition:all .3s var(--ease-enter);text-transform:uppercase;white-space:nowrap}
+  .dotrow:hover .lab{opacity:1;transform:translateX(0)}
+  .dotrow .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.22);flex:none;transition:all .3s var(--ease-settle)}
+  .dotrow.flag .dot{background:rgba(92,134,173,.5)}
+  .dotrow:hover .dot{background:var(--blue)}
+  .dotrow.cur .dot{width:9px;height:9px;background:var(--blue);box-shadow:0 0 0 4px var(--blue-soft)}
+  .dotrow.cur .lab{opacity:1;transform:translateX(0);color:var(--ink)}
+  /* wall strip */
+  .wallwrap{position:absolute;left:0;right:0;bottom:0;padding:0 clamp(1.2rem,3vw,2.2rem) 1.3rem;z-index:3}
+  .wall{display:flex;gap:12px;overflow-x:auto;scroll-behavior:smooth;padding:.4rem .2rem 1rem;scrollbar-width:thin}
+  .wall::-webkit-scrollbar{height:5px}.wall::-webkit-scrollbar-thumb{background:var(--blue-line);border-radius:4px}
+  .rc{flex:none;width:142px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;position:relative;cursor:pointer;
+    border:1px solid var(--line);background:linear-gradient(150deg,#1b2740,#0d1522);
+    transition:transform .45s var(--ease-settle),border-color .45s var(--ease-settle),box-shadow .45s var(--ease-settle)}
+  .rc:hover{transform:translateY(-7px);border-color:var(--blue-line)}
+  .rc.flag{width:176px;border-color:var(--blue-line)}
+  .rc.cur{box-shadow:0 0 0 1px var(--blue),0 0 0 5px var(--blue-soft)}
+  .rc.pulse{animation:pulse 1.5s var(--ease-settle)}
+  @keyframes pulse{0%{box-shadow:0 0 0 1px var(--gold),0 0 0 10px rgba(214,183,122,.28)}100%{box-shadow:0 0 0 1px var(--blue),0 0 0 5px var(--blue-soft)}}
+  .rc .cap{position:absolute;inset:auto 0 0 0;padding:.55rem .65rem;background:linear-gradient(transparent,rgba(8,11,18,.92))}
+  .rc .c{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;color:var(--blue)}
+  .rc .t{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:.9rem;line-height:1;margin-top:.15rem}
+  .rc .tag{position:absolute;top:7px;left:7px;font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.08em;
+    text-transform:uppercase;padding:2px 6px;border-radius:4px;background:var(--blue-soft);color:var(--blue)}
+  .rc .badge{position:absolute;top:7px;right:7px;font-family:"JetBrains Mono",monospace;font-size:8px;
+    padding:2px 6px;border-radius:4px;background:rgba(214,183,122,.18);color:var(--gold)}
+  /* preview dossier panel */
+  .preview{position:absolute;inset:0;z-index:8;background:rgba(8,11,18,.82);
+    display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .4s var(--ease-settle)}
+  .preview.open{opacity:1;pointer-events:auto}
+  .pcard{width:100%;background:var(--bg-panel);border-top:1px solid var(--blue-line);
+    padding:1.4rem clamp(1.2rem,3vw,2.2rem) 1.6rem;transform:translateY(30px);transition:transform .5s var(--ease-enter)}
+  .preview.open .pcard{transform:translateY(0)}
+  .pback{background:none;border:none;color:var(--muted);cursor:pointer;font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;display:inline-flex;gap:.5rem;align-items:center;transition:color .3s}
+  .pback:hover{color:var(--ink)}
+  .pcode{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--blue);margin-top:.8rem}
+  .ptitle{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:clamp(2rem,5vw,3.4rem);line-height:.95;margin:.1rem 0 .3rem}
+  .pmeta{display:flex;flex-wrap:wrap;gap:1.4rem;margin:.6rem 0 1rem}
+  .pmeta div{font-size:12px}.pmeta .k{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+  .pcta{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.4rem}
+  .pbtn{padding:.6rem 1.1rem;border-radius:40px;border:1px solid var(--blue-line);background:none;color:var(--ink);
+    cursor:pointer;font:inherit;font-size:12px;letter-spacing:.12em;text-transform:uppercase;transition:all .3s var(--ease-settle)}
+  .pbtn.primary{background:var(--blue-soft)}.pbtn:hover{transform:translateY(-2px);border-color:var(--blue)}
+  .note{max-width:1100px;margin:1rem auto 0;padding:0 clamp(1.2rem,3vw,2.2rem);color:var(--faint);
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;line-height:1.7}
+  .note b{color:var(--blue);font-weight:500}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="topbar">
+    <div class="brand">JARED<span>.</span>MCDANIEL</div>
+    <div class="crumb" id="crumb"><span class="home">Archive</span></div>
+    <nav class="nav" id="nav">
+      <button class="on" data-room="Archive">Archive</button>
+      <button data-room="About">About</button>
+      <button data-room="Reel">Reel</button>
+      <button data-room="Contact">Contact</button>
+    </nav>
+  </div>
+  <div class="main">
+    <div class="hero">
+      <p class="kick" id="hkick">Start here · fastest overview</p>
+      <h1 class="htitle" id="htitle">Director Reel</h1>
+      <p class="hlede" id="hlede">Creative video direction &amp; editing — campaigns, trailers, and brand films for CORSAIR, CD Projekt Red, Bethesda and more.</p>
+      <p class="hmeta" id="hmeta">Jared McDaniel · Overview Reel · 2026</p>
+      <button class="cta" id="hcta">▶ Watch the reel</button>
+    </div>
+    <div class="minimap" id="minimap"><div class="mm-h">Wall</div></div>
+    <div class="wallwrap"><div class="wall" id="wall"></div></div>
+    <div class="preview" id="preview">
+      <div class="pcard">
+        <button class="pback" id="pback">← Back to the wall</button>
+        <div class="pcode" id="pcode">T1 / 01</div>
+        <div class="ptitle" id="ptitle">Cyberpunk 2077</div>
+        <div class="pmeta" id="pmeta"></div>
+        <div class="pcta">
+          <button class="pbtn primary" id="popen">Open full case study →</button>
+          <button class="pbtn" id="pplay">▶ Play video</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="note" id="note">INTERACTIVE PROTOTYPE — <b>scroll the wall</b>: the minimap tracks position. <b>Click a minimap dot</b>: jumps to that record. <b>Click a card</b>: opens its dossier + breadcrumb updates. <b>Back to the wall</b>: returns to the exact scroll position (gold pulse = the record you came from) — the fix for today's lose-your-place bug.</p>
+<script>
+const DATA=[
+ {c:"— / REEL",t:"Director Reel",client:"Jared McDaniel",type:"Overview Reel",role:"Creative Director",year:"2026",flag:1,tag:"Start"},
+ {c:"T1 / 01",t:"Cyberpunk 2077",client:"CD Projekt Red",type:"Campaign Trailer",role:"Creative Direction",year:"2025",flag:1,dossier:1},
+ {c:"T1 / 02",t:"DOOM",client:"Bethesda",type:"Game Trailer",role:"Trailer Direction",year:"2025",flag:1,dossier:1},
+ {c:"T1 / 04",t:"The Witcher",client:"CD Projekt Red",type:"Cinematic Trailer",role:"Cinematic Direction",year:"2025",flag:1,dossier:1},
+ {c:"T1 / 03",t:"Fallout / Nuka-Cola",client:"Bethesda",type:"Commercial Spot",role:"Commercial Direction",year:"2025",flag:1,dossier:1},
+ {c:"T4 / 16",t:"Kairi & Pixel",client:"CORSAIR",type:"Holiday Animation",role:"Producer",year:"2025",flag:1,dossier:1,views:"70K views"},
+ {c:"T2 / 05",t:"Product Experience",client:"Corsair",type:"Product Film",role:"Brand Direction",year:"2024"},
+ {c:"T2 / 06",t:"Invincible Novablade Pro",client:"CORSAIR",type:"Product Campaign",role:"Campaign Direction",year:"2025"},
+ {c:"T2 / 08",t:"Prime Gaming Week",client:"CORSAIR",type:"Retail Campaign",role:"Campaign Direction",year:"2025"},
+ {c:"T2 / 10",t:"BMW Fanatec AD",client:"BMW / Fanatec",type:"Commercial Spot",role:"Commercial Direction",year:"2025"},
+ {c:"T2 / 11",t:"Experience Store",client:"CORSAIR",type:"Brand Film",role:"Commercial Direction",year:"2025",views:"134K views"},
+ {c:"T3 / 11",t:"Frame Cut",client:"Personal",type:"Editorial Feature",role:"Editorial Direction",year:"2024"},
+ {c:"T3 / 12",t:"Flow Edit — Lil Baby",client:"Personal",type:"Editorial Feature",role:"Editorial Direction",year:"2025"},
+ {c:"T3 / 13",t:"Iron Man — Edit",client:"Personal",type:"Editorial Feature",role:"Editorial Direction",year:"2025"},
+ {c:"T3 / 14",t:"Luffy — Edit",client:"Personal",type:"Editorial Feature",role:"Editorial Direction",year:"2025"},
+ {c:"T4 / 15",t:"Ashfall",client:"Independent",type:"Narrative Short",role:"Short Film Direction",year:"2024"},
+ {c:"T4 / 17",t:"Shugo Samurai",client:"Shugo Samurai",type:"Trailer",role:"Trailer Direction",year:"2025",views:"100K views"},
+ {c:"T4 / 18",t:"Silent Collapse",client:"Independent",type:"Experimental Short",role:"Experimental Direction",year:"2024"}
+];
+const wall=document.getElementById('wall'),minimap=document.getElementById('minimap'),
+ crumb=document.getElementById('crumb'),preview=document.getElementById('preview');
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let current=-1;
+DATA.forEach((d,i)=>{
+  const card=document.createElement('button');
+  card.className='rc'+(d.flag?' flag':'');card.dataset.i=i;
+  card.innerHTML=(d.tag?`<span class="tag">${d.tag}</span>`:'')+(d.views?`<span class="badge">${d.views}</span>`:'')+
+    `<div class="cap"><div class="c">${d.c}</div><div class="t">${d.t}</div></div>`;
+  card.addEventListener('click',()=>openRecord(i));
+  wall.appendChild(card);
+  const row=document.createElement('button');
+  row.className='dotrow'+(d.flag?' flag':'');row.dataset.i=i;
+  row.innerHTML=`<span class="lab">${d.t}</span><span class="dot"></span>`;
+  row.addEventListener('click',()=>jumpTo(i));
+  minimap.appendChild(row);
+});
+const cards=[...wall.children],rows=[...minimap.querySelectorAll('.dotrow')];
+function setCurrent(i){
+  if(i===current)return;current=i;
+  cards.forEach((c,n)=>c.classList.toggle('cur',n===i));
+  rows.forEach((r,n)=>r.classList.toggle('cur',n===i));
+}
+let lockUntil=0;
+function jumpTo(i){
+  const c=cards[i];
+  wall.scrollTo({left:c.offsetLeft-wall.clientWidth/2+c.clientWidth/2,behavior:reduced?'auto':'smooth'});
+  setCurrent(i);
+  lockUntil=performance.now()+650;
+}
+let raf=0;
+wall.addEventListener('scroll',()=>{
+  if(raf)return;raf=requestAnimationFrame(()=>{raf=0;
+    if(performance.now()<lockUntil)return;
+    const maxScroll=wall.scrollWidth-wall.clientWidth;
+    let best;
+    if(wall.scrollLeft<=4)best=0;
+    else if(wall.scrollLeft>=maxScroll-4)best=cards.length-1;
+    else{const mid=wall.scrollLeft+wall.clientWidth/2;let bd=1e9;best=0;
+      cards.forEach((c,n)=>{const cc=c.offsetLeft+c.clientWidth/2,dd=Math.abs(cc-mid);if(dd<bd){bd=dd;best=n;}});}
+    setCurrent(best);
+  });
+});
+let savedScroll=0,fromIndex=0;
+function openRecord(i){
+  fromIndex=i;savedScroll=wall.scrollLeft;
+  const d=DATA[i];
+  crumb.innerHTML=`<span class="home">Archive</span><span class="sep">/</span><b>${d.t}</b>`;
+  crumb.querySelector('.home').addEventListener('click',backToWall);
+  document.getElementById('pcode').textContent=d.c;
+  document.getElementById('ptitle').textContent=d.t;
+  document.getElementById('pmeta').innerHTML=
+    `<div><div class="k">Client</div>${d.client}</div><div><div class="k">Type</div>${d.type}</div>`+
+    `<div><div class="k">Role</div>${d.role}</div><div><div class="k">Year</div>${d.year}</div>`+
+    (d.dossier?`<div><div class="k">Case study</div>Available</div>`:`<div><div class="k">Format</div>Screening</div>`);
+  document.getElementById('popen').style.display=d.dossier?'':'none';
+  preview.classList.add('open');
+}
+function backToWall(){
+  preview.classList.remove('open');
+  crumb.innerHTML=`<span class="home">Archive</span>`;
+  wall.scrollTo({left:savedScroll,behavior:'auto'});
+  const c=cards[fromIndex];c.classList.remove('pulse');void c.offsetWidth;c.classList.add('pulse');
+  setCurrent(fromIndex);
+}
+document.getElementById('pback').addEventListener('click',backToWall);
+document.getElementById('pplay').addEventListener('click',backToWall);
+document.getElementById('popen').addEventListener('click',backToWall);
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x===b));
+  crumb.innerHTML=`<span class="home">${b.dataset.room}</span>`;
+});
+jumpTo(0);
+</script>
+</body>
+</html>

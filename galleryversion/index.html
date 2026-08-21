@@ -9,27 +9,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <style>:root {
-      --bg: #080a0d;
-      --bg-deep: #030406;
-      --ink: #f2eee7;
-      --muted: rgba(242, 238, 231, 0.62);
-      --faint: rgba(242, 238, 231, 0.34);
-      --line: rgba(242, 238, 231, 0.12);
-      --line-blue: rgba(111, 140, 255, 0.28);
-      --blue: #6f8cff;
-      --blue-deep: #17264f;
-      --blue-atmosphere: rgba(111, 140, 255, 0.16);
-      --blue-soft: rgba(111, 140, 255, 0.16);
-      --gold: #d6b77a;
-      --glass: rgba(8, 12, 18, 0.62);
-      --mx: 0;
-      --my: 0;
-      --cursor-x: 50%;
-      --cursor-y: 50%;
-      --focus-x: 50%;
-      --focus-y: 50%;
-      color-scheme: dark;
-    }
+        --bg: #0E131F;
+        --bg-deep: #080B12;
+        --ink: #E8EDF2;
+        --muted: rgba(232, 237, 242, 0.62);
+        --faint: rgba(232, 237, 242, 0.34);
+        --line: rgba(232, 237, 242, 0.12);
+        --line-blue: rgba(74, 124, 157, 0.28);
+        --blue: #4A7C9D;
+        --blue-muted: #3D5A73;
+        --blue-deep: #1A2B3E;
+        --blue-atmosphere: rgba(74, 124, 157, 0.16);
+        --blue-soft: rgba(74, 124, 157, 0.12);
+        --glass: rgba(14, 19, 31, 0.78);
+        --glass-frost: rgba(26, 43, 62, 0.55);
+        --gold: #d6b77a;
+        --mx: 0;
+        --my: 0;
+        --cursor-x: 50%;
+        --cursor-y: 50%;
+        --focus-x: 50%;
+        --focus-y: 50%;
+        color-scheme: dark;
+      }
 
     @view-transition {
       navigation: auto;
@@ -1635,10 +1637,12 @@ body.intro-settled .archive-stage {
 .button:hover {
       border-color: rgba(111, 140, 255, 0.3);
       background: rgba(111, 140, 255, 0.1);
+      transform: translateY(-2px);
     }
 .button {
       border-color: rgba(111, 140, 255, 0.24);
       background: rgba(8, 10, 13, 0.48);
+      transition: border-color 260ms ease, background 260ms ease, color 260ms ease, transform 260ms ease;
     }
 .modal {
       position: fixed;
@@ -2498,14 +2502,11 @@ body.skip-intro .archive-identity {
       gap: clamp(0.8rem, 1.8vw, 1.6rem);
       min-height: 4.1rem;
       padding: 0.56rem clamp(0.7rem, 1.3vw, 1rem);
-      border: 1px solid rgba(111, 140, 255, 0.16);
-      background:
-        linear-gradient(135deg, rgba(111, 140, 255, 0.09), rgba(7, 10, 16, 0.46) 36%, rgba(7, 10, 16, 0.58));
-      box-shadow:
-        0 18px 70px rgba(0, 0, 0, 0.34),
-        0 0 0 1px rgba(255, 255, 255, 0.026) inset,
-        0 0 54px rgba(111, 140, 255, 0.09);
-      backdrop-filter: blur(20px);
+      border: none;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+      backdrop-filter: none;
     }
 .header-identity {
       display: grid;
@@ -2513,14 +2514,15 @@ body.skip-intro .archive-identity {
       min-width: 0;
     }
 .header-identity-name {
-      font-family: "Space Grotesk", sans-serif;
+      font-family: Anton, Impact, sans-serif;
       font-size: clamp(0.86rem, 1vw, 1.08rem);
-      font-weight: 700;
+      font-weight: 400;
       line-height: 1;
       letter-spacing: 0.075em;
       text-transform: uppercase;
-      color: rgba(248, 242, 233, 0.92);
+      color: rgba(248, 242, 233, 0.95);
       white-space: nowrap;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75), 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 .header-identity-role {
       font-family: "JetBrains Mono", monospace;
@@ -2528,8 +2530,9 @@ body.skip-intro .archive-identity {
       line-height: 1.1;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(248, 242, 233, 0.58);
+      color: rgba(248, 242, 233, 0.72);
       white-space: nowrap;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75), 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 .header-social-links {
       display: flex;
@@ -2543,10 +2546,13 @@ body.skip-intro .archive-identity {
       place-items: center;
       width: 2.22rem;
       height: 2.22rem;
-      color: rgba(248, 242, 233, 0.68);
+      border-radius: 999px;
+      color: rgba(248, 242, 233, 0.75);
       text-decoration: none;
-      border: 1px solid rgba(111, 140, 255, 0.08);
-      background: rgba(3, 5, 9, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(8, 11, 18, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       transition:
         color 240ms ease,
         border-color 240ms ease,
@@ -2573,15 +2579,24 @@ body.skip-intro .archive-identity {
       outline: none;
     }
 .header-nav {
-      display: flex;
-      justify-content: flex-end;
+      display: inline-flex;
+      justify-self: center;
       align-items: center;
       gap: clamp(0.24rem, 0.5vw, 0.42rem);
       min-width: 0;
+      width: fit-content;
+      padding: 0.32rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      background: rgba(8, 11, 18, 0.6);
+      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 .header-nav-link {
       appearance: none;
       border: 1px solid transparent;
+      border-radius: 999px;
       background: transparent;
       color: rgba(248, 242, 233, 0.72);
       cursor: pointer;
@@ -2601,13 +2616,27 @@ body.skip-intro .archive-identity {
         box-shadow 240ms ease;
     }
 .header-nav-link:hover,
-.header-nav-link:focus-visible,
-.header-nav-link.is-active {
+.header-nav-link:focus-visible {
       color: rgba(248, 242, 233, 0.94);
       border-color: rgba(111, 140, 255, 0.24);
       background: rgba(111, 140, 255, 0.075);
       box-shadow: 0 0 24px rgba(111, 140, 255, 0.12);
       outline: none;
+    }
+    /* Disney+-style segmented tab: the current route renders as a solid
+       light pill against the dark bar, distinct from the plain-text
+       hover/focus treatment above. */
+.header-nav-link.is-active {
+      color: rgba(10, 13, 20, 0.96) !important;
+      border-color: transparent !important;
+      background: rgba(248, 242, 233, 0.96) !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28) !important;
+      outline: none;
+    }
+.header-nav-link.is-active:hover,
+.header-nav-link.is-active:focus-visible {
+      color: rgba(10, 13, 20, 0.96) !important;
+      background: rgba(255, 255, 255, 1) !important;
     }
 .archive-stage,
 .archive-viewport {
@@ -2729,10 +2758,12 @@ socials right. */
 .header-identity-name {
       color: rgba(248, 242, 233, 0.94) !important;
       text-decoration: none !important;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.95) !important;
     }
 .header-identity-role {
-      color: rgba(248, 242, 233, 0.62) !important;
+      color: rgba(248, 242, 233, 0.85) !important;
       text-decoration: none !important;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.95) !important;
     }
 .header-nav {
       grid-column: 2 !important;
@@ -2909,14 +2940,11 @@ body.carousel-dragging .archive-viewport {
       height: var(--header-rail-height) !important;
       min-height: 0 !important;
       padding: 0 clamp(0.72rem, 1.1vw, 0.95rem) !important;
-      border: 1px solid rgba(111, 140, 255, 0.12) !important;
-      background:
-        linear-gradient(135deg, rgba(111, 140, 255, 0.075), rgba(7, 10, 16, 0.46) 42%, rgba(7, 10, 16, 0.58)) !important;
-      box-shadow:
-        0 14px 48px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.02) inset,
-        0 0 36px rgba(111, 140, 255, 0.07) !important;
-      backdrop-filter: blur(18px) saturate(1.2) !important;
+      border: none !important;
+      border-radius: 0 !important;
+      background: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
     }
 .header-identity {
       grid-area: brand !important;
@@ -2925,7 +2953,7 @@ body.carousel-dragging .archive-viewport {
       display: grid !important;
       gap: 0.1rem !important;
       min-width: 0 !important;
-      color: rgba(248, 242, 233, 0.92) !important;
+      color: rgba(248, 242, 233, 0.95) !important;
       text-decoration: none !important;
     }
 .header-identity-name {
@@ -2944,12 +2972,20 @@ body.carousel-dragging .archive-viewport {
       grid-area: nav !important;
       align-self: center !important;
       justify-self: center !important;
-      display: flex !important;
+      display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       gap: clamp(0.18rem, 0.35vw, 0.32rem) !important;
-      height: 100% !important;
+      height: auto !important;
+      width: fit-content !important;
       min-width: 0 !important;
+      padding: 0.3rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 999px !important;
+      background: rgba(8, 11, 18, 0.6) !important;
+      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.02) inset !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
     }
 .header-nav-link {
       display: inline-flex !important;
@@ -2979,8 +3015,11 @@ body.carousel-dragging .archive-viewport {
       width: 1.9rem !important;
       height: 1.9rem !important;
       flex: 0 0 auto !important;
-      border-color: rgba(111, 140, 255, 0.08) !important;
-      background: rgba(3, 5, 9, 0.16) !important;
+      border-radius: 999px !important;
+      border-color: rgba(255, 255, 255, 0.14) !important;
+      background: rgba(8, 11, 18, 0.55) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
     }
 .header-social-link svg {
       width: 0.92rem !important;
@@ -4079,7 +4118,7 @@ not dashboard modules. */
         will-change: auto;
       }
 
-      .site-archive-header {
+      .header-nav {
         backdrop-filter: blur(12px) saturate(1.1) !important;
       }
 
@@ -4545,18 +4584,20 @@ body.menu-open .mobile-menu-footer {
       min-height: 48px;
       padding: 0 1.6rem;
       border: 1px solid rgba(111, 140, 255, 0.3);
+      border-radius: 999px;
       background: rgba(111, 140, 255, 0.1);
       color: rgba(248, 242, 233, 0.92);
       text-decoration: none;
       text-transform: uppercase;
       font: 700 0.68rem / 1 "JetBrains Mono", monospace;
       letter-spacing: 0.14em;
-      transition: border-color 260ms ease, background 260ms ease, color 260ms ease;
+      transition: border-color 260ms ease, background 260ms ease, color 260ms ease, transform 260ms ease;
     }
 .about-cta-button:hover {
       border-color: rgba(111, 140, 255, 0.54);
       background: rgba(111, 140, 255, 0.18);
       color: rgba(248, 242, 233, 1);
+      transform: translateY(-2px);
     }
 @media (max-width: 820px) {.director-statement,
 .what-i-do,
@@ -4907,14 +4948,14 @@ keep only the subtle side lines + vignette */
     }
 .rw-col.rw-flatten {transition:transform 250ms cubic-bezier(.2,.8,.2,1)}
 .rw-cell {position:relative;aspect-ratio:16/9;transform-style:preserve-3d}
-.rw-cell.rw-edge {transform:scale(.9) translateZ(-46px)}
-.rw-cell.rw-mid {transform:translateZ(34px)}
+.rw-cell.rw-edge {transform:scale(.88) translateZ(-54px)}
+.rw-cell.rw-mid {transform:translateZ(42px)}
 .rw-cell.rw-reel {transform:scale(1.055) translateZ(58px)}
 .rw-card {
       position:absolute;inset:0;display:block;padding:0;margin:0;text-align:left;
       border-radius:5px;overflow:hidden;cursor:pointer;
-      background:#020305;border:1px solid rgba(111,140,255,.2);
-      box-shadow:0 0 0 3px rgba(2,3,5,.92),0 20px 48px rgba(0,0,0,.55);
+      background:#010204;border:1px solid rgba(176,192,232,.15);
+      box-shadow:0 0 0 1px rgba(2,3,5,.96),0 2px 3px rgba(0,0,0,.5),0 34px 66px -14px rgba(0,0,0,.66),inset 0 1px 0 rgba(190,204,255,.05);
       color:var(--ink);text-decoration:none;font:inherit;
       transform:scale(var(--rw-card-scale,1));
       filter:brightness(var(--rw-card-brightness,1));
@@ -4922,6 +4963,11 @@ keep only the subtle side lines + vignette */
       transition:transform .42s cubic-bezier(.2,.8,.2,1),border-color .42s ease,
                  box-shadow .42s ease,opacity .42s ease,filter .42s ease;
     }
+.rw-card:hover {
+      border-color:rgba(198,208,240,.4);
+      box-shadow:0 0 0 1px rgba(2,3,5,.96),0 3px 5px rgba(0,0,0,.5),0 42px 82px -14px rgba(0,0,0,.72),inset 0 1px 0 rgba(200,214,255,.08);
+    }
+.rw-card:hover .rw-thumb {opacity:1}
 .rw-cell.rw-mid .rw-card {
       --rw-card-scale:var(--rw-mid-scale,1);
       --rw-card-brightness:var(--rw-mid-brightness,1);
@@ -5868,11 +5914,12 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-mobile .rw-mrow {
       max-width: 48rem;
       margin: 0;
       color: rgba(248, 242, 233, 0.94);
-      font-family: "Space Grotesk", Arial, sans-serif;
+      font-family: Anton, Impact, sans-serif;
       font-size: clamp(1.85rem, 3.5vw, 3.75rem);
-      font-weight: 700;
-      line-height: 1.06;
-      letter-spacing: 0;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+      text-transform: none;
     }
 .hero-record-copy p:not(.hero-record-kicker) {
       max-width: 35rem;
@@ -7008,7 +7055,7 @@ body.skip-intro .site-archive-header > .mobile-menu-toggle {
 .header-identity:hover .header-identity-role,
 .header-identity:focus-visible .header-identity-role {
       letter-spacing: 0.132em !important;
-      color: rgba(248, 242, 233, 0.72) !important;
+      color: rgba(248, 242, 233, 0.98) !important;
     }
 .header-social-links,
 .mobile-menu-toggle {
@@ -7755,17 +7802,23 @@ body.header-parallax-active .header-identity {
 
     html.chrome-performance .rw-card {
       filter: none !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.46) !important;
+      /* Enlargement pass: richer two-layer drop shadow for more physical presence.
+         Plain drops only (no spread ring / inset / blur-filter) so Chrome compositing
+         stays artifact-free. */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.42), 0 24px 48px -8px rgba(0, 0, 0, 0.6) !important;
       transition:
         transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
         border-color 180ms ease,
+        box-shadow 200ms ease,
         opacity 180ms ease !important;
     }
 
     html.chrome-performance .rw-card.is-focus {
+      border-color: rgba(200, 212, 245, 0.4) !important;
       box-shadow:
-        0 18px 44px rgba(0, 0, 0, 0.58),
-        0 0 22px var(--rw-mood-soft) !important;
+        0 6px 14px rgba(0, 0, 0, 0.5),
+        0 32px 62px -10px rgba(0, 0, 0, 0.66),
+        0 0 20px var(--rw-mood-soft) !important;
     }
 
     html.chrome-performance .rw-card.rw-pulling {
@@ -7857,7 +7910,23 @@ body.header-parallax-active .header-identity {
       .scroll-focus { opacity: 1; transition: none; animation: none; transform: none !important; }
     }
 
-    /* --- Hero Reel Section --- */
+    /* ════════════════════════════════════════════════
+       HERO REEL — cinematic video backdrop + ghost cursor particles
+       ════════════════════════════════════════════════ */
+
+    #ghost-cursor-container {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    #ghost-cursor-container canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
     .hero-reel-section {
       position: relative;
       width: 100%;
@@ -7865,38 +7934,51 @@ body.header-parallax-active .header-identity {
       min-height: 480px;
       max-height: 100vh;
       overflow: hidden;
-      background: #0a0a0c;
+      background: var(--bg);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
-    .hero-reel-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.6;
-      pointer-events: none;
-      transition: opacity 0.8s ease;
+    /* Dual-layer cross-blur dissolve rotator: two slides alternate .on;
+       whichever loses .on blurs/fades back out instead of hard-cutting. */
+    .hero-slide-stack { position: absolute; inset: 0; overflow: hidden; background: var(--bg); }
+    .hero-slide {
+      position: absolute; inset: 0; opacity: 0;
+      filter: blur(24px) saturate(1.12); transform: scale(1.08);
+      transition: opacity 1.6s cubic-bezier(0.16,1,0.3,1), filter 1.6s cubic-bezier(0.16,1,0.3,1),
+                  transform 1.6s cubic-bezier(0.16,1,0.3,1);
+      will-change: opacity, filter, transform;
     }
-    .hero-reel-section.reel-paused .hero-reel-video {
-      opacity: 0.3;
+    .hero-slide.on { opacity: 1; filter: blur(0) saturate(1); transform: scale(1); }
+    .hero-slide img, .hero-slide video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 32%; display: block;
+      transform-origin: center; backface-visibility: hidden;
     }
+    @keyframes heroSlideKenBurns { from { transform: scale(1); } to { transform: scale(1.07); } }
+    .hero-reel-section::after {
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(90deg, rgba(8,11,18,.94) 0%, rgba(8,11,18,.62) 34%, transparent 64%),
+                  linear-gradient(0deg, var(--bg) 2%, transparent 42%);
+    }
+    .hero-reel-section.reel-paused .hero-slide-stack { opacity: 0.55; transition: opacity .8s ease; }
     .hero-reel-overlay {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      color: #fff;
-      max-width: 720px;
-      padding: 2rem;
+      position: relative; z-index: 3; text-align: left; color: var(--ink);
+      max-width: 640px; padding: 0 clamp(1.2rem, 4vw, 4rem);
+    }
+    .hero-reel-kicker {
+      font-family: "JetBrains Mono", monospace; font-size: .8rem; letter-spacing: .26em;
+      text-transform: uppercase; color: var(--rw-mood, #6f8cff); margin-bottom: .6rem;
     }
     .hero-reel-title {
-      font-size: clamp(2rem, 5vw, 4rem);
-      font-weight: 300;
-      letter-spacing: 0.06em;
+      font-family: Anton, Impact, sans-serif;
+      font-size: clamp(2.2rem, 5.6vw, 4.4rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      word-spacing: .1em;
       margin: 0 0 0.5rem;
       text-transform: uppercase;
+      line-height: .96;
     }
     .hero-reel-sub {
       font-size: clamp(0.95rem, 1.8vw, 1.25rem);
@@ -7904,8 +7986,10 @@ body.header-parallax-active .header-identity {
       opacity: 0.65;
       letter-spacing: 0.03em;
       margin: 0 0 1.5rem;
+      max-width: 46ch;
     }
-    .hero-reel-toggle {
+    .hero-reel-actions { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+    .hero-reel-toggle, .hero-reel-info {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
@@ -7913,22 +7997,40 @@ body.header-parallax-active .header-identity {
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 999px;
       padding: 0.65rem 1.5rem;
-      color: #fff;
+      color: var(--ink);
       font-size: 0.85rem;
       letter-spacing: 0.04em;
       cursor: pointer;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: background 0.25s, border-color 0.25s;
+      transition: background 0.25s, border-color 0.25s, transform .25s;
+      font-family: inherit;
     }
-    .hero-reel-toggle:hover {
+    .hero-reel-toggle:hover, .hero-reel-info:hover {
       background: rgba(255,255,255,0.14);
       border-color: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
     }
+    .hero-reel-info { background: rgba(255,255,255,0.94); color: #0a0d14; border-color: transparent; }
+    .hero-reel-info:hover { background: #fff; }
     .hero-reel-toggle .icon-play,
     .hero-reel-toggle .icon-pause {
       font-size: 1.1em;
       line-height: 1;
+    }
+    .hero-reel-dots {
+      position: absolute; z-index: 3; right: clamp(1.2rem, 3vw, 2.6rem); bottom: clamp(2rem, 6vh, 3.6rem);
+      display: flex; gap: 8px;
+    }
+    .hero-reel-dots button {
+      width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0; cursor: pointer;
+      background: rgba(255,255,255,.3); transition: all .3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .hero-reel-dots button.on { background: var(--rw-mood, #6f8cff); width: 22px; border-radius: 5px; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide { transition: opacity .4s linear !important; filter: none !important; transform: none !important; }
+    }
+    @media (max-width: 720px) {
+      .hero-reel-overlay { max-width: 100%; }
+      .hero-reel-dots { display: none; }
     }
 
     /* ════════════════════════════════════════════════
@@ -8062,10 +8164,18 @@ body.header-parallax-active .header-identity {
       min-width: 200px;
     }
   </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
   </head>
 <body class="archive-room-active">
   <div id="cursor-glow"></div>
-  <header class="site-archive-header"
+  <header class="site-archive-header">
     <a class="header-identity" href="#archive" aria-label="Jared McDaniel archive home">
       <span class="header-identity-name">Jared McDaniel</span>
       <span class="header-identity-role">Creative Video Director / Editor</span>
@@ -8162,23 +8272,50 @@ body.header-parallax-active .header-identity {
 
   <main>
 
+      <!-- ═══ TILT-SHIFT DEPTH BANDS — fixed, graduated blur at top/bottom edges only.
+           Chrome already strips ALL backdrop-filter sitewide (html.chrome-performance
+           rule above); these bands additionally drop backdrop-filter during active
+           scroll (any browser) since that's the highest-load moment and the effect
+           is least perceptible then anyway. ═══ -->
+      <style>
+        .tilt-band { position: fixed; left: 0; right: 0; z-index: 5; pointer-events: none;
+          backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); transition: opacity .25s linear; }
+        .tilt-band.top { top: 0; height: 10vh;
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.8) 0%, transparent 100%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,.8) 0%, transparent 100%); }
+        .tilt-band.bottom { bottom: 0; height: 12vh;
+          -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 100%);
+          mask-image: linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 100%); }
+        html.is-scrolling .tilt-band { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; opacity: 0; }
+        body:not(.archive-room-active) .tilt-band { display: none; }
+        @media (max-width: 768px), (prefers-reduced-motion: reduce) { .tilt-band { display: none; } }
+      </style>
+      <div class="tilt-band top" aria-hidden="true"></div>
+      <div class="tilt-band bottom" aria-hidden="true"></div>
+
       <!-- ═══ HERO REEL SECTION (Phase 1) ═══ -->
-      <section class="hero-reel-section" id="heroReel" aria-label="Director reel">
-        <video class="hero-reel-video" autoplay muted loop playsinline preload="metadata"
-          src="videos/loops/reel-loop.mp4"
-          poster="https://img.youtube.com/vi/mFeMMMmdW24/maxresdefault.jpg"
-          aria-hidden="true"></video>
-        <div class="hero-reel-overlay">
-          <h1 class="hero-reel-title">Director Reel</h1>
-          <p class="hero-reel-sub">Creative Video Direction &amp; Editing</p>
-          <button class="hero-reel-toggle" type="button" id="heroReelToggle" aria-label="Toggle reel playback">
-            <span class="icon-play" aria-hidden="true">&#9654;</span>
-            <span class="icon-pause" aria-hidden="true" style="display:none">&#10074;&#10074;</span>
-            <span class="toggle-label">Watch Reel</span>
-          </button>
-        </div>
-      </section>
-      <!-- ═══ END HERO REEL ═══ -->
+            <section class="hero-reel-section" id="heroReel" aria-label="Director reel">
+              <div class="hero-slide-stack" id="heroSlideStack">
+                <div class="hero-slide" id="heroSlideA"></div>
+                <div class="hero-slide" id="heroSlideB"></div>
+              </div>
+              <div id="ghost-cursor-container" aria-hidden="true"></div>
+              <div class="hero-reel-overlay">
+                <div class="hero-reel-kicker" id="heroKicker">Featured</div>
+                <h1 class="hero-reel-title" id="heroTitle">Director Reel</h1>
+                <p class="hero-reel-sub" id="heroSub">Creative Video Direction &amp; Editing</p>
+                <div class="hero-reel-actions">
+                  <button class="hero-reel-toggle" type="button" id="heroReelToggle" aria-label="Pause ambient playback">
+                    <span class="icon-play" aria-hidden="true" style="display:none">&#9654;</span>
+                    <span class="icon-pause" aria-hidden="true">&#10074;&#10074;</span>
+                    <span class="toggle-label">Playing</span>
+                  </button>
+                  <button class="hero-reel-info" type="button" id="heroInfoBtn">More Info</button>
+                </div>
+              </div>
+              <div class="hero-reel-dots" id="heroDots" aria-hidden="true"></div>
+            </section>
+            <!-- ═══ END HERO REEL ═══ -->
 
       <section class="room archive active" id="archive" data-room="archive" aria-label="Archive home">
       <div class="archive-stage">
@@ -8190,19 +8327,6 @@ body.header-parallax-active .header-identity {
         </div>
 
         <!-- ARCHIVE INDEX — mobile / touch fallback (no physics, posters only) -->
-        <aside class="hero-statement leadership-thesis" aria-label="Hiring thesis">
-          <div class="hero-statement-eyebrow">Creative Leadership Record</div>
-          <p class="hero-statement-copy">I lead cinematic trailer, campaign, and brand-film work from concept through final edit for games, entertainment, and technology brands.</p>
-        </aside>
-
-        <nav class="review-path" aria-label="Fast recruiter review path">
-          <span class="review-path-label">Start Here</span>
-          <button type="button" data-video="mFeMMMmdW24">01 Director Reel</button>
-          <a href="work/cyberpunk-2077.html">02 Cyberpunk Case Study</a>
-          <a href="work/doom.html">03 DOOM Case Study</a>
-          <a href="#contact" data-route="contact">04 Contact</a>
-        </nav>
-
         <div class="rw-mobile" id="rwMobile" aria-label="Project archive"></div>
 
         <div class="rw-statusline" aria-hidden="true">
@@ -8241,6 +8365,75 @@ body.header-parallax-active .header-identity {
           </ul>
         </div>
       </div>
+
+      <!-- ═══ CATEGORY CAROUSELS — browse-by-tag rows below the wall (sibling of
+           .archive-stage, NOT a grid child — .archive-stage uses place-items:center
+           which would otherwise squeeze/center this whole block) ═══ -->
+      <style>
+        .carousel-rows { position: relative; z-index: 5; padding: 1rem 0 4rem; }
+        .carousel-row { margin: 2.3rem 0; }
+        .carousel-row h2 {
+          font-family: Anton, Impact, sans-serif; font-weight: 400; text-transform: uppercase;
+          font-size: clamp(1.1rem, 2vw, 1.5rem); letter-spacing: .02em; color: var(--ink);
+          margin: 0 clamp(1.2rem, 3vw, 2.6rem) .7rem; display: flex; align-items: baseline; gap: .7rem;
+        }
+        .carousel-row h2 .ccount {
+          font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: .68rem;
+          letter-spacing: .14em; color: var(--faint); text-transform: uppercase;
+        }
+        .ctrackwrap { position: relative; }
+        .ctrack {
+          position: relative; overflow: hidden; padding: .8rem clamp(1.2rem, 3vw, 2.6rem) 1.3rem;
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 32px, #000 calc(100% - 72px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 32px, #000 calc(100% - 72px), transparent 100%);
+        }
+        .creel { display: flex; gap: 12px; will-change: transform; }
+        .ccard {
+          flex: none; width: 250px; aspect-ratio: 16/9; border-radius: 6px; overflow: hidden; position: relative;
+          cursor: pointer; background: #020305; border: 1px solid rgba(74,124,157,.2);
+          box-shadow: 0 0 0 1px rgba(2,3,5,.9), 0 18px 40px -10px rgba(0,0,0,.6);
+          transition: transform .4s cubic-bezier(0.2,.8,.2,1), border-color .4s ease, box-shadow .4s ease, opacity .3s ease;
+        }
+        .ccard img, .ccard video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ccard video { position: absolute; inset: 0; opacity: 0; transition: opacity .35s ease; pointer-events: none; }
+        .ccard video.on { opacity: 1; }
+        .ccard.previewing img { opacity: 0; }
+        .ccard:hover { transform: translateY(-5px); border-color: rgba(74,124,157,.55); box-shadow: 0 0 0 1px rgba(2,3,5,.9), 0 26px 54px -10px rgba(0,0,0,.7); z-index: 2; }
+        .ccard .ccap {
+          position: absolute; inset: auto 0 0 0; padding: .55rem .65rem;
+          background: linear-gradient(0deg, rgba(2,3,5,.94), transparent 68%);
+          opacity: 0; transition: opacity .35s ease;
+        }
+        .ccard:hover .ccap { opacity: 1; }
+        .ccard .cc-code { font: 700 .58rem/1 "JetBrains Mono", monospace; letter-spacing: .14em; color: var(--blue); text-transform: uppercase; }
+        .ccard .cc-title { font: 800 .74rem/1.2 "JetBrains Mono", monospace; letter-spacing: .05em; color: var(--ink); text-transform: uppercase; margin-top: .2rem; }
+        .ccard .cc-meta { font: 600 .58rem/1 "JetBrains Mono", monospace; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin-top: .2rem; }
+        .cnav {
+          position: absolute; top: 0; bottom: 1.3rem; width: 56px; display: grid; place-items: center;
+          border: none; cursor: pointer; z-index: 8; color: var(--ink); font-size: 20px; opacity: 0;
+          transition: opacity .3s ease; padding: 0; background: none;
+        }
+        .ctrackwrap:hover .cnav { opacity: .85; } .cnav:hover { opacity: 1 !important; }
+        /* Touch devices have no hover, and the track can't use native scroll
+           (the marquee owns positioning via transform) — so arrows must be
+           always-visible here, or the row would be unbrowsable. */
+        @media (hover: none), (pointer: coarse) { .cnav { opacity: .55 !important; } }
+        .cnav.cprev { left: 0; background: linear-gradient(90deg, rgba(8,11,18,.9), transparent); }
+        .cnav.cnext { right: 0; background: linear-gradient(270deg, rgba(8,11,18,.9), transparent); }
+        .cnav span { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(20,26,38,.7); border: 1px solid var(--line); }
+        .ccard.creveal {
+          opacity: 0; transform: translate(var(--crx, 0), 40px) scale(.95);
+          transition: opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1);
+        }
+        .carousel-row.crevealed .ccard.creveal { opacity: 1; transform: translate(0,0) scale(1); }
+        .carousel-row.crevealed .ccard.creveal:hover { transform: translateY(-5px) scale(1.02); }
+        @media (prefers-reduced-motion: reduce) {
+          .ccard.creveal { transition: none; opacity: 1; transform: none; }
+        }
+        @media (max-width: 640px) { .ccard { width: 200px; } }
+      </style>
+      <div class="carousel-rows" id="carouselRows" aria-label="Browse by category"></div>
+      <!-- ═══ END CATEGORY CAROUSELS ═══ -->
     </section>
 
     <section class="room work-room" id="work" data-room="work" aria-label="Work archive">
@@ -9769,11 +9962,14 @@ body.header-parallax-active .header-identity {
     function computeLayout(n, vw, vh) {
       const laptopFit = vw >= 900 && vh <= 820;
       const gap = laptopFit ? 20 : 24;
-      const stageH = Math.max(laptopFit ? 420 : 340, vh - (laptopFit ? 260 : 300));
+      /* Enlargement pass: non-laptop desktops get a larger vertical budget so the
+         height cap below stops fighting the wider maxColW — cards read ~15-20% bigger
+         and the wall occupies more of the viewport. Laptop path intentionally unchanged. */
+      const stageH = Math.max(laptopFit ? 420 : 360, vh - (laptopFit ? 260 : 180));
       let rows = n <= 24 ? (laptopFit ? 2 : 3) : n <= 46 ? 4 : 5;
       const spread = laptopFit ? 2.28 : 1.5 + Math.min(n, 60) / 60 * 0.6;
       const minColW = laptopFit ? 300 : 230;
-      const maxColW = laptopFit ? 380 : 430;
+      const maxColW = laptopFit ? 380 : 520;
       const minRows = laptopFit ? 2 : 3;
       let colsN, colW;
       for (;;) {
@@ -10011,7 +10207,7 @@ body.header-parallax-active .header-identity {
         const rotateY = -norm * WALL_MOTION.maxRotateY;
         const z = edge * WALL_MOTION.maxTranslateZ;
         const scale = 1 - edge * (1 - WALL_MOTION.maxScaleReduction);
-        const opacity = 1 - edge * 0.12;
+        const opacity = 1 - edge * 0.16;
         const brightness = 1 - edge * 0.075 + center * 0.012;
         const saturation = 1 - edge * 0.10;
 
@@ -10744,40 +10940,450 @@ body.header-parallax-active .header-identity {
       scrollFocusElements.forEach((el) => { el.style.opacity = "1"; });
     }
 
-    /* --- Hero Reel Toggle --- */
-    const heroReel = document.getElementById("heroReel");
-    const heroToggle = document.getElementById("heroReelToggle");
-    const heroVideo = heroReel && heroReel.querySelector(".hero-reel-video");
-    if (heroToggle && heroVideo) {
-      heroToggle.addEventListener("click", () => {
-        const paused = heroVideo.paused;
-        if (paused) {
-          heroVideo.play().catch(() => {});
-          heroToggle.querySelector(".icon-play").style.display = "";
-          heroToggle.querySelector(".icon-pause").style.display = "none";
-          heroToggle.querySelector(".toggle-label").textContent = "Watch Reel";
-          heroReel.classList.remove("reel-paused");
-        } else {
-          heroVideo.pause();
-          heroToggle.querySelector(".icon-play").style.display = "none";
-          heroToggle.querySelector(".icon-pause").style.display = "";
-          heroToggle.querySelector(".toggle-label").textContent = "Playing";
-          heroReel.classList.add("reel-paused");
-        }
+    /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
+       which owns #heroReel's slide stack, toggle, and visibility handling. --- */
+
+            /* --- GhostCursor (Three.js) — constrained to hero section --- */
+                const ghostContainer = document.getElementById("ghost-cursor-container");
+                if (ghostContainer) {
+                  import("three").then((THREE) => {
+                    const rect = ghostContainer.parentElement.getBoundingClientRect();
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+                    camera.position.z = 1;
+                    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                    renderer.setSize(rect.width, rect.height);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    ghostContainer.appendChild(renderer.domElement);
+
+                    /* --- Particle system --- */
+                    const COUNT = 120;
+                    const positions = new Float32Array(COUNT * 3);
+                    const velocities = [];
+                    const basePositions = [];
+                    for (let i = 0; i < COUNT; i++) {
+                      const x = (Math.random() - 0.5) * 2;
+                      const y = (Math.random() - 0.5) * 2;
+                      positions[i*3] = x;
+                      positions[i*3+1] = y;
+                      positions[i*3+2] = 0;
+                      basePositions.push({ x, y });
+                      velocities.push({ x: 0, y: 0 });
+                    }
+                    const geometry = new THREE.BufferGeometry();
+                    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+                    const material = new THREE.PointsMaterial({
+                      color: 0x4a7c9d,
+                      size: 0.012,
+                      transparent: true,
+                      opacity: 0.5,
+                      sizeAttenuation: false
+                    });
+                    const particles = new THREE.Points(geometry, material);
+                    scene.add(particles);
+
+                    /* --- Mouse tracking --- */
+                    /* Listen on the hero section, not the container: the
+                       container has pointer-events:none so it never fires. */
+                    const mouseTarget = ghostContainer.parentElement;
+                    let mouse = { x: 0, y: 0 };
+                    let target = { x: 0, y: 0 };
+                    mouseTarget.addEventListener("mousemove", (e) => {
+                      const r = ghostContainer.getBoundingClientRect();
+                      mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+                      mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+                    });
+                    mouseTarget.addEventListener("mouseleave", () => {
+                      mouse.x = 0; mouse.y = 0;
+                    });
+
+                    /* --- Connection line helper --- */
+                    const lineMat = new THREE.LineBasicMaterial({
+                      color: 0x4a7c9d,
+                      transparent: true,
+                      opacity: 0.08
+                    });
+                    const lineGeo = new THREE.BufferGeometry();
+                    const linePos = new Float32Array(6);
+                    lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
+                    const line = new THREE.Line(lineGeo, lineMat);
+                    scene.add(line);
+
+                    /* --- Animation loop --- */
+                    function animate() {
+                      target.x += (mouse.x - target.x) * 0.04;
+                      target.y += (mouse.y - target.y) * 0.04;
+
+                      const pos = particles.geometry.attributes.position.array;
+                      let closestDist = Infinity;
+                      let closestIdx = -1;
+
+                      for (let i = 0; i < COUNT; i++) {
+                        const i3 = i * 3;
+                        const bx = basePositions[i].x;
+                        const by = basePositions[i].y;
+                        const dx = pos[i3] - target.x;
+                        const dy = pos[i3+1] - target.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        /* Repel from cursor */
+                        let repForce = 0;
+                        if (dist < 0.35 && dist > 0.001) {
+                          repForce = (0.35 - dist) / 0.35 * 0.006;
+                          velocities[i].x += (dx / dist) * repForce;
+                          velocities[i].y += (dy / dist) * repForce;
+                        }
+
+                        /* Spring back to base */
+                        velocities[i].x += (bx - pos[i3]) * 0.006;
+                        velocities[i].y += (by - pos[i3+1]) * 0.006;
+                        velocities[i].x *= 0.92;
+                        velocities[i].y *= 0.92;
+
+                        pos[i3] += velocities[i].x;
+                        pos[i3+1] += velocities[i].y;
+
+                        if (dist < closestDist) { closestDist = dist; closestIdx = i; }
+                      }
+
+                      /* Draw connection to nearest particle */
+                      if (closestIdx >= 0 && closestDist < 0.6) {
+                        const ci = closestIdx * 3;
+                        linePos[0] = target.x; linePos[1] = target.y; linePos[2] = 0;
+                        linePos[3] = pos[ci]; linePos[4] = pos[ci+1]; linePos[5] = 0;
+                        line.geometry.attributes.position.needsUpdate = true;
+                        line.geometry.setDrawRange(0, 2);
+                        lineMat.opacity = (1 - closestDist / 0.6) * 0.15;
+                      } else {
+                        line.geometry.setDrawRange(0, 0);
+                      }
+
+                      particles.geometry.attributes.position.needsUpdate = true;
+                      renderer.render(scene, camera);
+                      requestAnimationFrame(animate);
+                    }
+                    animate();
+
+                    /* --- Resize --- */
+                    const onResize = () => {
+                      const r = ghostContainer.parentElement.getBoundingClientRect();
+                      renderer.setSize(r.width, r.height);
+                    };
+                    window.addEventListener("resize", onResize);
+                  }).catch(() => {
+                    /* Three.js failed to load — GhostCursor skipped */
+                  });
+                }
+  })();
+</script>
+
+<script>
+  /* ============================================================
+     HERO ROTATOR — dual-layer cross-blur dissolve, video-first.
+     Uses the real RECORDS data (reel + Featured tier). Freezes on
+     hidden tab, reduced-motion, and whenever the case-study preview
+     or video modal is open (reads existing body/#videoModal state —
+     no changes made to those systems).
+     ============================================================ */
+  (() => {
+    "use strict";
+    const heroSection = document.getElementById("heroReel");
+    const slideA = document.getElementById("heroSlideA");
+    const slideB = document.getElementById("heroSlideB");
+    if (!heroSection || !slideA || !slideB || typeof projects === "undefined" || typeof reelArchiveItem === "undefined") return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const maxres = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+    const hq = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+    const REEL_LEDE = "The archive reel is the live screening room: a fast pass through the worlds, trailers, campaigns, and edits on file.";
+
+    /* RECORDS/recordBrief live behind a scope boundary elsewhere in the file —
+       build directly from projects/reelArchiveItem, which are global. */
+    const FEATURED = [reelArchiveItem, ...projects.filter((p) => p.filters && p.filters.includes("Featured"))];
+    if (!FEATURED.length) return;
+
+    const ROTATE_MS = 9000, TRANSITION_MS = 1600;
+    const slides = [slideA, slideB];
+    const dotsEl = document.getElementById("heroDots");
+    const kickerEl = document.getElementById("heroKicker");
+    const titleEl = document.getElementById("heroTitle");
+    const subEl = document.getElementById("heroSub");
+    const toggleBtn = document.getElementById("heroReelToggle");
+    const infoBtn = document.getElementById("heroInfoBtn");
+
+    let hi = 0, slideTurn = 0, rotateTimer = null, userPaused = false;
+
+    function isFrozen() {
+      return document.body.classList.contains("rw-preview-open") ||
+        (document.getElementById("videoModal")?.classList.contains("active"));
+    }
+
+    function fillSlide(el, rec) {
+      el.innerHTML = "";
+      if (rec.loop) {
+        const v = document.createElement("video");
+        v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+        v.poster = maxres(rec.yt);
+        v.addEventListener("error", () => {
+          if (el.dataset.fellBack) return;
+          el.dataset.fellBack = "1";
+          const img = new Image();
+          img.src = maxres(rec.yt); img.alt = rec.title;
+          img.onerror = () => { img.onerror = null; img.src = hq(rec.yt); };
+          el.innerHTML = ""; el.appendChild(img);
+        }, { once: true });
+        v.src = rec.loop;
+        el.appendChild(v);
+        if (!reduced && !userPaused) v.play().catch(() => {});
+        if (!reduced) v.style.animation = `heroSlideKenBurns ${(ROTATE_MS + TRANSITION_MS) / 1000}s linear forwards`;
+      } else {
+        const img = new Image();
+        img.src = maxres(rec.yt); img.alt = rec.title;
+        img.onerror = () => { img.onerror = null; img.src = hq(rec.yt); };
+        el.appendChild(img);
+        if (!reduced) img.style.animation = `heroSlideKenBurns ${(ROTATE_MS + TRANSITION_MS) / 1000}s linear forwards`;
+      }
+    }
+
+    function setHero(i) {
+      hi = i;
+      const rec = FEATURED[i];
+      const incoming = slides[slideTurn % 2], outgoing = slides[(slideTurn + 1) % 2];
+      slideTurn++;
+      fillSlide(incoming, rec);
+      incoming.classList.remove("on");
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        incoming.classList.add("on");
+        outgoing.classList.remove("on");
+        const outMedia = outgoing.querySelector("video");
+        if (outMedia) setTimeout(() => { if (!outgoing.classList.contains("on")) outMedia.pause(); }, TRANSITION_MS + 80);
+      }));
+      kickerEl.textContent = rec.isReel ? (rec.startLabel || "Start here") : "Featured";
+      titleEl.textContent = rec.title;
+      subEl.textContent = rec.summary || (rec.isReel ? REEL_LEDE : "Selected record from the director's archive.");
+      if (dotsEl) [...dotsEl.children].forEach((d, n) => d.classList.toggle("on", n === i));
+      if (infoBtn) infoBtn.onclick = () => openProject(rec);
+    }
+
+    if (dotsEl) {
+      FEATURED.forEach((_, i) => {
+        const b = document.createElement("button");
+        b.setAttribute("aria-label", `Show slide ${i + 1}`);
+        b.addEventListener("click", () => { setHero(i); rotate(); });
+        dotsEl.appendChild(b);
       });
     }
 
-    /* --- Hero reel auto-play check on visibility --- */
-    if (heroVideo) {
-      const heroObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && heroVideo.paused) {
-            heroVideo.play().catch(() => {});
-          }
-        });
-      }, { threshold: 0.3 });
-      heroObserver.observe(heroReel);
+    function rotate() {
+      clearInterval(rotateTimer);
+      if (reduced || userPaused) return;
+      rotateTimer = setInterval(() => {
+        if (isFrozen() || document.hidden) return;
+        setHero((hi + 1) % FEATURED.length);
+      }, ROTATE_MS);
     }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        userPaused = !userPaused;
+        const curVideo = slides[(slideTurn + 1) % 2]?.querySelector("video");
+        toggleBtn.querySelector(".icon-play").style.display = userPaused ? "" : "none";
+        toggleBtn.querySelector(".icon-pause").style.display = userPaused ? "none" : "";
+        toggleBtn.querySelector(".toggle-label").textContent = userPaused ? "Paused" : "Playing";
+        heroSection.classList.toggle("reel-paused", userPaused);
+        if (userPaused) { clearInterval(rotateTimer); curVideo?.pause(); }
+        else { curVideo?.play().catch(() => {}); rotate(); }
+      });
+    }
+
+    const heroVisibilityObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !userPaused && !reduced) {
+          const curVideo = slides[(slideTurn + 1) % 2]?.querySelector("video");
+          if (curVideo && curVideo.paused) curVideo.play().catch(() => {});
+          rotate();
+        } else if (!entry.isIntersecting) {
+          clearInterval(rotateTimer);
+        }
+      });
+    }, { threshold: 0.2 });
+    heroVisibilityObserver.observe(heroSection);
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) rotate();
+    });
+
+    setHero(0);
+    rotate();
+  })();
+</script>
+
+<script>
+  /* ============================================================
+     CATEGORY CAROUSELS — browse-by-tag rows below the wall.
+     Real projects data, grouped by existing filter tags. Ambient
+     drift + first-scroll reveal + single-budget hover preview, all
+     frozen during scroll, when the case-study preview (rw-preview)
+     or video modal is open, off-screen, hidden tab, reduced-motion.
+     ============================================================ */
+  (() => {
+    "use strict";
+    const rowsEl = document.getElementById("carouselRows");
+    if (!rowsEl || typeof projects === "undefined") return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const ambientOff = reduced || window.matchMedia("(max-width: 768px)").matches;
+    const maxres = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+    const hq = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+    const MARQUEE_SPEED = 22;
+
+    const has = (p, tag) => p.filters && p.filters.includes(tag);
+    const GROUPS = [
+      { label: "Campaigns & trailers", items: projects.filter((p) => has(p, "Gaming")) },
+      { label: "Commercial & brand", items: projects.filter((p) => has(p, "Commercial")) },
+      { label: "Narrative & experimental", items: projects.filter((p) => has(p, "Narrative") || has(p, "Experimental")) }
+    ].filter((g) => g.items.length);
+
+    function isFrozen() {
+      return document.body.classList.contains("rw-preview-open") ||
+        document.getElementById("videoModal")?.classList.contains("active");
+    }
+
+    let isScrolling = false, scrollIdleTimer = null;
+    const rootEl = document.documentElement;
+    window.addEventListener("scroll", () => {
+      isScrolling = true;
+      rootEl.classList.add("is-scrolling");
+      clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = setTimeout(() => {
+        isScrolling = false;
+        rootEl.classList.remove("is-scrolling");
+        kickMarquee();
+      }, 160);
+    }, { passive: true });
+
+    let activePreview = null;
+    function startPreview(card, rec) {
+      if (coarsePointer || reduced || !rec.loop) return;
+      if (activePreview) stopPreview(activePreview.card);
+      const v = document.createElement("video");
+      v.className = "cc-vid"; v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+      v.addEventListener("canplay", () => { v.classList.add("on"); card.classList.add("previewing"); });
+      v.addEventListener("error", () => { v.remove(); });
+      v.src = rec.loop;
+      card.appendChild(v);
+      v.play().catch(() => {});
+      activePreview = { card, video: v };
+    }
+    function stopPreview(card) {
+      if (activePreview && activePreview.card === card) {
+        activePreview.video.pause(); activePreview.video.remove();
+        card.classList.remove("previewing");
+        activePreview = null;
+      }
+    }
+
+    function buildCard(rec) {
+      const card = document.createElement("button");
+      card.className = "ccard"; card.type = "button";
+      const img = new Image();
+      img.src = maxres(rec.yt); img.alt = rec.displayTitle || rec.title; img.loading = "lazy";
+      img.onerror = () => { img.onerror = null; img.src = hq(rec.yt); };
+      card.appendChild(img);
+      card.insertAdjacentHTML("beforeend",
+        `<div class="ccap"><div class="cc-code">${rec.code || ""}</div>` +
+        `<div class="cc-title">${rec.displayTitle || rec.title}</div>` +
+        `<div class="cc-meta">${rec.client || ""} · ${rec.type || ""}</div></div>`);
+      card.addEventListener("click", () => openProject(rec));
+      if (rec.loop && !coarsePointer) {
+        let hoverTimer = null;
+        card.addEventListener("pointerenter", () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => startPreview(card, rec), 380); });
+        card.addEventListener("pointerleave", () => { clearTimeout(hoverTimer); stopPreview(card); });
+      }
+      return card;
+    }
+
+    const marqueeRows = [];
+    let marqueeRAF = null, marqueeLast = null;
+
+    GROUPS.forEach((g, rowIndex) => {
+      const sec = document.createElement("div"); sec.className = "carousel-row";
+      sec.innerHTML = `<h2>${g.label} <span class="ccount">${g.items.length} titles</span></h2>`;
+      const wrap = document.createElement("div"); wrap.className = "ctrackwrap";
+      const track = document.createElement("div"); track.className = "ctrack";
+      const reel = document.createElement("div"); reel.className = "creel";
+
+      const n = g.items.length, center = (n - 1) / 2;
+      g.items.forEach((rec, i) => {
+        const card = buildCard(rec);
+        card.classList.add("creveal");
+        const rx = Math.max(-130, Math.min(130, Math.round((center - i) * 22)));
+        card.style.setProperty("--crx", rx + "px");
+        card.style.transitionDelay = Math.min(Math.abs(i - center) * 45, 380) + "ms";
+        reel.appendChild(card);
+      });
+      track.appendChild(reel);
+
+      const prev = document.createElement("button"); prev.className = "cnav cprev"; prev.setAttribute("aria-label", "Scroll left"); prev.innerHTML = "<span>&#10094;</span>";
+      const next = document.createElement("button"); next.className = "cnav cnext"; next.setAttribute("aria-label", "Scroll right"); next.innerHTML = "<span>&#10095;</span>";
+      wrap.appendChild(track); wrap.appendChild(prev); wrap.appendChild(next);
+      sec.appendChild(wrap); rowsEl.appendChild(sec);
+
+      const state = { reel, wrap, pos: 0, dir: rowIndex % 2 === 0 ? 1 : -1, setWidth: 0, paused: false, visible: false, revealed: false };
+      marqueeRows.push(state);
+
+      requestAnimationFrame(() => {
+        state.setWidth = reel.scrollWidth + 12;
+        g.items.forEach((rec) => reel.appendChild(buildCard(rec))); /* second copy for the seamless loop */
+        const io = new IntersectionObserver(([e]) => {
+          state.visible = e.isIntersecting;
+          if (state.visible) {
+            kickMarquee();
+            if (!state.revealed) { state.revealed = true; sec.classList.add("crevealed"); }
+          }
+        }, { threshold: 0.1 });
+        io.observe(wrap);
+      });
+
+      const nudge = (dir) => { state.pos = ((state.pos + dir * 260) % state.setWidth + state.setWidth) % state.setWidth; applyReel(state); };
+      prev.onclick = () => nudge(-state.dir);
+      next.onclick = () => nudge(state.dir);
+      wrap.addEventListener("pointerenter", () => { state.paused = true; });
+      wrap.addEventListener("pointerleave", () => { state.paused = false; kickMarquee(); });
+      wrap.addEventListener("focusin", () => { state.paused = true; });
+      wrap.addEventListener("focusout", () => { state.paused = false; kickMarquee(); });
+    });
+
+    function applyReel(state) {
+      const tx = state.dir === 1 ? -state.pos : (-state.setWidth + state.pos);
+      state.reel.style.transform = `translate3d(${tx.toFixed(1)}px,0,0)`;
+    }
+    function marqueeTick(ts) {
+      if (marqueeLast === null) marqueeLast = ts;
+      const dt = Math.min(64, ts - marqueeLast); marqueeLast = ts;
+      let anyActive = false;
+      if (!isScrolling && !isFrozen()) {
+        marqueeRows.forEach((state) => {
+          if (state.paused || !state.visible || !state.setWidth) return;
+          anyActive = true;
+          state.pos = (state.pos + MARQUEE_SPEED * dt / 1000) % state.setWidth;
+          applyReel(state);
+        });
+      }
+      if (anyActive && !document.hidden) { marqueeRAF = requestAnimationFrame(marqueeTick); }
+      else { marqueeRAF = null; marqueeLast = null; }
+    }
+    function kickMarquee() {
+      if (!marqueeRAF && !ambientOff && !document.hidden && !isScrolling && !isFrozen()) {
+        marqueeRAF = requestAnimationFrame(marqueeTick);
+      }
+    }
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) kickMarquee(); });
+    window.addEventListener("jm:roomchange", (e) => {
+      if (e.detail?.room === "archive") kickMarquee();
+      else if (activePreview) stopPreview(activePreview.card);
+    });
   })();
 </script>
 
