@@ -7,7 +7,7 @@
   <meta name="description" content="Cinematic portfolio archive for Jared McDaniel, director and editor.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <style>:root {
         --bg: #0E131F;
         --bg-deep: #080B12;
@@ -2615,6 +2615,30 @@ body.skip-intro .archive-identity {
         background 240ms ease,
         box-shadow 240ms ease;
     }
+.header-home-link {
+      width: 2.35rem;
+      min-width: 2.35rem;
+      padding-inline: 0;
+    }
+.header-home-link svg {
+      width: 0.98rem;
+      height: 0.98rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+.header-home-link .home-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
 .header-nav-link:hover,
 .header-nav-link:focus-visible {
       color: rgba(248, 242, 233, 0.94);
@@ -4347,6 +4371,8 @@ body.menu-open .mobile-menu-eyebrow {
 .mobile-menu-link:nth-child(2) { --item-delay: 100ms; }
 .mobile-menu-link:nth-child(3) { --item-delay: 140ms; }
 .mobile-menu-link:nth-child(4) { --item-delay: 180ms; }
+.mobile-menu-link:nth-child(5) { --item-delay: 220ms; }
+.mobile-menu-link:nth-child(6) { --item-delay: 260ms; }
 body.menu-open .mobile-menu-link {
       opacity: 1;
       transform: translateY(0);
@@ -7875,36 +7901,36 @@ body.header-parallax-active .header-identity {
 
     /* --- Scroll animation keyframes --- */
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(38px); }
+      from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes fadeInLeft {
-      from { opacity: 0; transform: translateX(-32px); }
+      from { opacity: 0; transform: translateX(-16px); }
       to   { opacity: 1; transform: translateX(0); }
     }
     @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.92); }
+      from { opacity: 0; transform: scale(0.975); }
       to   { opacity: 1; transform: scale(1); }
     }
 
     /* --- .scroll-focus base (hidden until triggered) --- */
     .scroll-focus {
       opacity: 0;
-      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform;
     }
     .scroll-focus.fade-in-up {
       opacity: 1;
-      animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: fadeInUp 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .scroll-focus.fade-in-left {
       opacity: 1;
-      animation: fadeInLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: fadeInLeft 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .scroll-focus.scale-in {
       opacity: 1;
-      animation: scaleIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: scaleIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     @media (prefers-reduced-motion: reduce) {
       .scroll-focus { opacity: 1; transition: none; animation: none; transform: none !important; }
@@ -7939,14 +7965,30 @@ body.header-parallax-active .header-identity {
       align-items: center;
       justify-content: flex-start;
     }
+    .hero-reel-section.is-archived-away {
+      height: 0;
+      min-height: 0;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-2.5rem);
+      pointer-events: none;
+      visibility: hidden;
+      transition:
+        height 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        min-height 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        max-height 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 320ms ease,
+        transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s linear 420ms;
+    }
     /* Dual-layer cross-blur dissolve rotator: two slides alternate .on;
        whichever loses .on blurs/fades back out instead of hard-cutting. */
     .hero-slide-stack { position: absolute; inset: 0; overflow: hidden; background: var(--bg); }
     .hero-slide {
       position: absolute; inset: 0; opacity: 0;
-      filter: blur(24px) saturate(1.12); transform: scale(1.08);
-      transition: opacity 1.6s cubic-bezier(0.16,1,0.3,1), filter 1.6s cubic-bezier(0.16,1,0.3,1),
-                  transform 1.6s cubic-bezier(0.16,1,0.3,1);
+      filter: blur(10px) saturate(1.08); transform: scale(1.025);
+      transition: opacity .52s cubic-bezier(0.22,1,0.36,1), filter .52s cubic-bezier(0.22,1,0.36,1),
+                  transform .62s cubic-bezier(0.22,1,0.36,1);
       will-change: opacity, filter, transform;
     }
     .hero-slide.on { opacity: 1; filter: blur(0) saturate(1); transform: scale(1); }
@@ -7955,7 +7997,7 @@ body.header-parallax-active .header-identity {
       object-fit: cover; object-position: center 32%; display: block;
       transform-origin: center; backface-visibility: hidden;
     }
-    @keyframes heroSlideKenBurns { from { transform: scale(1); } to { transform: scale(1.07); } }
+    @keyframes heroSlideKenBurns { from { transform: scale(1); } to { transform: scale(1.025); } }
     .hero-reel-section::after {
       content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: linear-gradient(90deg, rgba(8,11,18,.94) 0%, rgba(8,11,18,.62) 34%, transparent 64%),
@@ -8181,7 +8223,16 @@ body.header-parallax-active .header-identity {
       <span class="header-identity-role">Creative Video Director / Editor</span>
     </a>
     <nav class="header-nav" aria-label="Primary navigation">
-      <a class="header-nav-link" href="#work">Work</a>
+      <a class="header-nav-link header-home-link" href="#archive" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.5 10.9 12 4.6l7.5 6.3"></path>
+          <path d="M6.9 10.4v8.7h10.2v-8.7"></path>
+          <path d="M10 19.1v-4.7h4v4.7"></path>
+        </svg>
+        <span class="home-label">Home</span>
+      </a>
+      <a class="header-nav-link" href="#work">Selected</a>
+      <a class="header-nav-link" href="#browse">Browse</a>
       <a class="header-nav-link" href="#about">About</a>
       <a class="header-nav-link" href="#contact">Contact</a>
       <button class="header-nav-link header-reel-button" type="button" data-action="open-reel">Reel</button>
@@ -8219,7 +8270,9 @@ body.header-parallax-active .header-identity {
     <div class="mobile-menu-inner">
       <div class="mobile-menu-eyebrow">Navigation</div>
       <nav class="mobile-menu-nav-links" aria-label="Mobile navigation">
-        <a class="mobile-menu-link" href="#work">Work</a>
+        <a class="mobile-menu-link" href="#archive">Home</a>
+        <a class="mobile-menu-link" href="#work">Selected</a>
+        <a class="mobile-menu-link" href="#browse">Browse</a>
         <button class="mobile-menu-link" type="button" id="mobileReelBtn">Reel</button>
         <a class="mobile-menu-link" href="#about">About</a>
         <a class="mobile-menu-link" href="#contact">Contact</a>
@@ -8294,27 +8347,6 @@ body.header-parallax-active .header-identity {
       <div class="tilt-band bottom" aria-hidden="true"></div>
 
       <!-- ═══ HERO REEL SECTION (Phase 1) ═══ -->
-            <section class="hero-reel-section" id="heroReel" aria-label="Director reel">
-              <div class="hero-slide-stack" id="heroSlideStack">
-                <div class="hero-slide" id="heroSlideA"></div>
-                <div class="hero-slide" id="heroSlideB"></div>
-              </div>
-              <div id="ghost-cursor-container" aria-hidden="true"></div>
-              <div class="hero-reel-overlay">
-                <div class="hero-reel-kicker" id="heroKicker">Featured</div>
-                <h1 class="hero-reel-title" id="heroTitle">Director Reel</h1>
-                <p class="hero-reel-sub" id="heroSub">Creative Video Direction &amp; Editing</p>
-                <div class="hero-reel-actions">
-                  <button class="hero-reel-toggle" type="button" id="heroReelToggle" aria-label="Pause ambient playback">
-                    <span class="icon-play" aria-hidden="true" style="display:none">&#9654;</span>
-                    <span class="icon-pause" aria-hidden="true">&#10074;&#10074;</span>
-                    <span class="toggle-label">Playing</span>
-                  </button>
-                  <button class="hero-reel-info" type="button" id="heroInfoBtn">More Info</button>
-                </div>
-              </div>
-              <div class="hero-reel-dots" id="heroDots" aria-hidden="true"></div>
-            </section>
             <!-- ═══ END HERO REEL ═══ -->
 
       <section class="room archive active" id="archive" data-room="archive" aria-label="Archive home">
@@ -8330,8 +8362,8 @@ body.header-parallax-active .header-identity {
         <div class="rw-mobile" id="rwMobile" aria-label="Project archive"></div>
 
         <div class="rw-statusline" aria-hidden="true">
-          <span id="rwFocusLine">Director's archive — open</span>
-          <span><span id="rwCount"></span> · drag to look · click to pull a record</span>
+          <span id="rwFocusLine">Director's archive — live</span>
+          <span><span id="rwCount"></span> · drag the wall · pull a record</span>
         </div>
 
         <div class="brand-partners" aria-label="Selected work with">
@@ -8432,215 +8464,2306 @@ body.header-parallax-active .header-identity {
         }
         @media (max-width: 640px) { .ccard { width: 200px; } }
       </style>
-      <div class="carousel-rows" id="carouselRows" aria-label="Browse by category"></div>
+      
       <!-- ═══ END CATEGORY CAROUSELS ═══ -->
     </section>
 
-    <section class="room work-room" id="work" data-room="work" aria-label="Work archive">
-      <div class="work-archive-room">
-        <header class="work-hero">
-          <div>
-            <div class="eyebrow">/ Archive</div>
-            <p class="work-statement">A curated archive of commercial films, game trailers, narrative concepts, and music-driven edits.</p>
-          </div>
-        </header>
-
-        <div class="archive-controls">
-          <div class="filter-strip" id="workFilters" aria-label="Work categories"></div>
-          <button class="explore-archive" id="exploreArchive" type="button">Explore Archive</button>
+    <!-- Director reel now follows the record wall on the archive homepage. -->
+    <section class="hero-reel-section" id="heroReel" aria-label="Director reel">
+      <div class="hero-slide-stack" id="heroSlideStack">
+        <div class="hero-slide" id="heroSlideA"></div>
+        <div class="hero-slide" id="heroSlideB"></div>
+      </div>
+      <div id="ghost-cursor-container" aria-hidden="true"></div>
+      <div class="hero-reel-overlay">
+        <div class="hero-reel-kicker" id="heroKicker">Featured</div>
+        <h1 class="hero-reel-title" id="heroTitle">Director Reel</h1>
+        <p class="hero-reel-sub" id="heroSub">Fast cuts. Big worlds. No dead frames.</p>
+        <div class="hero-reel-actions">
+          <button class="hero-reel-toggle" type="button" id="heroReelToggle" aria-label="Pause ambient playback">
+            <span class="icon-play" aria-hidden="true" style="display:none">&#9654;</span>
+            <span class="icon-pause" aria-hidden="true">&#10074;&#10074;</span>
+            <span class="toggle-label">Playing</span>
+          </button>
+          <button class="hero-reel-info" type="button" id="heroInfoBtn">Open Record</button>
         </div>
-        <div class="archive-wall" id="archiveWall" aria-live="polite"></div>
+      </div>
+      <div class="hero-reel-dots" id="heroDots" aria-hidden="true"></div>
+    </section>
+
+    <section class="room browse-room" id="browse" data-room="browse" aria-label="Browse work by category">
+      <div class="browse-room-inner">
+        <div class="carousel-rows category-browser" id="carouselRows" aria-label="Browse by category"></div>
       </div>
     </section>
 
-    <section class="room about-room" id="about" data-room="about" aria-label="About Jared McDaniel">
-      <div class="director-room about-profile about-record-room">
-
-        <header class="about-record-hero hero-record scroll-focus" aria-label="Hero record">
-          <div class="record-label">
-            <span>ARC-DIR-01</span>
-            <strong>Hero Record</strong>
-          </div>
-
-          <div class="hero-record-copy">
-            <p class="hero-record-kicker">Creative Video Director / Editor</p>
-            <h2>I direct cinematic work for games, brands, and campaigns &mdash; then edit it myself.</h2>
-            <p>Based in the Bay Area. I develop, direct, and edit trailers, commercials, and brand films for publishers and studios that need creative leadership from brief to final frame.</p>
-          </div>
-
-          <aside class="dossier-surface hero-record-dossier" aria-label="Director metadata">
-            <div class="metadata-grid">
-              <div><span>Record</span><strong>Director Profile</strong></div>
-              <div><span>Role</span><strong>Director + Editor</strong></div>
-              <div><span>Base</span><strong>Bay Area</strong></div>
-              <div><span>Focus</span><strong>Trailers / Commercials / Brand Films</strong></div>
-              <div><span>Clients</span><strong>CD Projekt Red / Bethesda / Xbox / Apple / Corsair</strong></div>
-            </div>
-          </aside>
-        </header>
-
-        <section class="director-statement record-section scroll-focus" aria-label="Director's statement">
-          <div class="record-label">
-            <span>ARC-DIR-02</span>
-            <strong>Director Statement</strong>
-          </div>
-
-          <div class="director-statement-copy">
-            <blockquote class="statement-quote">"I look for the visual rhythm that already belongs to a piece. Then I build everything around it."</blockquote>
-            <div class="statement-body">
-              <p>I'm drawn to projects that create a feeling before they explain themselves. Whether it's a game trailer, product film, commercial, or narrative piece, I'm chasing the same thing: emotional clarity and a point of view that belongs to the work, not just to the brief.</p>
-              <p>Direction and editing are not separate jobs for me. They're the same conversation at different stages. Directing shapes what happens. Editing shapes how it lands.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="operating-model record-section scroll-focus" aria-label="Operating model">
-          <div class="record-label">
-            <span>ARC-DIR-03</span>
-            <strong>Operating Model</strong>
-          </div>
-
-          <div class="dossier-surface operating-model-surface">
-            <article class="operating-step">
-              <span>01 / Brief</span>
-              <strong>Find the audience, pressure, and point of view.</strong>
-              <p>Clarify what the work needs to make someone feel, remember, or do.</p>
-            </article>
-            <article class="operating-step">
-              <span>02 / Concept</span>
-              <strong>Shape the creative language before the cut begins.</strong>
-              <p>Define tone, reference, pacing, and the visual rules of the record.</p>
-            </article>
-            <article class="operating-step">
-              <span>03 / Direct</span>
-              <strong>Guide performance, camera, art, and production rhythm.</strong>
-              <p>Keep the shoot focused on usable moments, not just coverage.</p>
-            </article>
-            <article class="operating-step">
-              <span>04 / Edit</span>
-              <strong>Build structure, tension, and emotional release.</strong>
-              <p>Own the frame-to-frame decisions that make the idea land.</p>
-            </article>
-            <article class="operating-step">
-              <span>05 / Deliver</span>
-              <strong>Finish the piece for campaign, client, and platform needs.</strong>
-              <p>Carry the record through final edit, cutdowns, and handoff.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="signal-ledger record-section scroll-focus" aria-label="Selected signals">
-          <div class="record-label">
-            <span>ARC-DIR-04</span>
-            <strong>Signal Ledger</strong>
-          </div>
-
-          <div class="dossier-surface signal-ledger-surface">
-            <a class="signal-row" href="work/cyberpunk-2077.html">
-              <span class="signal-id">SIG-01</span>
-              <span class="signal-title">Cyberpunk 2077</span>
-              <span class="signal-meta">CD Projekt Red</span>
-              <span class="signal-discipline">Trailer Direction</span>
-            </a>
-            <a class="signal-row" href="work/doom.html">
-              <span class="signal-id">SIG-02</span>
-              <span class="signal-title">DOOM</span>
-              <span class="signal-meta">Bethesda</span>
-              <span class="signal-discipline">Campaign Rhythm</span>
-            </a>
-            <a class="signal-row" href="work/the-witcher.html">
-              <span class="signal-id">SIG-03</span>
-              <span class="signal-title">The Witcher</span>
-              <span class="signal-meta">CD Projekt Red</span>
-              <span class="signal-discipline">World + Emotion</span>
-            </a>
-            <a class="signal-row" href="work/fallout-nuka-cola.html">
-              <span class="signal-id">SIG-04</span>
-              <span class="signal-title">Fallout Nuka-Cola</span>
-              <span class="signal-meta">Bethesda</span>
-              <span class="signal-discipline">Brand Story</span>
-            </a>
-            <a class="signal-row" href="work/kairi-pixel.html">
-              <span class="signal-id">SIG-05</span>
-              <span class="signal-title">Kairi &amp; Pixel</span>
-              <span class="signal-meta">CORSAIR / Pixune</span>
-              <span class="signal-discipline">Character Campaign</span>
-            </a>
-          </div>
-        </section>
-
-        <section class="about-cta record-section scroll-focus" aria-label="Start a project">
-          <div class="record-label">
-            <span>ARC-DIR-05</span>
-            <strong>Next Record</strong>
-          </div>
-
-          <div class="dossier-surface about-cta-surface">
-            <p class="cta-statement">The right brief deserves the right director. If your project needs emotional clarity and a clear point of view, let's talk.</p>
-            <a class="about-cta-button" href="#contact">Start a Conversation</a>
-          </div>
-        </section>
-
-      </div>
-    </section>
-
-    <section class="room contact-room" id="contact" data-room="contact" aria-label="Contact Jared McDaniel">
-      <div class="control-room transmission-room">
-        <header class="control-hero transmission-hero scroll-focus">
+    <section class="room work-room" id="work" data-room="work" aria-label="Selected work">
+      <div class="selected-screening" id="selectedScreening" data-active-slug="cyberpunk-2077">
+        <header class="selected-screening-header">
           <div>
-            <div class="eyebrow">Transmission Room</div>
-            <h2 class="control-title">Start<br>The Next<br>Project.</h2>
-            <p>Send the trailer, campaign, brand-film, or launch challenge. I will respond directly if the fit is right.</p>
+            <p class="selected-eyebrow">Selected Work</p>
+            <h2>Make it hit.</h2>
           </div>
-
-          <aside class="transmission-status dossier-surface" aria-label="Transmission status">
-            <div class="record-label">
-              <span>TRN-OPEN</span>
-              <strong>Transmission Status</strong>
-            </div>
-            <div class="metadata-grid">
-              <div><span>Signal</span><strong>Open</strong></div>
-              <div><span>Channel</span><strong>Direct Email</strong></div>
-              <div><span>Availability</span><strong>Select Projects</strong></div>
-              <div><span>Response</span><strong>Campaign / Trailer Inquiries</strong></div>
-            </div>
-          </aside>
+          <p class="selected-counter" aria-label="Selected project position">
+            <span id="selectedCounterCurrent">01</span>
+            <span>/ 04</span>
+          </p>
         </header>
 
-        <section class="contact-console transmission-console scroll-focus" aria-label="Contact details">
-          <div class="console-email-wrap primary-transmission">
-            <div class="record-label">
-              <span>Primary Channel</span>
-              <strong>Email</strong>
-            </div>
-            <a class="console-email" href="mailto:jmcdaniel.productions@gmail.com" aria-label="jmcdaniel.productions@gmail.com"><span>jmcdaniel.productions</span><span class="console-email-domain">@gmail.com</span></a>
-            <p class="console-note">Direct line. No forms, no gatekeeping.</p>
+        <div class="selected-stage" aria-live="polite">
+          <div class="selected-atmosphere" id="selectedAtmosphere" aria-hidden="true"></div>
+          <a class="selected-frame-link" id="selectedFrameLink" href="work/cyberpunk-2077.html" aria-label="View Cyberpunk 2077 case study">
+            <figure class="selected-frame" id="selectedFrame">
+              <img id="selectedPoster" src="https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg" alt="Cyberpunk 2077 preview still" loading="eager" decoding="async">
+              <video id="selectedVideo" muted loop playsinline preload="metadata" poster="https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg"></video>
+            </figure>
+          </a>
+        </div>
+
+        <div class="selected-project-info">
+          <div class="selected-project-copy">
+            <p class="selected-project-number" id="selectedProjectNumber">01</p>
+            <h3 id="selectedProjectTitle">Cyberpunk 2077</h3>
+            <p class="selected-project-meta" id="selectedProjectMeta">Campaign Trailer · CD Projekt Red</p>
+            <p class="selected-project-role" id="selectedProjectRole">Creative Direction / Direction / Editing</p>
+          </div>
+          <a class="selected-case-link" id="selectedCaseLink" href="work/cyberpunk-2077.html">View Case Study <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="selected-selector" id="selectedSelector" role="listbox" aria-label="Choose selected work project"></div>
+      </div>
+    </section>
+
+    <section class="room about-room" id="about" data-room="about" aria-label="About Jared McDaniel" data-od-id="about-room">
+      <div class="about-film-profile" data-od-id="about-film-profile">
+        <section class="about-film-hero scroll-focus" aria-labelledby="aboutFilmTitle" data-od-id="about-hero">
+          <div class="about-film-hero-copy">
+            <p class="about-chapter">001 / ABOUT</p>
+            <h2 id="aboutFilmTitle" data-od-id="about-title">Director + editor for cinematic campaigns.</h2>
+            <p class="about-film-intro">Bay Area, California. Commercial, gaming, and narrative work for teams that need a clear point of view from first brief to final frame.</p>
+            <dl class="about-identity-meta" aria-label="Profile details">
+              <div>
+                <dt>Focus</dt>
+                <dd>Direction / Editing / Creative Development</dd>
+              </div>
+              <div>
+                <dt>Selected collaborators</dt>
+                <dd>CD Projekt Red / Bethesda / Xbox / Apple / Corsair</dd>
+              </div>
+            </dl>
           </div>
 
-          <div class="console-panel secondary-transmission">
-            <div class="console-available">
-              <span>Project Scope</span>
-              <p>Trailer Direction &middot; Campaign Films &middot; Brand Storytelling &middot; Editorial Leadership</p>
-            </div>
-            <nav class="console-socials" aria-label="Social links">
-              <a class="console-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none"></circle></svg>
-                <span>Instagram</span>
-              </a>
-              <a class="console-social-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.2 3.8v9.9a4.2 4.2 0 1 1-4.2-4.2"></path><path d="M14.2 3.8c.5 3 2.2 4.9 5.1 5.4"></path></svg>
-                <span>TikTok</span>
-              </a>
-              <a class="console-social-link" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email">
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2"></rect><path d="m4.6 7.1 7.4 5.7 7.4-5.7"></path></svg>
-                <span>Email</span>
-              </a>
-            </nav>
-            <a class="button" href="mailto:jmcdaniel.productions@gmail.com?subject=Project%20Inquiry%20for%20Jared%20McDaniel">Start a Project Inquiry</a>
+          <figure class="about-film-image about-film-image-hero" data-od-id="about-hero-image">
+            <img src="images/cyberpunk/bts-02-directing.jpg" alt="Jared directing talent on a Cyberpunk 2077 campaign set surrounded by lighting and production gear." loading="eager" decoding="async">
+            <figcaption>On set / Cyberpunk 2077 campaign</figcaption>
+          </figure>
+        </section>
+
+        <section class="about-film-philosophy scroll-focus" aria-labelledby="aboutPhilosophyTitle" data-od-id="about-philosophy">
+          <div class="about-section-index">
+            <p class="about-chapter">002 / POINT OF VIEW</p>
           </div>
+          <div>
+            <blockquote id="aboutPhilosophyTitle" data-od-id="about-philosophy-quote">
+              <p class="about-philosophy-impact">Find the rhythm.</p>
+              <p class="about-philosophy-line">I look for the visual rhythm that already belongs to a piece, then build the direction and edit around it.</p>
+            </blockquote>
+            <div class="about-philosophy-copy">
+              <p>I am drawn to work that creates a feeling before it explains itself. The goal is emotional clarity, pacing, and a point of view that belongs to the story.</p>
+              <p>Direction and editing stay connected: one shapes what happens in front of the lens, the other shapes how it lands.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="about-film-process scroll-focus" aria-labelledby="aboutProcessTitle" data-od-id="about-process">
+          <div class="about-section-head">
+            <p class="about-chapter">003 / PROCESS</p>
+            <h3 id="aboutProcessTitle" data-od-id="about-process-title">Every frame has a job.</h3>
+          </div>
+          <div class="about-process-grid">
+            <article class="about-process-column" data-od-id="about-process-direction">
+              <span>01</span>
+              <h4>Direction</h4>
+              <p>Story / Visual language<br>Talent / Camera / Performance</p>
+            </article>
+            <article class="about-process-column" data-od-id="about-process-editorial">
+              <span>02</span>
+              <h4>Editorial</h4>
+              <p>Rhythm / Structure<br>Emotion / Sound / Pacing</p>
+            </article>
+            <article class="about-process-column" data-od-id="about-process-development">
+              <span>03</span>
+              <h4>Development</h4>
+              <p>Concepts / Scripts<br>Treatments / Storyboards / Pre-production</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="about-film-bts scroll-focus" aria-labelledby="aboutBtsTitle" data-od-id="about-behind-frame">
+          <div class="about-section-head about-section-head-split">
+            <div>
+              <p class="about-chapter">004 / BEHIND THE FRAME</p>
+              <h3 id="aboutBtsTitle" data-od-id="about-bts-title">Before the frame.</h3>
+            </div>
+            <p>The frame starts before the camera rolls.</p>
+          </div>
+
+          <div class="about-bts-layout" aria-label="Behind the scenes production images">
+            <figure class="about-film-image about-bts-wide" data-od-id="about-bts-cyberpunk-set">
+              <img src="images/cyberpunk/bts-01-night-city.jpg" alt="Cyberpunk 2077 campaign production setup with camera, lighting, cables, and a practical set." loading="lazy" decoding="async">
+              <figcaption>Cyberpunk 2077 / production setup</figcaption>
+            </figure>
+            <figure class="about-film-image about-bts-tall" data-od-id="about-bts-doom-makeup">
+              <img src="images/doom/bts-01-makeup.jpg" alt="Practical demon hand makeup process for the DOOM campaign film." loading="lazy" decoding="async">
+              <figcaption>DOOM: The Dark Ages / practical makeup</figcaption>
+            </figure>
+            <figure class="about-film-image about-bts-monitor" data-od-id="about-bts-cyberpunk-monitor">
+              <img src="images/cyberpunk/bts-03-monitor.jpg" alt="Video monitor showing a Cyberpunk 2077 product shot during production." loading="lazy" decoding="async">
+              <figcaption>Cyberpunk 2077 / video village</figcaption>
+            </figure>
+            <figure class="about-film-image about-bts-post" data-od-id="about-bts-doom-post">
+              <img src="images/doom/process-04-post.jpg" alt="MacBook open to Capture One retouching a DOOM campaign image during post-production." loading="lazy" decoding="async">
+              <figcaption>DOOM: The Dark Ages / post production</figcaption>
+            </figure>
+            <figure class="about-film-image about-bts-direction" data-od-id="about-bts-doom-direction">
+              <img src="images/doom/bts-03-direction.jpg" alt="Red-lit DOOM campaign setup with demon hands at a keyboard during talent direction." loading="lazy" decoding="async">
+              <figcaption>DOOM: The Dark Ages / talent direction</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="about-film-human scroll-focus" aria-labelledby="aboutHumanTitle" data-od-id="about-personal-next">
+          <div class="about-human-notes" data-od-id="about-personal-notes">
+            <p class="about-chapter">005 / PERSONAL</p>
+            <h3 id="aboutHumanTitle">In the mix.</h3>
+            <ul>
+              <li>Practical light.</li>
+              <li>Game cinematics.</li>
+              <li>Sound that hits.</li>
+              <li>Cars with personality.</li>
+              <li>Edits that know when to breathe.</li>
+              <li>Fog machines whenever possible.</li>
+            </ul>
+          </div>
+          <div class="about-next-note" data-od-id="about-next-note">
+            <p class="about-chapter">006 / NEXT</p>
+            <h3>Bigger worlds.</h3>
+            <p>I want to keep pushing into larger narrative work across film, television, games, and campaigns.</p>
+          </div>
+        </section>
+
+        <section class="about-film-cta scroll-focus" aria-label="Contact call to action" data-od-id="about-contact-cta">
+          <p class="about-chapter">007 / CONTACT</p>
+          <h3>Got something with a pulse?</h3>
+          <a href="#contact" data-od-id="about-start-conversation">SEND IT <span aria-hidden="true">-&gt;</span></a>
         </section>
       </div>
     </section>
+
+    <section class="room contact-room" id="contact" data-room="contact" aria-label="Contact Jared McDaniel" data-od-id="contact-room">
+      <div class="contact-open-channel" data-od-id="contact-open-channel">
+        <section class="contact-intro-panel scroll-focus" aria-labelledby="contactTitle" data-od-id="contact-intro">
+          <p class="contact-chapter">001 / CONTACT</p>
+          <h2 id="contactTitle" data-od-id="contact-title">What are we making?</h2>
+          <p>Tell me what you're making and send over whatever you have.</p>
+
+          <dl class="contact-signal-meta" aria-label="Contact metadata">
+            <div>
+              <dt>Focus</dt>
+              <dd>Directing / Editing / Creative Development</dd>
+            </div>
+            <div>
+              <dt>Location</dt>
+              <dd>Bay Area / California</dd>
+            </div>
+            <div>
+              <dt>Availability</dt>
+              <dd>Available for select projects</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="contact-intake-panel scroll-focus" aria-labelledby="contactIntakeTitle" data-od-id="contact-project-intake">
+          <div class="contact-form-head">
+            <p class="contact-chapter">THE BRIEF</p>
+            <h3 id="contactIntakeTitle">Send what matters.</h3>
+          </div>
+
+          <form class="contact-brief-form" id="contactBriefForm" novalidate data-mailto="jmcdaniel.productions@gmail.com" data-od-id="contact-brief-form">
+            <div class="contact-field">
+              <label for="contactName">Name</label>
+              <input id="contactName" name="name" type="text" autocomplete="name" required aria-describedby="contactNameError">
+              <p class="contact-error" id="contactNameError"></p>
+            </div>
+
+            <div class="contact-field">
+              <label for="contactEmail">Email</label>
+              <input id="contactEmail" name="email" type="email" autocomplete="email" required aria-describedby="contactEmailError">
+              <p class="contact-error" id="contactEmailError"></p>
+            </div>
+
+            <fieldset class="contact-project-type">
+              <legend>Project type</legend>
+              <div class="contact-type-grid">
+                <label class="contact-type-option">
+                  <input type="radio" name="projectType" value="Directing">
+                  <span>Directing</span>
+                </label>
+                <label class="contact-type-option">
+                  <input type="radio" name="projectType" value="Editorial">
+                  <span>Editorial</span>
+                </label>
+                <label class="contact-type-option">
+                  <input type="radio" name="projectType" value="Campaign">
+                  <span>Campaign</span>
+                </label>
+                <label class="contact-type-option">
+                  <input type="radio" name="projectType" value="Other">
+                  <span>Other</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="contact-field">
+              <label for="contactMessage">Tell me about it</label>
+              <textarea id="contactMessage" name="message" rows="5" required aria-describedby="contactMessageHint contactMessageError" placeholder="What are you making and what do you need?"></textarea>
+              <p class="contact-hint" id="contactMessageHint">A rough brief is plenty.</p>
+              <p class="contact-error" id="contactMessageError"></p>
+            </div>
+
+            <button class="contact-submit" type="submit" data-od-id="contact-send-brief">
+              <span class="contact-submit-label">Send brief</span>
+              <span aria-hidden="true">-&gt;</span>
+            </button>
+
+            <p class="contact-form-status" id="contactFormStatus" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="contact-direct-panel scroll-focus" aria-label="Direct contact" data-od-id="contact-direct">
+          <p class="contact-chapter">Direct</p>
+          <a class="contact-direct-email" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email Jared McDaniel" data-od-id="contact-direct-email">jmcdaniel.productions@gmail.com</a>
+          <nav class="contact-direct-socials" aria-label="Social links" data-od-id="contact-social-links">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">-&gt;</span></a>
+            <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">TikTok <span aria-hidden="true">-&gt;</span></a>
+          </nav>
+        </section>
+      </div>
+    </section>
+    <style>
+      .archive-piece {
+        border-color: rgba(242, 238, 231, 0.1);
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
+      }
+      .archive-piece::before {
+        background-image:
+          linear-gradient(180deg, rgba(8, 11, 18, 0), rgba(8, 11, 18, 0.42)),
+          var(--thumb);
+        filter: brightness(0.96) saturate(0.95);
+      }
+      .archive-piece::after {
+        inset: 10px;
+        border-color: rgba(242, 238, 231, 0.07);
+      }
+      .archive-piece:hover {
+        border-color: rgba(242, 238, 231, 0.22);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.26), 0 0 0 1px rgba(111, 140, 255, 0.08);
+        transform: translateY(-4px) scale(1.01);
+      }
+      .archive-piece:hover::before {
+        filter: brightness(1.05) saturate(0.98);
+        transform: scale(1.035);
+      }
+
+      .category-browser {
+        width: min(1680px, calc(100vw - 48px));
+        margin: 0 auto;
+        padding: clamp(7.5rem, 12svh, 10rem) 0 clamp(5rem, 8vw, 7rem);
+      }
+      .browse-room {
+        min-height: 100svh;
+        background:
+          radial-gradient(ellipse at 78% 12%, rgba(111, 140, 255, 0.12), transparent 34rem),
+          linear-gradient(180deg, rgba(242, 238, 231, 0.035), transparent 28rem);
+      }
+      .browse-room-inner {
+        width: 100%;
+      }
+      .category-browser-shell {
+        border-top: 1px solid rgba(242, 238, 231, 0.1);
+        padding-top: clamp(1.4rem, 3vw, 2.4rem);
+      }
+      .category-tabs-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: end;
+        margin-bottom: clamp(1.2rem, 2.5vw, 2rem);
+      }
+      .category-tabs-title {
+        margin: 0;
+        color: var(--ink);
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(3rem, 7vw, 7.4rem);
+        font-weight: 400;
+        line-height: 0.98;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .category-tabs-note {
+        max-width: 52ch;
+        margin: clamp(0.8rem, 1.6vw, 1.2rem) 0 0;
+        color: rgba(242, 238, 231, 0.58);
+        font-size: clamp(1rem, 1.35vw, 1.28rem);
+        line-height: 1.62;
+      }
+      .category-tabs {
+        display: inline-flex;
+        gap: 0.35rem;
+        padding: 0.28rem;
+        border: 1px solid rgba(242, 238, 231, 0.1);
+        border-radius: 999px;
+        background: rgba(242, 238, 231, 0.04);
+      }
+      .category-tab {
+        min-height: 44px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 clamp(0.9rem, 1.5vw, 1.35rem);
+        background: transparent;
+        color: rgba(242, 238, 231, 0.62);
+        cursor: pointer;
+        font: 700 0.72rem / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+      }
+      .category-tab:hover,
+      .category-tab:focus-visible {
+        color: var(--ink);
+        outline: none;
+      }
+      .category-tab[aria-selected="true"] {
+        background: var(--blue);
+        color: #070a11;
+      }
+      .category-panel[hidden] {
+        display: none;
+      }
+      .category-panel .carousel-row {
+        margin: 0;
+      }
+      .category-panel .carousel-row h2 {
+        font-size: clamp(1.35rem, 2.35vw, 2.3rem);
+        margin-bottom: clamp(0.85rem, 1.5vw, 1.3rem);
+      }
+      .category-panel .ctrack {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        padding-block: clamp(0.9rem, 1.6vw, 1.4rem) clamp(1.5rem, 2.5vw, 2.3rem);
+      }
+      .category-panel .ctrack::-webkit-scrollbar {
+        display: none;
+      }
+      .category-panel .creel {
+        transform: none !important;
+        padding-right: clamp(1.2rem, 3vw, 2.6rem);
+        gap: clamp(0.9rem, 1.5vw, 1.35rem);
+      }
+      .browse-room .ccard {
+        width: clamp(17rem, 23vw, 27rem);
+        border-color: rgba(242, 238, 231, 0.12);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+      }
+      .browse-room .ccard:hover {
+        border-color: rgba(242, 238, 231, 0.26);
+        box-shadow: 0 24px 58px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(111, 140, 255, 0.1);
+      }
+      .browse-room .ccard .ccap {
+        opacity: 1;
+        padding: clamp(0.75rem, 1.2vw, 1rem);
+        background: linear-gradient(0deg, rgba(2, 3, 5, 0.92), rgba(2, 3, 5, 0.06) 78%);
+      }
+      .browse-room .ccard .cc-title {
+        font-size: clamp(0.82rem, 1vw, 1.02rem);
+      }
+      .browse-room .cnav {
+        opacity: 0.72;
+      }
+
+      .about-welcome,
+      .contact-welcome {
+        width: min(1120px, calc(100vw - 48px));
+        min-height: 100svh;
+        margin: 0 auto;
+        padding: clamp(7rem, 13svh, 9rem) 0 clamp(7rem, 12vw, 9rem);
+      }
+      .about-welcome-hero,
+      .contact-welcome-hero {
+        max-width: 58rem;
+      }
+      .about-welcome-hero h2,
+      .contact-welcome-hero h2 {
+        margin: 0.6rem 0 0;
+        color: var(--ink);
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(3.1rem, 8vw, 7.4rem);
+        font-weight: 400;
+        line-height: 0.92;
+        letter-spacing: 0.055em;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+      .about-welcome-hero p:not(.editorial-kicker),
+      .contact-welcome-hero p:not(.editorial-kicker) {
+        max-width: 44rem;
+        margin: clamp(1rem, 2vw, 1.4rem) 0 0;
+        color: rgba(242, 238, 231, 0.68);
+        font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+        line-height: 1.62;
+      }
+      .about-welcome-frame {
+        position: relative;
+        margin: clamp(3.6rem, 6vw, 5.5rem) 0;
+      }
+      .about-welcome-frame div {
+        min-height: clamp(18rem, 42vw, 30rem);
+        border: 1px solid rgba(242, 238, 231, 0.1);
+        background:
+          linear-gradient(0deg, rgba(8, 11, 18, 0.78), rgba(8, 11, 18, 0.08) 48%, rgba(8, 11, 18, 0.14)),
+          url("https://img.youtube.com/vi/Hc_t2eTorhI/maxresdefault.jpg"),
+          url("https://img.youtube.com/vi/Hc_t2eTorhI/hqdefault.jpg");
+        background-position: center 42%;
+        background-size: cover;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      }
+      .about-welcome-frame figcaption {
+        margin-top: 0.8rem;
+        color: rgba(242, 238, 231, 0.45);
+        font: 700 0.62rem / 1.4 "JetBrains Mono", monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .about-welcome-copy {
+        display: grid;
+        grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+        gap: clamp(2rem, 5vw, 4.5rem);
+        border-top: 1px solid rgba(242, 238, 231, 0.1);
+        border-bottom: 1px solid rgba(242, 238, 231, 0.1);
+        padding: clamp(2rem, 5vw, 4rem) 0;
+      }
+      .about-lede {
+        margin: 0;
+        color: rgba(242, 238, 231, 0.9);
+        font-size: clamp(1.45rem, 2.4vw, 2.45rem);
+        font-weight: 700;
+        line-height: 1.18;
+        text-wrap: balance;
+      }
+      .about-welcome-copy div {
+        display: grid;
+        gap: 1rem;
+      }
+      .about-welcome-copy p:not(.about-lede),
+      .about-selected p,
+      .contact-card p {
+        margin: 0;
+        color: rgba(242, 238, 231, 0.66);
+        font-size: clamp(1rem, 1.1vw, 1.12rem);
+        line-height: 1.72;
+      }
+      .about-selected {
+        display: grid;
+        grid-template-columns: 13rem minmax(0, 1fr);
+        gap: clamp(1.4rem, 4vw, 4rem);
+        align-items: baseline;
+        padding: clamp(2rem, 4vw, 3.3rem) 0;
+      }
+      .about-selected span {
+        color: var(--blue);
+        font: 700 0.64rem / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .about-selected p {
+        color: rgba(242, 238, 231, 0.86);
+        font-size: clamp(1.1rem, 2vw, 1.85rem);
+        line-height: 1.35;
+      }
+      .about-invite,
+      .contact-socials a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        color: var(--ink);
+        text-decoration: none;
+        font: 700 0.72rem / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+      .about-invite {
+        border-bottom: 1px solid rgba(111, 140, 255, 0.72);
+      }
+      .about-invite:hover,
+      .about-invite:focus-visible,
+      .contact-socials a:hover,
+      .contact-socials a:focus-visible {
+        color: var(--blue);
+        outline: none;
+      }
+      .contact-welcome {
+        display: grid;
+        align-content: center;
+        gap: clamp(2.8rem, 6vw, 5rem);
+      }
+      .contact-card {
+        display: grid;
+        gap: clamp(1rem, 2vw, 1.5rem);
+        max-width: 58rem;
+        padding-top: clamp(1.5rem, 3vw, 2.4rem);
+        border-top: 1px solid rgba(242, 238, 231, 0.11);
+      }
+      .contact-email-primary {
+        color: var(--ink);
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(1.6rem, 4.4vw, 4.6rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.018em;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+      .contact-email-primary:hover,
+      .contact-email-primary:focus-visible {
+        color: var(--blue);
+        outline: none;
+      }
+      .contact-socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+      }
+      @media (max-width: 900px) {
+        .category-tabs-header,
+        .about-welcome-copy,
+        .about-selected {
+          grid-template-columns: 1fr;
+        }
+        .category-tabs {
+          width: 100%;
+          overflow-x: auto;
+          justify-content: flex-start;
+        }
+      }
+      @media (max-width: 640px) {
+        .category-browser,
+        .about-welcome,
+        .contact-welcome {
+          width: min(calc(100vw - 32px), 34rem);
+        }
+        .about-welcome-hero h2,
+        .contact-welcome-hero h2 {
+          font-size: clamp(2.55rem, 13vw, 4.2rem);
+          line-height: 0.95;
+        }
+        .contact-email-primary {
+          font-size: clamp(1.12rem, 6.4vw, 2rem);
+          line-height: 1.08;
+        }
+      }
+
+      /* Quiet cleanup pass: no secondary Browse taskbar, no dossier codes on thumbnails. */
+      .browse-room {
+        background: #080b12 !important;
+      }
+      .category-browser {
+        width: min(1760px, calc(100vw - 48px)) !important;
+        padding: clamp(6.6rem, 10svh, 8.4rem) 0 clamp(4.5rem, 7vw, 6rem) !important;
+      }
+      .category-browser-shell {
+        border-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      .category-tabs-header,
+      .category-tabs,
+      .category-tabs-title,
+      .category-tabs-note,
+      .category-tab,
+      .browse-room .cc-code,
+      .rw-start-line {
+        display: none !important;
+      }
+      .category-panels {
+        display: grid;
+        gap: clamp(2.8rem, 5vw, 4.8rem);
+      }
+      .category-panel,
+      .category-panel[hidden] {
+        display: block !important;
+      }
+      .category-panel .carousel-row {
+        margin: 0 !important;
+      }
+      .category-panel .carousel-row h2 {
+        margin: 0 0 clamp(0.8rem, 1.3vw, 1.15rem) !important;
+        color: rgba(242, 238, 231, 0.9) !important;
+        font-family: "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(1.12rem, 1.45vw, 1.55rem) !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+      }
+      .category-panel .carousel-row h2 .ccount {
+        color: rgba(242, 238, 231, 0.38) !important;
+        font-size: 0.62rem !important;
+        letter-spacing: 0.12em !important;
+      }
+      .category-panel .ctrack {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        padding: 0.15rem 0 0.8rem !important;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 72px), transparent 100%) !important;
+        mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 72px), transparent 100%) !important;
+      }
+      .category-panel .ctrack::-webkit-scrollbar {
+        display: none;
+      }
+      .category-panel .creel {
+        transform: none !important;
+        gap: clamp(0.7rem, 1vw, 1rem) !important;
+        padding-right: clamp(2rem, 5vw, 5rem) !important;
+      }
+      .browse-room .ccard {
+        width: clamp(15.5rem, 20vw, 22.5rem) !important;
+        border: 1px solid rgba(242, 238, 231, 0.085) !important;
+        border-radius: 5px !important;
+        background: #05070d !important;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18) !important;
+        transform: none;
+      }
+      .browse-room .ccard:hover,
+      .browse-room .ccard:focus-visible {
+        border-color: rgba(242, 238, 231, 0.2) !important;
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24) !important;
+        transform: translateY(-3px) !important;
+        outline: none;
+      }
+      .browse-room .ccard img,
+      .browse-room .ccard video {
+        filter: brightness(0.94) saturate(0.94);
+      }
+      .browse-room .ccard:hover img,
+      .browse-room .ccard:focus-visible img {
+        filter: brightness(1.02) saturate(0.98);
+      }
+      .browse-room .ccard .ccap {
+        opacity: 1 !important;
+        display: grid !important;
+        align-content: end !important;
+        justify-items: center !important;
+        min-height: 46% !important;
+        padding: 2.8rem 0.9rem 0.78rem !important;
+        background: linear-gradient(0deg, rgba(3, 5, 9, 0.82), rgba(3, 5, 9, 0.04) 72%) !important;
+        text-align: center !important;
+      }
+      .browse-room .ccard .cc-title {
+        width: 100% !important;
+        max-width: 24ch;
+        margin-inline: auto !important;
+        color: rgba(242, 238, 231, 0.92) !important;
+        font-family: "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(0.78rem, 0.88vw, 0.96rem) !important;
+        font-weight: 700 !important;
+        line-height: 1.14 !important;
+        letter-spacing: 0 !important;
+        overflow: hidden !important;
+        text-align: center !important;
+        text-overflow: ellipsis !important;
+        text-wrap: balance !important;
+        text-transform: none !important;
+        white-space: nowrap !important;
+      }
+      .browse-room .ccard .cc-meta {
+        width: 100% !important;
+        max-width: 28ch !important;
+        margin: 0.24rem auto 0 !important;
+        color: rgba(242, 238, 231, 0.48) !important;
+        font-size: 0.58rem !important;
+        letter-spacing: 0.08em !important;
+        overflow: hidden !important;
+        text-align: center !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+      }
+      .browse-room .cnav {
+        opacity: 0.58 !important;
+        width: 46px !important;
+      }
+      .browse-room .cnav span {
+        width: 32px !important;
+        height: 32px !important;
+        border-color: rgba(242, 238, 231, 0.12) !important;
+        background: rgba(8, 11, 18, 0.74) !important;
+        box-shadow: none !important;
+      }
+      .archive-piece,
+      .rw-card {
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+      }
+      .archive-piece:hover,
+      .rw-card.is-focus {
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28) !important;
+      }
+      .work-room {
+        background: #080b12 !important;
+      }
+      .work-room .work-archive-room {
+        width: min(1500px, calc(100vw - 48px)) !important;
+        min-height: 100svh !important;
+        padding: clamp(7rem, 12svh, 9rem) 0 clamp(4.8rem, 8vw, 7rem) !important;
+        margin: 0 auto !important;
+      }
+      .work-room .work-hero {
+        min-height: 0 !important;
+        padding: 0 0 clamp(1.7rem, 3vw, 2.8rem) !important;
+        display: block !important;
+      }
+      .work-room .work-hero::after,
+      .work-room .archive-controls {
+        display: none !important;
+      }
+      .work-room .eyebrow {
+        color: rgba(242, 238, 231, 0.54) !important;
+        font-family: "Space Grotesk", Arial, sans-serif !important;
+        font-size: 0.76rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        margin-bottom: 0.7rem !important;
+      }
+      .work-room .work-statement {
+        max-width: 42rem !important;
+        color: rgba(242, 238, 231, 0.82) !important;
+        font-family: "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(1.12rem, 1.55vw, 1.55rem) !important;
+        font-weight: 500 !important;
+        line-height: 1.35 !important;
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+      }
+      .work-room .selected-wall {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: clamp(0.9rem, 1.5vw, 1.35rem) !important;
+        align-items: stretch !important;
+      }
+      .work-room .selected-wall .archive-piece,
+      .work-room .selected-wall .archive-piece.flagship,
+      .work-room .selected-wall .archive-piece.tall,
+      .work-room .selected-wall .archive-piece.medium,
+      .work-room .selected-wall .archive-piece.wide,
+      .work-room .selected-wall .archive-piece.compact {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        width: 100% !important;
+        min-height: 0 !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9 !important;
+        border-radius: 6px !important;
+        border: 1px solid rgba(242, 238, 231, 0.1) !important;
+        background: #05070d !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+      }
+      .work-room .selected-wall .archive-piece:hover,
+      .work-room .selected-wall .archive-piece:focus-visible {
+        transform: translateY(-4px) !important;
+        border-color: rgba(242, 238, 231, 0.24) !important;
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28) !important;
+      }
+      .work-room .selected-wall .piece-overlay {
+        background: linear-gradient(0deg, rgba(3, 5, 9, 0.88), rgba(3, 5, 9, 0.08) 70%) !important;
+      }
+      .work-room .selected-wall .piece-info {
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0.82rem !important;
+        display: grid !important;
+        justify-items: center !important;
+        gap: 0.28rem !important;
+        padding: 0.92rem 1rem 0 !important;
+        text-align: center !important;
+      }
+      .work-room .selected-wall .piece-title,
+      .work-room .selected-wall .archive-piece:hover .piece-title {
+        width: 100% !important;
+        max-width: 23ch !important;
+        margin-inline: auto !important;
+        color: rgba(242, 238, 231, 0.96) !important;
+        font-family: "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(0.98rem, 1.1vw, 1.18rem) !important;
+        font-weight: 700 !important;
+        line-height: 1.12 !important;
+        letter-spacing: 0 !important;
+        text-align: center !important;
+        text-transform: none !important;
+      }
+      .work-room .selected-wall .piece-meta,
+      .work-room .selected-wall .piece-affordance {
+        width: 100% !important;
+        max-width: 31ch !important;
+        margin-inline: auto !important;
+        font-family: "Space Grotesk", Arial, sans-serif !important;
+        font-size: 0.68rem !important;
+        justify-items: center !important;
+        letter-spacing: 0.08em !important;
+        text-align: center !important;
+      }
+      .work-room .selected-wall .piece-type-line,
+      .work-room .selected-wall .piece-client-line,
+      .work-room .selected-wall .piece-record-state {
+        max-width: 100% !important;
+        text-align: center !important;
+      }
+      .rw-card .rw-title,
+      .rw-card .rw-meta-line,
+      .rw-card .rw-record-state {
+        margin-inline: auto !important;
+        text-align: center !important;
+      }
+      .rw-card .rw-meta-line span {
+        display: block !important;
+        text-align: center !important;
+      }
+      .selected-screening {
+        --selected-atmosphere-color: rgba(111, 140, 255, 0.08);
+        width: min(1400px, 90vw);
+        min-height: 100svh;
+        margin: 0 auto;
+        padding: clamp(7rem, 12svh, 9rem) 0 clamp(4.8rem, 8vw, 7rem);
+        position: relative;
+        isolation: isolate;
+      }
+      .selected-screening-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: clamp(1.4rem, 4vw, 4rem);
+        margin-bottom: clamp(1.6rem, 3.2vw, 2.8rem);
+      }
+      .selected-eyebrow {
+        margin: 0 0 0.55rem;
+        color: rgba(242, 238, 231, 0.52);
+        font: 700 clamp(0.62rem, 0.72vw, 0.76rem) / 1 "Sora", "Space Grotesk", Arial, sans-serif;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .selected-screening-header h2 {
+        max-width: 47rem;
+        margin: 0;
+        color: rgba(242, 238, 231, 0.93);
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(2.5rem, 5.4vw, 5.9rem);
+        font-weight: 400;
+        line-height: 0.88;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+      .selected-counter {
+        margin: 0.18rem 0 0;
+        color: rgba(242, 238, 231, 0.38);
+        font: 700 clamp(0.74rem, 0.9vw, 0.9rem) / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .selected-counter span:first-child {
+        color: var(--selected-project-accent, var(--blue));
+      }
+      .selected-stage {
+        position: relative;
+        display: grid;
+        place-items: center;
+        margin: 0 auto;
+        padding: clamp(0.9rem, 1.5vw, 1.4rem) 0 clamp(1.2rem, 2.2vw, 2rem);
+      }
+      .selected-atmosphere {
+        position: absolute;
+        inset: -8% -10% -4%;
+        z-index: -1;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 50% 44%, var(--selected-atmosphere-color), transparent 48%),
+          linear-gradient(90deg, transparent, rgba(242, 238, 231, 0.012), transparent);
+        opacity: 0.46;
+        transition: background 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms ease;
+      }
+      .selected-frame-link {
+        display: block;
+        width: min(1120px, 80vw);
+        color: inherit;
+        text-decoration: none;
+      }
+      .selected-frame {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid rgba(242, 238, 231, 0.12);
+        border-radius: 1px;
+        background: #03050a;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+        transform: translate3d(var(--selected-tilt-x, 0), var(--selected-tilt-y, 0), 0);
+        transition:
+          border-color 220ms ease,
+          box-shadow 220ms ease,
+          transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .selected-frame-link:hover .selected-frame,
+      .selected-frame-link:focus-visible .selected-frame {
+        border-color: rgba(242, 238, 231, 0.2);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+      }
+      .selected-frame-link:focus-visible {
+        outline: 2px solid rgba(242, 238, 231, 0.58);
+        outline-offset: 5px;
+      }
+      .selected-frame img,
+      .selected-frame video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--selected-media-position, center center);
+        display: block;
+        transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1), transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .selected-frame img {
+        opacity: 1;
+        transform: scale(1.003);
+      }
+      .selected-frame video {
+        opacity: 0;
+        transform: scale(1.005);
+      }
+      .selected-frame.is-video-ready video {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .selected-frame.is-video-ready img {
+        opacity: 0;
+      }
+      .selected-frame.is-switching img,
+      .selected-frame.is-switching video {
+        opacity: 0;
+        transform: scale(1.006);
+      }
+      .selected-project-info {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: clamp(1.5rem, 3vw, 3.5rem);
+        align-items: end;
+        width: min(1120px, 80vw);
+        margin: 0 auto;
+        padding-top: clamp(1rem, 2vw, 1.6rem);
+      }
+      .selected-project-copy {
+        min-width: 0;
+      }
+      .selected-project-number {
+        margin: 0 0 0.52rem;
+        color: var(--selected-project-accent, var(--blue));
+        font: 700 0.72rem / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.18em;
+      }
+      .selected-project-copy h3 {
+        max-width: 40rem;
+        margin: 0;
+        color: rgba(242, 238, 231, 0.96);
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(1.65rem, 2.8vw, 3rem);
+        font-weight: 700;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+      }
+      .selected-project-meta,
+      .selected-project-role {
+        margin: 0.64rem 0 0;
+        color: rgba(242, 238, 231, 0.6);
+        font: 700 clamp(0.62rem, 0.78vw, 0.8rem) / 1.35 "JetBrains Mono", monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .selected-project-role {
+        color: rgba(242, 238, 231, 0.46);
+        letter-spacing: 0.1em;
+      }
+      .selected-case-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 1rem;
+        border: 1px solid rgba(242, 238, 231, 0.16);
+        border-radius: 2px;
+        background: rgba(3, 5, 10, 0.38);
+        color: rgba(242, 238, 231, 0.84);
+        font: 700 0.62rem / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transition: border-color 180ms ease, color 180ms ease, transform 180ms ease, background 180ms ease;
+      }
+      .selected-case-link span {
+        display: inline-block;
+        margin-left: 0.38rem;
+        transition: transform 180ms ease;
+      }
+      .selected-case-link:hover,
+      .selected-case-link:focus-visible {
+        border-color: rgba(242, 238, 231, 0.36);
+        background: rgba(8, 11, 18, 0.72);
+        color: var(--ink);
+        transform: translateY(-1px);
+      }
+      .selected-case-link:hover span,
+      .selected-case-link:focus-visible span {
+        transform: translate(3px, -2px);
+      }
+      .selected-case-link:focus-visible {
+        outline: 2px solid rgba(242, 238, 231, 0.58);
+        outline-offset: 4px;
+      }
+      .selected-selector {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: clamp(1rem, 2vw, 1.7rem);
+        width: min(1120px, 80vw);
+        margin: clamp(2.2rem, 4vw, 3.4rem) auto 0;
+        padding-top: 0;
+      }
+      .selected-selector::before {
+        content: none;
+      }
+      .selected-selector-item {
+        position: relative;
+        min-width: 0;
+        min-height: 44px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: rgba(242, 238, 231, 0.52);
+        cursor: pointer;
+        text-align: left;
+        opacity: 0.64;
+        transition: opacity 180ms ease;
+      }
+      .selected-selector-item::before {
+        content: none;
+      }
+      .selected-selector-item[aria-selected="true"]::before {
+        content: none;
+      }
+      .selected-selector-thumb {
+        position: relative;
+        display: block;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border: 1px solid rgba(242, 238, 231, 0.1);
+        border-radius: 1px;
+        background: #04060b;
+        opacity: 1;
+        transition: border-color 190ms ease, transform 190ms ease;
+      }
+      .selected-selector-thumb::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: var(--selected-project-accent, var(--blue));
+        opacity: 0;
+        transform: scaleX(0.34);
+        transform-origin: 0 50%;
+        transition: opacity 180ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .selected-selector-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--selector-thumb-position, center center);
+        display: block;
+        filter: saturate(0.88) brightness(0.84);
+        transition: filter 190ms ease, transform 190ms ease;
+      }
+      .selected-selector-number {
+        display: block;
+        margin: 0 0 0.42rem;
+        color: rgba(242, 238, 231, 0.42);
+        font: 700 0.62rem / 1 "JetBrains Mono", monospace;
+        letter-spacing: 0.16em;
+      }
+      .selected-selector-title {
+        display: block;
+        overflow: hidden;
+        color: rgba(242, 238, 231, 0.64);
+        font: 700 clamp(0.7rem, 0.86vw, 0.86rem) / 1.16 "Space Grotesk", Arial, sans-serif;
+        letter-spacing: 0.08em;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        white-space: nowrap;
+        margin-bottom: 0.72rem;
+      }
+      .selected-selector-item:hover .selected-selector-thumb,
+      .selected-selector-item:focus-visible .selected-selector-thumb,
+      .selected-selector-item[aria-selected="true"] .selected-selector-thumb {
+        border-color: rgba(242, 238, 231, 0.24);
+        transform: scale(1.012);
+      }
+      .selected-selector-item[aria-selected="true"] .selected-selector-thumb {
+        border-color: rgba(242, 238, 231, 0.32);
+      }
+      .selected-selector-item[aria-selected="true"] .selected-selector-thumb::after {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+      .selected-selector-item:hover img,
+      .selected-selector-item:focus-visible img,
+      .selected-selector-item[aria-selected="true"] img {
+        filter: saturate(0.98) brightness(1);
+      }
+      .selected-selector-item:hover,
+      .selected-selector-item:focus-visible,
+      .selected-selector-item[aria-selected="true"] {
+        opacity: 1;
+      }
+      .selected-selector-item[aria-selected="true"] .selected-selector-number,
+      .selected-selector-item[aria-selected="true"] .selected-selector-title {
+        color: rgba(242, 238, 231, 0.92);
+      }
+      .selected-selector-item[aria-selected="true"] .selected-selector-number {
+        color: var(--selected-project-accent, var(--blue));
+      }
+      .selected-selector-item:focus-visible {
+        outline: 2px solid rgba(242, 238, 231, 0.58);
+        outline-offset: 5px;
+      }
+      @media (max-height: 820px) and (min-width: 900px) {
+        .selected-screening {
+          padding-top: clamp(5.6rem, 9svh, 6.5rem);
+          padding-bottom: clamp(3rem, 5vw, 4.2rem);
+        }
+        .selected-screening-header {
+          margin-bottom: 1.25rem;
+        }
+        .selected-frame-link,
+        .selected-project-info,
+        .selected-selector {
+          width: min(980px, 76vw);
+        }
+        .selected-selector {
+          margin-top: 1.8rem;
+        }
+      }
+      @media (max-width: 1024px) {
+        .selected-frame-link,
+        .selected-project-info,
+        .selected-selector {
+          width: min(100%, 920px);
+        }
+        .selected-project-info {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+        .selected-case-link {
+          width: max-content;
+        }
+      }
+      @media (max-width: 720px) {
+        .selected-screening {
+          width: min(100% - 32px, 1400px);
+          min-height: auto;
+          padding-top: clamp(5.8rem, 11svh, 7rem);
+        }
+        .selected-screening-header {
+          display: grid;
+          gap: 1rem;
+        }
+        .selected-screening-header h2 {
+          font-size: clamp(2.8rem, 14vw, 4.6rem);
+        }
+        .selected-counter {
+          justify-self: start;
+        }
+        .selected-stage {
+          padding-top: 0.4rem;
+        }
+        .selected-project-copy h3 {
+          font-size: clamp(1.55rem, 8vw, 2.2rem);
+        }
+        .selected-project-meta,
+        .selected-project-role {
+          display: grid;
+          gap: 0.24rem;
+          font-size: 0.62rem;
+          line-height: 1.45;
+        }
+        .selected-selector {
+          display: flex;
+          gap: 0.82rem;
+          overflow-x: auto;
+          margin-top: 2.4rem;
+          padding: 1.05rem 0 0.6rem;
+          scroll-snap-type: x mandatory;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        .selected-selector::-webkit-scrollbar {
+          display: none;
+        }
+        .selected-selector::before {
+          left: 0.4rem;
+          right: 0.4rem;
+        }
+        .selected-selector-item {
+          flex: 0 0 min(13.5rem, 68vw);
+          scroll-snap-align: start;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .selected-atmosphere,
+        .selected-frame,
+        .selected-frame img,
+        .selected-frame video,
+        .selected-selector-thumb,
+        .selected-selector-thumb img,
+        .selected-case-link,
+        .selected-case-link span {
+          transition: none !important;
+        }
+      }
+      @media (max-width: 980px) {
+        .work-room .selected-wall {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+      }
+      @media (max-width: 620px) {
+        .work-room .work-archive-room {
+          width: min(100% - 32px, 1500px) !important;
+          padding-top: clamp(5.8rem, 11svh, 7rem) !important;
+        }
+        .work-room .selected-wall {
+          grid-template-columns: 1fr !important;
+        }
+      }
+      .about-welcome,
+      .contact-welcome {
+        width: min(980px, calc(100vw - 48px)) !important;
+        padding: clamp(6.2rem, 11svh, 8rem) 0 clamp(5rem, 8vw, 7rem) !important;
+      }
+      .about-welcome-hero,
+      .contact-welcome-hero {
+        max-width: 44rem !important;
+      }
+      .about-welcome-hero h2,
+      .contact-welcome-hero h2 {
+        font-size: clamp(1.8rem, 4.2vw, 3.25rem) !important;
+        line-height: 1.04 !important;
+        letter-spacing: 0.01em !important;
+        text-transform: none !important;
+      }
+      .about-welcome-hero p:not(.editorial-kicker),
+      .contact-welcome-hero p:not(.editorial-kicker) {
+        max-width: 34rem !important;
+        font-size: clamp(0.98rem, 1.12vw, 1.12rem) !important;
+        line-height: 1.6 !important;
+      }
+      .about-welcome-frame {
+        margin: clamp(2.4rem, 5vw, 4rem) 0 !important;
+      }
+      .about-welcome-frame div {
+        min-height: clamp(15rem, 34vw, 23rem) !important;
+        box-shadow: none !important;
+      }
+      .about-welcome-copy {
+        gap: clamp(1.5rem, 4vw, 3rem) !important;
+        padding: clamp(1.6rem, 4vw, 2.8rem) 0 !important;
+      }
+      .about-lede {
+        max-width: 31rem !important;
+        color: rgba(242, 238, 231, 0.9) !important;
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(1.02rem, 1.38vw, 1.34rem) !important;
+        font-weight: 600 !important;
+        line-height: 1.48 !important;
+        letter-spacing: -0.01em !important;
+      }
+      .about-welcome-copy p:not(.about-lede) {
+        color: rgba(242, 238, 231, 0.68) !important;
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(0.95rem, 0.98vw, 1.04rem) !important;
+        font-weight: 400 !important;
+        line-height: 1.78 !important;
+        letter-spacing: 0 !important;
+      }
+      .about-selected span,
+      .brand-partners-label {
+        color: rgba(242, 238, 231, 0.56) !important;
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif !important;
+        font-size: clamp(0.58rem, 0.68vw, 0.72rem) !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.18em !important;
+        text-transform: uppercase !important;
+      }
+      .brand-partners-label {
+        margin-bottom: 0.95rem !important;
+      }
+      .contact-welcome {
+        align-content: start !important;
+        gap: clamp(2rem, 4vw, 3rem) !important;
+      }
+      .contact-card {
+        max-width: 44rem !important;
+        gap: 1rem !important;
+      }
+      .contact-email-primary {
+        font-size: clamp(1.15rem, 2.6vw, 2rem) !important;
+        line-height: 1.15 !important;
+      }
+
+      .about-film-profile {
+        width: min(1400px, 90vw);
+        min-height: 100svh;
+        margin: 0 auto;
+        padding: clamp(6.4rem, 10svh, 8rem) 0 clamp(4.8rem, 8vw, 7rem);
+        position: relative;
+        isolation: isolate;
+      }
+      .about-film-profile::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 78% 16%, rgba(111, 140, 255, 0.11), transparent 34%),
+          radial-gradient(circle at 22% 52%, rgba(196, 46, 64, 0.06), transparent 30%),
+          linear-gradient(180deg, rgba(8, 11, 18, 0.2), rgba(4, 6, 10, 0.88) 62%, rgba(4, 5, 8, 0.96));
+        opacity: 0.9;
+      }
+      .about-film-profile img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .about-chapter {
+        margin: 0;
+        color: rgba(111, 140, 255, 0.82);
+        font: 800 clamp(0.7rem, 0.78vw, 0.84rem) / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .about-film-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+        gap: clamp(2rem, 5.2vw, 6rem);
+        align-items: end;
+        min-height: min(760px, calc(100svh - 8rem));
+        padding-bottom: clamp(4rem, 7vw, 7rem);
+        border-bottom: 1px solid rgba(242, 238, 231, 0.1);
+      }
+      .about-film-hero-copy {
+        display: grid;
+        gap: clamp(1.1rem, 2vw, 1.7rem);
+        max-width: 37rem;
+      }
+      .about-film-hero h2,
+      .about-philosophy-impact,
+      .about-philosophy-line,
+      .about-section-head h3,
+      .about-human-notes h3,
+      .about-next-note h3,
+      .about-film-cta h3 {
+        margin: 0;
+        color: rgba(248, 242, 233, 0.96);
+        text-wrap: balance;
+      }
+      .about-film-hero h2 {
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(3.4rem, 7vw, 7.2rem);
+        font-weight: 400;
+        line-height: 0.92;
+        letter-spacing: 0.055em;
+        text-transform: uppercase;
+      }
+      .about-film-intro {
+        max-width: 34rem;
+        margin: 0;
+        color: rgba(242, 238, 231, 0.72);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(1rem, 1.18vw, 1.16rem);
+        line-height: 1.68;
+      }
+      .about-identity-meta {
+        display: grid;
+        gap: 0.9rem;
+        margin: clamp(0.5rem, 1.2vw, 0.9rem) 0 0;
+        padding: 1.1rem 0 0;
+        border-top: 1px solid rgba(242, 238, 231, 0.11);
+      }
+      .about-identity-meta div {
+        display: grid;
+        grid-template-columns: minmax(6rem, 0.28fr) minmax(0, 0.72fr);
+        gap: 1rem;
+      }
+      .about-identity-meta dt {
+        color: rgba(242, 238, 231, 0.48);
+        font: 700 0.62rem / 1.35 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .about-identity-meta dd {
+        margin: 0;
+        color: rgba(242, 238, 231, 0.78);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: 0.92rem;
+        line-height: 1.45;
+      }
+      .about-film-image {
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        border: 1px solid rgba(242, 238, 231, 0.12);
+        background: rgba(3, 5, 10, 0.72);
+      }
+      .about-film-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(180deg, transparent 52%, rgba(2, 3, 6, 0.54));
+      }
+      .about-film-image img {
+        transform: scale(1.002);
+        transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+      }
+      .about-film-image:hover img {
+        transform: scale(1.018);
+      }
+      .about-film-image figcaption {
+        position: absolute;
+        left: clamp(0.8rem, 1.2vw, 1rem);
+        bottom: clamp(0.75rem, 1.1vw, 0.95rem);
+        z-index: 1;
+        max-width: calc(100% - 2rem);
+        color: rgba(248, 242, 233, 0.76);
+        font: 700 0.62rem / 1.35 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .about-film-image-hero {
+        aspect-ratio: 0.82;
+        max-height: min(760px, 72svh);
+        align-self: end;
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+      }
+      .about-film-image-hero img {
+        object-position: center 42%;
+      }
+      .about-film-philosophy {
+        display: grid;
+        grid-template-columns: minmax(10rem, 0.22fr) minmax(0, 0.78fr);
+        gap: clamp(2rem, 5vw, 5.5rem);
+        padding: clamp(4.2rem, 7vw, 6.4rem) 0;
+        border-bottom: 1px solid rgba(242, 238, 231, 0.1);
+      }
+      .about-film-philosophy blockquote {
+        margin: 0;
+        display: grid;
+        gap: clamp(0.9rem, 1.8vw, 1.35rem);
+      }
+      .about-philosophy-impact {
+        margin: 0;
+        max-width: 12ch;
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(3rem, 5.2vw, 5.2rem);
+        font-weight: 400;
+        line-height: 0.92;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .about-philosophy-line {
+        margin: 0;
+        max-width: 56ch;
+        color: rgba(248, 242, 233, 0.78);
+        font-family: "Space Grotesk", "Sora", Arial, sans-serif;
+        font-size: clamp(1.18rem, 1.45vw, 1.55rem);
+        font-weight: 600;
+        line-height: 1.45;
+        letter-spacing: -0.01em;
+      }
+      .about-philosophy-copy {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(1.4rem, 3.2vw, 3.4rem);
+        max-width: 54rem;
+        margin-top: clamp(2rem, 4.5vw, 4.2rem);
+      }
+      .about-philosophy-copy p,
+      .about-section-head-split > p,
+      .about-next-note p {
+        margin: 0;
+        color: rgba(242, 238, 231, 0.7);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(0.98rem, 1.08vw, 1.08rem);
+        line-height: 1.76;
+      }
+      .about-film-process,
+      .about-film-bts,
+      .about-film-human,
+      .about-film-cta {
+        padding: clamp(3.8rem, 6.8vw, 6.2rem) 0;
+        border-bottom: 1px solid rgba(242, 238, 231, 0.1);
+      }
+      .about-section-head {
+        display: grid;
+        gap: clamp(0.8rem, 1.4vw, 1.1rem);
+        max-width: 57rem;
+        margin-bottom: clamp(2rem, 4.5vw, 4rem);
+      }
+      .about-section-head h3,
+      .about-human-notes h3,
+      .about-next-note h3,
+      .about-film-cta h3 {
+        font-family: "Space Grotesk", "Sora", Arial, sans-serif;
+        font-size: clamp(1.85rem, 3.05vw, 3.35rem);
+        font-weight: 700;
+        line-height: 1.03;
+        letter-spacing: -0.02em;
+      }
+      .about-film-process .about-section-head h3 {
+        font-size: clamp(2.2rem, 3.2vw, 3.35rem);
+      }
+      .about-section-head-split {
+        grid-template-columns: minmax(0, 0.54fr) minmax(18rem, 0.46fr);
+        gap: clamp(2rem, 5vw, 5rem);
+        max-width: none;
+        align-items: end;
+      }
+      .about-process-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-top: 1px solid rgba(242, 238, 231, 0.13);
+        border-bottom: 0;
+        gap: clamp(1.4rem, 3vw, 3rem);
+        padding-top: clamp(1.5rem, 2.4vw, 2.2rem);
+      }
+      .about-process-column {
+        min-height: auto;
+        padding: 0 clamp(0.5rem, 1vw, 0.8rem) 0 0;
+        border-right: 0;
+      }
+      .about-process-column:last-child {
+        border-right: 0;
+      }
+      .about-process-column span {
+        display: block;
+        margin-bottom: clamp(1.1rem, 2vw, 1.6rem);
+        color: rgba(111, 140, 255, 0.82);
+        font: 700 0.78rem / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.12em;
+      }
+      .about-process-column h4 {
+        margin: 0 0 0.75rem;
+        color: rgba(248, 242, 233, 0.94);
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(1.75rem, 2.45vw, 2.25rem);
+        font-weight: 400;
+        line-height: 0.98;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .about-process-column p {
+        max-width: 16.5rem;
+        margin: 0;
+        color: rgba(242, 238, 231, 0.62);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(0.78rem, 0.92vw, 0.9rem);
+        line-height: 1.65;
+      }
+      .about-bts-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.72fr) minmax(0, 0.92fr);
+        grid-auto-rows: minmax(12rem, auto);
+        gap: clamp(0.9rem, 1.8vw, 1.5rem);
+        align-items: end;
+      }
+      .about-bts-wide {
+        grid-column: 1 / span 2;
+        aspect-ratio: 16 / 9;
+      }
+      .about-bts-wide img {
+        object-position: center 45%;
+      }
+      .about-bts-tall {
+        grid-column: 3;
+        grid-row: span 2;
+        aspect-ratio: 0.72;
+      }
+      .about-bts-tall img {
+        object-position: center 32%;
+      }
+      .about-bts-monitor {
+        aspect-ratio: 1.1;
+      }
+      .about-bts-post {
+        aspect-ratio: 0.78;
+      }
+      .about-bts-post img {
+        object-position: center 38%;
+      }
+      .about-bts-direction {
+        grid-column: 2 / span 2;
+        aspect-ratio: 16 / 8.5;
+      }
+      .about-bts-direction img {
+        object-position: center 44%;
+      }
+      .about-film-human {
+        display: grid;
+        grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
+        gap: clamp(2rem, 6vw, 7rem);
+        align-items: start;
+      }
+      .about-human-notes,
+      .about-next-note {
+        display: grid;
+        gap: clamp(1rem, 2vw, 1.5rem);
+      }
+      .about-next-note h3 {
+        max-width: 10ch;
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(3rem, 5vw, 5.6rem);
+        font-weight: 400;
+        line-height: 0.9;
+        letter-spacing: 0.055em;
+        text-transform: uppercase;
+      }
+      .about-human-notes ul {
+        display: grid;
+        gap: 0.72rem;
+        margin: clamp(0.4rem, 1vw, 0.8rem) 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .about-human-notes li {
+        padding-bottom: 0.72rem;
+        border-bottom: 1px solid rgba(242, 238, 231, 0.1);
+        color: rgba(242, 238, 231, 0.72);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(0.98rem, 1.08vw, 1.08rem);
+        line-height: 1.45;
+      }
+      .about-film-cta {
+        display: grid;
+        grid-template-columns: minmax(8rem, 0.18fr) minmax(0, 0.58fr) auto;
+        gap: clamp(1.5rem, 4vw, 4.2rem);
+        align-items: center;
+        border-bottom: 0;
+      }
+      .about-film-cta a {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0 1rem;
+        border: 1px solid rgba(242, 238, 231, 0.18);
+        color: rgba(248, 242, 233, 0.92);
+        font: 800 0.68rem / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.12em;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
+      }
+      .about-film-cta a:hover,
+      .about-film-cta a:focus-visible {
+        border-color: rgba(111, 140, 255, 0.7);
+        color: rgba(248, 242, 233, 1);
+        transform: translateY(-1px);
+      }
+      .about-film-cta a:focus-visible {
+        outline: 2px solid rgba(111, 140, 255, 0.74);
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 1180px) {
+        .about-film-profile {
+          width: min(1180px, calc(100vw - 56px));
+        }
+        .about-film-hero {
+          grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
+          gap: clamp(1.8rem, 4vw, 4rem);
+          min-height: auto;
+        }
+        .about-film-hero h2 {
+          font-size: clamp(3rem, 6.4vw, 5.6rem);
+        }
+        .about-film-image-hero {
+          max-height: 620px;
+        }
+        .about-philosophy-impact {
+          font-size: clamp(2.8rem, 5vw, 4.8rem);
+        }
+      }
+      @media (max-width: 900px) {
+        .about-film-profile {
+          width: min(calc(100vw - 40px), 48rem);
+          padding-top: calc(6.2rem + env(safe-area-inset-top, 0px));
+        }
+        .about-film-hero,
+        .about-film-philosophy,
+        .about-section-head-split,
+        .about-film-human,
+        .about-film-cta {
+          grid-template-columns: 1fr;
+        }
+        .about-film-hero {
+          align-items: start;
+          padding-bottom: clamp(3.5rem, 8vw, 5rem);
+        }
+        .about-film-image-hero {
+          aspect-ratio: 4 / 5;
+          max-height: none;
+        }
+        .about-film-philosophy,
+        .about-film-process,
+        .about-film-bts,
+        .about-film-human,
+        .about-film-cta {
+          padding: clamp(3.5rem, 9vw, 5.2rem) 0;
+        }
+        .about-philosophy-copy,
+        .about-process-grid {
+          grid-template-columns: 1fr;
+        }
+        .about-process-column {
+          min-height: auto;
+          border-right: 0;
+          border-bottom: 1px solid rgba(242, 238, 231, 0.1);
+          padding: 0 0 1.6rem;
+        }
+        .about-process-column:last-child {
+          border-bottom: 0;
+        }
+        .about-process-column span {
+          margin-bottom: 1rem;
+        }
+        .about-bts-layout {
+          grid-template-columns: 1fr;
+        }
+        .about-bts-wide,
+        .about-bts-tall,
+        .about-bts-monitor,
+        .about-bts-post,
+        .about-bts-direction {
+          grid-column: auto;
+          grid-row: auto;
+          aspect-ratio: 4 / 3;
+        }
+        .about-bts-tall,
+        .about-bts-post {
+          aspect-ratio: 4 / 5;
+        }
+        .about-film-cta {
+          justify-items: start;
+        }
+      }
+      @media (max-width: 640px) {
+        .about-film-profile {
+          width: min(calc(100vw - 32px), 34rem);
+          padding-bottom: calc(6.8rem + env(safe-area-inset-bottom, 0px));
+        }
+        .about-film-hero h2 {
+          font-size: clamp(2.6rem, 13.5vw, 4.1rem);
+          line-height: 0.94;
+        }
+        .about-film-intro,
+        .about-philosophy-copy p,
+        .about-section-head-split > p,
+        .about-next-note p,
+        .about-process-column p,
+        .about-human-notes li {
+          font-size: 0.98rem;
+          line-height: 1.62;
+        }
+        .about-philosophy-impact {
+          font-size: clamp(2.55rem, 11.5vw, 3.6rem);
+          max-width: 12ch;
+        }
+        .about-philosophy-line {
+          font-size: clamp(1.05rem, 5vw, 1.28rem);
+          line-height: 1.45;
+        }
+        .about-section-head h3,
+        .about-human-notes h3,
+        .about-film-cta h3 {
+          font-size: clamp(1.55rem, 8vw, 2.45rem);
+        }
+        .about-next-note h3 {
+          font-size: clamp(2.55rem, 12vw, 4rem);
+        }
+        .about-identity-meta div {
+          grid-template-columns: 1fr;
+          gap: 0.35rem;
+        }
+        .about-film-image figcaption {
+          font-size: 0.56rem;
+          letter-spacing: 0.1em;
+        }
+        .about-bts-wide,
+        .about-bts-monitor,
+        .about-bts-direction {
+          aspect-ratio: 1 / 1;
+        }
+        .about-film-cta a {
+          width: 100%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .about-film-image img,
+        .about-film-cta a {
+          transition: none !important;
+          transform: none !important;
+        }
+      }
+
+      .contact-open-channel {
+        width: min(1360px, 90vw);
+        min-height: 100svh;
+        margin: 0 auto;
+        padding: clamp(6.6rem, 11svh, 8.2rem) 0 clamp(4.6rem, 7vw, 6.4rem);
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 0.46fr) minmax(26rem, 0.46fr);
+        grid-template-areas:
+          "intro form"
+          "direct form";
+        gap: clamp(2.4rem, 5vw, 6rem);
+        align-content: center;
+        isolation: isolate;
+      }
+      .contact-open-channel::before,
+      .contact-open-channel::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .contact-open-channel::before {
+        background:
+          radial-gradient(circle at 58% 48%, rgba(111, 140, 255, 0.11), transparent 32%),
+          radial-gradient(circle at 50% 50%, rgba(242, 238, 231, 0.035), transparent 28%),
+          linear-gradient(180deg, rgba(3, 5, 10, 0.94), rgba(7, 10, 17, 0.98));
+      }
+      .contact-open-channel::after {
+        opacity: 0.26;
+        background-image:
+          linear-gradient(rgba(242, 238, 231, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(242, 238, 231, 0.08) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(circle at 56% 50%, black 0 20%, transparent 58%);
+        -webkit-mask-image: radial-gradient(circle at 56% 50%, black 0 20%, transparent 58%);
+      }
+      .contact-intro-panel {
+        grid-area: intro;
+        align-self: center;
+        display: grid;
+        gap: clamp(1.15rem, 2vw, 1.7rem);
+        max-width: 42rem;
+      }
+      .contact-chapter {
+        margin: 0;
+        color: rgba(111, 140, 255, 0.82);
+        font: 800 clamp(0.7rem, 0.78vw, 0.84rem) / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .contact-intro-panel h2 {
+        margin: 0;
+        max-width: 10.5ch;
+        color: rgba(248, 242, 233, 0.97);
+        font-family: Anton, Impact, sans-serif;
+        font-size: clamp(3.8rem, 6.2vw, 6rem);
+        font-weight: 400;
+        line-height: 0.92;
+        letter-spacing: 0.058em;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+      .contact-intro-panel > p {
+        max-width: 31rem;
+        margin: 0;
+        color: rgba(242, 238, 231, 0.72);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: clamp(1rem, 1.16vw, 1.16rem);
+        line-height: 1.68;
+      }
+      .contact-signal-meta {
+        display: grid;
+        gap: 0.82rem;
+        max-width: 33rem;
+        margin: clamp(0.8rem, 1.6vw, 1.2rem) 0 0;
+        padding-top: 1.05rem;
+        border-top: 1px solid rgba(242, 238, 231, 0.12);
+      }
+      .contact-signal-meta div {
+        display: grid;
+        grid-template-columns: minmax(5.8rem, 0.28fr) minmax(0, 0.72fr);
+        gap: 1rem;
+      }
+      .contact-signal-meta dt,
+      .contact-form-head h3,
+      .contact-field label,
+      .contact-project-type legend {
+        color: rgba(242, 238, 231, 0.5);
+        font: 800 0.66rem / 1.35 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+      .contact-signal-meta dd {
+        margin: 0;
+        color: rgba(242, 238, 231, 0.78);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: 0.92rem;
+        line-height: 1.42;
+      }
+      .contact-intake-panel {
+        grid-area: form;
+        align-self: center;
+        width: min(100%, 36rem);
+        justify-self: end;
+        padding-top: clamp(0.2rem, 0.8vw, 0.5rem);
+      }
+      .contact-form-head {
+        display: grid;
+        gap: 0.62rem;
+        margin-bottom: clamp(1.4rem, 3vw, 2.1rem);
+      }
+      .contact-form-head h3 {
+        margin: 0;
+        color: rgba(248, 242, 233, 0.88);
+        font-family: "Space Grotesk", "Sora", Arial, sans-serif;
+        font-size: clamp(1.28rem, 1.55vw, 1.6rem);
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1.35;
+        text-transform: none;
+      }
+      .contact-brief-form {
+        display: grid;
+        gap: clamp(1rem, 2vw, 1.35rem);
+      }
+      .contact-field {
+        display: grid;
+        gap: 0.46rem;
+      }
+      .contact-field input,
+      .contact-field textarea {
+        width: 100%;
+        min-height: 44px;
+        border: 0;
+        border-bottom: 1px solid rgba(242, 238, 231, 0.28);
+        border-radius: 0;
+        background: rgba(242, 238, 231, 0.02);
+        color: rgba(248, 242, 233, 0.94);
+        font-family: "Sora", "Space Grotesk", Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        padding: 0.64rem 0.15rem 0.72rem;
+        outline: none;
+        transition: border-color 180ms ease, background 180ms ease;
+      }
+      .contact-field textarea {
+        min-height: 9.2rem;
+        resize: vertical;
+      }
+      .contact-field input::placeholder,
+      .contact-field textarea::placeholder {
+        color: rgba(242, 238, 231, 0.34);
+      }
+      .contact-field input:focus,
+      .contact-field textarea:focus {
+        border-color: rgba(111, 140, 255, 0.82);
+        background: rgba(111, 140, 255, 0.035);
+      }
+      .contact-field input[aria-invalid="true"],
+      .contact-field textarea[aria-invalid="true"] {
+        border-color: rgba(214, 77, 77, 0.84);
+      }
+      .contact-project-type {
+        display: grid;
+        gap: 0.74rem;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+      .contact-type-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.62rem;
+      }
+      .contact-type-option {
+        position: relative;
+        min-height: 44px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(242, 238, 231, 0.22);
+        color: rgba(242, 238, 231, 0.72);
+        cursor: pointer;
+        transition: border-color 170ms ease, background 170ms ease, color 170ms ease;
+      }
+      .contact-type-option input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .contact-type-option span {
+        position: relative;
+        z-index: 1;
+        font: 800 0.66rem / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .contact-type-option:hover,
+      .contact-type-option:focus-within {
+        border-color: rgba(242, 238, 231, 0.34);
+        color: rgba(248, 242, 233, 0.94);
+      }
+      .contact-type-option:focus-within {
+        outline: 2px solid rgba(111, 140, 255, 0.74);
+        outline-offset: 3px;
+      }
+      .contact-type-option:has(input:checked) {
+        border-color: rgba(111, 140, 255, 0.72);
+        background: rgba(111, 140, 255, 0.08);
+        color: rgba(248, 242, 233, 0.98);
+      }
+      .contact-hint,
+      .contact-error,
+      .contact-form-status {
+        min-height: 1rem;
+        margin: 0;
+        font: 800 0.58rem / 1.4 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .contact-hint {
+        color: rgba(242, 238, 231, 0.38);
+      }
+      .contact-error {
+        color: rgba(255, 126, 126, 0.92);
+      }
+      .contact-form-status {
+        color: rgba(242, 238, 231, 0.58);
+      }
+      .contact-form-status.is-ok {
+        color: rgba(111, 140, 255, 0.88);
+      }
+      .contact-form-status.is-error {
+        color: rgba(255, 126, 126, 0.92);
+      }
+      .contact-submit {
+        justify-self: start;
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        gap: 0.58rem;
+        padding: 0 1.05rem;
+        border: 1px solid rgba(242, 238, 231, 0.28);
+        border-radius: 0;
+        background: rgba(242, 238, 231, 0.02);
+        color: rgba(248, 242, 233, 0.94);
+        font: 800 0.68rem / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      }
+      .contact-submit span:last-child {
+        transition: transform 180ms ease;
+      }
+      .contact-submit:hover,
+      .contact-submit:focus-visible {
+        border-color: rgba(111, 140, 255, 0.72);
+        background: rgba(111, 140, 255, 0.055);
+        transform: translateY(-1px);
+      }
+      .contact-submit:hover span:last-child,
+      .contact-submit:focus-visible span:last-child {
+        transform: translateX(3px);
+      }
+      .contact-submit:focus-visible,
+      .contact-direct-email:focus-visible,
+      .contact-direct-socials a:focus-visible {
+        outline: 2px solid rgba(111, 140, 255, 0.74);
+        outline-offset: 4px;
+      }
+      .contact-direct-panel {
+        grid-area: direct;
+        align-self: end;
+        display: grid;
+        gap: clamp(0.8rem, 1.6vw, 1.2rem);
+        max-width: 42rem;
+        padding-top: clamp(1.3rem, 2.6vw, 2rem);
+        border-top: 1px solid rgba(242, 238, 231, 0.12);
+      }
+      .contact-direct-email {
+        color: rgba(248, 242, 233, 0.95);
+        font-family: "Space Grotesk", "Sora", Arial, sans-serif;
+        font-size: clamp(1.1rem, 1.7vw, 1.85rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.018em;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow-wrap: normal;
+        word-break: normal;
+      }
+      .contact-direct-email:hover,
+      .contact-direct-email:focus-visible {
+        color: rgba(111, 140, 255, 0.96);
+      }
+      .contact-direct-socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.95rem 1.35rem;
+      }
+      .contact-direct-socials a {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        gap: 0.42rem;
+        color: rgba(242, 238, 231, 0.58);
+        font: 800 0.66rem / 1 "JetBrains Mono", ui-monospace, monospace;
+        letter-spacing: 0.13em;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color 170ms ease;
+      }
+      .contact-direct-socials span {
+        transition: transform 170ms ease;
+      }
+      .contact-direct-socials a:hover,
+      .contact-direct-socials a:focus-visible {
+        color: rgba(248, 242, 233, 0.92);
+      }
+      .contact-direct-socials a:hover span,
+      .contact-direct-socials a:focus-visible span {
+        transform: translate(2px, -1px);
+      }
+      @media (max-width: 1366px) and (max-height: 820px) {
+        .contact-open-channel {
+          padding-top: clamp(5.8rem, 10svh, 7rem);
+          padding-bottom: clamp(3.6rem, 6vw, 5rem);
+          gap: clamp(1.6rem, 3.8vw, 4.2rem);
+        }
+        .contact-intro-panel h2 {
+          font-size: clamp(3.2rem, 5.4vw, 4.8rem);
+          line-height: 0.92;
+        }
+        .contact-field textarea {
+          min-height: 7.6rem;
+        }
+        .contact-brief-form {
+          gap: 0.9rem;
+        }
+      }
+      @media (max-width: 1024px) {
+        .contact-open-channel {
+          width: min(calc(100vw - 48px), 58rem);
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "intro"
+            "form"
+            "direct";
+          align-content: start;
+          gap: clamp(2rem, 5vw, 3.8rem);
+        }
+        .contact-intake-panel {
+          width: 100%;
+          justify-self: stretch;
+        }
+        .contact-intro-panel h2 {
+          font-size: clamp(3.2rem, 9.8vw, 5.8rem);
+          max-width: 10.5ch;
+        }
+      }
+      @media (max-width: 640px) {
+        .contact-open-channel {
+          width: min(calc(100vw - 32px), 34rem);
+          padding-top: calc(6.1rem + env(safe-area-inset-top, 0px));
+          padding-bottom: calc(6.8rem + env(safe-area-inset-bottom, 0px));
+          gap: 2rem;
+        }
+        .contact-intro-panel h2 {
+          font-size: clamp(2.7rem, 13vw, 4.1rem);
+          line-height: 0.92;
+        }
+        .contact-signal-meta div {
+          grid-template-columns: 1fr;
+          gap: 0.32rem;
+        }
+        .contact-type-grid {
+          grid-template-columns: 1fr;
+        }
+        .contact-submit {
+          width: 100%;
+        }
+        .contact-direct-email {
+          font-size: clamp(1.08rem, 6vw, 1.62rem);
+          white-space: normal;
+          overflow-wrap: anywhere;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .contact-submit,
+        .contact-submit span,
+        .contact-direct-socials span,
+        .contact-type-option {
+          transition: none !important;
+          transform: none !important;
+        }
+      }
+      @media (max-width: 640px) {
+        .category-browser,
+        .about-welcome,
+        .contact-welcome {
+          width: min(calc(100vw - 32px), 34rem) !important;
+        }
+        .browse-room .ccard {
+          width: min(72vw, 18rem) !important;
+        }
+        .about-welcome-hero h2,
+        .contact-welcome-hero h2 {
+          font-size: clamp(1.72rem, 8vw, 2.5rem) !important;
+        }
+      }
+    </style>
   </main>
 
   <div class="rw-preview" id="rwPreview" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Selected record case study preview" tabindex="-1">
@@ -8688,7 +10811,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/cyberpunk-loop.mp4",
         code: "T1 / 01",
         title: "Cyberpunk 2077",
-        summary: "Campaign direction for the world of Cyberpunk — neon pressure, urban speed, and aggressive visual energy.",
+        summary: "Neon pressure, urban speed, and a city that watches back.",
         filters: ["Featured", "Gaming"],
         role: "Creative Direction",
         client: "CD Projekt Red",
@@ -8705,7 +10828,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/doom-loop.mp4",
         code: "T1 / 02",
         title: "DOOM",
-        summary: "Impact-forward editorial rhythm built around speed, weight, and release energy.",
+        summary: "Weight, pause, impact. Let the creature learn before it hits.",
         filters: ["Featured", "Gaming"],
         role: "Trailer Direction",
         client: "Bethesda",
@@ -8722,7 +10845,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/fallout-loop.mp4",
         code: "T1 / 03",
         title: "Fallout / Nuka-Cola",
-        summary: "Brand-world spot with playful apocalyptic texture and campaign utility.",
+        summary: "A straight-faced commercial from a world already doomed.",
         filters: ["Featured", "Commercial"],
         role: "Commercial Direction",
         client: "Bethesda",
@@ -8739,7 +10862,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/witcher-loop.mp4",
         code: "T1 / 04",
         title: "The Witcher",
-        summary: "Cinematic fantasy cut built around atmosphere, character, and scale.",
+        summary: "Wonder first. Product second. Let the world feel older than the frame.",
         filters: ["Featured", "Gaming", "Narrative"],
         role: "Cinematic Direction",
         client: "CD Projekt Red",
@@ -8756,7 +10879,7 @@ body.header-parallax-active .header-identity {
         code: "T2 / 05",
         title: "Corsair Product Experience",
         displayTitle: "Product Experience",
-        summary: "Product-forward commercial edit with tactile pacing and clean motion language.",
+        summary: "Tactile product pacing without the showroom gloss.",
         filters: ["Commercial"],
         role: "Brand Direction",
         client: "Corsair",
@@ -8773,7 +10896,7 @@ body.header-parallax-active .header-identity {
         code: "T2 / 06",
         title: "CORSAIR Invincible Novablade Pro",
         displayTitle: "Invincible Novablade Pro",
-        summary: "Product campaign edit built around performance texture, sharp rhythm, and launch-ready brand energy.",
+        summary: "Performance texture, sharp rhythm, and launch energy with teeth.",
         filters: ["Commercial", "Gaming"],
         role: "Campaign Direction",
         client: "CORSAIR",
@@ -8790,7 +10913,7 @@ body.header-parallax-active .header-identity {
         code: "T2 / 08",
         title: "CORSAIR Amazon Prime Gaming Week",
         displayTitle: "Prime Gaming Week",
-        summary: "Promotional campaign cut for a gaming-focused retail moment.",
+        summary: "Retail pressure cut for people who actually play.",
         filters: ["Commercial", "Gaming"],
         role: "Campaign Direction",
         client: "CORSAIR",
@@ -8822,7 +10945,7 @@ body.header-parallax-active .header-identity {
         code: "T2 / 11",
         title: "CORSAIR Experience Store",
         displayTitle: "Experience Store",
-        summary: "Retail experience film capturing the energy and craft of the CORSAIR flagship store.",
+        summary: "A flagship store pass with texture, pace, and hardware presence.",
         filters: ["Commercial"],
         role: "Commercial Direction",
         client: "CORSAIR",
@@ -8839,7 +10962,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/framecut-loop.mp4",
         code: "T3 / 11",
         title: "Frame Cut",
-        summary: "Music-led editorial exercise focused on rhythm, contrast, and visual release.",
+        summary: "A rhythm study: hold, cut, release.",
         filters: ["Experimental"],
         role: "Experimental Edit",
         client: "Archive",
@@ -8875,7 +10998,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/ironman-loop.mp4",
         code: "T3 / 13",
         title: "Iron Man — Edit",
-        summary: "Character-driven cut built around heroic momentum and cinematic impact.",
+        summary: "Hero momentum without dead air.",
         filters: ["Experimental"],
         role: "Experimental Edit",
         client: "Archive",
@@ -8893,7 +11016,7 @@ body.header-parallax-active .header-identity {
         loop: "videos/loops/luffy-loop.mp4",
         code: "T3 / 14",
         title: "Luffy — Edit",
-        summary: "Edit built around character energy, punchy rhythm, and visual momentum.",
+        summary: "Character energy, punchy rhythm, forward motion.",
         filters: ["Experimental"],
         role: "Experimental Edit",
         client: "Archive",
@@ -8960,7 +11083,7 @@ body.header-parallax-active .header-identity {
         slug: "silent-collapse",
         code: "T4 / 18",
         title: "Silent Collapse",
-        summary: "Mood-forward short edit with minimal structure and escalating visual tension.",
+        summary: "Minimal structure, rising tension, no wasted frames.",
         filters: ["Experimental"],
         role: "Experimental Direction",
         client: "Independent",
@@ -9010,12 +11133,12 @@ body.header-parallax-active .header-identity {
     }
 
     function projectStatusLabel(project) {
-      if (project.isReel) return project.statusLabel || "FASTEST OVERVIEW \u2192";
-      return projectHasDossier(project) ? "CASE STUDY AVAILABLE \u2192" : "";
+      if (project.isReel) return project.statusLabel || "PLAY REEL \u2192";
+      return projectHasDossier(project) ? "OPEN CASE STUDY \u2192" : "";
     }
 
     function projectActionLabel(project) {
-      if (project.isReel) return "FASTEST OVERVIEW \u2192";
+      if (project.isReel) return "PLAY REEL \u2192";
       return projectHasDossier(project) ? "VIEW CASE STUDY \u2192" : "";
     }
 
@@ -9196,7 +11319,7 @@ body.header-parallax-active .header-identity {
       client: "Jared McDaniel",
       type: "Overview Reel",
       owned: ["Direction", "Editing", "Campaign Rhythm"],
-      statusLabel: "FASTEST OVERVIEW \u2192",
+      statusLabel: "PLAY REEL \u2192",
       year: "2026",
       yt: REEL_ID,
       loop: "videos/loops/reel-loop.mp4",
@@ -9225,8 +11348,56 @@ body.header-parallax-active .header-identity {
     const workFilters = document.querySelector("#workFilters");
     const archiveWall = document.querySelector("#archiveWall");
     const exploreArchiveButton = document.querySelector("#exploreArchive");
+    const selectedScreening = document.querySelector("#selectedScreening");
+    const selectedCounterCurrent = document.querySelector("#selectedCounterCurrent");
+    const selectedFrameLink = document.querySelector("#selectedFrameLink");
+    const selectedFrame = document.querySelector("#selectedFrame");
+    const selectedPoster = document.querySelector("#selectedPoster");
+    const selectedVideo = document.querySelector("#selectedVideo");
+    const selectedAtmosphere = document.querySelector("#selectedAtmosphere");
+    const selectedProjectNumber = document.querySelector("#selectedProjectNumber");
+    const selectedProjectTitle = document.querySelector("#selectedProjectTitle");
+    const selectedProjectMeta = document.querySelector("#selectedProjectMeta");
+    const selectedProjectRole = document.querySelector("#selectedProjectRole");
+    const selectedCaseLink = document.querySelector("#selectedCaseLink");
+    const selectedSelector = document.querySelector("#selectedSelector");
     const finePointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
     const filterCategories = ["All", "Featured", "Gaming", "Commercial", "Narrative", "Experimental"];
+    const selectedWorkSlugs = new Set(["cyberpunk-2077", "doom", "fallout-nuka-cola", "witcher"]);
+    const selectedScreeningSpecs = [
+      {
+        slug: "cyberpunk-2077",
+        number: "01",
+        selectorTitle: "Cyberpunk 2077",
+        roleLine: "Creative Direction / Direction / Editing",
+        accent: "rgba(188, 78, 118, 0.9)",
+        atmosphere: "rgba(188, 78, 118, 0.1)"
+      },
+      {
+        slug: "doom",
+        number: "02",
+        selectorTitle: "DOOM: The Dark Ages",
+        roleLine: "Trailer Direction / Editing / Pacing",
+        accent: "rgba(205, 79, 43, 0.9)",
+        atmosphere: "rgba(205, 79, 43, 0.1)"
+      },
+      {
+        slug: "fallout-nuka-cola",
+        number: "03",
+        selectorTitle: "Fallout / Nuka-Cola",
+        roleLine: "Commercial Direction / Brand Story / Editing",
+        accent: "rgba(196, 50, 50, 0.9)",
+        atmosphere: "rgba(196, 50, 50, 0.09)"
+      },
+      {
+        slug: "witcher",
+        number: "04",
+        selectorTitle: "The Witcher",
+        roleLine: "Cinematic Direction / Story / Editing",
+        accent: "rgba(182, 139, 78, 0.9)",
+        atmosphere: "rgba(92, 124, 75, 0.1)"
+      }
+    ];
     const layoutBySlug = {
       "cyberpunk-2077": "flagship featured-project",
       "doom": "tall featured-project",
@@ -9260,24 +11431,26 @@ body.header-parallax-active .header-identity {
       }));
     }
 
-    filterCategories.forEach((category) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `filter-pill ${category === activeFilter ? "active" : ""}`;
-      button.textContent = category;
-      button.setAttribute("aria-pressed", category === activeFilter ? "true" : "false");
-      button.addEventListener("click", () => {
-        if (activeFilter === category) return;
-        activeFilter = category;
-        document.querySelectorAll(".filter-pill").forEach((pill) => {
-          const selected = pill.textContent === activeFilter;
-          pill.classList.toggle("active", selected);
-          pill.setAttribute("aria-pressed", selected ? "true" : "false");
+    if (workFilters) {
+      filterCategories.forEach((category) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `filter-pill ${category === activeFilter ? "active" : ""}`;
+        button.textContent = category;
+        button.setAttribute("aria-pressed", category === activeFilter ? "true" : "false");
+        button.addEventListener("click", () => {
+          if (activeFilter === category) return;
+          activeFilter = category;
+          document.querySelectorAll(".filter-pill").forEach((pill) => {
+            const selected = pill.textContent === activeFilter;
+            pill.classList.toggle("active", selected);
+            pill.setAttribute("aria-pressed", selected ? "true" : "false");
+          });
+          reconfigureArchiveWall();
         });
-        reconfigureArchiveWall();
+        workFilters.appendChild(button);
       });
-      workFilters.appendChild(button);
-    });
+    }
 
     function canRunWorkLoopPreview() {
       return workLoopPointerQuery.matches &&
@@ -9379,6 +11552,7 @@ body.header-parallax-active .header-identity {
     }
 
     function stopAllWorkLoopPreviews() {
+      if (!archiveWall) return;
       archiveWall.querySelectorAll(".archive-piece.has-work-loop, .archive-piece.is-video-previewing").forEach((piece) => {
         stopWorkLoopPreview(piece, true);
       });
@@ -9450,9 +11624,8 @@ body.header-parallax-active .header-identity {
     }
 
     function renderArchiveWall() {
-      const filtered = activeFilter === "All"
-        ? projects
-        : projects.filter((project) => project.filters.includes(activeFilter));
+      if (!archiveWall) return;
+      const filtered = projects.filter((project) => selectedWorkSlugs.has(project.slug));
 
       stopAllWorkLoopPreviews();
       archiveWall.replaceChildren(...filtered.map(createArchivePiece));
@@ -9463,6 +11636,7 @@ body.header-parallax-active .header-identity {
     }
 
     function reconfigureArchiveWall() {
+      if (!archiveWall) return;
       stopAllWorkLoopPreviews();
       archiveWall.querySelectorAll(".archive-piece").forEach((piece, index) => {
         piece.classList.add("is-exiting");
@@ -9479,8 +11653,8 @@ body.header-parallax-active .header-identity {
 
     function openFeaturedProject(project, node) {
       rememberArchivePosition("work");
-      node.classList.add("is-discovered");
-      archiveWall.classList.add("is-reconfiguring");
+      node?.classList?.add("is-discovered");
+      archiveWall?.classList?.add("is-reconfiguring");
 
       window.setTimeout(() => {
         window.location.href = project.page;
@@ -9488,6 +11662,7 @@ body.header-parallax-active .header-identity {
     }
 
     function discoverArchiveProject() {
+      if (!archiveWall) return;
       const visiblePieces = [...archiveWall.querySelectorAll(".archive-piece")];
       if (!visiblePieces.length) return;
 
@@ -9506,19 +11681,226 @@ body.header-parallax-active .header-identity {
     }
 
     exploreArchiveButton?.addEventListener("click", discoverArchiveProject);
+
+    const selectedProjects = selectedScreeningSpecs
+      .map((spec) => {
+        const project = projects.find((item) => item.slug === spec.slug);
+        return project ? { ...project, ...spec } : null;
+      })
+      .filter(Boolean);
+    let activeSelectedIndex = 0;
+    let selectedHoverTimer = null;
+    let selectedTiltRaf = 0;
+
+    function selectedPosterSrc(project, highRes = true) {
+      if (!project?.yt) return "";
+      return highRes
+        ? `https://img.youtube.com/vi/${project.yt}/maxresdefault.jpg`
+        : thumbSrc(project.yt);
+    }
+
+    function selectedProjectMetaLine(project) {
+      return [projectTypeLine(project), projectClient(project)].filter(Boolean).join(" \u00b7 ");
+    }
+
+    function pauseSelectedVideo(unload = false) {
+      if (!selectedVideo) return;
+      selectedVideo.pause();
+      selectedVideo.classList.remove("on");
+      selectedFrame?.classList.remove("is-video-ready");
+      if (unload) {
+        selectedVideo.removeAttribute("src");
+        selectedVideo.load();
+      }
+    }
+
+    function playSelectedVideo() {
+      if (!selectedVideo || !selectedVideo.src || document.hidden || !body.classList.contains("work-room-active")) return;
+      const playPromise = selectedVideo.play();
+      if (playPromise?.catch) {
+        playPromise.catch(() => {
+          selectedFrame?.classList.remove("is-video-ready");
+        });
+      }
+    }
+
+    function setSelectedProject(index, options = {}) {
+      if (!selectedProjects.length || !selectedScreening) return;
+      const nextIndex = Math.max(0, Math.min(selectedProjects.length - 1, index));
+      const project = selectedProjects[nextIndex];
+      const previousIndex = activeSelectedIndex;
+      activeSelectedIndex = nextIndex;
+
+      selectedScreening.dataset.activeSlug = project.slug;
+      selectedScreening.style.setProperty("--selected-project-accent", project.accent);
+      selectedScreening.style.setProperty("--selected-atmosphere-color", project.atmosphere);
+      selectedScreening.style.setProperty("--selected-media-position", project.thumbPosition || "center center");
+      if (selectedCounterCurrent) selectedCounterCurrent.textContent = project.number;
+      if (selectedProjectNumber) selectedProjectNumber.textContent = project.number;
+      if (selectedProjectTitle) selectedProjectTitle.textContent = projectTitle(project);
+      if (selectedProjectMeta) selectedProjectMeta.textContent = selectedProjectMetaLine(project);
+      if (selectedProjectRole) selectedProjectRole.textContent = project.roleLine || projectRole(project);
+
+      if (selectedFrameLink) {
+        selectedFrameLink.href = project.page || `https://youtu.be/${project.yt}`;
+        selectedFrameLink.setAttribute("aria-label", project.page ? `View ${projectTitle(project)} case study` : `Watch ${projectTitle(project)}`);
+      }
+      if (selectedCaseLink) {
+        selectedCaseLink.href = project.page || `https://youtu.be/${project.yt}`;
+        selectedCaseLink.textContent = "";
+        selectedCaseLink.append("View Case Study ");
+        const arrow = document.createElement("span");
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.textContent = "\u2197";
+        selectedCaseLink.appendChild(arrow);
+      }
+
+      selectedSelector?.querySelectorAll(".selected-selector-item").forEach((button, buttonIndex) => {
+        const isSelected = buttonIndex === nextIndex;
+        button.setAttribute("aria-selected", isSelected ? "true" : "false");
+        if (isSelected) button.setAttribute("aria-current", "true");
+        else button.removeAttribute("aria-current");
+        button.tabIndex = isSelected ? 0 : -1;
+      });
+
+      selectedFrame?.classList.add("is-switching");
+      pauseSelectedVideo(true);
+
+      const highPoster = selectedPosterSrc(project, true);
+      const fallbackPoster = selectedPosterSrc(project, false);
+      if (selectedPoster) {
+        selectedPoster.alt = `${projectTitle(project)} preview still`;
+        selectedPoster.onerror = () => {
+          selectedPoster.onerror = null;
+          selectedPoster.src = fallbackPoster;
+        };
+        selectedPoster.src = highPoster;
+      }
+      if (selectedVideo && project.loop) {
+        selectedVideo.poster = fallbackPoster;
+        selectedVideo.src = project.loop;
+        selectedVideo.load();
+        selectedVideo.oncanplay = () => {
+          selectedFrame?.classList.add("is-video-ready");
+          playSelectedVideo();
+        };
+      }
+
+      window.setTimeout(() => {
+        selectedFrame?.classList.remove("is-switching");
+        if (options.focusSelector) {
+          selectedSelector?.querySelector(`[data-selected-index="${nextIndex}"]`)?.focus();
+        }
+      }, previousIndex === nextIndex ? 80 : 260);
+    }
+
+    function buildSelectedSelector() {
+      if (!selectedSelector || !selectedProjects.length) return;
+      const nodes = selectedProjects.map((project, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "selected-selector-item";
+        button.dataset.selectedIndex = String(index);
+        button.setAttribute("role", "option");
+        button.setAttribute("aria-selected", index === activeSelectedIndex ? "true" : "false");
+        if (index === activeSelectedIndex) button.setAttribute("aria-current", "true");
+        button.tabIndex = index === activeSelectedIndex ? 0 : -1;
+        button.style.setProperty("--selector-thumb-position", project.thumbPosition || "center center");
+        button.innerHTML = `
+          <span class="selected-selector-number">${project.number}</span>
+          <span class="selected-selector-title">${project.selectorTitle}</span>
+          <span class="selected-selector-thumb">
+            <img src="${thumbSrc(project.yt)}" alt="" loading="lazy" decoding="async">
+          </span>
+        `;
+        button.addEventListener("pointerenter", () => {
+          if (!finePointerQuery.matches) return;
+          window.clearTimeout(selectedHoverTimer);
+          selectedHoverTimer = window.setTimeout(() => setSelectedProject(index), 130);
+        });
+        button.addEventListener("pointerleave", () => {
+          window.clearTimeout(selectedHoverTimer);
+        });
+        button.addEventListener("click", () => setSelectedProject(index, { focusSelector: true }));
+        button.addEventListener("keydown", (event) => {
+          if (event.key !== "ArrowRight" && event.key !== "ArrowLeft" && event.key !== "Home" && event.key !== "End") return;
+          event.preventDefault();
+          const last = selectedProjects.length - 1;
+          const target = event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? last
+              : event.key === "ArrowRight"
+                ? Math.min(last, activeSelectedIndex + 1)
+                : Math.max(0, activeSelectedIndex - 1);
+          setSelectedProject(target, { focusSelector: true });
+        });
+        return button;
+      });
+      selectedSelector.replaceChildren(...nodes);
+    }
+
+    function initSelectedScreeningRoom() {
+      if (!selectedScreening || !selectedProjects.length) return;
+      buildSelectedSelector();
+      setSelectedProject(0);
+
+      selectedVideo?.addEventListener("playing", () => {
+        selectedFrame?.classList.add("is-video-ready");
+      });
+      selectedVideo?.addEventListener("error", () => {
+        selectedFrame?.classList.remove("is-video-ready");
+      });
+
+      if (selectedFrameLink && finePointerQuery.matches && !introReducedMotionQuery.matches) {
+        selectedFrameLink.addEventListener("pointermove", (event) => {
+          if (selectedTiltRaf) return;
+          selectedTiltRaf = requestAnimationFrame(() => {
+            selectedTiltRaf = 0;
+            const rect = selectedFrameLink.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width) - 0.5;
+            const y = ((event.clientY - rect.top) / rect.height) - 0.5;
+            selectedFrame?.style.setProperty("--selected-tilt-x", `${(x * 2).toFixed(2)}px`);
+            selectedFrame?.style.setProperty("--selected-tilt-y", `${(y * 1.5).toFixed(2)}px`);
+          });
+        });
+        selectedFrameLink.addEventListener("pointerleave", () => {
+          selectedFrame?.style.setProperty("--selected-tilt-x", "0px");
+          selectedFrame?.style.setProperty("--selected-tilt-y", "0px");
+        });
+      }
+    }
+
+    initSelectedScreeningRoom();
+
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) stopAllWorkLoopPreviews();
+      if (document.hidden) pauseSelectedVideo();
+      else playSelectedVideo();
     });
 
     const rooms = [...document.querySelectorAll("[data-room]")];
 
     function showRoom(roomName) {
       const target = roomName || "archive";
+      const previousRoom = body.dataset.activeRoom || "";
+      const shouldResetScroll = previousRoom !== target || target === "archive";
+      const heroReel = document.getElementById("heroReel");
       rooms.forEach((room) => room.classList.toggle("active", room.dataset.room === target));
+      heroReel?.classList.toggle("is-archived-away", target !== "archive");
+      heroReel?.setAttribute("aria-hidden", target === "archive" ? "false" : "true");
       body.classList.toggle("archive-room-active", target === "archive");
       body.classList.toggle("work-room-active", target === "work");
+      body.classList.toggle("browse-room-active", target === "browse");
+      if (shouldResetScroll) {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+      body.dataset.activeRoom = target;
       if (target !== "work") {
         stopAllWorkLoopPreviews();
+        pauseSelectedVideo();
+      } else {
+        playSelectedVideo();
       }
       if (target !== "archive") {
         settleIntro(true);
@@ -9529,7 +11911,7 @@ body.header-parallax-active .header-identity {
     let activeRoomTransition = null;
     function syncRoute() {
       const route = window.location.hash.replace("#", "") || "archive";
-      const nextRoom = ["archive", "work", "about", "contact"].includes(route) ? route : "archive";
+      const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
       if (!document.startViewTransition || activeRoomTransition) {
         showRoom(nextRoom);
         return;
@@ -9550,6 +11932,15 @@ body.header-parallax-active .header-identity {
 
     window.addEventListener("hashchange", syncRoute);
     syncRoute();
+    const archiveHomeLinks = document.querySelectorAll('[href="#archive"]');
+    archiveHomeLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if ((window.location.hash || "#archive") === "#archive") {
+          event.preventDefault();
+          showRoom("archive");
+        }
+      });
+    });
 
     const modal = document.querySelector("#videoModal");
     const frame = document.querySelector("#videoFrame");
@@ -9877,7 +12268,7 @@ body.header-parallax-active .header-identity {
       return [...head, ...rest];
     })();
     const RECORD_BRIEFS = {
-      "director-reel": "The archive reel is the live screening room: a fast pass through the worlds, trailers, campaigns, and edits on file.",
+      "director-reel": "Fast pass through the worlds, cuts, campaigns, and weird little signals on file.",
       "cyberpunk-2077": "The brief said 'show the city.' The city is not the subject. The loneliness is. Night City had to feel like a character who never blinks.",
       "doom": "DOOM does not build tension. It applies pressure. Every cut lands with weight, heat, and release energy.",
       "witcher": "The Continent is old, and the camera should feel it. Atmosphere, character, and scale move in the same rhythm.",
@@ -9885,7 +12276,7 @@ body.header-parallax-active .header-identity {
       "kairi-animation-storyboard": "A Black Friday / Cyber Monday campaign treated as a character origin: Kairi and Pixel built as a reusable CORSAIR story engine."
     };
     function recordBrief(rec) {
-      return RECORD_BRIEFS[rec.slug] || rec.summary || "Selected record from the director's archive.";
+      return RECORD_BRIEFS[rec.slug] || rec.summary || "Pulled from the director's archive.";
     }
     function recordTitle(rec) {
       return projectTitle(rec);
@@ -9912,7 +12303,7 @@ body.header-parallax-active .header-identity {
       brief: document.getElementById("rwPreviewBrief"),
       open: document.getElementById("rwPreviewOpen")
     };
-    const IDLE_LINE = "Director's archive — open";
+    const IDLE_LINE = "Director's archive — live";
 
     /* ---------------- card builders ---------------- */
     function wallCard(rec) {
@@ -10401,6 +12792,39 @@ body.header-parallax-active .header-identity {
       }
     }
 
+    function resetRecordWallView() {
+      cancelPick();
+      dragging = false;
+      vel = 0;
+      dragDist = 0;
+      wallX = 0;
+      wallXT = 0;
+      pitch = 0;
+      pitchT = 0;
+      pointerX = 0;
+      pointerY = 0;
+      pointerXT = 0;
+      pointerYT = 0;
+      idleBlend = 0;
+      lastInput = performance.now();
+      stageEl.classList.remove("dragging");
+      setFocus(null);
+      if (!wallBuilt) return;
+      measure();
+      setStyleIfChanged(
+        worldEl,
+        "transform",
+        "translate3d(0px, 0px, 0) rotateX(0.000deg) rotateY(0.000deg) rotateZ(0.000deg)"
+      );
+      setStyleIfChanged(wallEl, "transform", `translate3d(${(-wallW / 2).toFixed(2)}px, ${(-wallH / 2).toFixed(2)}px, 0)`);
+      cols.forEach((col) => {
+        if (col.dataset.frozen === "1") return;
+        setStyleIfChanged(col, "transform", "rotateX(0.000deg) rotateY(0.000deg) translateZ(0.00px) scale(1.0000)");
+        setStyleIfChanged(col, "opacity", "1.000");
+        setStyleIfChanged(col, "filter", "");
+      });
+    }
+
     /* ---------------- interactions ---------------- */
     function bind() {
       stageEl.addEventListener("pointerdown", (e) => {
@@ -10563,7 +12987,7 @@ body.header-parallax-active .header-identity {
       }
       previewSource?.classList.add("rw-pulling");
 
-      preview.kicker.textContent = `Selected record` + (mood ? ` / ${mood.line}` : "");
+      preview.kicker.textContent = `Pulled record` + (mood ? ` / ${mood.line}` : "");
       preview.status.textContent = projectStatusLabel(rec) || projectActionLabel(rec) || "Selected";
       preview.role.textContent = projectRole(rec) || "-";
       preview.client.textContent = projectClient(rec) || "Archive";
@@ -10706,7 +13130,7 @@ body.header-parallax-active .header-identity {
       head.className = "rw-mobile-head";
       head.innerHTML = `
         <div class="rw-mobile-kicker">Director's archive / ${RECORDS.length} records</div>
-        <p class="rw-mobile-statement">A touch-first archive index. Flagship case studies first. Filters refine the archive.</p>
+        <p class="rw-mobile-statement">Flagships first. Everything else stays in reach.</p>
         <div class="rw-mobile-console" aria-label="Archive status">
           <span><b>Chapter</b><span id="rwMobileChapter">Flagships</span></span>
           <span><b>Records</b><span>${visibleCount} visible</span></span>
@@ -10795,8 +13219,11 @@ body.header-parallax-active .header-identity {
       }
       startFrameLoop();
     });
-    window.addEventListener("jm:roomchange", () => {
+    window.addEventListener("jm:roomchange", (event) => {
       stopFrameLoop();
+      if (event.detail?.room === "archive") {
+        resetRecordWallView();
+      }
       startFrameLoop();
     });
   })();
@@ -11095,14 +13522,14 @@ body.header-parallax-active .header-identity {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const maxres = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
     const hq = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-    const REEL_LEDE = "The archive reel is the live screening room: a fast pass through the worlds, trailers, campaigns, and edits on file.";
+    const REEL_LEDE = "Fast pass through the worlds, cuts, campaigns, and weird little signals on file.";
 
     /* RECORDS/recordBrief live behind a scope boundary elsewhere in the file —
        build directly from projects/reelArchiveItem, which are global. */
     const FEATURED = [reelArchiveItem, ...projects.filter((p) => p.filters && p.filters.includes("Featured"))];
     if (!FEATURED.length) return;
 
-    const ROTATE_MS = 9000, TRANSITION_MS = 1600;
+    const ROTATE_MS = 9000, TRANSITION_MS = 520;
     const slides = [slideA, slideB];
     const dotsEl = document.getElementById("heroDots");
     const kickerEl = document.getElementById("heroKicker");
@@ -11160,7 +13587,7 @@ body.header-parallax-active .header-identity {
       }));
       kickerEl.textContent = rec.isReel ? (rec.startLabel || "Start here") : "Featured";
       titleEl.textContent = rec.title;
-      subEl.textContent = rec.summary || (rec.isReel ? REEL_LEDE : "Selected record from the director's archive.");
+      subEl.textContent = rec.summary || (rec.isReel ? REEL_LEDE : "Pulled from the director's archive.");
       if (dotsEl) [...dotsEl.children].forEach((d, n) => d.classList.toggle("on", n === i));
       if (infoBtn) infoBtn.onclick = () => openProject(rec);
     }
@@ -11233,10 +13660,8 @@ body.header-parallax-active .header-identity {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-    const ambientOff = reduced || window.matchMedia("(max-width: 768px)").matches;
     const maxres = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
     const hq = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-    const MARQUEE_SPEED = 22;
 
     const has = (p, tag) => p.filters && p.filters.includes(tag);
     const GROUPS = [
@@ -11244,24 +13669,6 @@ body.header-parallax-active .header-identity {
       { label: "Commercial & brand", items: projects.filter((p) => has(p, "Commercial")) },
       { label: "Narrative & experimental", items: projects.filter((p) => has(p, "Narrative") || has(p, "Experimental")) }
     ].filter((g) => g.items.length);
-
-    function isFrozen() {
-      return document.body.classList.contains("rw-preview-open") ||
-        document.getElementById("videoModal")?.classList.contains("active");
-    }
-
-    let isScrolling = false, scrollIdleTimer = null;
-    const rootEl = document.documentElement;
-    window.addEventListener("scroll", () => {
-      isScrolling = true;
-      rootEl.classList.add("is-scrolling");
-      clearTimeout(scrollIdleTimer);
-      scrollIdleTimer = setTimeout(() => {
-        isScrolling = false;
-        rootEl.classList.remove("is-scrolling");
-        kickMarquee();
-      }, 160);
-    }, { passive: true });
 
     let activePreview = null;
     function startPreview(card, rec) {
@@ -11292,7 +13699,7 @@ body.header-parallax-active .header-identity {
       img.onerror = () => { img.onerror = null; img.src = hq(rec.yt); };
       card.appendChild(img);
       card.insertAdjacentHTML("beforeend",
-        `<div class="ccap"><div class="cc-code">${rec.code || ""}</div>` +
+        `<div class="ccap">` +
         `<div class="cc-title">${rec.displayTitle || rec.title}</div>` +
         `<div class="cc-meta">${rec.client || ""} · ${rec.type || ""}</div></div>`);
       card.addEventListener("click", () => openProject(rec));
@@ -11304,15 +13711,28 @@ body.header-parallax-active .header-identity {
       return card;
     }
 
-    const marqueeRows = [];
-    let marqueeRAF = null, marqueeLast = null;
+    rowsEl.innerHTML = `
+      <div class="category-browser-shell">
+        <div class="category-panels"></div>
+      </div>`;
+
+    const panelsEl = rowsEl.querySelector(".category-panels");
 
     GROUPS.forEach((g, rowIndex) => {
-      const sec = document.createElement("div"); sec.className = "carousel-row";
-      sec.innerHTML = `<h2>${g.label} <span class="ccount">${g.items.length} titles</span></h2>`;
-      const wrap = document.createElement("div"); wrap.className = "ctrackwrap";
-      const track = document.createElement("div"); track.className = "ctrack";
-      const reel = document.createElement("div"); reel.className = "creel";
+      const sec = document.createElement("section");
+      sec.className = "category-panel browse-shelf";
+      sec.setAttribute("aria-label", g.label);
+
+      const row = document.createElement("div");
+      row.className = "carousel-row crevealed";
+      row.setAttribute("aria-label", g.label);
+      row.innerHTML = `<h2>${g.label} <span class="ccount">${g.items.length} titles</span></h2>`;
+      const wrap = document.createElement("div");
+      wrap.className = "ctrackwrap";
+      const track = document.createElement("div");
+      track.className = "ctrack";
+      const reel = document.createElement("div");
+      reel.className = "creel";
 
       const n = g.items.length, center = (n - 1) / 2;
       g.items.forEach((rec, i) => {
@@ -11320,69 +13740,140 @@ body.header-parallax-active .header-identity {
         card.classList.add("creveal");
         const rx = Math.max(-130, Math.min(130, Math.round((center - i) * 22)));
         card.style.setProperty("--crx", rx + "px");
-        card.style.transitionDelay = Math.min(Math.abs(i - center) * 45, 380) + "ms";
+        card.style.transitionDelay = Math.min(Math.abs(i - center) * 45, 260) + "ms";
         reel.appendChild(card);
       });
       track.appendChild(reel);
 
-      const prev = document.createElement("button"); prev.className = "cnav cprev"; prev.setAttribute("aria-label", "Scroll left"); prev.innerHTML = "<span>&#10094;</span>";
-      const next = document.createElement("button"); next.className = "cnav cnext"; next.setAttribute("aria-label", "Scroll right"); next.innerHTML = "<span>&#10095;</span>";
-      wrap.appendChild(track); wrap.appendChild(prev); wrap.appendChild(next);
-      sec.appendChild(wrap); rowsEl.appendChild(sec);
+      const prev = document.createElement("button");
+      prev.className = "cnav cprev";
+      prev.type = "button";
+      prev.setAttribute("aria-label", "Scroll left");
+      prev.innerHTML = "<span>&#10094;</span>";
+      const next = document.createElement("button");
+      next.className = "cnav cnext";
+      next.type = "button";
+      next.setAttribute("aria-label", "Scroll right");
+      next.innerHTML = "<span>&#10095;</span>";
+      wrap.appendChild(track);
+      wrap.appendChild(prev);
+      wrap.appendChild(next);
+      row.appendChild(wrap);
+      sec.appendChild(row);
+      panelsEl.appendChild(sec);
 
-      const state = { reel, wrap, pos: 0, dir: rowIndex % 2 === 0 ? 1 : -1, setWidth: 0, paused: false, visible: false, revealed: false };
-      marqueeRows.push(state);
-
-      requestAnimationFrame(() => {
-        state.setWidth = reel.scrollWidth + 12;
-        g.items.forEach((rec) => reel.appendChild(buildCard(rec))); /* second copy for the seamless loop */
-        const io = new IntersectionObserver(([e]) => {
-          state.visible = e.isIntersecting;
-          if (state.visible) {
-            kickMarquee();
-            if (!state.revealed) { state.revealed = true; sec.classList.add("crevealed"); }
-          }
-        }, { threshold: 0.1 });
-        io.observe(wrap);
-      });
-
-      const nudge = (dir) => { state.pos = ((state.pos + dir * 260) % state.setWidth + state.setWidth) % state.setWidth; applyReel(state); };
-      prev.onclick = () => nudge(-state.dir);
-      next.onclick = () => nudge(state.dir);
-      wrap.addEventListener("pointerenter", () => { state.paused = true; });
-      wrap.addEventListener("pointerleave", () => { state.paused = false; kickMarquee(); });
-      wrap.addEventListener("focusin", () => { state.paused = true; });
-      wrap.addEventListener("focusout", () => { state.paused = false; kickMarquee(); });
+      const state = { sec, track, step: 360 };
+      const nudge = (dir) => track.scrollBy({ left: dir * state.step, behavior: reduced ? "auto" : "smooth" });
+      prev.addEventListener("click", () => nudge(-1));
+      next.addEventListener("click", () => nudge(1));
     });
 
-    function applyReel(state) {
-      const tx = state.dir === 1 ? -state.pos : (-state.setWidth + state.pos);
-      state.reel.style.transform = `translate3d(${tx.toFixed(1)}px,0,0)`;
-    }
-    function marqueeTick(ts) {
-      if (marqueeLast === null) marqueeLast = ts;
-      const dt = Math.min(64, ts - marqueeLast); marqueeLast = ts;
-      let anyActive = false;
-      if (!isScrolling && !isFrozen()) {
-        marqueeRows.forEach((state) => {
-          if (state.paused || !state.visible || !state.setWidth) return;
-          anyActive = true;
-          state.pos = (state.pos + MARQUEE_SPEED * dt / 1000) % state.setWidth;
-          applyReel(state);
-        });
-      }
-      if (anyActive && !document.hidden) { marqueeRAF = requestAnimationFrame(marqueeTick); }
-      else { marqueeRAF = null; marqueeLast = null; }
-    }
-    function kickMarquee() {
-      if (!marqueeRAF && !ambientOff && !document.hidden && !isScrolling && !isFrozen()) {
-        marqueeRAF = requestAnimationFrame(marqueeTick);
-      }
-    }
-    document.addEventListener("visibilitychange", () => { if (!document.hidden) kickMarquee(); });
     window.addEventListener("jm:roomchange", (e) => {
-      if (e.detail?.room === "archive") kickMarquee();
-      else if (activePreview) stopPreview(activePreview.card);
+      if (e.detail?.room !== "browse" && activePreview) stopPreview(activePreview.card);
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    const form = document.getElementById("contactBriefForm");
+    if (!form) return;
+
+    const statusEl = document.getElementById("contactFormStatus");
+    const submitLabel = form.querySelector(".contact-submit-label");
+    const fields = {
+      name: document.getElementById("contactName"),
+      email: document.getElementById("contactEmail"),
+      message: document.getElementById("contactMessage")
+    };
+
+    function setStatus(text, mode) {
+      if (!statusEl) return;
+      statusEl.textContent = text || "";
+      statusEl.classList.toggle("is-ok", mode === "ok");
+      statusEl.classList.toggle("is-error", mode === "error");
+    }
+
+    function setFieldError(input, message) {
+      if (!input) return;
+      const errorEl = document.getElementById(input.getAttribute("aria-describedby")?.split(" ").find((id) => id.endsWith("Error")));
+      input.setAttribute("aria-invalid", message ? "true" : "false");
+      if (errorEl) errorEl.textContent = message || "";
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function validate() {
+      let ok = true;
+      const name = fields.name.value.trim();
+      const email = fields.email.value.trim();
+      const message = fields.message.value.trim();
+
+      setFieldError(fields.name, "");
+      setFieldError(fields.email, "");
+      setFieldError(fields.message, "");
+
+      if (!name) {
+        setFieldError(fields.name, "Enter your name");
+        ok = false;
+      }
+      if (!email || !isValidEmail(email)) {
+        setFieldError(fields.email, "Enter a valid email");
+        ok = false;
+      }
+      if (!message) {
+        setFieldError(fields.message, "Tell me a little about the project");
+        ok = false;
+      }
+      return ok;
+    }
+
+    form.addEventListener("input", (event) => {
+      const target = event.target;
+      if (target && target.matches("input, textarea")) {
+        target.setAttribute("aria-invalid", "false");
+        setStatus("", "");
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!validate()) {
+        setStatus("Check the marked fields", "error");
+        return;
+      }
+
+      const formData = new FormData(form);
+      const recipient = form.dataset.mailto || "jmcdaniel.productions@gmail.com";
+      const projectType = formData.get("projectType") || "Not specified";
+      const subject = "Project brief from " + formData.get("name");
+      const body = [
+        "Name: " + formData.get("name"),
+        "Email: " + formData.get("email"),
+        "Project type: " + projectType,
+        "",
+        "Project brief:",
+        formData.get("message")
+      ].join("\n");
+      const mailto = "mailto:" + encodeURIComponent(recipient) +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
+      if (submitLabel) submitLabel.textContent = "Opening draft";
+      setStatus("Opening email draft...", "");
+
+      window.setTimeout(() => {
+        try {
+          window.location.href = mailto;
+          setStatus("Email draft ready - send from your mail app", "ok");
+          if (submitLabel) submitLabel.textContent = "Send another";
+        } catch (error) {
+          setStatus("Could not open mail app - use the direct email below", "error");
+          if (submitLabel) submitLabel.textContent = "Send brief";
+        }
+      }, 260);
     });
   })();
 </script>
