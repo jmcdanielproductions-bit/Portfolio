@@ -72,8 +72,8 @@ Assert-Contains '<p class="contact-form-status" id="contactFormStatus" aria-live
 Assert-Contains 'Email draft ready - send from your mail app' "Contact form must not fake a sent-message state without a backend."
 Assert-Contains 'Could not open mail app - use the direct email below' "Contact form must provide a direct-email fallback on failure."
 Assert-Contains '<a class="contact-direct-email" href="mailto:jmcdaniel.productions@gmail.com"' "Contact page must preserve Jared's direct email route."
-Assert-Contains '<a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">-&gt;</span></a>' "Contact page must preserve the existing Instagram link."
-Assert-Contains '<a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">TikTok <span aria-hidden="true">-&gt;</span></a>' "Contact page must preserve the existing TikTok link."
+Assert-Contains '<a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">-&gt;</span></a>' "Contact page must preserve the existing Instagram link."
+Assert-Contains '<a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">-&gt;</span></a>' "Contact page must preserve the LinkedIn link."
 
 if ($html.Contains('Browse the Archive')) {
   throw "Browse page should not render the extra 'Browse the Archive' heading."
