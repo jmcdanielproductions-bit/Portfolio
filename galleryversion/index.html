@@ -1424,11 +1424,6 @@ body.intro-settled .archive-stage {
       height: 1px;
       background: linear-gradient(90deg, rgba(111, 140, 255, 0.56), rgba(111, 140, 255, 0.06));
     }
-.scroll-focus {
-      opacity: 1;
-      filter: none;
-      transform: none;
-    }
 /* Contact / Control Room */
     .contact-room {
       min-height: 100svh;
@@ -5475,8 +5470,10 @@ body.menu-open .mobile-menu-overlay {
         padding-top: calc(5.8rem + env(safe-area-inset-top, 0px)) !important;
         padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px)) !important;
       }
-.about-room .scroll-focus {
+.about-room .glide.is-visible {
         filter: none !important;
+        opacity: 1 !important;
+        transform: none !important;
       }
 .profile-hero,
 .director-statement,
@@ -6227,10 +6224,10 @@ body.intro-bloom-live:not(.skip-intro):not(.intro-settled) .rw-mobile .rw-mrow {
 .contact-room .console-social-link {
       min-height: 44px;
     }
-.contact-room .scroll-focus {
-      --scroll-blur: 0px;
-      --scroll-opacity: 1;
-      --scroll-y: 0px;
+.contact-room .glide.is-visible {
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
     }
 @media (max-width: 980px) {.about-record-room,
 .transmission-room {
@@ -7896,45 +7893,34 @@ body.header-parallax-active .header-identity {
     }
 
     /* ════════════════════════════════════════════════
-       PHASE 1 — Scroll-triggered animations + hero reel
-       ════════════════════════════════════════════════ */
+           PHASE 1 — Scroll-triggered animations (glide engine)
+           ════════════════════════════════════════════════ */
 
-    /* --- Scroll animation keyframes --- */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInLeft {
-      from { opacity: 0; transform: translateX(-16px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.975); }
-      to   { opacity: 1; transform: scale(1); }
-    }
+        /* --- Scroll progress rail (right edge) --- */
+        .scroll-rail {
+          position: fixed; top: 0; right: 0; bottom: 0;
+          width: 3px; z-index: 100; pointer-events: none;
+          background: rgba(255,255,255,0.03);
+        }
+        .scroll-rail-fill {
+          position: absolute; top: 0; left: 0; width: 100%;
+          background: linear-gradient(180deg, rgba(111,140,255,0.5), rgba(74,124,157,0.4));
+          transition: height 0.05s linear;
+        }
 
-    /* --- .scroll-focus base (hidden until triggered) --- */
-    .scroll-focus {
-      opacity: 0;
-      transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: opacity, transform;
-    }
-    .scroll-focus.fade-in-up {
-      opacity: 1;
-      animation: fadeInUp 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .scroll-focus.fade-in-left {
-      opacity: 1;
-      animation: fadeInLeft 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .scroll-focus.scale-in {
-      opacity: 1;
-      animation: scaleIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .scroll-focus { opacity: 1; transition: none; animation: none; transform: none !important; }
-    }
+        /* --- .glide element base (animated by scroll progress engine) --- */
+            .glide {
+              will-change: opacity, filter, transform;
+            }
+        .glide.is-visible {
+          opacity: 1;
+          filter: blur(0) !important;
+          transform: translateY(0) scale(1) !important;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .glide { opacity: 1; filter: none !important; transform: none !important; }
+          .scroll-rail { display: none; }
+        }
 
     /* ════════════════════════════════════════════════
        HERO REEL — cinematic video backdrop + ghost cursor particles
@@ -8316,6 +8302,9 @@ body.header-parallax-active .header-identity {
     <span class="light-column column-c"></span>
   </div>
 
+  <!-- Scroll progress rail -->
+  <div class="scroll-rail" aria-hidden="true"><div class="scroll-rail-fill"></div></div>
+
   <section class="archive-identity" aria-label="Jared McDaniel identity">
     <h1 class="identity-name" data-intro-name="Jared McDaniel">Jared <br>McDaniel</h1>
     <div class="identity-role">Director &amp; Editor</div>
@@ -8473,7 +8462,7 @@ body.header-parallax-active .header-identity {
         <div class="hero-slide" id="heroSlideB"></div>
       </div>
       <div id="ghost-cursor-container" aria-hidden="true"></div>
-      <div class="hero-reel-overlay">
+      <div class="hero-reel-overlay glide" data-glide-stagger="0.0" data-glide-blur="12" data-glide-y="30">
         <div class="hero-reel-kicker" id="heroKicker">Featured</div>
         <h1 class="hero-reel-title" id="heroTitle">Director Reel</h1>
         <p class="hero-reel-sub" id="heroSub">Fast cuts. Big worlds. No dead frames.</p>
@@ -8490,17 +8479,17 @@ body.header-parallax-active .header-identity {
     </section>
 
     <section class="room browse-room" id="browse" data-room="browse" aria-label="Browse work by category">
-      <div class="browse-room-inner">
+          <div class="browse-room-inner glide" data-glide-stagger="0.0" data-glide-blur="10" data-glide-y="25">
         <div class="carousel-rows category-browser" id="carouselRows" aria-label="Browse by category"></div>
       </div>
     </section>
 
     <section class="room work-room" id="work" data-room="work" aria-label="Selected work">
-      <div class="selected-screening" id="selectedScreening" data-active-slug="cyberpunk-2077">
+          <div class="selected-screening glide" id="selectedScreening" data-glide-stagger="0.0" data-glide-blur="10" data-glide-y="20" data-active-slug="cyberpunk-2077">
         <header class="selected-screening-header">
           <div>
-            <p class="selected-eyebrow">Selected Work</p>
-            <h2>Make it hit.</h2>
+            <p class="selected-eyebrow glide" data-glide-stagger="0.0" data-glide-blur="12" data-glide-y="30">Selected Work</p>
+            <h2 class="glide" data-glide-stagger="0.08" data-glide-blur="14" data-glide-y="35">Make it hit.</h2>
           </div>
           <p class="selected-counter" aria-label="Selected project position">
             <span id="selectedCounterCurrent">01</span>
@@ -8508,7 +8497,7 @@ body.header-parallax-active .header-identity {
           </p>
         </header>
 
-        <div class="selected-stage" aria-live="polite">
+        <div class="selected-stage glide" data-glide-stagger="0.18" data-glide-blur="16" data-glide-y="40" aria-live="polite">
           <div class="selected-atmosphere" id="selectedAtmosphere" aria-hidden="true"></div>
           <a class="selected-frame-link" id="selectedFrameLink" href="work/cyberpunk-2077.html" aria-label="View Cyberpunk 2077 case study">
             <figure class="selected-frame" id="selectedFrame">
@@ -8518,7 +8507,7 @@ body.header-parallax-active .header-identity {
           </a>
         </div>
 
-        <div class="selected-project-info">
+        <div class="selected-project-info glide" data-glide-stagger="0.3" data-glide-blur="12" data-glide-y="30">
           <div class="selected-project-copy">
             <p class="selected-project-number" id="selectedProjectNumber">01</p>
             <h3 id="selectedProjectTitle">Cyberpunk 2077</h3>
@@ -8528,13 +8517,13 @@ body.header-parallax-active .header-identity {
           <a class="selected-case-link" id="selectedCaseLink" href="work/cyberpunk-2077.html">View Case Study <span aria-hidden="true">↗</span></a>
         </div>
 
-        <div class="selected-selector" id="selectedSelector" role="listbox" aria-label="Choose selected work project"></div>
+        <div class="selected-selector glide" id="selectedSelector" data-glide-stagger="0.4" data-glide-blur="10" data-glide-y="25" role="listbox" aria-label="Choose selected work project"></div>
       </div>
     </section>
 
     <section class="room about-room" id="about" data-room="about" aria-label="About Jared McDaniel" data-od-id="about-room">
       <div class="about-film-profile" data-od-id="about-film-profile">
-        <section class="about-film-hero scroll-focus" aria-labelledby="aboutFilmTitle" data-od-id="about-hero">
+        <section class="about-film-hero glide" data-glide-stagger="0.0" aria-labelledby="aboutFilmTitle" data-od-id="about-hero">
           <div class="about-film-hero-copy">
             <p class="about-chapter">001 / ABOUT</p>
             <h2 id="aboutFilmTitle" data-od-id="about-title">Director + editor for cinematic campaigns.</h2>
@@ -8557,7 +8546,7 @@ body.header-parallax-active .header-identity {
           </figure>
         </section>
 
-        <section class="about-film-philosophy scroll-focus" aria-labelledby="aboutPhilosophyTitle" data-od-id="about-philosophy">
+        <section class="about-film-philosophy glide" data-glide-stagger="0.12" aria-labelledby="aboutPhilosophyTitle" data-od-id="about-philosophy">
           <div class="about-section-index">
             <p class="about-chapter">002 / POINT OF VIEW</p>
           </div>
@@ -8573,7 +8562,7 @@ body.header-parallax-active .header-identity {
           </div>
         </section>
 
-        <section class="about-film-process scroll-focus" aria-labelledby="aboutProcessTitle" data-od-id="about-process">
+        <section class="about-film-process glide" data-glide-stagger="0.22" aria-labelledby="aboutProcessTitle" data-od-id="about-process">
           <div class="about-section-head">
             <p class="about-chapter">003 / PROCESS</p>
             <h3 id="aboutProcessTitle" data-od-id="about-process-title">Every frame has a job.</h3>
@@ -8597,7 +8586,7 @@ body.header-parallax-active .header-identity {
           </div>
         </section>
 
-        <section class="about-film-bts scroll-focus" aria-labelledby="aboutBtsTitle" data-od-id="about-behind-frame">
+        <section class="about-film-bts glide" data-glide-stagger="0.32" aria-labelledby="aboutBtsTitle" data-od-id="about-behind-frame">
           <div class="about-section-head about-section-head-split">
             <div>
               <p class="about-chapter">004 / BEHIND THE FRAME</p>
@@ -8630,7 +8619,7 @@ body.header-parallax-active .header-identity {
           </div>
         </section>
 
-        <section class="about-film-human scroll-focus" aria-labelledby="aboutHumanTitle" data-od-id="about-personal-next">
+        <section class="about-film-human glide" data-glide-stagger="0.4" aria-labelledby="aboutHumanTitle" data-od-id="about-personal-next">
           <div class="about-human-notes" data-od-id="about-personal-notes">
             <p class="about-chapter">005 / PERSONAL</p>
             <h3 id="aboutHumanTitle">In the mix.</h3>
@@ -8650,7 +8639,7 @@ body.header-parallax-active .header-identity {
           </div>
         </section>
 
-        <section class="about-film-cta scroll-focus" aria-label="Contact call to action" data-od-id="about-contact-cta">
+        <section class="about-film-cta glide" data-glide-stagger="0.45" aria-label="Contact call to action" data-od-id="about-contact-cta">
           <p class="about-chapter">007 / CONTACT</p>
           <h3>Got something with a pulse?</h3>
           <a href="#contact" data-od-id="about-start-conversation">SEND IT <span aria-hidden="true">-&gt;</span></a>
@@ -8660,7 +8649,7 @@ body.header-parallax-active .header-identity {
 
     <section class="room contact-room" id="contact" data-room="contact" aria-label="Contact Jared McDaniel" data-od-id="contact-room">
       <div class="contact-open-channel" data-od-id="contact-open-channel">
-        <section class="contact-intro-panel scroll-focus" aria-labelledby="contactTitle" data-od-id="contact-intro">
+        <section class="contact-intro-panel glide" data-glide-stagger="0.0" aria-labelledby="contactTitle" data-od-id="contact-intro">
           <p class="contact-chapter">001 / CONTACT</p>
           <h2 id="contactTitle" data-od-id="contact-title">What are we making?</h2>
           <p>Tell me what you're making and send over whatever you have.</p>
@@ -8681,7 +8670,7 @@ body.header-parallax-active .header-identity {
           </dl>
         </section>
 
-        <section class="contact-intake-panel scroll-focus" aria-labelledby="contactIntakeTitle" data-od-id="contact-project-intake">
+        <section class="contact-intake-panel glide" data-glide-stagger="0.15" aria-labelledby="contactIntakeTitle" data-od-id="contact-project-intake">
           <div class="contact-form-head">
             <p class="contact-chapter">THE BRIEF</p>
             <h3 id="contactIntakeTitle">Send what matters.</h3>
@@ -8738,7 +8727,7 @@ body.header-parallax-active .header-identity {
           </form>
         </section>
 
-        <section class="contact-direct-panel scroll-focus" aria-label="Direct contact" data-od-id="contact-direct">
+        <section class="contact-direct-panel glide" data-glide-stagger="0.3" aria-label="Direct contact" data-od-id="contact-direct">
           <p class="contact-chapter">Direct</p>
           <a class="contact-direct-email" href="mailto:jmcdaniel.productions@gmail.com" aria-label="Email Jared McDaniel" data-od-id="contact-direct-email">jmcdaniel.productions@gmail.com</a>
           <nav class="contact-direct-socials" aria-label="Social links" data-od-id="contact-social-links">
@@ -11904,16 +11893,29 @@ body.header-parallax-active .header-identity {
         settleIntro(true);
       }
       window.dispatchEvent(new CustomEvent("jm:roomchange", { detail: { room: target } }));
-    }
+            // When switching rooms, force glide to re-measure fresh elements
+            // (CSS .glide sets opacity:0, but display:none gave stale rects)
+            window.requestAnimationFrame(() => {
+              window.requestAnimationFrame(() => {
+                if (typeof window.scheduleGlide === 'function') window.scheduleGlide();
+              });
+            });
+          }
 
     let activeRoomTransition = null;
     function syncRoute() {
-      const route = window.location.hash.replace("#", "") || "archive";
-      const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
-      if (!document.startViewTransition || activeRoomTransition) {
-        showRoom(nextRoom);
-        return;
-      }
+          const route = window.location.hash.replace("#", "") || "archive";
+          const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
+          // Skip startViewTransition on file:// protocol (can hang)
+          // and when already transitioning
+          if (!document.startViewTransition || activeRoomTransition || window.location.protocol === "file:") {
+            showRoom(nextRoom);
+            // Force glide refresh after layout settles
+            window.requestAnimationFrame(() => {
+              if (typeof window.scheduleGlide === 'function') window.scheduleGlide();
+            });
+            return;
+          }
       try {
         activeRoomTransition = document.startViewTransition(() => showRoom(nextRoom));
         activeRoomTransition.ready?.catch?.(() => {});
@@ -13347,26 +13349,125 @@ body.header-parallax-active .header-identity {
      ════════════════════════════════════════════════ */
 
   (function() {
-    /* --- Scroll-triggered animations via IntersectionObserver --- */
-    const scrollFocusElements = document.querySelectorAll(".scroll-focus");
-    if (scrollFocusElements.length && "IntersectionObserver" in window) {
-      const scrollObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const anim = el.dataset.scrollAnim || "fade-in-up";
-            el.classList.add(anim);
-            scrollObserver.unobserve(el);
-          }
-        });
-      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-      scrollFocusElements.forEach((el) => scrollObserver.observe(el));
-    } else {
-      scrollFocusElements.forEach((el) => { el.style.opacity = "1"; });
-    }
+      /* --- Scroll-driven Glide Engine ---
+          Maps each .glide element's scroll progress (0→1) into
+          opacity, blur, translateY, and scale in real time.
+          Elements get staggered entry based on data-glide-stagger
+          or their position in DOM. --- */
+      const glideEls = document.querySelectorAll(".glide");
+      const hasReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
-       which owns #heroReel's slide stack, toggle, and visibility handling. --- */
+      if (glideEls.length && "IntersectionObserver" in window && !hasReducedMotion) {
+        // Build target registry with per-element config
+        const targets = [];
+        let maxStaggerIndex = 0;
+
+        glideEls.forEach((el, i) => {
+          const staggerRaw = parseFloat(el.dataset.glideStagger || (i / glideEls.length));
+          const stagger = Math.max(0, Math.min(0.45, isNaN(staggerRaw) ? i / glideEls.length : staggerRaw));
+          if (stagger > maxStaggerIndex) maxStaggerIndex = stagger;
+          targets.push({
+            el,
+            blurMax: parseFloat(el.dataset.glideBlur || 14),
+            translateMax: parseFloat(el.dataset.glideY || 40),
+            scaleMin: parseFloat(el.dataset.glideScale || 0.94),
+            stagger
+          });
+        });
+
+        // Normalise stagger so max offset is 0.35 of the entry window
+        const staggerNorm = maxStaggerIndex > 0 ? 0.35 / maxStaggerIndex : 0;
+
+        // Single IntersectionObserver that just toggles active tracking
+        // (all style computation happens on scroll via rAF)
+        let activeTargets = new Set();
+        const visibilityObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              activeTargets.add(entry.target);
+            } else {
+              activeTargets.delete(entry.target);
+            }
+          });
+        }, { threshold: 0, rootMargin: "60px 0px 60px 0px" });
+
+        targets.forEach((t) => visibilityObserver.observe(t.el));
+
+        // Easing: cubic ease-out
+        function easeOutCubic(t) {
+          return 1 - Math.pow(1 - t, 3);
+        }
+
+        // Get scroll progress for an element (0 = entering, 1 = settled)
+        function getProgress(el, stagger) {
+                  const rect = el.getBoundingClientRect();
+                  const vh = window.innerHeight;
+                  // Entry window: from element bottom at viewport bottom → element center at 30% from viewport top
+                  const entryStart = vh + rect.height * 0.1;               // start entering
+                  const entryEnd = vh * 0.3;                                // fully revealed
+                  const adjustedStart = entryStart - stagger * staggerNorm * (entryStart - entryEnd);
+                  const raw = (adjustedStart - rect.top) / (entryStart - entryEnd);
+          return Math.max(0, Math.min(1, raw));
+        }
+
+        let rafId = 0;
+        function tickGlide() {
+          rafId = 0;
+          targets.forEach((t) => {
+            const progress = getProgress(t.el, t.stagger);
+            if (progress <= 0) {
+              t.el.style.opacity = "0";
+              t.el.style.filter = `blur(${t.blurMax}px)`;
+              t.el.style.transform = `translateY(${t.translateMax}px) scale(${t.scaleMin})`;
+              t.el.classList.remove("is-visible");
+              return;
+            }
+            if (progress >= 1) {
+              t.el.style.opacity = "1";
+              t.el.style.filter = "blur(0)";
+              t.el.style.transform = "translateY(0) scale(1)";
+              t.el.classList.add("is-visible");
+              return;
+            }
+            const eased = easeOutCubic(progress);
+            t.el.style.opacity = eased;
+            t.el.style.filter = `blur(${(t.blurMax * (1 - eased)).toFixed(1)}px)`;
+            const y = t.translateMax * (1 - eased);
+            const s = t.scaleMin + (1 - t.scaleMin) * eased;
+            t.el.style.transform = `translateY(${y.toFixed(1)}px) scale(${s.toFixed(3)})`;
+            t.el.classList.remove("is-visible");
+          });
+        }
+
+        function scheduleGlide() {
+                  if (rafId) return;
+                  rafId = requestAnimationFrame(tickGlide);
+                }
+                // Expose globally so syncRoute can force a refresh after room switches
+                window.scheduleGlide = scheduleGlide;
+
+        // Also run on room changes (showRoom dispatches jm:roomchange)
+        window.addEventListener("scroll", scheduleGlide, { passive: true });
+        window.addEventListener("resize", scheduleGlide, { passive: true });
+        window.addEventListener("jm:roomchange", scheduleGlide);
+        // Small delay on load so layout settles
+        window.addEventListener("load", () => setTimeout(scheduleGlide, 200));
+        scheduleGlide();
+
+        /* --- Scroll progress rail --- */
+        const railFill = document.querySelector(".scroll-rail-fill");
+        if (railFill) {
+          function updateRail() {
+            const scrollY = window.scrollY;
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            railFill.style.height = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
+          }
+          window.addEventListener("scroll", updateRail, { passive: true });
+          updateRail();
+        }
+
+        /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
+           which owns #heroReel's slide stack, toggle, and visibility handling. --- */
 
             /* --- GhostCursor (Three.js) — constrained to hero section --- */
                 const ghostContainer = document.getElementById("ghost-cursor-container");
