@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="styles/motion.css">
   <script src="./vendor/lenis.min.js"></script>
   <link rel="stylesheet" href="./vendor/lenis.css">
+  <script src="./vendor/gsap.min.js"></script>
+  <script src="./vendor/ScrollTrigger.min.js"></script>
   <style>
     body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
     a { color: #E9EBEE; text-decoration: none; }
@@ -94,11 +96,49 @@
     [data-step="2"] { transition-delay: 90ms; }
     [data-step="3"] { transition-delay: 180ms; }
 
+    /* Split text reveal */
+    .split-word-mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+    .split-word {
+      display: inline-block;
+      will-change: transform, opacity, filter;
+    }
     @media (prefers-reduced-motion: reduce) {
       [data-rev], [data-step] { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
 
-    /* BTS: one 21:9 anchor plus a contact strip, so it reads as ONE block */
+    /* ── Process: sticky card stack ── */
+    [data-sticky-stack] {
+      position: relative;
+      min-height: 200vh;
+    }
+    [data-stack-card] {
+      position: sticky;
+      top: 14vh;
+      transform-origin: center top;
+      will-change: transform, opacity;
+      display: grid;
+      gap: .7rem;
+      align-content: start;
+      padding: 2rem 0 1rem;
+      min-height: 32vh;
+    }
+    [data-stack-card]::before {
+      content: "";
+      display: block;
+      height: 1px;
+      background: rgba(233,235,238,.16);
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 720px) {
+      [data-sticky-stack] { min-height: auto; }
+      [data-stack-card] { position: relative; top: 0; }
+    }
+
+    /* ── BTS: one 21:9 anchor plus a contact strip, so it reads as ONE block */
     [data-bts] {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -169,7 +209,7 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:clamp(1.6rem,4vw,4.5rem);align-items:start">
         <div data-rev="fade" style="display:grid;gap:clamp(1rem,2vw,1.5rem);align-content:start">
           <p data-t="label">Point of view</p>
-          <h2 id="povTitle" data-t="impact">Find the rhythm</h2>
+          <h2 id="povTitle" data-t="impact" data-split-reveal="">Find the rhythm</h2>
         </div>
         <div data-rev="rise" style="display:grid;gap:clamp(1.2rem,2.4vw,1.8rem)">
           <p data-t="lede">I look for the visual rhythm that already belongs to a piece, then build the direction and edit around it.</p>
@@ -182,23 +222,19 @@
     <!-- 003 — PROCESS. Editorial entries, not service cards: no vertical
          rules, no boxes, one hairline above each entry. Detail lines are
          split deliberately rather than left to wrap. -->
-    <section data-sec="" aria-labelledby="processTitle">
+    <section data-sec="" aria-labelledby="processTitle" data-sticky-stack="">
       <div data-rev="fade" style="display:grid;gap:.9rem;margin-bottom:clamp(1.8rem,3.6vw,2.8rem)">
         <p data-t="label">Process</p>
         <h2 id="processTitle" data-t="head">Every frame has a job</h2>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:clamp(1.6rem,3.4vw,3.4rem)">
-        <sc-for list="{{ process }}" as="s" hint-placeholder-count="3">
-          <article data-step="{{ s.step }}" style="display:grid;gap:.7rem;align-content:start;padding-top:1rem;border-top:1px solid rgba(233,235,238,.16)">
-            <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.16em;color:oklch(0.8 0.11 200)">{{ s.num }}</span>
-            <h3 style="margin:0;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.5rem,2.3vw,2.1rem);line-height:.96;letter-spacing:.02em;text-transform:uppercase">{{ s.title }}</h3>
-            <p style="margin:0;font-size:1rem;line-height:1.62;color:rgba(233,235,238,.74)">
-              <span style="display:block">{{ s.lineA }}</span>
-              <span style="display:block">{{ s.lineB }}</span>
-            </p>
-          </article>
-        </sc-for>
-      </div>
+      <sc-for list="{{ process }}" as="s" hint-placeholder-count="3">
+        <article data-stack-card="" style="min-height:34vh">
+          <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.16em;color:oklch(0.8 0.11 200);margin-bottom:.2rem">{{ s.num }}</span>
+          <h3 style="margin:0;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.7rem,2.8vw,2.4rem);line-height:.92;letter-spacing:.02em;text-transform:uppercase">{{ s.title }}</h3>
+          <p style="margin:0;max-width:48ch;font-size:clamp(1.02rem,1.15vw,1.15rem);line-height:1.68;color:rgba(233,235,238,.8)">{{ s.lineA }}</p>
+          <p style="margin:0;max-width:48ch;font-size:clamp(1.02rem,1.15vw,1.15rem);line-height:1.68;color:rgba(233,235,238,.8)">{{ s.lineB }}</p>
+        </article>
+      </sc-for>
     </section>
 
     <!-- 004 — BEHIND THE FRAME. Visual beat; copy gets out of the way. -->
@@ -335,11 +371,67 @@ class Component extends DCLogic {
     this.sweep = window.setTimeout(() => {
       targets.forEach((t) => { if (!t.classList.contains("seen")) show(t); });
     }, 1400);
-  }
+
+    /* Split text reveals */
+    if (gsap && ScrollTrigger && !this.reduce?.matches) {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.utils.toArray("[data-split-reveal]").forEach((el) => {
+        const text = el.textContent || "";
+        const parts = text.split(/(\s+)/);
+        el.textContent = "";
+        el.setAttribute("aria-label", text.trim());
+        parts.forEach((part) => {
+          if (!part.trim()) { el.appendChild(document.createTextNode(part)); return; }
+          const mask = document.createElement("span");
+          const word = document.createElement("span");
+          mask.className = "split-word-mask";
+          word.className = "split-word";
+          word.textContent = part;
+          mask.setAttribute("aria-hidden", "true");
+          mask.appendChild(word);
+          el.appendChild(mask);
+        });
+        const words = el.querySelectorAll(".split-word");
+        gsap.fromTo(words,
+          { yPercent: 110, autoAlpha: 0, filter: "blur(8px)" },
+          { yPercent: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.95, ease: "power4.out", stagger: 0.05,
+            scrollTrigger: { trigger: el, start: "top 82%", once: true } }
+        );
+      });
+    }
+
+    /* Sticky card stack: GSAP ScrollTrigger for Process section */
+    if (!this.reduce?.matches && gsap && ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      const stack = scope.querySelector("[data-sticky-stack]");
+      if (stack) {
+        const cards = gsap.utils.toArray(stack.querySelectorAll("[data-stack-card]"));
+        cards.forEach((card, i) => {
+          const next = cards[i + 1];
+          if (!next) return;
+          gsap.to(card, {
+            scale: 0.92 + i * 0.015,
+            autoAlpha: 0.68,
+            y: -20,
+            ease: "none",
+            scrollTrigger: {
+              trigger: next,
+              start: "top 76%",
+              end: "top 22%",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+        });
+        ScrollTrigger.refresh();
+      }
+      this.gsapCtx = gsap.context(() => {}, scope);
+    }
 
   componentWillUnmount() {
     this.io?.disconnect();
     if (this.sweep) clearTimeout(this.sweep);
+    if (this.gsapCtx) this.gsapCtx.revert();
     if (window.lenis) { window.lenis.destroy(); window.lenis = null; }
   }
 
