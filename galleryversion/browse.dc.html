@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/topbar.css">
+  <link rel="stylesheet" href="styles/motion.css">
+  <style>
+    body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
+    a { color: #E9EBEE; text-decoration: none; }
+    a:hover { color: oklch(0.72 0.14 200); }
+
+    /* ── The index grid is defined ONCE and shared by the header row and
+       every data row, so they can never drift apart. The narrow collapse
+       is a real media query, not React state: a JS breakpoint synced at
+       mount can desynchronise from the viewport and never recover. ── */
+    [data-idx] {
+      display: grid;
+      grid-template-columns: 2.6rem minmax(0, 1.6fr) minmax(0, 1fr) 3.4rem;
+      gap: 1rem;
+    }
+    @media (max-width: 900px) {
+      [data-idx] { grid-template-columns: 2.6rem minmax(0, 1fr) 3.2rem; }
+      [data-meta] { display: none; }
+    }
+    /* the frame preview is a pointer affordance; it has no meaning on touch */
+    @media (hover: none), (pointer: coarse) {
+      [data-preview] { display: none; }
+    }
+    /* ── Chips: state comes from aria-pressed, which is already on the
+       button — so the selected look and the accessible state can never
+       disagree. Hover FILLS rather than just brightening the edge. ── */
+    [data-chip] {
+      min-height: 38px;
+      padding: 0 .85rem;
+      border: 1px solid rgba(233,235,238,.2);
+      background-color: transparent;
+      color: rgba(233,235,238,.72);
+      font-family: 'DM Mono', monospace;
+      font-size: .74rem;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 240ms cubic-bezier(.22,1,.36,1),
+                  border-color 240ms ease,
+                  color 240ms cubic-bezier(.22,1,.36,1);
+    }
+    [data-chip]:hover, [data-chip]:focus-visible {
+      background-color: rgba(233,235,238,.09);
+      border-color: rgba(233,235,238,.44);
+      color: #E9EBEE;
+      outline: none;
+    }
+    [data-chip][aria-pressed="true"] {
+      border-color: oklch(0.72 0.14 200);
+      background-color: oklch(0.72 0.14 200);
+      color: #08090C;
+    }
+    [data-chip][aria-pressed="true"]:hover {
+      background-color: oklch(0.8 0.14 200);
+      border-color: oklch(0.8 0.14 200);
+      color: #08090C;
+    }
+    [data-chip]:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</helmet>
+
+<div data-under-bar="" style="position:relative;background:#0B0C0F;color:#E9EBEE;font-family:Chivo,system-ui,sans-serif;min-height:100vh;overflow-x:hidden">
+
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 40% at 50% 0%, rgba(120,200,225,.05), transparent 70%)"></div>
+
+  <div data-topbar="">
+    <a data-ident="" href="home.dc.html" aria-label="Jared McDaniel, home">
+      <b>Jared McDaniel</b>
+      <span>Creative Video Director / Editor</span>
+    </a>
+    <nav data-bar="" aria-label="Primary">
+      <a data-home="" href="home.dc.html" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true" focusable="false"><path d="M3.2 10.4 12 3.4l8.8 7"></path><path d="M5.4 9.7V20.6h13.2V9.7"></path><path d="M9.9 20.6v-5.9h4.2v5.9"></path></svg></a>
+      <a href="browse.dc.html" aria-current="page">Work</a>
+      <a href="films.dc.html">Films</a>
+      <a href="about.dc.html">About</a>
+      <a href="contact.dc.html">Contact</a>
+      <a href="home.dc.html#reel">Reel</a>
+    </nav>
+    <div data-social="">
+      <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" focusable="false"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"></circle></svg></a>
+      <a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg></a>
+    </div>
+  </div>
+
+  <section style="position:relative;z-index:2;padding:clamp(2rem,4.5vw,3.4rem) clamp(1.1rem,4vw,3.2rem) clamp(1.2rem,2.4vw,1.8rem);max-width:1560px;margin:0 auto">
+    <p style="margin:0 0 .8rem;font-family:'DM Mono',monospace;font-size:clamp(.75rem,.82vw,.8rem);letter-spacing:.18em;text-transform:uppercase;color:oklch(0.8 0.11 200)">The work index</p>
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem">
+      <h1 style="margin:0;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.9rem,4vw,3.4rem);line-height:.94;letter-spacing:.012em;text-transform:uppercase">Every brand film, in one list</h1>
+      <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,235,238,.64);white-space:nowrap">{{ countLabel }}</span>
+    </div>
+    <p style="margin:.9rem 0 0;max-width:54ch;font-size:clamp(.94rem,1.02vw,1.02rem);line-height:1.62;color:rgba(233,235,238,.72)">Every client and year. Hover a row to see the frame; click to play it. Personal short films live on <a data-link="" href="films.dc.html" style="color:oklch(0.8 0.11 200)">their own page</a>.</p>
+  </section>
+
+  <section style="position:relative;z-index:2;padding:0 clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;padding:0 0 .9rem;border-bottom:1px solid rgba(233,235,238,.13)">
+      <div role="group" aria-label="Filter by category" style="display:flex;flex-wrap:wrap;gap:.34rem">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <button data-chip="" type="button" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}">{{ f.label }}</button>
+        </sc-for>
+      </div>
+      <div role="group" aria-label="Layout" style="display:flex;gap:.34rem">
+        <button data-chip="" type="button" onClick="{{ setIndex }}" aria-pressed="{{ isIndex }}">Index</button>
+        <button data-chip="" type="button" onClick="{{ setGrid }}" aria-pressed="{{ isGrid }}">Grid</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INDEX VIEW ── -->
+  <sc-if value="{{ isIndex }}" hint-placeholder-val="{{ true }}">
+    <section aria-label="Work index" style="position:relative;z-index:2;padding:0 clamp(1.1rem,4vw,3.2rem) clamp(3rem,6vw,5rem);max-width:1560px;margin:0 auto">
+      <div data-idx="" style="padding:.75rem 0;border-bottom:1px solid rgba(233,235,238,.09);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,235,238,.62)">
+        <span>&#8470;</span>
+        <span>Title</span>
+        <span data-meta="">Client</span>
+        <span style="text-align:right">Year</span>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
+        <button data-idx="" type="button" onClick="{{ r.open }}" onPointerEnter="{{ r.hover }}" onFocus="{{ r.hover }}" aria-label="{{ r.aria }}" style="width:100%;padding:.85rem 0;border:0;border-bottom:1px solid rgba(233,235,238,.075);background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transition:background 200ms ease" style-hover="background:rgba(233,235,238,.045)">
+          <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:rgba(233,235,238,.6);align-self:center">{{ r.num }}</span>
+          <span style="display:flex;align-items:center;gap:.6rem;min-width:0">
+            <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1rem,1.6vw,1.35rem);line-height:1;letter-spacing:.014em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
+            <sc-if value="{{ r.views }}" hint-placeholder-val="{{ false }}">
+              <span style="flex:0 0 auto;padding:.22rem .44rem;background:oklch(0.42 0.09 60);color:#FFF6E6;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap">{{ r.views }}</span>
+            </sc-if>
+          </span>
+          <span data-meta="" style="{{ metaStyle }}">{{ r.client }}</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;color:rgba(233,235,238,.66);text-align:right;align-self:center">{{ r.year }}</span>
+        </button>
+      </sc-for>
+      <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:2rem 0;font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(233,235,238,.64)">Nothing in this filter.</p>
+      </sc-if>
+    </section>
+
+    <!-- Carried as a background-image in the style hole rather than an
+         <img src="{{ }}">. The HTML parser speculatively fetches a literal
+         src before React runs — which requested the raw hole, and then
+         re-downloaded this document via the empty-src fallback. There is no
+         src attribute in the template now, and the URL is a genuinely live
+         runtime value that cannot exist at parse time. -->
+    <div data-preview="" aria-hidden="true" style="{{ previewStyle }}"></div>
+  </sc-if>
+
+  <!-- ── GRID VIEW ── -->
+  <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ false }}">
+    <section aria-label="Work grid" style="position:relative;z-index:2;padding:clamp(1.2rem,2.6vw,1.9rem) clamp(1.1rem,4vw,3.2rem) clamp(3rem,6vw,5rem);max-width:1560px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:clamp(.5rem,1.1vw,.95rem)">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
+          <button type="button" onClick="{{ r.open }}" aria-label="{{ r.aria }}" style="position:relative;display:block;width:100%;padding:0;border:0;background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transition:filter 320ms ease" style-hover="filter:brightness(1.08)">
+            <span style="position:relative;display:block;overflow:hidden;background:#07080A;aspect-ratio:16/9">
+              <img src="{{ r.thumb }}" alt="" loading="lazy" decoding="async" onLoad="{{ r.guard }}" onError="{{ r.guard }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.86"></img>
+              <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,.02) 40%,rgba(7,8,10,.92) 100%)"></span>
+              <sc-if value="{{ r.views }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;right:.55rem;top:.5rem;padding:.22rem .44rem;background:oklch(0.42 0.09 60);color:#FFF6E6;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap">{{ r.views }}</span>
+              </sc-if>
+              <span style="position:absolute;left:0;right:0;bottom:0;display:block;padding:.7rem .75rem">
+                <span style="display:block;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(.95rem,1.5vw,1.25rem);line-height:.92;letter-spacing:.012em;text-transform:uppercase">{{ r.title }}</span>
+                <span style="display:block;margin-top:.32rem;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(233,235,238,.76)">{{ r.client }} / {{ r.year }}</span>
+              </span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <footer style="position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+    <span>Jared McDaniel / 2026</span>
+    <a href="contact.dc.html" style="color:oklch(0.8 0.11 200)">Start a project &rarr;</a>
+  </footer>
+
+  <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ playingLabel }}" style="position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:clamp(.75rem,3vw,2.5rem);background:rgba(4,5,7,.94)">
+      <button type="button" onClick="{{ closePlayer }}" aria-label="Close player" style="position:absolute;right:clamp(.75rem,2.5vw,1.8rem);top:clamp(.75rem,2.5vw,1.8rem);display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(233,235,238,.3);background:rgba(11,12,15,.7);color:#E9EBEE;font-size:1.05rem;cursor:pointer" style-hover="border-color:oklch(0.72 0.14 200);color:oklch(0.82 0.11 200)">&#10005;</button>
+      <div style="width:min(100%,1280px)">
+        <p style="margin:0 0 .6rem;font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,235,238,.66)">{{ playingLabel }}</p>
+        <div style="position:relative;aspect-ratio:16/9;background:#000;border:1px solid rgba(233,235,238,.14)">
+          <iframe src="{{ playingSrc }}" title="{{ playingLabel }}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const FILTERS = ["All", "Gaming", "Commercial", "Narrative"];
+
+/* Chip appearance lives entirely in the [data-chip] CSS, keyed off
+   aria-pressed — no parallel inline style object to keep in sync. */
+
+/* The client/role columns are hidden by the [data-meta] media query, not by
+   JS — this only styles them. No breakpoint lives in state. */
+const META_STYLE = "font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(233,235,238,.66);align-self:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
+
+class Component extends DCLogic {
+  state = { data: null, filter: "All", view: "index", playing: null, preview: null };
+
+  componentDidMount() {
+    import("./data/projects.js").then((m) => this.setState({ data: m }));
+    this.onKey = (e) => { if (e.key === "Escape") this.setState({ playing: null }); };
+    window.addEventListener("keydown", this.onKey);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.onKey);
+  }
+
+  renderVals() {
+    const d = this.state.data;
+    const { filter, view, playing, preview } = this.state;
+    const isIndex = view === "index";
+
+    const brand = d ? d.PROJECTS.filter((p) => p.track === "brand") : [];
+    const list = brand.filter((p) => filter === "All" || p.filters.includes(filter));
+
+    return {
+      countLabel: d ? `${list.length} of ${brand.length} films` : "",
+      isIndex,
+      isGrid: !isIndex,
+      empty: !!d && list.length === 0,
+      metaStyle: META_STYLE,
+
+      filters: FILTERS.map((label) => ({
+        label,
+        on: filter === label,
+        pick: () => this.setState({ filter: label })
+      })),
+
+      setIndex: () => this.setState({ view: "index" }),
+      setGrid: () => this.setState({ view: "grid" }),
+
+      rows: list.map((p, i) => ({
+        ...p,
+        num: String(i + 1).padStart(2, "0"),
+        views: p.views ? `${p.views} views` : "",
+        thumb: d.frame(p),
+        guard: d.guardThumb(p.yt),
+        aria: `Play ${p.title} — ${p.client}, ${p.role}, ${p.type}, ${p.year}`,
+        hover: () => this.setState({ preview: p.still || d.thumb(p.yt, false) }),
+        open: () => this.setState({ playing: { src: d.embed(p.yt), label: `${p.title} / ${p.client}` } })
+      })),
+
+      /* parked bottom-right rather than cursor-tracking, so it never sits
+         under the pointer or covers the row being read */
+      previewStyle: [
+        "position:fixed",
+        "right:clamp(1rem,3vw,2.4rem)",
+        "bottom:clamp(1rem,3vw,2.4rem)",
+        "z-index:30",
+        "width:min(24vw,19rem)",
+        "aspect-ratio:16/9",
+        "overflow:hidden",
+        "border:1px solid rgba(233,235,238,.16)",
+        "background-color:#07080A",
+        preview ? `background-image:url("${preview}")` : "background-image:none",
+        "background-size:cover",
+        "background-position:center",
+        "pointer-events:none",
+        "box-shadow:0 3px 6px rgba(0,0,0,.34),0 22px 52px -18px rgba(0,0,0,.7)",
+        preview ? "opacity:1;transform:none" : "opacity:0;transform:translateY(10px)",
+        "transition:opacity 260ms ease,transform 320ms cubic-bezier(.22,1,.36,1)"
+      ].join(";"),
+
+
+      playing: !!playing,
+      playingSrc: playing?.src || "",
+      playingLabel: playing?.label || "",
+      closePlayer: () => this.setState({ playing: null })
+    };
+  }
+}
+</script>
+</body>
+</html>
