@@ -11903,32 +11903,58 @@ body.header-parallax-active .header-identity {
           }
 
     let activeRoomTransition = null;
-    function syncRoute() {
-          const route = window.location.hash.replace("#", "") || "archive";
-          const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
-          // Skip startViewTransition on file:// protocol (can hang)
-          // and when already transitioning
-          if (!document.startViewTransition || activeRoomTransition || window.location.protocol === "file:") {
+        let roomFadeTimer = 0;
+        const roomMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        function refreshGlide() {
+          window.requestAnimationFrame(() => {
+            if (typeof window.scheduleGlide === "function") window.scheduleGlide();
+          });
+        }
+
+        /* Cross-browser room transition.
+           Chrome/Edge keep the native View Transition (unchanged).
+           Firefox/Safari get a JS-timed cross-blur that reads the same:
+           200ms blur-out on the outgoing room, swap, 460ms blur-in. */
+        function transitionToRoom(nextRoom) {
+          if (roomMotionQuery.matches || window.location.protocol === "file:") {
             showRoom(nextRoom);
-            // Force glide refresh after layout settles
-            window.requestAnimationFrame(() => {
-              if (typeof window.scheduleGlide === 'function') window.scheduleGlide();
-            });
+            refreshGlide();
             return;
           }
-      try {
-        activeRoomTransition = document.startViewTransition(() => showRoom(nextRoom));
-        activeRoomTransition.ready?.catch?.(() => {});
-        activeRoomTransition.finished
-          ?.catch?.(() => {})
-          ?.finally?.(() => {
-            activeRoomTransition = null;
-          });
-      } catch (error) {
-        activeRoomTransition = null;
-        showRoom(nextRoom);
-      }
-    }
+
+          if (document.startViewTransition && !activeRoomTransition) {
+            try {
+              activeRoomTransition = document.startViewTransition(() => showRoom(nextRoom));
+              activeRoomTransition.ready?.catch?.(() => {});
+              activeRoomTransition.finished
+                ?.catch?.(() => {})
+                ?.finally?.(() => {
+                  activeRoomTransition = null;
+                });
+              return;
+            } catch (error) {
+              activeRoomTransition = null;
+            }
+          }
+          if (activeRoomTransition || roomFadeTimer) return;
+
+          body.classList.add("is-room-leaving");
+          roomFadeTimer = window.setTimeout(() => {
+            roomFadeTimer = 0;
+            body.classList.remove("is-room-leaving");
+            body.classList.add("is-room-entering");
+            showRoom(nextRoom);
+            refreshGlide();
+            window.setTimeout(() => body.classList.remove("is-room-entering"), 480);
+          }, 200);
+        }
+
+        function syncRoute() {
+          const route = window.location.hash.replace("#", "") || "archive";
+          const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
+          transitionToRoom(nextRoom);
+        }
 
     window.addEventListener("hashchange", syncRoute);
     syncRoute();
@@ -13036,7 +13062,8 @@ body.header-parallax-active .header-identity {
       const actionLabel = projectActionLabel(rec);
       const showAction = actionLabel && !statusLabel;
       el.className = `rw-mcard${rec.isReel ? " rw-mcard-reel" : ""}`;
-      if (rec.page) el.href = rec.page; else el.type = "button";
+            if (MOODS[rec.slug]) el.dataset.mood = MOODS[rec.slug].mood;
+            if (rec.page) el.href = rec.page; else el.type = "button";
       el.dataset.slug = rec.slug;
       el.dataset.dossier = projectHasDossier(rec) ? "available" : "screening";
       if (rec.isReel) el.dataset.reel = "true";
@@ -13402,6 +13429,14 @@ body.header-parallax-active .header-identity {
         function getProgress(el, stagger) {
                   const rect = el.getBoundingClientRect();
                   const vh = window.innerHeight;
+                  /* Tall panels (taller than ~70% of the viewport) can never get
+                     their CENTRE to 30% from the top on a short screen, so the
+                     window below would leave them pinned at opacity 0 forever.
+                     Resolve those on plain intersection instead. */
+                  if (rect.height > vh * 0.7) {
+                    const seen = Math.min(vh, rect.bottom) - Math.max(0, rect.top);
+                    return Math.max(0, Math.min(1, seen / (vh * 0.45)));
+                  }
                   // Entry window: from element bottom at viewport bottom → element center at 30% from viewport top
                   const entryStart = vh + rect.height * 0.1;               // start entering
                   const entryEnd = vh * 0.3;                                // fully revealed
@@ -13463,11 +13498,13 @@ body.header-parallax-active .header-identity {
             railFill.style.height = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
           }
           window.addEventListener("scroll", updateRail, { passive: true });
-          updateRail();
-        }
+                    updateRail();
+                  }
+                }
+                /* ^ closes: if (glideEls.length && "IntersectionObserver" in window && !hasReducedMotion) */
 
-        /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
-           which owns #heroReel's slide stack, toggle, and visibility handling. --- */
+                  /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
+                     which owns #heroReel's slide stack, toggle, and visibility handling. --- */
 
             /* --- GhostCursor (Three.js) — constrained to hero section --- */
                 const ghostContainer = document.getElementById("ghost-cursor-container");
@@ -13977,5 +14014,1193 @@ body.header-parallax-active .header-identity {
   })();
 </script>
 
+<style id="polish-pack">
+/* ══════════════════════════════════════════════════════════════════
+   POLISH PACK — v1
+   Paste as a single <style id="polish-pack"> block immediately before
+   </body> in galleryversion/index.html. It is the LAST stylesheet in
+   the document, so it wins over the earlier override blocks without
+   needing !important (except where the source already uses !important).
+
+   Contents
+     1  Elevation tokens + shadow replacement
+     2  Cross-browser room transition
+     3  Interaction feedback (magnetic / ripple / cursor companion)
+     4  Mobile record wall — swipe rail
+     5  Hacker layer (data-wave, scanlines, glitch, terminal, counters)
+     6  About — breathing room
+     7  Contact — warmth
+     8  Reduced motion + hidden-tab freeze
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 1 ─ ELEVATION TOKENS ─────────────────────────────────────────
+   The old shadows stacked a wide black blur with a wide blue glow.
+   Two wide blurs on a #0E131F ground read as haze, not lift — that's
+   the "muddy" you flagged. Netflix/Apple TV shadows are two-part:
+   a TIGHT dark contact shadow that grounds the edge, and a WIDE
+   negative-spread ambient that never touches the card's own border.
+   Colour lives in a 1px inset hairline, not in the blur.            */
+:root {
+  --e1: 0 1px 2px rgba(0, 0, 0, 0.30), 0 4px 12px -6px rgba(0, 0, 0, 0.40);
+  --e2: 0 2px 4px rgba(0, 0, 0, 0.32), 0 12px 28px -12px rgba(0, 0, 0, 0.50);
+  --e3: 0 3px 6px rgba(0, 0, 0, 0.34), 0 22px 52px -18px rgba(0, 0, 0, 0.60);
+  --e4: 0 4px 9px rgba(0, 0, 0, 0.36), 0 34px 80px -24px rgba(0, 0, 0, 0.68);
+  --hair: inset 0 0 0 1px rgba(232, 237, 242, 0.055);
+  --hair-blue: inset 0 0 0 1px rgba(74, 124, 157, 0.30);
+  --hair-gold: inset 0 0 0 1px rgba(214, 183, 122, 0.26);
+}
+
+.archive-piece {
+  box-shadow: var(--e2), var(--hair);
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 320ms ease;
+}
+.archive-piece:hover,
+.work-room .archive-piece:hover {
+  box-shadow: var(--e4), var(--hair-blue);
+  border-color: rgba(232, 237, 242, 0.20);
+  transform: translateY(-5px) scale(1.012);
+}
+.archive-piece.featured-project:hover {
+  box-shadow: var(--e4), var(--hair-gold);
+}
+.archive-piece.is-discovered {
+  box-shadow: var(--e4), inset 0 0 0 1px rgba(74, 124, 157, 0.55);
+}
+
+.ccard,
+.browse-room .ccard {
+  box-shadow: var(--e2), var(--hair);
+}
+.ccard:hover,
+.browse-room .ccard:hover {
+  box-shadow: var(--e3), var(--hair-blue);
+  border-color: rgba(232, 237, 242, 0.24);
+}
+
+/* Record wall: the wall lives on near-black so it can carry a mood
+   tint, but the tint belongs in a hairline + a tight halo, not a 72px
+   coloured bloom. Keeps --rw-mood-soft doing the work at low radius. */
+.rw-card {
+  box-shadow:
+    0 0 0 1px rgba(2, 3, 5, 0.96),
+    var(--e2),
+    var(--hair);
+}
+.rw-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(2, 3, 5, 0.96),
+    var(--e3),
+    inset 0 0 0 1px rgba(232, 237, 242, 0.09);
+}
+.rw-card.is-focus {
+  box-shadow:
+    0 0 0 2px rgba(2, 3, 5, 0.94),
+    var(--e4),
+    0 0 30px -6px var(--rw-mood-soft, rgba(74, 124, 157, 0.2)),
+    inset 0 0 0 1px var(--rw-mood, rgba(74, 124, 157, 0.4));
+}
+
+.rw-mcard,
+.rw-mrow {
+  box-shadow: var(--e1), var(--hair);
+  transition: box-shadow 280ms ease, transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rw-mcard:active,
+.rw-mrow:active {
+  box-shadow: var(--e1);
+}
+
+.about-film-image,
+.about-film-image-hero,
+.about-welcome-frame div {
+  box-shadow: var(--e3), var(--hair);
+}
+
+/* ── 2 ─ CROSS-BROWSER ROOM TRANSITION ────────────────────────────
+   Chrome keeps its native View Transition. Firefox / Safari / older
+   Edge get this JS-timed cross-blur, which reads near-identically.
+   Requires PATCH A in PATCHES.md (syncRoute → transitionToRoom).    */
+body.is-room-leaving .room.active {
+  animation: none !important;
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(0.995);
+  transition:
+    opacity 200ms cubic-bezier(0.4, 0, 1, 1),
+    filter 200ms cubic-bezier(0.4, 0, 1, 1),
+    transform 200ms cubic-bezier(0.4, 0, 1, 1);
+  pointer-events: none;
+}
+body.is-room-entering .room.active {
+  animation: roomCrossIn 460ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+@keyframes roomCrossIn {
+  from { opacity: 0; filter: blur(10px); transform: translateY(8px) scale(1.006); }
+  60%  { filter: blur(1.5px); }
+  to   { opacity: 1; filter: blur(0); transform: none; }
+}
+/* The hero reel collapse (is-archived-away) was snapping a beat ahead
+   of the room swap. Give it the same curve and let it lead by 40ms. */
+#heroReel {
+  transition:
+    opacity 300ms cubic-bezier(0.4, 0, 1, 1),
+    clip-path 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 300ms ease;
+}
+#heroReel.is-archived-away {
+  filter: blur(6px);
+}
+
+/* ── 3 ─ INTERACTION FEEDBACK ─────────────────────────────────────
+   Magnetism uses the `translate` PROPERTY, not `transform`, so it
+   composes with the existing :hover transform rules instead of
+   fighting them. No specificity war, no rewriting old rules.        */
+[data-magnetic] {
+  translate: var(--mag-x, 0px) var(--mag-y, 0px);
+  transition: translate 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-magnetic]:active {
+  transition: translate 90ms ease-out;
+}
+
+/* Ripple */
+[data-ripple] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.jm-ripple {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle,
+    rgba(232, 237, 242, 0.26) 0%,
+    rgba(74, 124, 157, 0.22) 42%,
+    rgba(74, 124, 157, 0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  animation: jmRipple 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes jmRipple {
+  from { transform: translate(-50%, -50%) scale(0);    opacity: 0.95; }
+  to   { transform: translate(-50%, -50%) scale(1);    opacity: 0; }
+}
+
+/* Cursor companion — a 26px ring that trails the pointer with spring
+   lerp. The NATIVE cursor stays visible on purpose: this site has a
+   drag surface (the record wall) and hiding the system cursor there
+   costs more in legibility than it buys in flavour.                 */
+.jm-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 240;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1px solid rgba(232, 237, 242, 0.42);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 260ms ease, width 220ms ease, height 220ms ease,
+              margin 220ms ease, border-color 220ms ease, border-radius 220ms ease;
+}
+.jm-cursor::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 2px;
+  height: 2px;
+  margin: -1px 0 0 -1px;
+  border-radius: 50%;
+  background: rgba(214, 183, 122, 0.9);
+  transition: opacity 200ms ease;
+}
+.jm-cursor.is-live { opacity: 1; }
+/* over a record / card: square up into a crosshair-ish reticle */
+.jm-cursor.is-target {
+  width: 42px;
+  height: 42px;
+  margin: -21px 0 0 -21px;
+  border-radius: 3px;
+  border-color: rgba(74, 124, 157, 0.85);
+}
+.jm-cursor.is-target::after { opacity: 0; }
+/* over a drag surface */
+.jm-cursor.is-drag {
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-color: rgba(214, 183, 122, 0.6);
+  border-radius: 50%;
+}
+body.rw-pull .jm-cursor { opacity: 0.25; }
+
+/* ── 4 ─ MOBILE RECORD WALL — SWIPE RAIL ──────────────────────────
+   Native scroll-snap does the physics; JS only wires the readout.
+   No touch handlers = no scroll-jacking, full momentum, works with
+   VoiceOver / TalkBack swipe.                                       */
+.rw-swipe {
+  position: relative;
+  margin: 0 calc(50% - 50vw);
+  padding: 0;
+}
+.rw-swipe-track {
+  display: flex;
+  gap: 0.85rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(16px, calc(50vw - 17rem));
+  padding: 0.35rem max(16px, calc(50vw - 17rem)) 0.9rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.rw-swipe-track::-webkit-scrollbar { display: none; }
+.rw-swipe-item {
+  flex: 0 0 min(calc(100vw - 32px), 34rem);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 380ms ease,
+              box-shadow 380ms ease;
+}
+/* neighbours sit back a step so the active card reads as the subject */
+.rw-swipe-item:not(.is-current) {
+  transform: scale(0.955);
+  opacity: 0.6;
+}
+.rw-swipe-item.is-current {
+  box-shadow: var(--e3), inset 0 0 0 1px var(--rw-mood, rgba(74, 124, 157, 0.34));
+}
+.rw-swipe-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: min(calc(100vw - 32px), 34rem);
+  margin: 0 auto 0.4rem;
+}
+.rw-swipe-dots {
+  display: flex;
+  flex: 1;
+  gap: 0.34rem;
+}
+.rw-swipe-dots button {
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.rw-swipe-dots button::before {
+  content: "";
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(232, 237, 242, 0.16);
+  transition: background 260ms ease, transform 260ms ease;
+}
+.rw-swipe-dots button[aria-current="true"]::before {
+  background: var(--rw-mood, var(--blue));
+  transform: scaleY(2);
+}
+.rw-swipe-count {
+  flex: 0 0 auto;
+  color: rgba(232, 237, 242, 0.5);
+  font: 700 0.52rem / 1 "JetBrains Mono", monospace;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+}
+.rw-swipe-count b {
+  color: rgba(232, 237, 242, 0.86);
+  font-weight: 700;
+}
+/* hint: only until the first swipe */
+.rw-swipe[data-swiped="0"] .rw-swipe-track {
+  animation: swipeHint 2.6s cubic-bezier(0.4, 0, 0.4, 1) 1.1s 2 both;
+}
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); }
+  22%      { transform: translateX(-16px); }
+  44%      { transform: translateX(0); }
+}
+
+/* ── 5 ─ HACKER LAYER ─────────────────────────────────────────────
+   Restrained on purpose: a sweep on a line you already drew, a
+   scanline at 3% opacity, a one-shot glitch on reveal. Nothing
+   loops in the reader's peripheral vision.                          */
+
+/* data-wave: rides the border-bottom the sections already have */
+.data-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  display: block;
+  pointer-events: none;
+  overflow: hidden;
+}
+.data-wave::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(74, 124, 157, 0.55) 34%,
+    rgba(214, 183, 122, 0.95) 50%,
+    rgba(74, 124, 157, 0.55) 66%,
+    transparent 100%);
+  transform: translateX(-100%);
+  animation: dataWave 7.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes dataWave {
+  0%        { transform: translateX(-100%); opacity: 0; }
+  8%        { opacity: 0.85; }
+  86%       { opacity: 0.85; }
+  100%      { transform: translateX(100%);  opacity: 0; }
+}
+.data-wave-host { position: relative; }
+
+/* CRT scanlines — one static fixed layer, no repaint cost */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.055) 0px,
+    rgba(0, 0, 0, 0.055) 1px,
+    transparent 1px,
+    transparent 3px);
+}
+/* the one moving part: a slow soft band, 22s, GPU transform only */
+.crt-scanlines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 34vh;
+  background: linear-gradient(180deg,
+    transparent,
+    rgba(74, 124, 157, 0.055) 45%,
+    rgba(232, 237, 242, 0.026) 52%,
+    transparent);
+  animation: crtSweep 22s linear infinite;
+  will-change: transform;
+}
+@keyframes crtSweep {
+  from { transform: translateY(-40vh); }
+  to   { transform: translateY(140vh); }
+}
+html.chrome-performance .crt-scanlines::after { display: none; }
+
+/* Glitch — one shot, on reveal and on hover. Split uses the site's
+   own blue + gold instead of the stock red/cyan.                    */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  color: inherit;
+}
+.glitch.glitch-run::before {
+  color: rgba(74, 124, 157, 0.95);
+  animation: glitchA 380ms steps(2, end) 1 both;
+}
+.glitch.glitch-run::after {
+  color: rgba(214, 183, 122, 0.9);
+  animation: glitchB 380ms steps(2, end) 1 both;
+}
+.glitch.glitch-run {
+  animation: glitchBase 380ms steps(3, end) 1 both;
+}
+@keyframes glitchBase {
+  0%, 100% { transform: none; }
+  18%      { transform: translate(-2px, 1px); }
+  42%      { transform: translate(2px, -1px); }
+  66%      { transform: translate(-1px, 0); }
+}
+@keyframes glitchA {
+  0%   { opacity: 0.8; transform: translate(-4px, -1px); clip-path: inset(0 0 62% 0); }
+  40%  { opacity: 0.7; transform: translate(3px, 1px);   clip-path: inset(38% 0 24% 0); }
+  75%  { opacity: 0.5; transform: translate(-2px, 0);    clip-path: inset(70% 0 0 0); }
+  100% { opacity: 0;   transform: none; }
+}
+@keyframes glitchB {
+  0%   { opacity: 0.7; transform: translate(4px, 1px);  clip-path: inset(52% 0 22% 0); }
+  45%  { opacity: 0.6; transform: translate(-3px, -1px); clip-path: inset(8% 0 66% 0); }
+  80%  { opacity: 0.4; transform: translate(2px, 0);     clip-path: inset(80% 0 0 0); }
+  100% { opacity: 0;   transform: none; }
+}
+
+/* Terminal accent — the chapter labels you already have become a
+   prompt. No new copy invented.                                     */
+.about-chapter,
+.contact-chapter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+.about-chapter::before,
+.contact-chapter::before {
+  content: "$";
+  color: rgba(214, 183, 122, 0.82);
+  font-weight: 800;
+}
+.about-chapter::after,
+.contact-chapter::after {
+  content: "";
+  width: 0.34em;
+  height: 0.9em;
+  opacity: 0.8;
+  background: rgba(74, 124, 157, 0.7);
+  animation: termBlink 1.15s steps(1, end) infinite;
+}
+@keyframes termBlink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+/* only the first visible chapter on a page keeps a live caret;
+   the rest go quiet so the page isn't a field of blinking blocks */
+.about-chapter:not([data-live])::after,
+.contact-chapter:not([data-live])::after { display: none; }
+
+/* Counter roll-up */
+.jm-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ── 6 ─ ABOUT — BREATHING ROOM ───────────────────────────────────
+   Zero copy deleted. Two moves:
+   (a) real vertical rhythm — the sections were 4.2rem apart, which
+       on a 7-section page reads as one continuous slab;
+   (b) 003/PROCESS is pulled up under 002 and loses its own rule, so
+       the page READS as five chapters instead of seven while every
+       word stays on the page.                                       */
+.about-film-hero {
+  padding-bottom: clamp(5.5rem, 9vw, 9rem);
+}
+.about-film-philosophy {
+  padding: clamp(6rem, 10vw, 10rem) 0 clamp(3rem, 5vw, 4.5rem);
+  border-bottom: 0;
+}
+.about-film-process {
+  padding-top: clamp(1.5rem, 3vw, 2.6rem) !important;
+  padding-bottom: clamp(6rem, 10vw, 10rem) !important;
+  border-top: 0 !important;
+}
+/* the process 3-up now sits in the philosophy's right column gutter */
+.about-film-process .about-section-head .about-chapter {
+  opacity: 0.55;
+}
+.about-film-bts,
+.about-film-human {
+  padding-top: clamp(6rem, 10vw, 10rem) !important;
+  padding-bottom: clamp(6rem, 10vw, 10rem) !important;
+}
+.about-film-cta {
+  padding-top: clamp(7rem, 12vw, 12rem) !important;
+  padding-bottom: clamp(8rem, 14vw, 13rem) !important;
+}
+/* copy measure: 56ch+ at 1.16rem is a wall. 46ch is a paragraph. */
+.about-film-intro,
+.about-philosophy-copy p,
+.about-next-note p {
+  max-width: 46ch;
+}
+.about-philosophy-copy {
+  display: grid;
+  gap: clamp(1.1rem, 2vw, 1.6rem);
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+/* BTS: 5 loose tiles → 1 anchor + a 4-up contact strip, so the
+   section reads as ONE image block instead of five competing ones. */
+.about-bts-layout {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.6rem, 1.1vw, 0.95rem);
+}
+.about-bts-wide {
+  grid-column: 1 / -1;
+  aspect-ratio: 21 / 9;
+}
+.about-bts-tall,
+.about-bts-monitor,
+.about-bts-post,
+.about-bts-direction {
+  grid-column: auto;
+  aspect-ratio: 4 / 5;
+  max-height: none;
+}
+.about-bts-layout figcaption {
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  opacity: 0.72;
+}
+@media (max-width: 900px) {
+  .about-bts-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-bts-wide { aspect-ratio: 16 / 9; }
+}
+
+/* ── 7 ─ CONTACT — WARMTH ─────────────────────────────────────────
+   The email was 1.85rem of body type sitting UNDER a form. It is the
+   only thing on the page that actually gets used. Promote it.       */
+.contact-open-channel {
+  grid-template-areas:
+    "intro form"
+    "direct form" !important;
+  gap: clamp(3rem, 6vw, 7rem) !important;
+}
+/* ambient shifts off pure blue — a little tungsten in the room */
+.contact-open-channel::before {
+  background:
+    radial-gradient(circle at 58% 44%, rgba(74, 124, 157, 0.11), transparent 32%),
+    radial-gradient(circle at 22% 78%, rgba(214, 183, 122, 0.075), transparent 34%),
+    radial-gradient(circle at 50% 50%, rgba(242, 238, 231, 0.03), transparent 28%),
+    linear-gradient(180deg, rgba(5, 6, 11, 0.94), rgba(9, 11, 17, 0.98)) !important;
+}
+.contact-direct-panel {
+  gap: clamp(1rem, 2vw, 1.5rem) !important;
+  padding-top: clamp(1.8rem, 3.4vw, 2.6rem) !important;
+  border-top-color: rgba(214, 183, 122, 0.22) !important;
+}
+.contact-direct-email {
+  font-family: Anton, Impact, sans-serif !important;
+  font-size: clamp(1.5rem, 3.1vw, 3.1rem) !important;
+  font-weight: 400 !important;
+  line-height: 0.96 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+  color: rgba(248, 242, 233, 0.97) !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  transition: color 200ms ease;
+}
+.contact-direct-email:hover,
+.contact-direct-email:focus-visible {
+  color: var(--gold) !important;
+}
+/* click-to-copy affordance */
+.contact-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+.contact-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0 0.95rem;
+  border: 1px solid rgba(214, 183, 122, 0.34);
+  border-radius: 999px;
+  background: rgba(214, 183, 122, 0.06);
+  color: rgba(248, 242, 233, 0.82);
+  cursor: pointer;
+  font: 800 0.6rem / 1 "JetBrains Mono", monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.contact-copy-btn:hover,
+.contact-copy-btn:focus-visible {
+  background: rgba(214, 183, 122, 0.13);
+  border-color: rgba(214, 183, 122, 0.6);
+  color: #fff;
+  outline: none;
+}
+.contact-copy-btn[data-copied="1"] {
+  border-color: rgba(74, 124, 157, 0.7);
+  background: rgba(74, 124, 157, 0.14);
+}
+/* the form loosens up: bigger gaps, softer fields, 2×2 type grid */
+.contact-brief-form {
+  gap: clamp(1.15rem, 2.2vw, 1.75rem) !important;
+}
+.contact-field input,
+.contact-field textarea {
+  padding: 0.95rem 1.05rem !important;
+  border-radius: 4px !important;
+  border-color: rgba(232, 237, 242, 0.13) !important;
+  background: rgba(232, 237, 242, 0.022) !important;
+  transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease !important;
+}
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: rgba(214, 183, 122, 0.5) !important;
+  background: rgba(232, 237, 242, 0.04) !important;
+  box-shadow: 0 0 0 3px rgba(214, 183, 122, 0.09) !important;
+  outline: none !important;
+}
+.contact-type-grid {
+  gap: 0.55rem !important;
+}
+.contact-type-option span {
+  min-height: 46px !important;
+  border-radius: 4px !important;
+}
+.contact-submit {
+  min-height: 54px !important;
+  padding-inline: 1.6rem !important;
+}
+@media (max-width: 1024px) {
+  /* on narrow screens the email leads — nobody fills a form on a
+     phone if a mailto is one tap away */
+  .contact-open-channel {
+    grid-template-areas:
+      "intro"
+      "direct"
+      "form" !important;
+  }
+  .contact-direct-panel {
+    align-self: start !important;
+  }
+}
+
+/* ── 8 ─ REDUCED MOTION + HIDDEN-TAB FREEZE ───────────────────────
+   Every animation this pack adds is listed here. Nothing runs when
+   the tab is backgrounded, nothing runs under reduce.               */
+body.jm-tab-hidden .data-wave::before,
+body.jm-tab-hidden .crt-scanlines::after,
+body.jm-tab-hidden .about-chapter::after,
+body.jm-tab-hidden .contact-chapter::after,
+body.jm-tab-hidden .rw-swipe-track {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-piece,
+  .ccard,
+  .rw-mcard,
+  .rw-mrow,
+  [data-magnetic],
+  .rw-swipe-item,
+  #heroReel {
+    transition: none !important;
+  }
+  [data-magnetic] { translate: none !important; }
+  .jm-ripple,
+  .jm-cursor,
+  .crt-scanlines::after { display: none !important; }
+  .data-wave::before {
+    animation: none !important;
+    transform: none;
+    opacity: 0.4;
+  }
+  .about-chapter::after,
+  .contact-chapter::after { animation: none !important; opacity: 0.7; }
+  .glitch::before,
+  .glitch::after { display: none !important; }
+  .glitch.glitch-run { animation: none !important; }
+  body.is-room-leaving .room.active,
+  body.is-room-entering .room.active {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .rw-swipe[data-swiped="0"] .rw-swipe-track { animation: none !important; }
+  .rw-swipe-item:not(.is-current) { transform: none; opacity: 1; }
+}
+
+@media (pointer: coarse) {
+  .jm-cursor { display: none; }
+  .crt-scanlines { opacity: 0.3; }
+}
+</style>
+<script id="polish-pack-js">
+(() => {
+  "use strict";
+
+  const reduceQ = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const fineQ   = window.matchMedia("(pointer: fine)");
+  const body    = document.body;
+  const reduced = () => reduceQ.matches;
+
+  /* ── tab-hidden freeze ─────────────────────────────────────────── */
+  const syncTabState = () => body.classList.toggle("jm-tab-hidden", document.hidden);
+  document.addEventListener("visibilitychange", syncTabState);
+  syncTabState();
+
+  /* ── 1 ─ MAGNETIC HOVER ────────────────────────────────────────
+     Uses the `translate` property so it never collides with the
+     :hover transform rules already on these buttons. Offset is a
+     fraction of cursor distance from centre, clamped, and the CSS
+     transition supplies the spring — no rAF loop, no jitter.       */
+  const MAGNETIC = [
+    ".contact-submit",
+    ".contact-copy-btn",
+    ".about-film-cta a",
+    ".header-reel-button",
+    ".category-tab",
+    ".rw-mobile-filter",
+    ".rw-mobile-jumpbar button",
+    ".contact-type-option",
+    ".cnav",
+    "[data-magnetic-opt]"
+  ].join(",");
+
+  const MAG_PULL = 0.26;   // fraction of distance-from-centre
+  const MAG_MAX  = 9;      // px cap
+
+  function markMagnetic(root = document) {
+    root.querySelectorAll(MAGNETIC).forEach((el) => {
+      if (el.dataset.magnetic === undefined) el.dataset.magnetic = "";
+    });
+  }
+
+  function magnetise(el, event) {
+    const r = el.getBoundingClientRect();
+    const dx = event.clientX - (r.left + r.width / 2);
+    const dy = event.clientY - (r.top + r.height / 2);
+    const clamp = (v) => Math.max(-MAG_MAX, Math.min(MAG_MAX, v * MAG_PULL));
+    el.style.setProperty("--mag-x", clamp(dx).toFixed(2) + "px");
+    el.style.setProperty("--mag-y", clamp(dy).toFixed(2) + "px");
+  }
+  function demagnetise(el) {
+    el.style.setProperty("--mag-x", "0px");
+    el.style.setProperty("--mag-y", "0px");
+  }
+
+  if (fineQ.matches) {
+    document.addEventListener("pointermove", (e) => {
+      if (reduced() || document.hidden) return;
+      const el = e.target.closest?.("[data-magnetic]");
+      if (el) magnetise(el, e);
+    }, { passive: true });
+
+    document.addEventListener("pointerout", (e) => {
+      const el = e.target.closest?.("[data-magnetic]");
+      if (el && !el.contains(e.relatedTarget)) demagnetise(el);
+    }, { passive: true });
+  }
+
+  /* ── 2 ─ RIPPLE CLICK ──────────────────────────────────────────
+     One delegated pointerdown. The span sizes itself to cover the
+     furthest corner from the click so the burst always completes.  */
+  const RIPPLE = [
+    ".contact-submit",
+    ".contact-copy-btn",
+    ".category-tab",
+    ".rw-mobile-filter",
+    ".rw-mobile-jumpbar button",
+    ".rw-swipe-dots button",
+    ".header-nav-link",
+    ".header-reel-button",
+    "[data-ripple-opt]"
+  ].join(",");
+
+  function markRipple(root = document) {
+    root.querySelectorAll(RIPPLE).forEach((el) => {
+      if (el.dataset.ripple === undefined) el.dataset.ripple = "";
+    });
+  }
+
+  document.addEventListener("pointerdown", (e) => {
+    if (reduced() || e.button !== 0) return;
+    const host = e.target.closest?.("[data-ripple]");
+    if (!host) return;
+    const r = host.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    const far = Math.max(
+      Math.hypot(x, y),
+      Math.hypot(r.width - x, y),
+      Math.hypot(x, r.height - y),
+      Math.hypot(r.width - x, r.height - y)
+    );
+    const size = Math.ceil(far * 2);
+    const span = document.createElement("span");
+    span.className = "jm-ripple";
+    span.style.width = span.style.height = size + "px";
+    span.style.left = x + "px";
+    span.style.top = y + "px";
+    span.addEventListener("animationend", () => span.remove(), { once: true });
+    host.appendChild(span);
+    window.setTimeout(() => span.remove(), 900); // belt + braces
+  }, { passive: true });
+
+  /* ── 3 ─ CURSOR COMPANION ──────────────────────────────────────
+     26px ring, spring-lerped. The rAF loop parks itself as soon as
+     the ring has caught up, so it costs nothing while the pointer
+     is still. Native cursor stays visible (the record wall is a
+     drag surface — hiding the system cursor there hurts).          */
+  const CURSOR_TARGET = ".rw-card, .archive-piece, .ccard, .rw-mcard, .rw-mrow, a, button";
+  const CURSOR_DRAG   = ".rw-stage, .rw-wall";
+
+  if (fineQ.matches && !reduced()) {
+    const ring = document.createElement("div");
+    ring.className = "jm-cursor";
+    ring.setAttribute("aria-hidden", "true");
+    body.appendChild(ring);
+
+    let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+    let cx = tx, cy = ty, raf = 0, live = false;
+
+    function loop() {
+      raf = 0;
+      cx += (tx - cx) * 0.19;
+      cy += (ty - cy) * 0.19;
+      ring.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0)`;
+      if (Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4) {
+        raf = requestAnimationFrame(loop);
+      }
+    }
+    const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+
+    window.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      tx = e.clientX; ty = e.clientY;
+      if (!live) { live = true; ring.classList.add("is-live"); }
+      kick();
+    }, { passive: true });
+
+    window.addEventListener("pointerover", (e) => {
+      const t = e.target;
+      if (!t.closest) return;
+      ring.classList.toggle("is-target", !!t.closest(CURSOR_TARGET));
+      ring.classList.toggle("is-drag", !t.closest(CURSOR_TARGET) && !!t.closest(CURSOR_DRAG));
+    }, { passive: true });
+
+    document.addEventListener("pointerleave", () => {
+      live = false;
+      ring.classList.remove("is-live");
+    });
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) kick(); });
+  }
+
+  /* ── 4 ─ MOBILE RECORD WALL → SWIPE RAIL ───────────────────────
+     buildMobile() renders flagship 16:9 cards as a vertical stack.
+     This lifts those cards into a scroll-snap rail with a dot
+     readout. Native scroll = native momentum, no touch handlers,
+     no scroll-jacking, and swipe navigation still works for
+     VoiceOver / TalkBack. Re-applies itself whenever buildMobile
+     re-renders (filter change) via a MutationObserver.             */
+  const mobileWall = document.getElementById("rwMobile");
+
+  function buildSwipeRail() {
+    if (!mobileWall) return;
+    if (mobileWall.querySelector(".rw-swipe")) return;           // already done
+    const cards = [...mobileWall.children].filter((n) => n.classList?.contains("rw-mcard"));
+    if (cards.length < 2) return;
+
+    const anchor = cards[0].previousElementSibling;               // capture BEFORE moving
+    const rail  = document.createElement("div");
+    const track = document.createElement("div");
+    const bar   = document.createElement("div");
+    const dots  = document.createElement("div");
+    const count = document.createElement("p");
+
+    rail.className = "rw-swipe";
+    rail.dataset.swiped = "0";
+    track.className = "rw-swipe-track";
+    track.setAttribute("role", "group");
+    track.setAttribute("aria-label", "Flagship records, swipe to browse");
+    track.tabIndex = 0;
+    bar.className = "rw-swipe-bar";
+    dots.className = "rw-swipe-dots";
+    count.className = "rw-swipe-count";
+
+    cards.forEach((card, i) => {
+      card.classList.add("rw-swipe-item");
+      track.appendChild(card);
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", `Record ${i + 1} of ${cards.length}`);
+      dot.addEventListener("click", () => {
+        rail.dataset.swiped = "1";
+        track.scrollTo({ left: card.offsetLeft - track.clientWidth / 2 + card.clientWidth / 2,
+                         behavior: reduced() ? "auto" : "smooth" });
+      });
+      dots.appendChild(dot);
+    });
+
+    bar.append(dots, count);
+    rail.append(bar, track);
+    if (anchor) anchor.after(rail); else mobileWall.prepend(rail);
+
+    /* readout — driven by scroll position, rAF-coalesced */
+    let tick = 0;
+    function sync() {
+      tick = 0;
+      const mid = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, bestD = Infinity;
+      cards.forEach((c, i) => {
+        const d = Math.abs(c.offsetLeft + c.clientWidth / 2 - mid);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      cards.forEach((c, i) => c.classList.toggle("is-current", i === best));
+      [...dots.children].forEach((d, i) =>
+        d.setAttribute("aria-current", i === best ? "true" : "false"));
+      count.innerHTML = `<b>${String(best + 1).padStart(2, "0")}</b> / ${String(cards.length).padStart(2, "0")}`;
+      /* let the rail carry the active record's mood colour */
+      const mood = cards[best].dataset.mood;
+      if (mood) rail.style.setProperty("--rw-mood", mood);
+    }
+    track.addEventListener("scroll", () => {
+      if (rail.dataset.swiped === "0") rail.dataset.swiped = "1";
+      if (!tick) tick = requestAnimationFrame(sync);
+    }, { passive: true });
+    window.addEventListener("resize", () => { if (!tick) tick = requestAnimationFrame(sync); }, { passive: true });
+
+    /* keyboard: the rail is focusable, arrows step records */
+    track.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      const cur = cards.findIndex((c) => c.classList.contains("is-current"));
+      const next = Math.max(0, Math.min(cards.length - 1, cur + (e.key === "ArrowRight" ? 1 : -1)));
+      const c = cards[next];
+      track.scrollTo({ left: c.offsetLeft - track.clientWidth / 2 + c.clientWidth / 2,
+                       behavior: reduced() ? "auto" : "smooth" });
+    });
+
+    sync();
+  }
+
+  if (mobileWall) {
+    buildSwipeRail();
+    let mo = 0;
+    new MutationObserver(() => {
+      if (mo) return;
+      mo = window.setTimeout(() => { mo = 0; buildSwipeRail(); enhanceAll(); }, 30);
+    }).observe(mobileWall, { childList: true });
+  }
+
+  /* ── 5 ─ DATA-WAVE DIVIDERS ────────────────────────────────────
+     Appended as a child so nothing collides with the existing
+     ::before / ::after on these sections.                          */
+  const WAVE_HOSTS = [
+    ".about-film-hero",
+    ".about-film-process",
+    ".about-film-bts",
+    ".about-film-human",
+    ".contact-direct-panel",
+    ".category-tabs-header",
+    ".rw-msection"
+  ].join(",");
+
+  function markWaves(root = document) {
+    root.querySelectorAll(WAVE_HOSTS).forEach((host, i) => {
+      if (host.querySelector(":scope > .data-wave")) return;
+      host.classList.add("data-wave-host");
+      const w = document.createElement("i");
+      w.className = "data-wave";
+      w.setAttribute("aria-hidden", "true");
+      w.style.animationDelay = (i * 0.9).toFixed(2) + "s";
+      host.appendChild(w);
+    });
+  }
+
+  /* ── 6 ─ CRT SCANLINES ─────────────────────────────────────────
+     One fixed layer. Static gradient = zero repaint; the single
+     moving band is a transform-only sweep and is dropped entirely
+     under .chrome-performance (see CSS).                           */
+  if (!document.querySelector(".crt-scanlines")) {
+    const crt = document.createElement("div");
+    crt.className = "crt-scanlines";
+    crt.setAttribute("aria-hidden", "true");
+    body.appendChild(crt);
+  }
+
+  /* ── 7 ─ GLITCH TEXT ───────────────────────────────────────────
+     One shot when the .glide engine flips .is-visible, and one shot
+     on hover with a 1.2s cooldown. Never loops.                    */
+  const GLITCH = [
+    ".about-philosophy-impact",
+    ".contact-intro-panel h2",
+    ".category-tabs-title",
+    "#aboutFilmTitle"
+  ].join(",");
+
+  function markGlitch(root = document) {
+    root.querySelectorAll(GLITCH).forEach((el) => {
+      if (el.classList.contains("glitch")) return;
+      el.dataset.text = el.textContent.trim();
+      el.classList.add("glitch");
+      let cool = 0;
+      const fire = () => {
+        if (reduced() || document.hidden) return;
+        const now = performance.now();
+        if (now - cool < 1200) return;
+        cool = now;
+        el.classList.remove("glitch-run");
+        void el.offsetWidth;                       // reflow to restart
+        el.classList.add("glitch-run");
+        window.setTimeout(() => el.classList.remove("glitch-run"), 420);
+      };
+      el.addEventListener("pointerenter", fire);
+      el.__jmGlitch = fire;
+    });
+  }
+
+  /* fire on reveal: watch for .is-visible landing on the glide
+     ancestor that contains a glitch target */
+  const revealObserver = new MutationObserver((records) => {
+    records.forEach((r) => {
+      const el = r.target;
+      if (!el.classList?.contains("is-visible")) return;
+      el.querySelectorAll?.(".glitch").forEach((g) => g.__jmGlitch?.());
+      if (el.classList.contains("glitch")) el.__jmGlitch?.();
+    });
+  });
+
+  function watchReveals(root = document) {
+    root.querySelectorAll(".glide").forEach((el) => {
+      if (el.dataset.jmWatched) return;
+      el.dataset.jmWatched = "1";
+      revealObserver.observe(el, { attributes: true, attributeFilter: ["class"] });
+    });
+  }
+
+  /* ── 8 ─ TERMINAL CARET ────────────────────────────────────────
+     Only the first chapter label in each room keeps a live caret. */
+  function markTerminal() {
+    ["#about", "#contact"].forEach((sel) => {
+      const room = document.querySelector(sel);
+      if (!room) return;
+      room.querySelectorAll("[data-live]").forEach((n) => n.removeAttribute("data-live"));
+      room.querySelector(".about-chapter, .contact-chapter")?.setAttribute("data-live", "");
+    });
+  }
+
+  /* ── 9 ─ COUNTER ROLL-UP ───────────────────────────────────────
+     Finds the first integer inside a leaf element, wraps just that
+     run, and counts to it once on reveal. Non-numeric copy is left
+     untouched, so it is safe to point at generated markup.         */
+  const COUNTERS = [
+    ".rw-mobile-kicker",
+    ".rw-mobile-console > span > span",
+    "[data-countup]"
+  ].join(",");
+
+  function rollUp(el) {
+    if (el.dataset.jmCounted) return;
+    const m = el.textContent.match(/\d+/);
+    if (!m) { el.dataset.jmCounted = "1"; return; }
+    el.dataset.jmCounted = "1";
+    const to = parseInt(m[0], 10);
+    if (!to || to > 9999) return;
+    const before = el.textContent.slice(0, m.index);
+    const after  = el.textContent.slice(m.index + m[0].length);
+    const num = document.createElement("span");
+    num.className = "jm-count";
+    num.textContent = reduced() ? String(to) : "0";
+    el.textContent = "";
+    el.append(document.createTextNode(before), num, document.createTextNode(after));
+    if (reduced()) return;
+
+    const dur = 900 + Math.min(to, 40) * 12;
+    const t0 = performance.now();
+    (function step(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      num.textContent = String(Math.round(to * eased));
+      if (p < 1 && !document.hidden) requestAnimationFrame(step);
+      else num.textContent = String(to);
+    })(t0);
+  }
+
+  const countObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          rollUp(e.target);
+          countObserver.unobserve(e.target);
+        });
+      }, { threshold: 0.4 })
+    : null;
+
+  function markCounters(root = document) {
+    root.querySelectorAll(COUNTERS).forEach((el) => {
+      if (el.dataset.jmCountWatch) return;
+      el.dataset.jmCountWatch = "1";
+      if (countObserver) countObserver.observe(el); else rollUp(el);
+    });
+  }
+
+  /* ── 10 ─ CONTACT: CLICK-TO-COPY EMAIL ─────────────────────────
+     The email is the only thing on that page anyone actually uses.
+     One tap to clipboard, with a mailto fallback left intact.      */
+  function buildCopyEmail() {
+    const email = document.querySelector(".contact-direct-email");
+    if (!email || email.closest(".contact-copy-row")) return;
+    const row = document.createElement("div");
+    row.className = "contact-copy-row";
+    email.replaceWith(row);
+    row.appendChild(email);
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "contact-copy-btn";
+    btn.textContent = "Copy";
+    btn.setAttribute("aria-label", "Copy email address to clipboard");
+    btn.addEventListener("click", async () => {
+      const value = email.getAttribute("href").replace(/^mailto:/, "");
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+        body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch {}
+        ta.remove();
+      }
+      btn.textContent = "Copied";
+      btn.dataset.copied = "1";
+      window.setTimeout(() => {
+        btn.textContent = "Copy";
+        delete btn.dataset.copied;
+      }, 1800);
+    });
+    row.appendChild(btn);
+    markMagnetic(row);
+    markRipple(row);
+  }
+
+  /* ── wire-up ───────────────────────────────────────────────────── */
+  function enhanceAll() {
+    markMagnetic();
+    markRipple();
+    markWaves();
+    markGlitch();
+    watchReveals();
+    markTerminal();
+    markCounters();
+    buildCopyEmail();
+  }
+
+  enhanceAll();
+  window.addEventListener("jm:roomchange", () => {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(enhanceAll));
+  });
+  window.addEventListener("load", () => window.setTimeout(enhanceAll, 250));
+
+  /* expose for debugging / manual re-runs after dynamic renders */
+  window.jmPolish = { enhanceAll, buildSwipeRail, rollUp };
+})();
+</script>
 </body>
 </html>
