@@ -116,8 +116,10 @@
   </div>
 
   <!-- ── HERO ── -->
-  <section aria-label="Director reel" style="position:relative;height:min(100svh,58rem);min-height:28rem;overflow:hidden;background:#07080A">
+  <section data-parallax-hero="" aria-label="Director reel" style="position:relative;height:min(100svh,58rem);min-height:28rem;overflow:hidden;background:#07080A">
+    <div data-parallax-layer="" style="position:absolute;inset:-10% -5% auto;width:110%;height:130%;will-change:transform">
     <video ref="{{ heroVideo }}" src="videos/reel-loop.mp4" poster="{{ heroPoster }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="auto" tabIndex="-1" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82"></video>
+    </div>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,.78) 0%,rgba(7,8,10,.26) 26%,rgba(7,8,10,.58) 52%,rgba(9,10,13,.9) 76%,rgba(11,12,15,.99) 100%)"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 22% 88%, rgba(7,8,10,.82), transparent 72%)"></div>
 
@@ -334,6 +336,7 @@ class Component extends DCLogic {
     this.stopLoop();
     if (this.settle) clearTimeout(this.settle);
     if (window.lenis) { window.lenis.destroy(); window.lenis = null; }
+    ScrollTrigger?.getAll().forEach((st) => { if (st.vars?.trigger?.closest?.("[data-parallax-hero],[data-split-reveal],[data-sticky-stack]")) st.kill(); });
     if (this.enterTimer) clearTimeout(this.enterTimer);
   }
 
@@ -369,6 +372,26 @@ class Component extends DCLogic {
       element.appendChild(mask);
     });
     element.dataset.splitReady = "true";
+  };
+
+  initParallax = () => {
+    if (this.reduce?.matches || !gsap || !ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const hero = document.querySelector("[data-parallax-hero]");
+    const layer = document.querySelector("[data-parallax-layer]");
+    if (!hero || !layer) return;
+    gsap.to(layer, {
+      yPercent: -14,
+      scale: 1.06,
+      ease: "none",
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: "bottom -10%",
+        scrub: 1.2,
+        invalidateOnRefresh: true,
+      },
+    });
   };
 
   initSplitReveals = () => {
