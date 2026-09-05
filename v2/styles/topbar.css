@@ -1,0 +1,164 @@
+/* ══ TASKBAR ══════════════════════════════════════════════════════
+   Shared across home / browse / films / about / contact so the four
+   copies cannot drift. Attribute selectors only — no class vocabulary.
+
+   Surface is opaque near-black with a hairline and a real shadow.
+   Deliberately NO backdrop-filter: no glassmorphism, and nothing that
+   re-blurs the page behind it every frame.
+   ══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+[data-topbar] {
+  position: fixed;
+  inset: 22px 0 auto;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding-inline: clamp(1rem, 2.6vw, 2.2rem);
+  pointer-events: none;
+}
+[data-topbar] > * { pointer-events: auto; }
+
+[data-bar] {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(.1rem, .5vw, .35rem);
+  height: 58px;
+  width: clamp(320px, 52vw, 760px);
+  padding: 5px;
+  border: 1px solid rgba(233, 235, 238, .17);
+  background: #101218;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .4), 0 18px 44px -16px rgba(0, 0, 0, .75);
+}
+[data-bar] a {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding-inline: clamp(.35rem, 1.1vw, 1rem);
+  border: 1px solid transparent;
+  color: rgba(233, 235, 238, .74);
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(.72rem, .84vw, .82rem);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transform: translateY(0);
+  transition: color 150ms ease, background-color 150ms ease,
+              border-color 150ms ease, transform 150ms ease;
+}
+[data-bar] a:hover {
+  color: #F4F1EA;
+  background-color: rgba(233, 235, 238, .07);
+  border-color: rgba(233, 235, 238, .14);
+  transform: translateY(-2px);
+}
+/* active: cream block, dark ink — unmistakable, no glow */
+[data-bar] a[aria-current="page"] {
+  background-color: #EFEAE0;
+  border-color: #EFEAE0;
+  color: #0B0C0F;
+  padding-inline: clamp(.6rem, 1.5vw, 1.3rem);
+  transform: none;
+}
+[data-bar] a[aria-current="page"]:hover { background-color: #FFFDF7; color: #0B0C0F; }
+[data-bar] a:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
+/* Home is an icon cell. The SVG is inlined in the markup with
+   stroke="currentColor", so it flips to dark ink on the cream active
+   block with no second asset, no filter hack and no mask support. */
+[data-bar] a[data-home] {
+  flex: 0 0 auto;
+  padding-inline: clamp(.85rem, 1.5vw, 1.15rem);
+  letter-spacing: 0;
+}
+[data-bar] a[data-home] svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+}
+
+[data-ident] { display: grid; gap: .28rem; align-content: center; text-decoration: none; }
+[data-ident] b {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.05rem, 1.45vw, 1.3rem);
+  letter-spacing: .016em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: #E9EBEE;
+}
+[data-ident] span {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(.72rem, .78vw, .78rem);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(233, 235, 238, .6);
+  line-height: 1;
+}
+[data-ident]:hover b { color: oklch(0.82 0.11 200); }
+
+[data-social] {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .35rem;
+}
+/* Icon-only: the words "Instagram" and "LinkedIn" were the only copy in
+   this corner and the marks carry it better. Labels live in aria-label. */
+[data-social] a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: rgba(233, 235, 238, .62);
+  text-decoration: none;
+  transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+[data-social] a:hover, [data-social] a:focus-visible {
+  color: #E9EBEE;
+  background-color: rgba(233, 235, 238, .08);
+  transform: translateY(-2px);
+  outline: none;
+}
+[data-social] a:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
+[data-social] svg { display: block; width: 19px; height: 19px; }
+
+/* pages that are not the full-bleed hero need to clear the fixed bar */
+[data-under-bar] { padding-top: 108px; }
+
+/* small laptops: shed the secondary bits before the bar can reach the name */
+@media (max-width: 1200px) {
+  [data-ident] span { display: none; }
+}
+@media (max-width: 1000px) {
+  [data-social] { display: none; }
+  [data-topbar] { grid-template-columns: auto 1fr; }
+  [data-bar] { width: min(100%, 620px); margin-left: auto; }
+}
+/* phones: same language — dark surface, cream active, 44px targets — but
+   the bar becomes a full-width scrollable row beneath the identity */
+@media (max-width: 720px) {
+  [data-topbar] {
+    position: sticky;
+    inset: 0 auto auto;
+    grid-template-columns: 1fr;
+    gap: .6rem;
+    padding: .7rem clamp(.9rem, 4vw, 1.2rem);
+    background: linear-gradient(180deg, #0B0C0F 62%, rgba(11, 12, 15, 0));
+  }
+  [data-bar] {
+    width: 100%;
+    margin: 0;
+    height: 54px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  [data-bar]::-webkit-scrollbar { display: none; }
+  [data-bar] a { flex: 0 0 auto; }
+  [data-under-bar] { padding-top: 0; }
+}

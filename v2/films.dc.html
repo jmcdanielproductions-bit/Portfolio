@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/topbar.css">
+  <link rel="stylesheet" href="styles/motion.css">
+  <style>
+    body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
+    a { color: #E9EBEE; text-decoration: none; }
+    a:hover { color: oklch(0.72 0.14 200); }
+
+    [data-t="label"] {
+      margin: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(.75rem, .82vw, .8rem);
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: oklch(0.8 0.11 200);
+    }
+    [data-t="head"] {
+      margin: 0;
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.3rem, 4.6vw, 4rem);
+      line-height: .9;
+      letter-spacing: .014em;
+      text-transform: uppercase;
+    }
+    [data-t="body"] {
+      margin: 0;
+      max-width: 48ch;
+      font-size: clamp(1rem, 1.12vw, 1.12rem);
+      line-height: 1.66;
+      color: rgba(233,235,238,.76);
+    }
+    [data-group] {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin: 0 0 clamp(1rem, 2.2vw, 1.5rem);
+      padding-bottom: .8rem;
+      border-bottom: 1px solid rgba(233,235,238,.13);
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(233,235,238,.62);
+    }
+    [data-group] b { color: rgba(233,235,238,.9); font-weight: 500; }
+
+    [data-card] {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: #E9EBEE;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transform: translateY(0);
+      transition: transform 360ms cubic-bezier(.22,1,.36,1);
+    }
+    [data-card]:hover { transform: translateY(-4px); }
+    [data-card]:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 4px; }
+    [data-card] video { opacity: 0; transition: opacity 400ms ease; }
+    [data-card]:hover video, [data-card]:focus-visible video { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; }
+      [data-card]:hover { transform: none; }
+      [data-card] video { display: none; }
+    }
+  </style>
+</helmet>
+
+<div data-under-bar="" style="position:relative;background:#0B0C0F;color:#E9EBEE;font-family:Chivo,system-ui,sans-serif;min-height:100vh;overflow-x:hidden">
+
+  <div data-topbar="">
+    <a data-ident="" href="home.dc.html" aria-label="Jared McDaniel, home">
+      <b>Jared McDaniel</b>
+      <span>Creative Video Director / Editor</span>
+    </a>
+    <nav data-bar="" aria-label="Primary">
+      <a data-home="" href="home.dc.html" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true" focusable="false"><path d="M3.2 10.4 12 3.4l8.8 7"></path><path d="M5.4 9.7V20.6h13.2V9.7"></path><path d="M9.9 20.6v-5.9h4.2v5.9"></path></svg></a>
+      <a href="browse.dc.html">Work</a>
+      <a href="films.dc.html" aria-current="page">Films</a>
+      <a href="about.dc.html">About</a>
+      <a href="contact.dc.html">Contact</a>
+      <a href="home.dc.html#reel">Reel</a>
+    </nav>
+    <div data-social="">
+      <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" focusable="false"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"></circle></svg></a>
+      <a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg></a>
+    </div>
+  </div>
+
+  <main style="width:min(1360px,calc(100vw - clamp(2.2rem,8vw,6.4rem)));margin:0 auto;padding-bottom:clamp(3rem,6vw,5rem)">
+
+    <section style="display:grid;gap:clamp(1.1rem,2.2vw,1.6rem);padding:clamp(2rem,4.5vw,3.4rem) 0 clamp(2.4rem,5vw,4rem)">
+      <p data-t="label">Films</p>
+      <h1 data-t="head" style="max-width:18ch">Made on my own time</h1>
+      <p data-t="body">Shorts and edits with no client and no brief. This is where I try things before they show up in the paid work.</p>
+    </section>
+
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+      <section aria-label="{{ g.name }}" style="padding-bottom:clamp(2.6rem,5vw,4.2rem)">
+        <p data-group=""><b>{{ g.name }}</b> <span>{{ g.count }}</span></p>
+        <div style="{{ g.gridStyle }}">
+          <sc-for list="{{ g.items }}" as="f" hint-placeholder-count="3">
+            <button data-card="" type="button" onClick="{{ f.open }}" aria-label="{{ f.aria }}">
+              <span style="position:relative;display:block;overflow:hidden;background:#07080A;aspect-ratio:16/9;border:1px solid rgba(233,235,238,.11)">
+                <img src="{{ f.thumb }}" alt="" loading="lazy" decoding="async" onLoad="{{ f.guard }}" onError="{{ f.guard }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9"></img>
+                <sc-if value="{{ f.loop }}" hint-placeholder-val="{{ false }}">
+                  <video src="{{ f.loop }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="none" tabIndex="-1" aria-hidden="true" onMouseEnter="{{ f.play }}" onMouseLeave="{{ f.stop }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+                </sc-if>
+                <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,0) 44%,rgba(7,8,10,.92) 100%)"></span>
+                <span style="position:absolute;left:0;right:0;bottom:0;display:block;padding:clamp(.7rem,1.2vw,1.1rem)">
+                  <span style="display:block;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:{{ f.titleSize }};line-height:.92;letter-spacing:.012em;text-transform:uppercase">{{ f.title }}</span>
+                  <span style="display:block;margin-top:.32rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(233,235,238,.78)">{{ f.sub }}</span>
+                </span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-for>
+
+    <section style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:clamp(1.2rem,3vw,2.5rem);padding:clamp(2rem,4vw,3.2rem) 0;border-top:1px solid rgba(233,235,238,.11)">
+      <p data-t="head" style="max-width:20ch;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:800">Want one of these for a brand?</p>
+      <a data-btn="ghost" href="contact.dc.html" style="min-height:58px;padding:0 1.7rem;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(1.15rem,1.8vw,1.5rem);letter-spacing:.06em;text-transform:uppercase">Send it <span data-arrow="" aria-hidden="true" style="font-family:Chivo,sans-serif;font-weight:400;font-size:.9em">&rarr;</span></a>
+    </section>
+  </main>
+
+  <footer style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+    <span>Jared McDaniel / 2026</span>
+    <a href="browse.dc.html" style="color:oklch(0.8 0.11 200)">The brand work &rarr;</a>
+  </footer>
+
+  <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ playingLabel }}" style="position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:clamp(.75rem,3vw,2.5rem);background:rgba(4,5,7,.94)">
+      <button type="button" onClick="{{ closePlayer }}" aria-label="Close player" style="position:absolute;right:clamp(.75rem,2.5vw,1.8rem);top:clamp(.75rem,2.5vw,1.8rem);display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(233,235,238,.3);background:rgba(11,12,15,.7);color:#E9EBEE;font-size:1.05rem;cursor:pointer" style-hover="border-color:oklch(0.72 0.14 200);color:oklch(0.82 0.11 200)">&#10005;</button>
+      <div style="width:min(100%,1280px)">
+        <p style="margin:0 0 .6rem;font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,235,238,.66)">{{ playingLabel }}</p>
+        <div style="position:relative;aspect-ratio:16/9;background:#000;border:1px solid rgba(233,235,238,.14)">
+          <iframe src="{{ playingSrc }}" title="{{ playingLabel }}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+/* Two real groups, taken from the `type` field in the data rather than
+   invented: the narrative/experimental shorts, then the editorial cuts. */
+const SHORTS = ["ashfall", "silent-collapse"];
+
+class Component extends DCLogic {
+  state = { data: null, playing: null };
+
+  componentDidMount() {
+    import("./data/projects.js").then((m) => this.setState({ data: m }));
+    this.onKey = (e) => { if (e.key === "Escape") this.setState({ playing: null }); };
+    window.addEventListener("keydown", this.onKey);
+  }
+  componentWillUnmount() { window.removeEventListener("keydown", this.onKey); }
+
+  card = (d, p, big) => ({
+    title: p.title,
+    sub: `${p.type} / ${p.year}`,
+    thumb: d.frame(p),
+    guard: d.guardThumb(p.yt),
+    loop: d.LOOPS[p.slug] || "",
+    titleSize: big ? "clamp(1.3rem, 2.4vw, 2.3rem)" : "clamp(1.05rem, 1.6vw, 1.5rem)",
+    aria: `Play ${p.title} — ${p.role}, ${p.type}, ${p.year}`,
+    /* only the hovered card ever decodes video, and it is always muted */
+    play: (e) => { const v = e.currentTarget; v.muted = true; v.play().catch(() => {}); },
+    stop: (e) => { const v = e.currentTarget; v.pause(); v.currentTime = 0; },
+    open: () => this.setState({ playing: { src: d.embed(p.yt), label: `${p.title} / ${p.year}` } })
+  });
+
+  renderVals() {
+    const d = this.state.data;
+    const playing = this.state.playing;
+    const films = d ? d.PROJECTS.filter((p) => p.track === "films") : [];
+    const shorts = films.filter((p) => SHORTS.includes(p.slug));
+    const edits = films.filter((p) => !SHORTS.includes(p.slug));
+
+    return {
+      groups: !d ? [] : [
+        {
+          name: "Narrative shorts",
+          count: `${shorts.length} films`,
+          gridStyle: "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr));gap:clamp(.7rem,1.4vw,1.2rem)",
+          items: shorts.map((p) => this.card(d, p, true))
+        },
+        {
+          name: "Editorial cuts",
+          count: `${edits.length} pieces`,
+          gridStyle: "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:clamp(.6rem,1.2vw,1rem)",
+          items: edits.map((p) => this.card(d, p, false))
+        }
+      ],
+      playing: !!playing,
+      playingSrc: playing?.src || "",
+      playingLabel: playing?.label || "",
+      closePlayer: () => this.setState({ playing: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

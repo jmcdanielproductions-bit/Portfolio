@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/topbar.css">
+  <link rel="stylesheet" href="styles/motion.css">
+  <style>
+    body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
+    a { color: #E9EBEE; text-decoration: none; }
+    a:hover { color: oklch(0.72 0.14 200); }
+
+    /* ── Type scale, one place. Only short phrases earn the impact sizes.
+       impact  56-72px : FIND THE RHYTHM, BIGGER WORLDS
+       head    42-54px : EVERY FRAME HAS A JOB, BEFORE THE FRAME, IN THE MIX
+       lede    22-28px : the philosophy line and section ledes
+       body    16-18px
+       label   12-13px : chapter notation ── */
+    [data-t="impact"] {
+      margin: 0;
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.6rem, 5.4vw, 4.5rem);
+      line-height: .88;
+      letter-spacing: .014em;
+      text-transform: uppercase;
+    }
+    [data-t="head"] {
+      margin: 0;
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 3.6vw, 3.4rem);
+      line-height: .92;
+      letter-spacing: .016em;
+      text-transform: uppercase;
+    }
+    [data-t="lede"] {
+      margin: 0;
+      max-width: 42ch;
+      font-size: clamp(1.18rem, 1.75vw, 1.65rem);
+      line-height: 1.36;
+      color: rgba(233,235,238,.9);
+    }
+    [data-t="body"] {
+      margin: 0;
+      max-width: 62ch;
+      font-size: clamp(1rem, 1.12vw, 1.12rem);
+      line-height: 1.68;
+      color: rgba(233,235,238,.74);
+    }
+    [data-t="label"] {
+      margin: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(.75rem, .82vw, .8rem);
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: oklch(0.8 0.11 200);
+    }
+
+    /* section rhythm — one shared value so spacing can't drift per-section */
+    [data-sec] {
+      padding-block: clamp(3.2rem, 7vw, 6rem);
+      border-top: 1px solid rgba(233,235,238,.11);
+    }
+    [data-sec="first"] { border-top: 0; padding-top: clamp(4.5rem, 9vw, 7rem); }
+
+    /* ── Motion follows hierarchy: a reveal per section TYPE, not one
+       global fade. Nothing bounces, floats, parallaxes or pulses. ── */
+    /* Hidden state is scoped behind [data-ready], which the logic class sets
+       on mount. If JS never runs, or the observer never reports, nothing is
+       hidden — the page is readable first and animated second. */
+    [data-ready] [data-rev] { opacity: 0; }
+    [data-ready] [data-rev].seen { opacity: 1; }
+    [data-rev="fade"] { transition: opacity 620ms ease; }
+    [data-rev="rise"] { transform: translateY(14px); transition: opacity 560ms ease, transform 620ms cubic-bezier(.22,1,.36,1); }
+    [data-rev="rise"].seen { transform: none; }
+    [data-rev="frame"] { transform: scale(.985); transition: opacity 640ms ease, transform 760ms cubic-bezier(.22,1,.36,1); }
+    [data-rev="frame"].seen { transform: none; }
+    [data-rev="none"] { opacity: 1; }
+    /* Process entries: sequential but quick */
+    [data-ready] [data-step] { opacity: 0; transform: translateY(10px); transition: opacity 420ms ease, transform 460ms cubic-bezier(.22,1,.36,1); }
+    [data-ready] [data-step].seen { opacity: 1; transform: none; }
+    [data-step="2"] { transition-delay: 90ms; }
+    [data-step="3"] { transition-delay: 180ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-rev], [data-step] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    /* BTS: one 21:9 anchor plus a contact strip, so it reads as ONE block */
+    [data-bts] {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(.5rem, 1vw, .9rem);
+    }
+    [data-bts] > :first-child { grid-column: 1 / -1; aspect-ratio: 21 / 9; }
+    [data-bts] > :not(:first-child) { aspect-ratio: 4 / 5; }
+    @media (max-width: 760px) {
+      [data-bts] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      [data-bts] > :first-child { aspect-ratio: 16 / 9; }
+    }
+  </style>
+</helmet>
+
+<div data-under-bar="" style="position:relative;background:#0B0C0F;color:#E9EBEE;font-family:Chivo,system-ui,sans-serif;min-height:100vh;overflow-x:hidden">
+
+  <div data-topbar="">
+    <a data-ident="" href="home.dc.html" aria-label="Jared McDaniel, home">
+      <b>Jared McDaniel</b>
+      <span>Creative Video Director / Editor</span>
+    </a>
+    <nav data-bar="" aria-label="Primary">
+      <a data-home="" href="home.dc.html" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true" focusable="false"><path d="M3.2 10.4 12 3.4l8.8 7"></path><path d="M5.4 9.7V20.6h13.2V9.7"></path><path d="M9.9 20.6v-5.9h4.2v5.9"></path></svg></a>
+      <a href="browse.dc.html">Work</a>
+      <a href="films.dc.html">Films</a>
+      <a href="about.dc.html" aria-current="page">About</a>
+      <a href="contact.dc.html">Contact</a>
+      <a href="home.dc.html#reel">Reel</a>
+    </nav>
+    <div data-social="">
+      <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" focusable="false"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"></circle></svg></a>
+      <a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg></a>
+    </div>
+  </div>
+
+  <main ref="{{ root }}" style="width:min(1360px,calc(100vw - clamp(2.2rem,8vw,6.4rem)));margin:0 auto;padding-bottom:clamp(3rem,6vw,5rem)">
+
+    <!-- 001 — HERO. Strong, but it's a full sentence, so it takes head scale,
+         not impact scale. -->
+    <section data-sec="first" aria-labelledby="aboutTitle">
+      <div data-rev="rise" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:clamp(1.8rem,4.5vw,4.5rem);align-items:end">
+        <div style="display:grid;gap:clamp(1.1rem,2.2vw,1.6rem)">
+          <p data-t="label">001 / About</p>
+          <h1 id="aboutTitle" data-t="head" style="max-width:20ch">Director and editor for cinematic campaigns</h1>
+          <p data-t="body" style="max-width:46ch">Bay Area, California. Commercial, gaming, and narrative work for teams that need a clear point of view from first brief to final frame.</p>
+          <dl style="display:grid;gap:.85rem;margin:.4rem 0 0;padding-top:1.1rem;border-top:1px solid rgba(233,235,238,.12)">
+            <div style="display:grid;grid-template-columns:minmax(7rem,.3fr) minmax(0,.7fr);gap:1rem">
+              <dt style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,235,238,.6)">Focus</dt>
+              <dd style="margin:0;font-size:1rem;line-height:1.5;color:rgba(233,235,238,.86)">Direction / Editing / Creative Development</dd>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(7rem,.3fr) minmax(0,.7fr);gap:1rem">
+              <dt style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,235,238,.6)">Collaborators</dt>
+              <dd style="margin:0;font-size:1rem;line-height:1.5;color:rgba(233,235,238,.86)">CD Projekt Red / Bethesda / CORSAIR / BMW &amp; Fanatec</dd>
+            </div>
+          </dl>
+        </div>
+        <figure style="position:relative;margin:0;overflow:hidden;aspect-ratio:4/5;max-height:60svh;background:#07080A;border:1px solid rgba(233,235,238,.12)">
+          <img src="assets/bts-cp-directing.jpg" alt="Jared directing talent on a Cyberpunk 2077 campaign set, surrounded by lighting and production gear." loading="eager" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%"></img>
+          <span style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 56%,rgba(4,5,7,.82))"></span>
+          <figcaption style="position:absolute;left:.9rem;bottom:.8rem;font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.11em;text-transform:uppercase;color:rgba(248,250,252,.95)">On set / Cyberpunk 2077</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 002 — POINT OF VIEW. The impact moment. Phrase reads clean, the
+         explanation drops to supporting size instead of being a billboard. -->
+    <section data-sec="" aria-labelledby="povTitle">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:clamp(1.6rem,4vw,4.5rem);align-items:start">
+        <div data-rev="fade" style="display:grid;gap:clamp(1rem,2vw,1.5rem);align-content:start">
+          <p data-t="label">002 / Point of view</p>
+          <h2 id="povTitle" data-t="impact">Find the rhythm</h2>
+        </div>
+        <div data-rev="rise" style="display:grid;gap:clamp(1.2rem,2.4vw,1.8rem)">
+          <p data-t="lede">I look for the visual rhythm that already belongs to a piece, then build the direction and edit around it.</p>
+          <p data-t="body">I am drawn to work that creates a feeling before it explains itself. The goal is emotional clarity, pacing, and a point of view that belongs to the story.</p>
+          <p data-t="body">Direction and editing stay connected: one shapes what happens in front of the lens, the other shapes how it lands.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 003 — PROCESS. Editorial entries, not service cards: no vertical
+         rules, no boxes, one hairline above each entry. Detail lines are
+         split deliberately rather than left to wrap. -->
+    <section data-sec="" aria-labelledby="processTitle">
+      <div data-rev="fade" style="display:grid;gap:.9rem;margin-bottom:clamp(1.8rem,3.6vw,2.8rem)">
+        <p data-t="label">003 / Process</p>
+        <h2 id="processTitle" data-t="head">Every frame has a job</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:clamp(1.6rem,3.4vw,3.4rem)">
+        <sc-for list="{{ process }}" as="s" hint-placeholder-count="3">
+          <article data-step="{{ s.step }}" style="display:grid;gap:.7rem;align-content:start;padding-top:1rem;border-top:1px solid rgba(233,235,238,.16)">
+            <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.16em;color:oklch(0.8 0.11 200)">{{ s.num }}</span>
+            <h3 style="margin:0;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.5rem,2.3vw,2.1rem);line-height:.96;letter-spacing:.02em;text-transform:uppercase">{{ s.title }}</h3>
+            <p style="margin:0;font-size:1rem;line-height:1.62;color:rgba(233,235,238,.74)">
+              <span style="display:block">{{ s.lineA }}</span>
+              <span style="display:block">{{ s.lineB }}</span>
+            </p>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- 004 — BEHIND THE FRAME. Visual beat; copy gets out of the way. -->
+    <section data-sec="" aria-labelledby="btsTitle">
+      <div data-rev="fade" style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:clamp(1.4rem,3vw,2.2rem)">
+        <div style="display:grid;gap:.9rem">
+          <p data-t="label">004 / Behind the frame</p>
+          <h2 id="btsTitle" data-t="head">Before the frame</h2>
+        </div>
+        <p style="margin:0;max-width:34ch;font-size:clamp(1rem,1.12vw,1.12rem);line-height:1.6;color:rgba(233,235,238,.74)">The frame starts before the camera rolls.</p>
+      </div>
+      <div data-bts="" data-rev="frame" aria-label="Behind the scenes production stills">
+        <sc-for list="{{ bts }}" as="b" hint-placeholder-count="5">
+          <figure style="position:relative;margin:0;overflow:hidden;background:#07080A;border:1px solid rgba(233,235,238,.1)">
+            <img src="{{ b.src }}" alt="{{ b.alt }}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></img>
+            <span style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(4,5,7,.8))"></span>
+            <figcaption style="position:absolute;left:.7rem;right:.7rem;bottom:.65rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,250,252,.95)">{{ b.cap }}</figcaption>
+          </figure>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- 005 — PERSONAL. Quiet. Almost no motion. -->
+    <section data-sec="" aria-labelledby="personalTitle">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:clamp(1.6rem,4vw,4.5rem);align-items:start">
+        <div data-rev="none" style="display:grid;gap:.9rem;align-content:start">
+          <p data-t="label">005 / Personal</p>
+          <h2 id="personalTitle" data-t="head">In the mix</h2>
+        </div>
+        <ul data-rev="none" style="display:grid;gap:.55rem;margin:0;padding:0;list-style:none">
+          <sc-for list="{{ personal }}" as="i" hint-placeholder-count="6">
+            <li style="font-size:clamp(1.05rem,1.3vw,1.22rem);line-height:1.5;color:rgba(233,235,238,.84)">{{ i }}</li>
+          </sc-for>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 006 — NEXT. Strong: two words earn the impact size, the ambition
+         itself goes to body. -->
+    <section data-sec="" aria-labelledby="nextTitle">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:clamp(1.6rem,4vw,4.5rem);align-items:start">
+        <div data-rev="fade" style="display:grid;gap:clamp(1rem,2vw,1.5rem);align-content:start">
+          <p data-t="label">006 / Next</p>
+          <h2 id="nextTitle" data-t="impact">Bigger worlds</h2>
+        </div>
+        <p data-rev="rise" data-t="lede" style="align-self:end">I want to keep pushing into larger narrative work across film, television, games, and campaigns.</p>
+      </div>
+    </section>
+
+    <!-- 007 — CONTACT. Short hit, no motion. -->
+    <section data-sec="" aria-label="Contact">
+      <div data-rev="none" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:clamp(1.2rem,3vw,2.5rem)">
+        <div style="display:grid;gap:.9rem">
+          <p data-t="label">007 / Contact</p>
+          <h2 data-t="head" style="max-width:22ch">Got something with a pulse?</h2>
+        </div>
+        <a data-btn="primary" href="contact.dc.html" style="min-height:58px;padding:0 1.7rem;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(1.15rem,1.8vw,1.5rem);letter-spacing:.06em;text-transform:uppercase">
+          Send it <span data-arrow="" aria-hidden="true" style="font-family:Chivo,sans-serif;font-weight:400;font-size:.9em">&rarr;</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+    <span>Jared McDaniel / 2026</span>
+    <span style="display:flex;gap:1.2rem">
+      <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;min-height:44px;color:rgba(233,235,238,.76)" style-hover="color:#E9EBEE">Instagram</a>
+      <a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;min-height:44px;color:rgba(233,235,238,.76)" style-hover="color:#E9EBEE">LinkedIn</a>
+    </span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+/* Copy lifted verbatim from galleryversion/index.html's about room — the
+   version the user already signed off on. Nothing rewritten here. */
+const PROCESS = [
+  { step: "1", num: "01", title: "Direction", lineA: "Story / Visual language", lineB: "Talent / Camera / Performance" },
+  { step: "2", num: "02", title: "Editorial", lineA: "Rhythm / Structure", lineB: "Emotion / Sound / Pacing" },
+  { step: "3", num: "03", title: "Development", lineA: "Concepts / Scripts", lineB: "Treatments / Storyboards / Pre-production" }
+];
+
+const PERSONAL = [
+  "Practical light.",
+  "Game cinematics.",
+  "Sound that hits.",
+  "Cars with personality.",
+  "Edits that know when to breathe.",
+  "Fog machines whenever possible."
+];
+
+const BTS = [
+  { src: "assets/bts-cp-nightcity.jpg", cap: "Cyberpunk 2077 / production setup", alt: "Cyberpunk 2077 campaign production setup with camera, lighting, cables, and a practical set." },
+  { src: "assets/bts-doom-makeup.jpg", cap: "DOOM / practical makeup", alt: "Practical demon hand makeup process for the DOOM campaign film." },
+  { src: "assets/bts-cp-monitor.jpg", cap: "Cyberpunk 2077 / video village", alt: "Video monitor showing a Cyberpunk 2077 product shot during production." },
+  { src: "assets/bts-doom-post.jpg", cap: "DOOM / post production", alt: "Laptop open to retouching a DOOM campaign image during post-production." },
+  { src: "assets/bts-doom-direction.jpg", cap: "DOOM / talent direction", alt: "Red-lit DOOM campaign setup with demon hands at a keyboard during talent direction." }
+];
+
+class Component extends DCLogic {
+  root = React.createRef();
+
+  componentDidMount() {
+    /* One observer adds .seen once per element. No scroll loop, no parallax,
+       nothing that runs continuously — the page is edited, not animated. */
+    const scope = this.root.current;
+    if (!scope) return;
+    const targets = [...scope.querySelectorAll("[data-rev], [data-step]")];
+
+    /* Opt in to the hidden base state only now that JS is definitely running */
+    scope.setAttribute("data-ready", "");
+
+    const show = (el) => el.classList.add("seen");
+
+    if ("IntersectionObserver" in window) {
+      this.io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          show(e.target);
+          this.io.unobserve(e.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+      targets.forEach((t) => this.io.observe(t));
+    } else {
+      targets.forEach(show);
+    }
+
+    /* Safety sweep: whatever the observer has not reported by now gets shown
+       anyway. A missed callback must never cost the reader the content. */
+    this.sweep = window.setTimeout(() => {
+      targets.forEach((t) => { if (!t.classList.contains("seen")) show(t); });
+    }, 1400);
+  }
+
+  componentWillUnmount() {
+    this.io?.disconnect();
+    if (this.sweep) clearTimeout(this.sweep);
+  }
+
+  renderVals() {
+    return { root: this.root, process: PROCESS, personal: PERSONAL, bts: BTS };
+  }
+}
+</script>
+</body>
+</html>

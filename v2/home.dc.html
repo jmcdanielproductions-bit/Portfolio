@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/topbar.css">
+  <link rel="stylesheet" href="styles/motion.css">
+  <style>
+    body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
+    a { color: #E9EBEE; text-decoration: none; }
+    a:hover { color: oklch(0.72 0.14 200); }
+
+    /* ══ REEL ═════════════════════════════════════════════════════ */
+    [data-reel] {
+      position: relative;
+      height: calc(var(--cw) * 9 / 16 + 5rem);
+      overflow: hidden;
+      contain: paint;
+      touch-action: pan-y;
+      cursor: grab;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    }
+    [data-reel][data-grabbing] { cursor: grabbing; }
+    [data-slide] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--cw);
+      padding: 0;
+      border: 0;
+      background: none;
+      color: #E9EBEE;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transform-origin: 50% 0;
+      will-change: transform, opacity;
+      /* blur resolves faster than the card travels — visual punctuation */
+      transition: filter 260ms ease;
+    }
+    [data-slide]:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 4px; }
+
+    /* Reduced motion and phones get a plain scroll-snap rail. CSS owns this
+       switch; the engine neutralises its own transform writes here. */
+    @media (max-width: 720px), (prefers-reduced-motion: reduce) {
+      [data-reel] {
+        height: auto;
+        display: flex;
+        gap: .8rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        cursor: default;
+        padding-bottom: .4rem;
+        touch-action: pan-x pan-y;
+      }
+      [data-reel]::-webkit-scrollbar { display: none; }
+      [data-slide] {
+        position: relative;
+        flex: 0 0 min(82vw, 30rem);
+        scroll-snap-align: center;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+      }
+      [data-reel] [data-clone] { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</helmet>
+
+<div style="position:relative;background:#0B0C0F;color:#E9EBEE;font-family:Chivo,system-ui,sans-serif;min-height:100vh;overflow-x:hidden">
+
+  <div data-topbar="">
+    <a data-ident="" href="home.dc.html" aria-label="Jared McDaniel, home">
+      <b>Jared McDaniel</b>
+      <span>Creative Video Director / Editor</span>
+    </a>
+    <nav data-bar="" aria-label="Primary">
+      <a data-home="" href="home.dc.html" aria-current="page" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true" focusable="false"><path d="M3.2 10.4 12 3.4l8.8 7"></path><path d="M5.4 9.7V20.6h13.2V9.7"></path><path d="M9.9 20.6v-5.9h4.2v5.9"></path></svg></a>
+      <a href="browse.dc.html">Work</a>
+      <a href="films.dc.html">Films</a>
+      <a href="about.dc.html">About</a>
+      <a href="contact.dc.html">Contact</a>
+      <a href="#reel" onClick="{{ playReel }}">Reel</a>
+    </nav>
+    <div data-social="">
+      <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" focusable="false"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"></circle></svg></a>
+      <a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg></a>
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section aria-label="Director reel" style="position:relative;height:min(100svh,58rem);min-height:28rem;overflow:hidden;background:#07080A">
+    <video ref="{{ heroVideo }}" src="videos/reel-loop.mp4" poster="{{ heroPoster }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="auto" tabIndex="-1" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82"></video>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,.78) 0%,rgba(7,8,10,.26) 26%,rgba(7,8,10,.58) 52%,rgba(9,10,13,.9) 76%,rgba(11,12,15,.99) 100%)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 22% 88%, rgba(7,8,10,.82), transparent 72%)"></div>
+
+    <!-- Pausing an autoplaying video is an accessibility control, not a
+         third choice for the visitor. Kept, but demoted out of the CTA row
+         to a corner affordance so the hero asks two questions, not three. -->
+    <button type="button" onClick="{{ toggleHero }}" aria-label="{{ heroToggleAria }}" style="position:absolute;right:clamp(1rem,3vw,2rem);bottom:clamp(1.8rem,4vw,3.2rem);z-index:3;display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(233,235,238,.26);background:rgba(7,8,10,.5);color:rgba(233,235,238,.82);font-size:.72rem;cursor:pointer;transition:background-color 200ms ease,border-color 200ms ease,color 200ms ease" style-hover="background:rgba(233,235,238,.92);border-color:rgba(233,235,238,.92);color:#08090C">
+      <span aria-hidden="true">{{ heroToggleGlyph }}</span>
+    </button>
+
+    <div style="position:absolute;inset:auto 0 0;display:grid;gap:clamp(.85rem,1.7vw,1.25rem);padding:0 clamp(1.1rem,4vw,3.2rem) clamp(1.8rem,4vw,3.2rem);max-width:1560px;margin:0 auto">
+      <p style="margin:0;font-family:'DM Mono',monospace;font-size:clamp(.72rem,.8vw,.78rem);letter-spacing:.18em;text-transform:uppercase;color:oklch(0.8 0.11 200)">Director &amp; Editor / Bay Area</p>
+      <h1 style="margin:0;max-width:24ch;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.75rem,4vw,3.5rem);line-height:.94;letter-spacing:.012em;text-transform:uppercase;text-wrap:balance">I direct the films that make people care about games.</h1>
+      <p style="margin:0;max-width:46ch;font-size:clamp(.94rem,1.02vw,1.02rem);line-height:1.6;color:rgba(233,235,238,.78)">Trailers, spots and cinematics for CD Projekt Red, Bethesda, CORSAIR and BMW. I direct it, I cut it, and I&rsquo;m usually the one asking for one more take.</p>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:.2rem">
+        <button data-btn="primary" type="button" onClick="{{ playReel }}" style="min-height:50px;padding:0 1.3rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500">
+          <span style="font-size:.82rem">&#9654;</span> Full reel
+        </button>
+        <a data-btn="ghost" href="browse.dc.html" style="min-height:50px;padding:0 1.3rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase">All work <span data-arrow="" aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE REEL — slow right-to-left, staircase depth falloff ── -->
+  <section aria-label="Selected work" style="position:relative;z-index:2;padding:clamp(2rem,4.2vw,3.4rem) 0 clamp(2.4rem,4.8vw,4rem)">
+    <!-- No section tagline: the reel is the statement. The only copy is a
+         quiet readout naming whatever is currently in the focal zone. -->
+    <div style="display:flex;align-items:baseline;justify-content:flex-end;gap:1.2rem;width:min(1560px,calc(100vw - clamp(2.2rem,8vw,6.4rem)));margin:0 auto clamp(1.1rem,2.4vw,1.7rem);padding-bottom:.8rem;border-bottom:1px solid rgba(233,235,238,.13)">
+      <p ref="{{ readout }}" aria-live="off" style="margin:0;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,235,238,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></p>
+    </div>
+
+    <div data-reel="" ref="{{ reel }}" style="{{ reelStyle }}">
+      <sc-for list="{{ slides }}" as="s" hint-placeholder-count="5">
+        <button data-slide="" data-clone="{{ s.clone }}" ref="{{ s.ref }}" type="button" onClick="{{ s.open }}" aria-hidden="{{ s.clone }}" tabIndex="{{ s.tab }}" aria-label="{{ s.aria }}">
+          <span style="position:relative;display:block;overflow:hidden;background:#07080A;aspect-ratio:16/9;border:1px solid rgba(233,235,238,.1)">
+            <img src="{{ s.thumb }}" alt="" loading="lazy" decoding="async" onLoad="{{ s.guard }}" onError="{{ s.guard }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></img>
+            <video ref="{{ s.vref }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="none" tabIndex="-1" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 420ms ease"></video>
+            <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,0) 46%,rgba(7,8,10,.9) 100%)"></span>
+            <span style="position:absolute;left:0;right:0;bottom:0;display:block;padding:clamp(.7rem,1.2vw,1.15rem)">
+              <span style="display:block;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(1.1rem,1.9vw,1.85rem);line-height:.92;letter-spacing:.012em;text-transform:uppercase">{{ s.title }}</span>
+<!-- The readout above the reel already names client and role, so a
+                   9.9px "Campaign Trailer / CD Projekt Red" on every card was
+                   duplicate copy at an unreadable size. Title only. -->
+            </span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ── CLIENTS ── -->
+  <section aria-label="Selected clients" style="position:relative;z-index:2;border-top:1px solid rgba(233,235,238,.1);border-bottom:1px solid rgba(233,235,238,.1);padding:clamp(1.3rem,2.8vw,2.1rem) clamp(1.1rem,4vw,3.2rem)">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:clamp(.9rem,2.4vw,2.4rem);max-width:1560px;margin:0 auto">
+      <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(233,235,238,.62);white-space:nowrap">Selected clients</span>
+      <sc-for list="{{ clients }}" as="c" hint-placeholder-count="4">
+        <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1rem,1.7vw,1.45rem);letter-spacing:.035em;text-transform:uppercase;color:rgba(233,235,238,.88);white-space:nowrap">{{ c }}</span>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ── VOICE + FOOTER ── -->
+  <section style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:clamp(1.6rem,4vw,4rem);align-items:start;padding:clamp(2.4rem,5vw,4.4rem) clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto">
+    <p style="margin:0;max-width:30ch;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.5rem,3vw,2.5rem);line-height:.98;letter-spacing:.012em;text-transform:uppercase">Got something with a pulse? <a data-link="" href="contact.dc.html" style="color:oklch(0.8 0.11 200)">Tell me about it</a></p>
+    <div style="display:grid;gap:.8rem;max-width:44ch">
+      <p style="margin:0;font-size:clamp(.94rem,1.02vw,1.02rem);line-height:1.64;color:rgba(233,235,238,.72)">I take on a handful of projects a year, usually directing and cutting both. If you have a script, a deck, or just a date and a budget, that&rsquo;s enough to start.</p>
+      <a href="mailto:jmcdaniel.productions@gmail.com" style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.05rem,1.7vw,1.45rem);letter-spacing:.02em;color:#E9EBEE;overflow-wrap:anywhere" style-hover="color:oklch(0.78 0.12 200)">jmcdaniel.productions@gmail.com</a>
+    </div>
+  </section>
+
+  <footer style="position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+    <span>Jared McDaniel / 2026</span>
+    <span style="display:flex;gap:1.2rem">
+      <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;min-height:44px;color:rgba(233,235,238,.76)" style-hover="color:#E9EBEE">Instagram</a>
+      <a href="https://www.linkedin.com/in/jaredamcdaniel/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;min-height:44px;color:rgba(233,235,238,.76)" style-hover="color:#E9EBEE">LinkedIn</a>
+    </span>
+  </footer>
+
+  <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ playingLabel }}" style="position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:clamp(.75rem,3vw,2.5rem);background:rgba(4,5,7,.94)">
+      <button type="button" onClick="{{ closePlayer }}" aria-label="Close player" style="position:absolute;right:clamp(.75rem,2.5vw,1.8rem);top:clamp(.75rem,2.5vw,1.8rem);display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(233,235,238,.3);background:rgba(11,12,15,.7);color:#E9EBEE;font-size:1.05rem;cursor:pointer" style-hover="border-color:oklch(0.72 0.14 200);color:oklch(0.82 0.11 200)">&#10005;</button>
+      <div style="width:min(100%,1280px)">
+        <p style="margin:0 0 .6rem;font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,235,238,.66)">{{ playingLabel }}</p>
+        <div style="position:relative;aspect-ratio:16/9;background:#000;border:1px solid rgba(233,235,238,.14)">
+          <iframe src="{{ playingSrc }}" title="{{ playingLabel }}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen="{{ true }}" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+/* The reel carries the whole brand body of work, flagships first. */
+const REEL_ORDER = [
+  "cyberpunk-2077", "doom", "fallout-nuka-cola", "witcher",
+  "kairi-animation-storyboard", "corsair-invincible-novablade-pro",
+  "bmw-fanatec-ad", "shugo-samurai-trailer-ad",
+  "corsair-amazon-prime-gaming-week", "corsair-experience-store",
+  "corsair-storefront"
+];
+
+/* Two passes of the set. The reel positions cards by modular arithmetic
+   rather than cloning-and-snapping, so the loop has no seam; the repeat
+   exists only to fill wide viewports and is aria-hidden and untabbable so
+   assistive tech meets each project exactly once. */
+const REPEATS = 2;
+
+const SPEED = 32;        // px per second — slow enough to read each frame
+const GAP = 26;          // px between cards
+const FOCUS_AT = 0.42;   // focal zone, centre-left of the reel
+const RESUME_MS = 2600;  // how long user input keeps the reel parked
+
+/* Staircase falloff. Depth is a continuous function of distance from the
+   focal zone; blur is withheld until the far end so at most the outermost
+   card or two ever runs a filter. */
+const FALLOFF = { scale: 0.16, drop: 52, fade: 0.68, blur: 3, blurFrom: 0.88 };
+
+class Component extends DCLogic {
+  reel = React.createRef();
+  readout = React.createRef();
+  heroVideo = React.createRef();
+  state = { data: null, playing: null, heroPlaying: true };
+
+  offset = 0;
+  vel = SPEED;
+  hovered = -1;
+  focal = -1;
+  dragging = false;
+  parkUntil = 0;
+  entered = false;
+  cardW = 0;
+  boxW = 0;
+  narrow = false;
+
+  componentDidMount() {
+    this.reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    import("./data/projects.js").then((m) => this.setState({ data: m }, this.startReel));
+
+    const v = this.heroVideo.current;
+    if (v) {
+      v.muted = true;
+      v.defaultMuted = true;
+      this.tryPlay = () => {
+        if (this.reduce.matches || document.hidden) return;
+        const el = this.heroVideo.current;
+        if (!el || !el.paused) return;
+        el.play().then(() => { if (!this.state.heroPlaying) this.setState({ heroPlaying: true }); }).catch(() => {});
+      };
+      v.addEventListener("loadeddata", this.tryPlay);
+      v.addEventListener("canplay", this.tryPlay);
+      if (this.reduce.matches) { v.pause(); this.setState({ heroPlaying: false }); }
+      else {
+        this.tryPlay();
+        this.settle = window.setTimeout(() => {
+          const el = this.heroVideo.current;
+          if (el && el.paused) this.setState({ heroPlaying: false });
+        }, 1500);
+      }
+    }
+
+    this.onVis = () => {
+      const el = this.heroVideo.current;
+      if (el) { if (document.hidden) el.pause(); else if (this.state.heroPlaying) this.tryPlay?.(); }
+      /* stop the clock while backgrounded so it can never accumulate a jump */
+      if (document.hidden) this.stopLoop();
+      else this.startLoop();
+    };
+    document.addEventListener("visibilitychange", this.onVis);
+
+    /* The engine's run-state and the CSS rail switch must read the SAME
+       query, or widening past the breakpoint drops the rail while no
+       transform is ever written and every card collapses onto 0,0. */
+    this.wide = window.matchMedia("(min-width: 721px)");
+    this.syncMode = () => {
+      this.narrow = !this.wide.matches;
+      this.measure();
+      if (this.narrow) this.stopLoop(); else this.startLoop();
+    };
+    this.wide.addEventListener?.("change", this.syncMode);
+    this.narrow = !this.wide.matches;
+
+    this.onResize = () => this.measure();
+    window.addEventListener("resize", this.onResize, { passive: true });
+
+    this.onKey = (e) => { if (e.key === "Escape") this.setState({ playing: null }); };
+    window.addEventListener("keydown", this.onKey);
+  }
+
+  componentWillUnmount() {
+    const v = this.heroVideo.current;
+    v?.removeEventListener("loadeddata", this.tryPlay);
+    v?.removeEventListener("canplay", this.tryPlay);
+    document.removeEventListener("visibilitychange", this.onVis);
+    window.removeEventListener("resize", this.onResize);
+    this.wide?.removeEventListener?.("change", this.syncMode);
+    window.removeEventListener("keydown", this.onKey);
+    this.stopLoop();
+    if (this.settle) clearTimeout(this.settle);
+    if (this.enterTimer) clearTimeout(this.enterTimer);
+  }
+
+  /* ── measurement happens on resize only, never per frame ── */
+  measure = () => {
+    const box = this.reel.current;
+    if (!box) return;
+    const r = box.getBoundingClientRect();
+    this.boxW = box.clientWidth;
+    this.boxLeft = r.left;
+    const first = this.slideRefs?.[0]?.current;
+    this.cardW = first ? first.getBoundingClientRect().width : this.boxW * 0.34;
+    this.step = this.cardW + GAP;
+    this.total = this.step * REEL_ORDER.length * REPEATS;
+  };
+
+  startReel = () => {
+    const box = this.reel.current;
+    if (!box) return;
+    this.measure();
+    /* understated entry: settle, then start moving */
+    this.enterTimer = window.setTimeout(() => { this.entered = true; }, 420);
+
+    box.addEventListener("pointerenter", this.onEnter);
+    box.addEventListener("pointerleave", this.onLeave);
+    box.addEventListener("pointermove", this.onMove);
+    box.addEventListener("pointerdown", this.onDown);
+    box.addEventListener("pointerup", this.onUp);
+    box.addEventListener("pointercancel", this.onUp);
+    this.startLoop();
+  };
+
+  startLoop = () => {
+    if (this.raf || this.reduce?.matches || this.narrow) return;
+    this.last = performance.now();
+    this.raf = requestAnimationFrame(this.tick);
+  };
+  stopLoop = () => {
+    if (this.raf) cancelAnimationFrame(this.raf);
+    this.raf = 0;
+  };
+
+  onEnter = () => { this.hoverActive = true; };
+  onLeave = () => { this.hoverActive = false; this.hovered = -1; this.px = null; };
+  onMove = (e) => {
+    this.px = e.clientX;
+    if (this.dragging) {
+      const dx = e.clientX - this.dragX;
+      this.dragX = e.clientX;
+      this.offset -= dx;
+      this.parkUntil = performance.now() + RESUME_MS;
+    }
+  };
+  onDown = (e) => {
+    if (e.button !== 0) return;
+    this.dragging = true;
+    this.dragStart = e.clientX;
+    this.dragX = e.clientX;
+    this.dragEndAt = 0;            // a new gesture cancels any stale suppression
+    this.reel.current?.setAttribute("data-grabbing", "");
+    this.reel.current?.setPointerCapture?.(e.pointerId);
+  };
+  onUp = (e) => {
+    if (!this.dragging) return;
+    this.dragging = false;
+    /* Timestamped, not a latched boolean: click suppression expires with the
+       gesture that created it, so a drag ending on a masked edge or the empty
+       band can never swallow the next deliberate click on a card. */
+    this.dragEndAt = Math.abs(e.clientX - this.dragStart) > 6 ? performance.now() : 0;
+    this.reel.current?.removeAttribute("data-grabbing");
+    this.parkUntil = performance.now() + RESUME_MS;
+  };
+
+  tick = (now) => {
+    this.raf = requestAnimationFrame(this.tick);
+    const dt = Math.min(0.05, (now - this.last) / 1000);
+    this.last = now;
+    const box = this.reel.current;
+    if (!box || !this.step) return;
+
+    /* user input outranks auto-motion: hover or drag parks the reel, and it
+       eases back rather than snapping */
+    const parked = this.dragging || this.hoverActive || now < this.parkUntil;
+    const target = !this.entered || parked ? 0 : SPEED;
+    this.vel += (target - this.vel) * Math.min(1, dt * 4.5);
+    this.offset += this.vel * dt;
+
+    const { step, total, boxW, cardW } = this;
+    const focusX = boxW * FOCUS_AT;
+    const range = Math.max(cardW * 1.15, boxW * 0.42);
+    let bestD = Infinity;
+    let bestIdx = -1;
+    let hoverIdx = -1;
+
+    for (let i = 0; i < this.slideRefs.length; i++) {
+      const el = this.slideRefs[i].current;
+      if (!el) continue;
+      let x = (i * step - this.offset) % total;
+      if (x < 0) x += total;
+      if (x > total - step) x -= total;              // wrap just off the left
+
+      const centre = x + cardW / 2;
+      const d = Math.min(1, Math.abs(centre - focusX) / range);
+
+      if (this.hoverActive && this.px != null) {
+        const rel = this.px - this.boxLeft;
+        if (rel >= x && rel <= x + cardW) hoverIdx = i;
+      }
+      if (Math.abs(centre - focusX) < bestD) { bestD = Math.abs(centre - focusX); bestIdx = i; }
+
+      const isHover = hoverIdx === i;
+      const t = isHover ? 0 : d;
+      const scale = (1 - FALLOFF.scale * t) * (isHover ? 1.015 : 1);
+      const y = FALLOFF.drop * t - (isHover ? 4 : 0);
+      /* Cards parked off either edge are the majority at any moment. They
+         get zero opacity and no filter, so blur only ever runs on the one
+         or two on-screen cards at the far end of the falloff. */
+      const onScreen = x + cardW > -8 && x < boxW + 8;
+      const op = !this.entered || !onScreen ? 0 : 1 - FALLOFF.fade * t;
+
+      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;
+      el.style.opacity = op.toFixed(3);
+
+      const wantBlur = onScreen && t > FALLOFF.blurFrom
+        ? (((t - FALLOFF.blurFrom) / (1 - FALLOFF.blurFrom)) * FALLOFF.blur).toFixed(2)
+        : "0";
+      if (el.dataset.blur !== wantBlur) {
+        el.dataset.blur = wantBlur;
+        el.style.filter = wantBlur === "0" ? "none" : `blur(${wantBlur}px)`;
+      }
+    }
+
+    this.hovered = hoverIdx;
+    const lead = hoverIdx >= 0 ? hoverIdx : bestIdx;
+    if (lead !== this.focal) { this.focal = lead; this.onFocalChange(lead); }
+  };
+
+  /* Runs only when the leading card changes — not every frame. */
+  onFocalChange = (i) => {
+    const d = this.state.data;
+    if (!d || i < 0) return;
+    const rec = this.records[i];
+    const out = this.readout.current;
+    if (out && rec) out.textContent = `${rec.title} — ${rec.client} / ${rec.role}`;
+
+    this.videoRefs.forEach((ref, j) => {
+      const v = ref.current;
+      if (!v) return;
+      if (j === i) {
+        const src = d.LOOPS[this.records[j].slug];
+        if (!src) { v.style.opacity = "0"; return; }   // no local loop: stay a still
+        if (v.getAttribute("src") !== src) v.setAttribute("src", src);
+        v.muted = true;                                 // always silent
+        v.play().then(() => { v.style.opacity = "1"; }).catch(() => {});
+      } else if (!v.paused || v.style.opacity !== "0") {
+        v.pause();
+        v.style.opacity = "0";
+      }
+    });
+  };
+
+  toggleHero = () => {
+    const v = this.heroVideo.current;
+    if (!v) return;
+    if (v.paused) { v.play().catch(() => {}); this.setState({ heroPlaying: true }); }
+    else { v.pause(); this.setState({ heroPlaying: false }); }
+  };
+
+  renderVals() {
+    const d = this.state.data;
+    const playing = this.state.playing;
+
+    this.records = [];
+    const slides = [];
+    if (d) {
+      for (let r = 0; r < REPEATS; r++) {
+        REEL_ORDER.forEach((slug) => {
+          const p = d.PROJECTS.find((x) => x.slug === slug);
+          if (p) this.records.push(p);
+        });
+      }
+      this.slideRefs = this.slideRefs || [];
+      this.videoRefs = this.videoRefs || [];
+      this.records.forEach((p, i) => {
+        this.slideRefs[i] = this.slideRefs[i] || React.createRef();
+        this.videoRefs[i] = this.videoRefs[i] || React.createRef();
+        const clone = i >= REEL_ORDER.length;
+        slides.push({
+          title: p.title,
+          sub: `${p.type} / ${p.client}`,
+          thumb: d.frame(p),
+          guard: d.guardThumb(p.yt),
+          ref: this.slideRefs[i],
+          vref: this.videoRefs[i],
+          clone: clone ? "true" : null,
+          tab: clone ? -1 : 0,
+          aria: `Play ${p.title} — ${p.client}, ${p.role}, ${p.year}`,
+          open: () => {
+            /* only a click landing in the tail of a real drag is ignored */
+            if (this.dragEndAt && performance.now() - this.dragEndAt < 150) return;
+            this.setState({ playing: { src: d.embed(p.yt), label: `${p.title} / ${p.client}` } });
+          }
+        });
+      });
+    }
+
+    return {
+      reel: this.reel,
+      readout: this.readout,
+      heroVideo: this.heroVideo,
+      heroPoster: d ? d.thumb("mFeMMMmdW24", true) : "",
+      reelStyle: `--cw:clamp(300px, 34vw, 520px)`,
+      slides,
+      clients: d
+        ? [...new Set(d.PROJECTS.filter((p) => p.track === "brand")
+            .map((p) => (p.client === "Shugo Samurai" ? null : p.client)).filter(Boolean))]
+        : [],
+      playing: !!playing,
+      playingSrc: playing?.src || "",
+      playingLabel: playing?.label || "",
+      closePlayer: () => this.setState({ playing: null }),
+      playReel: (e) => {
+        e?.preventDefault?.();
+        this.setState({ playing: { src: d ? d.embed("mFeMMMmdW24") : "", label: "Director Reel / 2026" } });
+      },
+      toggleHero: this.toggleHero,
+      heroToggleGlyph: this.state.heroPlaying ? "\u2016" : "\u25B6",
+      heroToggleAria: this.state.heroPlaying ? "Pause background reel" : "Play background reel"
+    };
+  }
+}
+</script>
+</body>
+</html>
