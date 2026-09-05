@@ -13,6 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/topbar.css">
   <link rel="stylesheet" href="styles/motion.css">
+  <script src="./vendor/lenis.min.js"></script>
+  <link rel="stylesheet" href="./vendor/lenis.css">
   <style>
     body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
     a { color: #E9EBEE; text-decoration: none; }
@@ -241,6 +243,13 @@ class Component extends DCLogic {
   componentDidMount() {
     this.reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     import("./data/projects.js").then((m) => this.setState({ data: m }, this.startReel));
+    this.initLenis = () => {
+      if (this.reduce?.matches || window.lenis) return;
+      window.lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 0.85 });
+      const raf = (t) => { window.lenis.raf(t); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    };
+    this.initLenis();
 
     const v = this.heroVideo.current;
     if (v) {
@@ -312,6 +321,7 @@ class Component extends DCLogic {
     if (box) box.removeEventListener("keydown", this.onReelKey);
     this.stopLoop();
     if (this.settle) clearTimeout(this.settle);
+    if (window.lenis) { window.lenis.destroy(); window.lenis = null; }
     if (this.enterTimer) clearTimeout(this.enterTimer);
   }
 

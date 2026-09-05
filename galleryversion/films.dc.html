@@ -13,6 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/topbar.css">
   <link rel="stylesheet" href="styles/motion.css">
+  <script src="./vendor/lenis.min.js"></script>
+  <link rel="stylesheet" href="./vendor/lenis.css">
   <style>
     body { margin: 0; background: #0B0C0F; color: #E9EBEE; }
     a { color: #E9EBEE; text-decoration: none; }
@@ -171,10 +173,15 @@ class Component extends DCLogic {
 
   componentDidMount() {
     import("./data/projects.js").then((m) => this.setState({ data: m }));
+    if (!window.lenis && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 0.85 });
+      const raf = (t) => { window.lenis.raf(t); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
     this.onKey = (e) => { if (e.key === "Escape") this.setState({ playing: null }); };
     window.addEventListener("keydown", this.onKey);
   }
-  componentWillUnmount() { window.removeEventListener("keydown", this.onKey); }
+  componentWillUnmount() { window.removeEventListener("keydown", this.onKey); if (window.lenis) { window.lenis.destroy(); window.lenis = null; } }
 
   card = (d, p, big) => ({
     title: p.title,
