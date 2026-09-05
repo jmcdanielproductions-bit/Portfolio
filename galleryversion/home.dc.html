@@ -190,7 +190,7 @@
     </div>
   </section>
 
-  <footer style="position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+  <footer data-footer-reveal="" style="position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
     <span>Jared McDaniel / 2026</span>
     <span style="display:flex;gap:1.2rem">
       <a href="https://www.instagram.com/jafikitv/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;min-height:44px;color:rgba(233,235,238,.76)" style-hover="color:#E9EBEE">Instagram</a>
@@ -321,6 +321,7 @@ class Component extends DCLogic {
       this.vel = 0;
     };
     window.addEventListener("keydown", this.onKey);
+    window.setTimeout(() => this.initFooterReveal(), 400);
   }
 
   componentWillUnmount() {
@@ -372,6 +373,17 @@ class Component extends DCLogic {
       element.appendChild(mask);
     });
     element.dataset.splitReady = "true";
+  };
+
+  initFooterReveal = () => {
+    if (this.reduce?.matches) return;
+    const els = document.querySelectorAll("[data-footer-reveal]");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); } }),
+      { rootMargin: "0px 0px 60px" }
+    );
+    els.forEach((el) => io.observe(el));
+    this.footerIO = io;
   };
 
   initParallax = () => {

@@ -126,6 +126,20 @@
 [data-lift]:hover, [data-lift]:focus-visible { transform: translateY(-4px); }
 [data-lift]:active { transform: translateY(-1px); transition-duration: 60ms; }
 
+/* Footer reveal — fade + glide up near the bottom */
+[data-footer-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 620ms cubic-bezier(.22,1,.36,1), transform 620ms cubic-bezier(.22,1,.36,1);
+}
+[data-footer-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-footer-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-btn], [data-btn]::before, [data-btn] [data-arrow],
   [data-link]::after, [data-lift] {

@@ -241,7 +241,7 @@
     </div>
   </main>
 
-  <footer style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+  <footer data-footer-reveal="" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
     <span>Jared McDaniel / 2026</span>
     <a href="browse.dc.html" style="color:oklch(0.8 0.11 200)">See the work &rarr;</a>
   </footer>
@@ -266,6 +266,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this.copyTimer) clearTimeout(this.copyTimer);
     if (window.lenis) { window.lenis.destroy(); window.lenis = null; }
+    this.footerIO?.disconnect();
   }
 
   componentDidMount() {
@@ -274,7 +275,19 @@ class Component extends DCLogic {
       const raf = (t) => { window.lenis.raf(t); requestAnimationFrame(raf); };
       requestAnimationFrame(raf);
     }
+    window.setTimeout(() => this.initFooterReveal(), 400);
   }
+
+  initFooterReveal = () => {
+    if (this.reduce?.matches) return;
+    const els = document.querySelectorAll("[data-footer-reveal]");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); } }),
+      { rootMargin: "0px 0px 60px" }
+    );
+    els.forEach((el) => io.observe(el));
+    this.footerIO = io;
+  };
 
   copyEmail = async () => {
     try {

@@ -184,7 +184,7 @@
     </section>
   </sc-if>
 
-  <footer style="position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
+  <footer data-footer-reveal="" style="position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(233,235,238,.1);padding:1.2rem clamp(1.1rem,4vw,3.2rem);max-width:1560px;margin:0 auto;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,235,238,.64)">
     <span>Jared McDaniel / 2026</span>
     <a href="contact.dc.html" style="color:oklch(0.8 0.11 200)">Start a project &rarr;</a>
   </footer>
@@ -224,11 +224,24 @@ class Component extends DCLogic {
     }
     this.onKey = (e) => { if (e.key === "Escape") this.setState({ playing: null }); };
     window.addEventListener("keydown", this.onKey);
+    window.setTimeout(() => this.initFooterReveal(), 400);
   }
   componentWillUnmount() {
     window.removeEventListener("keydown", this.onKey);
     if (window.lenis) { window.lenis.destroy(); window.lenis = null; }
+    this.footerIO?.disconnect();
   }
+
+  initFooterReveal = () => {
+    if (this.reduce?.matches) return;
+    const els = document.querySelectorAll("[data-footer-reveal]");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); } }),
+      { rootMargin: "0px 0px 60px" }
+    );
+    els.forEach((el) => io.observe(el));
+    this.footerIO = io;
+  };
 
   renderVals() {
     const d = this.state.data;
