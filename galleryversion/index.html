@@ -11903,58 +11903,58 @@ body.header-parallax-active .header-identity {
           }
 
     let activeRoomTransition = null;
-        let roomFadeTimer = 0;
-        const roomMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let roomFadeTimer = 0;
+    const roomMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-        function refreshGlide() {
-          window.requestAnimationFrame(() => {
-            if (typeof window.scheduleGlide === "function") window.scheduleGlide();
-          });
-        }
+    function refreshGlide() {
+      window.requestAnimationFrame(() => {
+        if (typeof window.scheduleGlide === "function") window.scheduleGlide();
+      });
+    }
 
-        /* Cross-browser room transition.
-           Chrome/Edge keep the native View Transition (unchanged).
-           Firefox/Safari get a JS-timed cross-blur that reads the same:
-           200ms blur-out on the outgoing room, swap, 460ms blur-in. */
-        function transitionToRoom(nextRoom) {
-          if (roomMotionQuery.matches || window.location.protocol === "file:") {
-            showRoom(nextRoom);
-            refreshGlide();
-            return;
-          }
+    /* Cross-browser room transition.
+       Chrome/Edge keep the native View Transition (unchanged).
+       Firefox/Safari get a JS-timed cross-blur that reads the same:
+       200ms blur-out on the outgoing room, swap, 460ms blur-in. */
+    function transitionToRoom(nextRoom) {
+      if (roomMotionQuery.matches || window.location.protocol === "file:") {
+        showRoom(nextRoom);
+        refreshGlide();
+        return;
+      }
 
-          if (document.startViewTransition && !activeRoomTransition) {
-            try {
-              activeRoomTransition = document.startViewTransition(() => showRoom(nextRoom));
-              activeRoomTransition.ready?.catch?.(() => {});
-              activeRoomTransition.finished
-                ?.catch?.(() => {})
-                ?.finally?.(() => {
-                  activeRoomTransition = null;
-                });
-              return;
-            } catch (error) {
+      if (document.startViewTransition && !activeRoomTransition) {
+        try {
+          activeRoomTransition = document.startViewTransition(() => showRoom(nextRoom));
+          activeRoomTransition.ready?.catch?.(() => {});
+          activeRoomTransition.finished
+            ?.catch?.(() => {})
+            ?.finally?.(() => {
               activeRoomTransition = null;
-            }
-          }
-          if (activeRoomTransition || roomFadeTimer) return;
-
-          body.classList.add("is-room-leaving");
-          roomFadeTimer = window.setTimeout(() => {
-            roomFadeTimer = 0;
-            body.classList.remove("is-room-leaving");
-            body.classList.add("is-room-entering");
-            showRoom(nextRoom);
-            refreshGlide();
-            window.setTimeout(() => body.classList.remove("is-room-entering"), 480);
-          }, 200);
+            });
+          return;
+        } catch (error) {
+          activeRoomTransition = null;
         }
+      }
+      if (activeRoomTransition || roomFadeTimer) return;
 
-        function syncRoute() {
-          const route = window.location.hash.replace("#", "") || "archive";
-          const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
-          transitionToRoom(nextRoom);
-        }
+      body.classList.add("is-room-leaving");
+      roomFadeTimer = window.setTimeout(() => {
+        roomFadeTimer = 0;
+        body.classList.remove("is-room-leaving");
+        body.classList.add("is-room-entering");
+        showRoom(nextRoom);
+        refreshGlide();
+        window.setTimeout(() => body.classList.remove("is-room-entering"), 480);
+      }, 200);
+    }
+
+    function syncRoute() {
+      const route = window.location.hash.replace("#", "") || "archive";
+      const nextRoom = ["archive", "work", "browse", "about", "contact"].includes(route) ? route : "archive";
+      transitionToRoom(nextRoom);
+    }
 
     window.addEventListener("hashchange", syncRoute);
     syncRoute();
@@ -13062,8 +13062,8 @@ body.header-parallax-active .header-identity {
       const actionLabel = projectActionLabel(rec);
       const showAction = actionLabel && !statusLabel;
       el.className = `rw-mcard${rec.isReel ? " rw-mcard-reel" : ""}`;
-            if (MOODS[rec.slug]) el.dataset.mood = MOODS[rec.slug].mood;
-            if (rec.page) el.href = rec.page; else el.type = "button";
+      if (MOODS[rec.slug]) el.dataset.mood = MOODS[rec.slug].mood;
+      if (rec.page) el.href = rec.page; else el.type = "button";
       el.dataset.slug = rec.slug;
       el.dataset.dossier = projectHasDossier(rec) ? "available" : "screening";
       if (rec.isReel) el.dataset.reel = "true";
@@ -13498,13 +13498,15 @@ body.header-parallax-active .header-identity {
             railFill.style.height = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
           }
           window.addEventListener("scroll", updateRail, { passive: true });
-                    updateRail();
-                  }
-                }
-                /* ^ closes: if (glideEls.length && "IntersectionObserver" in window && !hasReducedMotion) */
+          updateRail();
+        }
+      }
+      /* ^ closes: if (glideEls.length && "IntersectionObserver" in window && !hasReducedMotion)
+         This brace was missing, which made the whole <script> block a syntax
+         error — the glide engine, the scroll rail and GhostCursor never ran. */
 
-                  /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
-                     which owns #heroReel's slide stack, toggle, and visibility handling. --- */
+        /* --- Hero Reel Toggle: superseded by the hero rotator IIFE near end of body,
+           which owns #heroReel's slide stack, toggle, and visibility handling. --- */
 
             /* --- GhostCursor (Three.js) — constrained to hero section --- */
                 const ghostContainer = document.getElementById("ghost-cursor-container");
@@ -14728,8 +14730,21 @@ body.jm-tab-hidden .rw-swipe-track {
   .jm-cursor { display: none; }
   .crt-scanlines { opacity: 0.3; }
 }
+
 </style>
 <script id="polish-pack-js">
+/* ══════════════════════════════════════════════════════════════════
+   POLISH PACK — v1  (JS)
+   Paste as a single <script id="polish-pack-js"> block immediately
+   before </body>, AFTER the polish <style> block and after every
+   existing script (it reads window.scheduleGlide and #rwMobile, both
+   of which must already exist).
+
+   Vanilla. No dependencies. Nothing here touches the record wall
+   physics engine, the hash router, or the .glide engine internals —
+   it only listens to what they already broadcast (jm:roomchange,
+   the .is-visible class, #rwMobile's childList).
+   ══════════════════════════════════════════════════════════════════ */
 (() => {
   "use strict";
 
@@ -15201,6 +15216,8 @@ body.jm-tab-hidden .rw-swipe-track {
   /* expose for debugging / manual re-runs after dynamic renders */
   window.jmPolish = { enhanceAll, buildSwipeRail, rollUp };
 })();
+
 </script>
+
 </body>
 </html>
