@@ -10,7 +10,7 @@
 <helmet>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/topbar.css">
   <link rel="stylesheet" href="styles/motion.css">
   <style>
@@ -166,7 +166,7 @@
 
       <!-- LEFT — the ask, then the facts. No status dot, no fake system UI. -->
       <section aria-labelledby="contactTitle" style="display:grid;gap:clamp(1.2rem,2.4vw,1.8rem);align-content:start">
-        <p data-t="label">001 / Contact</p>
+        <p data-t="label">Contact</p>
         <h1 id="contactTitle" data-t="impact">What are we making?</h1>
         <p data-t="body">Tell me what you&rsquo;re making and send over whatever you have.</p>
 
@@ -181,7 +181,7 @@
 
         <div style="display:grid;gap:.7rem;margin-top:clamp(.6rem,1.6vw,1.2rem);padding-top:1.15rem;border-top:1px solid rgba(233,235,238,.14)">
           <p data-t="label" style="color:rgba(233,235,238,.6)">Direct</p>
-          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.9rem">
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:.7rem">
             <a data-email="" href="mailto:jmcdaniel.productions@gmail.com" style="color:#E9EBEE" style-hover="color:oklch(0.8 0.11 200)">jmcdaniel.productions@gmail.com</a>
             <button data-btn="quiet" type="button" onClick="{{ copyEmail }}" aria-label="Copy email address" style="min-height:44px;padding:0 1rem;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase">{{ copyLabel }}</button>
           </div>

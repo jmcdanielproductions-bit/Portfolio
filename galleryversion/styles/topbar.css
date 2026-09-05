@@ -125,7 +125,8 @@
   transform: translateY(-2px);
   outline: none;
 }
-[data-social] a:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
+[data-social] a:focus-visible,
+[data-social] a:focus-within { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
 [data-social] svg { display: block; width: 19px; height: 19px; }
 
 /* pages that are not the full-bleed hero need to clear the fixed bar */
@@ -142,6 +143,9 @@
 }
 /* phones: same language — dark surface, cream active, 44px targets — but
    the bar becomes a full-width scrollable row beneath the identity */
+/* Global footer focus */
+footer a:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
+
 @media (max-width: 720px) {
   [data-topbar] {
     position: sticky;

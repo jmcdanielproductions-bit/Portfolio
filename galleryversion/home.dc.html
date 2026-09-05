@@ -10,7 +10,7 @@
 <helmet>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/topbar.css">
   <link rel="stylesheet" href="styles/motion.css">
   <style>
@@ -47,7 +47,7 @@
       /* blur resolves faster than the card travels — visual punctuation */
       transition: filter 260ms ease;
     }
-    [data-slide]:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 4px; }
+    [data-slide]:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 4px; background: rgba(233,235,238,.04); }
 
     /* Reduced motion and phones get a plain scroll-snap rail. CSS owns this
        switch; the engine neutralises its own transform writes here. */
@@ -117,13 +117,13 @@
     <div style="position:absolute;inset:auto 0 0;display:grid;gap:clamp(.85rem,1.7vw,1.25rem);padding:0 clamp(1.1rem,4vw,3.2rem) clamp(1.8rem,4vw,3.2rem);max-width:1560px;margin:0 auto">
       <p style="margin:0;font-family:'DM Mono',monospace;font-size:clamp(.72rem,.8vw,.78rem);letter-spacing:.18em;text-transform:uppercase;color:oklch(0.8 0.11 200)">Director &amp; Editor / Bay Area</p>
       <h1 style="margin:0;max-width:24ch;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1.75rem,4vw,3.5rem);line-height:.94;letter-spacing:.012em;text-transform:uppercase;text-wrap:balance">I direct the films that make people care about games.</h1>
-      <p style="margin:0;max-width:46ch;font-size:clamp(.94rem,1.02vw,1.02rem);line-height:1.6;color:rgba(233,235,238,.78)">Trailers, spots and cinematics for CD Projekt Red, Bethesda, CORSAIR and BMW. I direct it, I cut it, and I&rsquo;m usually the one asking for one more take.</p>
+      <p style="margin:0;max-width:46ch;font-size:clamp(.94rem,1.02vw,1.02rem);line-height:1.6;color:rgba(233,235,238,.78)">Trailers, spots and cinematics. From concept through final cut — for CD Projekt Red, Bethesda, CORSAIR, and BMW.</p>
 
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:.2rem">
-        <button data-btn="primary" type="button" onClick="{{ playReel }}" style="min-height:50px;padding:0 1.3rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500">
+        <button data-btn="primary" type="button" onClick="{{ playReel }}" style="min-height:58px;padding:0 1.8rem;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(1rem,1.5vw,1.35rem);letter-spacing:.06em;text-transform:uppercase">
           <span style="font-size:.82rem">&#9654;</span> Full reel
         </button>
-        <a data-btn="ghost" href="browse.dc.html" style="min-height:50px;padding:0 1.3rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase">All work <span data-arrow="" aria-hidden="true">&rarr;</span></a>
+        <a data-btn="quiet" href="browse.dc.html" style="min-height:50px;padding:0 1.3rem;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase">All work <span data-arrow="" aria-hidden="true">&rarr;</span></a>
       </div>
     </div>
   </section>
@@ -289,6 +289,14 @@ class Component extends DCLogic {
     window.addEventListener("resize", this.onResize, { passive: true });
 
     this.onKey = (e) => { if (e.key === "Escape") this.setState({ playing: null }); };
+    this.onReelKey = (e) => {
+      if (this.reduce?.matches || this.narrow) return;
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      this.offset += (e.key === "ArrowRight" ? -1 : 1) * this.step;
+      this.parkUntil = performance.now() + RESUME_MS;
+      this.vel = 0;
+    };
     window.addEventListener("keydown", this.onKey);
   }
 
@@ -300,6 +308,8 @@ class Component extends DCLogic {
     window.removeEventListener("resize", this.onResize);
     this.wide?.removeEventListener?.("change", this.syncMode);
     window.removeEventListener("keydown", this.onKey);
+    const box = this.reel.current;
+    if (box) box.removeEventListener("keydown", this.onReelKey);
     this.stopLoop();
     if (this.settle) clearTimeout(this.settle);
     if (this.enterTimer) clearTimeout(this.enterTimer);
@@ -322,8 +332,8 @@ class Component extends DCLogic {
     const box = this.reel.current;
     if (!box) return;
     this.measure();
-    /* understated entry: settle, then start moving */
-    this.enterTimer = window.setTimeout(() => { this.entered = true; }, 420);
+    /* understated entry: cards appear staggered, then start moving */
+    this.enterTimer = window.setTimeout(() => { this.entered = true; }, 900);
 
     box.addEventListener("pointerenter", this.onEnter);
     box.addEventListener("pointerleave", this.onLeave);
@@ -331,6 +341,7 @@ class Component extends DCLogic {
     box.addEventListener("pointerdown", this.onDown);
     box.addEventListener("pointerup", this.onUp);
     box.addEventListener("pointercancel", this.onUp);
+    box.addEventListener("keydown", this.onReelKey);
     this.startLoop();
   };
 

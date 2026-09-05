@@ -10,7 +10,7 @@
 <helmet>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800;900&family=Chivo:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/topbar.css">
   <link rel="stylesheet" href="styles/motion.css">
   <style>
@@ -127,14 +127,14 @@
   <sc-if value="{{ isIndex }}" hint-placeholder-val="{{ true }}">
     <section aria-label="Work index" style="position:relative;z-index:2;padding:0 clamp(1.1rem,4vw,3.2rem) clamp(3rem,6vw,5rem);max-width:1560px;margin:0 auto">
       <div data-idx="" style="padding:.75rem 0;border-bottom:1px solid rgba(233,235,238,.09);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,235,238,.62)">
-        <span>&#8470;</span>
+        <span style="color:transparent">&#8470;</span>
         <span>Title</span>
         <span data-meta="">Client</span>
         <span style="text-align:right">Year</span>
       </div>
       <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
         <button data-idx="" type="button" onClick="{{ r.open }}" onPointerEnter="{{ r.hover }}" onFocus="{{ r.hover }}" aria-label="{{ r.aria }}" style="width:100%;padding:.85rem 0;border:0;border-bottom:1px solid rgba(233,235,238,.075);background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transition:background 200ms ease" style-hover="background:rgba(233,235,238,.045)">
-          <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:rgba(233,235,238,.6);align-self:center">{{ r.num }}</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:rgba(233,235,238,.6);align-self:center;display:none">{{ r.num }}</span>
           <span style="display:flex;align-items:center;gap:.6rem;min-width:0">
             <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1rem,1.6vw,1.35rem);line-height:1;letter-spacing:.014em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
             <sc-if value="{{ r.views }}" hint-placeholder-val="{{ false }}">
@@ -211,7 +211,7 @@ const FILTERS = ["All", "Gaming", "Commercial", "Narrative"];
 const META_STYLE = "font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(233,235,238,.66);align-self:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
 
 class Component extends DCLogic {
-  state = { data: null, filter: "All", view: "index", playing: null, preview: null };
+  state = { data: null, filter: "All", view: "grid", playing: null, preview: null };
 
   componentDidMount() {
     import("./data/projects.js").then((m) => this.setState({ data: m }));
