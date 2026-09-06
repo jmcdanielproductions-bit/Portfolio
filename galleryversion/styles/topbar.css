@@ -8,6 +8,29 @@
    ══════════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Skip-to-content: hidden until keyboard focus */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: .7rem 1.2rem;
+  background: oklch(0.72 0.14 200);
+  color: #08090C;
+  font-family: 'DM Mono', monospace;
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform 180ms ease;
+  outline: none;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 [data-topbar] {
   position: fixed;
   inset: 22px 0 auto;
