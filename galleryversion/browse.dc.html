@@ -74,6 +74,54 @@
     }
     [data-chip]:focus-visible { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
 
+    /* Grid hover: smooth scale + glitch RGB split */
+    [data-grid-card] {
+      transition: transform 480ms cubic-bezier(.22,1,.36,1), filter 480ms ease !important;
+    }
+    [data-grid-card]:hover,
+    [data-grid-card]:focus-visible {
+      transform: scale(1.035) !important;
+      filter: brightness(1.06) !important;
+    }
+    /* Subtle glitch on hover: RGB channel separation via pseudo-elements */
+    [data-grid-card] [data-grid-frame] {
+      position: relative;
+      overflow: hidden;
+    }
+    [data-grid-card] [data-grid-frame]::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: inherit;
+      opacity: 0;
+      mix-blend-mode: screen;
+      transition: opacity 300ms ease, transform 300ms ease;
+    }
+    [data-grid-card]:hover [data-grid-frame]::after,
+    [data-grid-card]:focus-visible [data-grid-frame]::after {
+      opacity: .12;
+      animation: glitchShift 2.4s steps(2) infinite;
+    }
+    @keyframes glitchShift {
+      0% { transform: translate(0); }
+      10% { transform: translate(-1.5px, .8px); }
+      20% { transform: translate(1.2px, -.4px); }
+      30% { transform: translate(-.6px, 0); }
+      40% { transform: translate(.8px, .6px); }
+      50% { transform: translate(-1px, -.2px); }
+      60% { transform: translate(.4px, .4px); }
+      70% { transform: translate(-.8px, -.6px); }
+      80% { transform: translate(1px, .2px); }
+      90% { transform: translate(-.4px); }
+      100% { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-grid-card]:hover { transform: none !important; filter: brightness(1.03) !important; }
+      [data-grid-card]:hover [data-grid-frame]::after { opacity: 0; animation: none; }
+    }
+
     /* Scroll scrub: thin accent bar on the row nearest viewport centre */
     [data-idx][data-scrub-row] {
       position: relative;
@@ -165,10 +213,10 @@
         <span style="text-align:right">Year</span>
       </div>
       <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
-        <button data-idx="" data-scrub-row="" type="button" onClick="{{ r.open }}" onPointerEnter="{{ r.hover }}" onFocus="{{ r.hover }}" aria-label="{{ r.aria }}" style="width:100%;padding:.85rem 0;border:0;border-bottom:1px solid rgba(233,235,238,.075);background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transition:background 200ms ease" style-hover="background:rgba(233,235,238,.045)">
+        <button data-idx="" data-scrub-row="" type="button" onClick="{{ r.open }}" onPointerEnter="{{ r.hover }}" onFocus="{{ r.hover }}" aria-label="{{ r.aria }}" style="width:100%;padding:.85rem 0;border:0;border-bottom:1px solid rgba(233,235,238,.075);background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transform:translateY(0) scale(1);transition:transform 420ms cubic-bezier(.22,1,.36,1),background 420ms ease" style-hover="transform:translateY(-1px) scale(1.012);background:rgba(233,235,238,.045)">
           <span style="font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:rgba(233,235,238,.6);align-self:center;display:none">{{ r.num }}</span>
           <span style="display:flex;align-items:center;gap:.6rem;min-width:0">
-            <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1rem,1.6vw,1.35rem);line-height:1;letter-spacing:.014em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
+            <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1rem,1.6vw,1.35rem);line-height:1.08;letter-spacing:.014em;text-transform:uppercase;word-break:break-word">{{ r.title }}</span>
             <sc-if value="{{ r.views }}" hint-placeholder-val="{{ false }}">
               <span style="flex:0 0 auto;padding:.22rem .44rem;background:oklch(0.42 0.09 60);color:#FFF6E6;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap">{{ r.views }}</span>
             </sc-if>
@@ -196,10 +244,11 @@
     <section aria-label="Work grid" style="position:relative;z-index:2;padding:clamp(1.2rem,2.6vw,1.9rem) clamp(1.1rem,4vw,3.2rem) clamp(3rem,6vw,5rem);max-width:1560px;margin:0 auto">
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:clamp(.5rem,1.1vw,.95rem)">
         <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
-          <button type="button" onClick="{{ r.open }}" aria-label="{{ r.aria }}" style="position:relative;display:block;width:100%;padding:0;border:0;background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transition:filter 320ms ease" style-hover="filter:brightness(1.08)">
-            <span style="position:relative;display:block;overflow:hidden;background:#07080A;aspect-ratio:16/9">
+          <button data-grid-card="" type="button" onClick="{{ r.open }}" aria-label="{{ r.aria }}" style="position:relative;display:block;width:100%;padding:0;border:0;background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer">
+            <span data-grid-frame="" style="position:relative;display:block;overflow:hidden;background:#07080A;aspect-ratio:16/9;outline:1px solid rgba(233,235,238,.08)">
               <img src="{{ r.thumb }}" alt="" loading="lazy" decoding="async" onLoad="{{ r.guard }}" onError="{{ r.guard }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.86"></img>
-              <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,.02) 40%,rgba(7,8,10,.92) 100%)"></span>
+              <video src="{{ r.loop }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="none" tabIndex="-1" aria-hidden="true" onMouseEnter="{{ r.play }}" onFocus="{{ r.play }}" onMouseLeave="{{ r.stop }}" onBlur="{{ r.stop }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 400ms ease"></video>
+              <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,.02) 40%,rgba(7,8,10,.92) 100%);pointer-events:none"></span>
               <sc-if value="{{ r.views }}" hint-placeholder-val="{{ false }}">
                 <span style="position:absolute;right:.55rem;top:.5rem;padding:.22rem .44rem;background:oklch(0.42 0.09 60);color:#FFF6E6;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap">{{ r.views }}</span>
               </sc-if>
@@ -324,8 +373,11 @@ class Component extends DCLogic {
         views: p.views ? `${p.views} views` : "",
         thumb: d.frame(p),
         guard: d.guardThumb(p.yt),
+        loop: d.LOOPS[p.slug] || "",
         aria: `Play ${p.title} — ${p.client}, ${p.role}, ${p.type}, ${p.year}`,
         hover: () => this.setState({ preview: p.still || d.thumb(p.yt, false) }),
+        play: (e) => { const v = e.currentTarget; v.muted = true; v.play().catch(() => {}); },
+        stop: (e) => { const v = e.currentTarget; v.pause(); v.currentTime = 0; },
         open: () => this.setState({ playing: { src: d.embed(p.yt), label: `${p.title} / ${p.client}` } })
       })),
 
