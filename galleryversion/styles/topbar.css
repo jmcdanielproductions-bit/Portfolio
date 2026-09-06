@@ -142,11 +142,10 @@
   text-decoration: none;
   transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
 }
-[data-social] a:hover, [data-social] a:focus-visible {
+[data-social] a:hover {
   color: #E9EBEE;
   background-color: rgba(233, 235, 238, .08);
   transform: translateY(-2px);
-  outline: none;
 }
 [data-social] a:focus-visible,
 [data-social] a:focus-within { outline: 2px solid oklch(0.72 0.14 200); outline-offset: 2px; }
