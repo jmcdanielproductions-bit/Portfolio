@@ -216,7 +216,7 @@
         <span style="text-align:right">Year</span>
       </div>
       <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
-        <button data-idx="" data-scrub-row="" type="button" onClick="{{ r.open }}" onPointerEnter="{{ r.hover }}" onFocus="{{ r.hover }}" aria-label="{{ r.aria }}" style="width:100%;padding:.85rem 0;border:0;border-bottom:1px solid rgba(233,235,238,.075);background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transform:translateY(0) scale(1);transition:transform 420ms cubic-bezier(.22,1,.36,1),background 420ms ease" style-hover="transform:translateY(-1px) scale(1.012);background:rgba(233,235,238,.045)">
+        <button data-idx="" data-scrub-row="" type="button" onClick="{{ r.open }}" onPointerEnter="{{ r.hover }}" onFocus="{{ r.hover }}" onPointerLeave="{{ r.leave }}" onBlur="{{ r.leave }}" aria-label="{{ r.aria }}" style="width:100%;padding:.85rem 0;border:0;border-bottom:1px solid rgba(233,235,238,.075);background:none;color:#E9EBEE;text-align:left;font:inherit;cursor:pointer;transform:translateY(0) scale(1);transition:transform 420ms cubic-bezier(.22,1,.36,1),background 420ms ease" style-hover="transform:translateY(-1px) scale(1.012);background:rgba(233,235,238,.045)">
           <span style="display:flex;align-items:center;gap:.6rem;min-width:0">
             <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(1rem,1.6vw,1.35rem);line-height:1.08;letter-spacing:.014em;text-transform:uppercase;word-break:break-word">{{ r.title }}</span>
             <sc-if value="{{ r.views }}" hint-placeholder-val="{{ false }}">
@@ -238,7 +238,9 @@
          re-downloaded this document via the empty-src fallback. There is no
          src attribute in the template now, and the URL is a genuinely live
          runtime value that cannot exist at parse time. -->
-    <div data-preview="" aria-hidden="true" style="{{ previewStyle }}"></div>
+    <div data-preview="" aria-hidden="true" style="{{ previewStyle }}">
+      <sc-if value="{{ previewLoop }}" hint-placeholder-val=""><video src="{{ previewLoop }}" muted="" loop="" playsInline="" autoplay="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video></sc-if>
+    </div>
   </sc-if>
 
   <!-- ── GRID VIEW ── -->
@@ -294,7 +296,7 @@ const FILTERS = ["All", "Gaming", "Commercial", "Narrative"];
 const META_STYLE = "font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(233,235,238,.66);align-self:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
 
 class Component extends DCLogic {
-  state = { data: null, filter: "All", view: "grid", playing: null, preview: null, px: null, py: null };
+  state = { data: null, filter: "All", view: "grid", playing: null, preview: null, previewLoop: null, px: null, py: null };
 
   componentDidMount() {
     import("./data/projects.js").then((m) => this.setState({ data: m }));
@@ -377,14 +379,15 @@ class Component extends DCLogic {
         guard: d.guardThumb(p.yt),
         loop: d.LOOPS[p.slug] || "",
         aria: `Play ${p.title} — ${p.client}, ${p.role}, ${p.type}, ${p.year}`,
-        hover: (e) => { const rect = e.currentTarget.getBoundingClientRect(); this.setState({ preview: p.still || d.thumb(p.yt, false), px: Math.max(10, rect.left - 220), py: rect.top + 10 }); },
+        hover: (e) => { const rect = e.currentTarget.getBoundingClientRect(); this.setState({ preview: p.still || d.thumb(p.yt, false), previewLoop: d.LOOPS[p.slug] || "", px: Math.max(10, rect.left - 220), py: rect.top + 10 }); },
+        leave: () => this.setState({ preview: null, previewLoop: null, px: null, py: null }),
         play: (e) => { const v = e.currentTarget; v.muted = true; v.play().catch(() => {}); const img = v.previousElementSibling; if (img?.tagName === "IMG") { img.style.opacity = "0"; } },
         stop: (e) => { const v = e.currentTarget; v.pause(); v.currentTime = 0; const img = v.previousElementSibling; if (img?.tagName === "IMG") { img.style.opacity = ".86"; } },
         open: () => this.setState({ playing: { src: d.embed(p.yt), label: `${p.title} / ${p.client}` } })
       })),
 
-      /* parked bottom-right rather than cursor-tracking, so it never sits
-         under the pointer or covers the row being read */
+      /* positioned to the left of the hovered row */
+      previewLoop: this.state.previewLoop,
       previewStyle: [
         "position:fixed",
         `left:${(this.state.px || 0)}px`,
